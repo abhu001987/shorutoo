@@ -837,6 +837,112 @@
             color: #6a7f9e;
             font-style: italic;
         }
+        /* Challenge Styles */
+        .challenge-section {
+            margin-top: 24px;
+            padding: 20px;
+            background: rgba(76, 243, 255, 0.05);
+            border: 1px solid rgba(76, 243, 255, 0.12);
+            border-radius: 16px;
+            text-align: center;
+        }
+        .challenge-section h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            color: #4CF3FF;
+            margin-bottom: 12px;
+        }
+        .challenge-section .challenge-link {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #6a7f9e;
+            word-break: break-all;
+            margin-bottom: 12px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .challenge-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .challenge-buttons button {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: none;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+        .challenge-buttons .whatsapp {
+            background: #25D366;
+            color: white;
+        }
+        .challenge-buttons .whatsapp:hover {
+            background: #1da851;
+        }
+        .challenge-buttons .telegram {
+            background: #0088cc;
+            color: white;
+        }
+        .challenge-buttons .telegram:hover {
+            background: #0077b3;
+        }
+        .challenge-buttons .copy {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .challenge-buttons .copy:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .challenge-banner {
+            background: rgba(255, 200, 87, 0.08);
+            border: 1px solid rgba(255, 200, 87, 0.15);
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-bottom: 16px;
+            text-align: center;
+            color: #ffc857;
+            font-size: 15px;
+        }
+        .challenge-banner strong {
+            color: #4CF3FF;
+        }
+        .challenge-result-box {
+            margin-top: 16px;
+            padding: 16px;
+            background: rgba(76, 243, 255, 0.06);
+            border: 1px solid rgba(76, 243, 255, 0.12);
+            border-radius: 12px;
+            text-align: center;
+        }
+        .challenge-result-box .scores {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 12px 0;
+        }
+        .challenge-result-box .scores .you {
+            color: #4CF3FF;
+        }
+        .challenge-result-box .scores .friend {
+            color: #ffc857;
+        }
+        .challenge-result-box .scores .score-num {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+        }
+        .challenge-result-box .winner {
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+        }
     </style>
 </head>
 <body>
@@ -1301,7 +1407,6 @@
                 totalScore += result.earnedPoints;
                 maxScore += result.totalPoints;
 
-                // Get AI feedback based on matched keywords count
                 const matchedCount = result.matchedKeywords.length;
                 aiFeedback = getAIFeedback(matchedCount);
 
@@ -1315,10 +1420,10 @@
                     missing: result.missingKeywords.map(k => k.word),
                     matched: result.matchedKeywords,
                     matchedCount: matchedCount,
-                    aiFeedback: aiFeedback
+                    aiFeedback: aiFeedback,
+                    questionIndex: current
                 });
             } else {
-                // Old format fallback
                 let cleanAns = cleanText(ans).replace(/\s/g, "");
                 let matched = [];
                 let keywords = q.keywords || [];
@@ -1346,7 +1451,8 @@
                     missing: keywords.filter(k => !matched.includes(k)),
                     matched: matched,
                     matchedCount: matchedCount,
-                    aiFeedback: aiFeedback
+                    aiFeedback: aiFeedback,
+                    questionIndex: current
                 });
             }
 
@@ -1390,6 +1496,9 @@
             let attempted = answersLog.filter(a => a.ans && a.ans.trim() !== "").length;
             let skipped = answersLog.filter(a => !a.ans || a.ans.trim() === "").length;
 
+            // Get question IDs for challenge
+            let questionIds = answersLog.map(a => a.questionIndex).join(',');
+
             const r = 70;
             const circumference = 2 * Math.PI * r;
             const offset = circumference - (circumference * percent / 100);
@@ -1424,6 +1533,18 @@
                     <div class="result-stat-box">⏭<span class="stat-number">${skipped}</span>Skipped</div>
                 </div>
 
+                <!-- Challenge Section -->
+                <div class="challenge-section">
+                    <h3>🎯 CHALLENGE A FRIEND</h3>
+                    <p style="color:#6a7f9e;font-size:14px;margin-bottom:12px;">Share this challenge with your friends and see who scores higher!</p>
+                    <div class="challenge-link" id="challengeLink">Loading challenge link...</div>
+                    <div class="challenge-buttons">
+                        <button class="whatsapp" onclick="shareChallenge('whatsapp')">📱 WhatsApp</button>
+                        <button class="telegram" onclick="shareChallenge('telegram')">📨 Telegram</button>
+                        <button class="copy" onclick="copyChallengeLink()">📋 Copy</button>
+                    </div>
+                </div>
+
                 <div class="result-analysis-title">📋 Analysis</div>`;
 
             answersLog.forEach((a, index) => {
@@ -1446,7 +1567,6 @@
                             <div class="content">${a.model || "N/A"}</div>
                         </div>`;
 
-                // AI Analysis from feedback JSON
                 if (a.aiFeedback) {
                     html += `
                         <div class="ai-analysis-box">
@@ -1456,7 +1576,6 @@
                         </div>`;
                 }
 
-                // Show matched keywords if available
                 if (a.matched && a.matched.length > 0) {
                     html += `<div style="margin-top: 8px;">`;
                     if (Array.isArray(a.matched)) {
@@ -1471,7 +1590,6 @@
                     html += `</div>`;
                 }
 
-                // Show missing keywords
                 if (a.missing && a.missing.length > 0) {
                     html += `<div style="margin-top: 6px;">`;
                     a.missing.forEach(m => {
@@ -1496,11 +1614,72 @@
 
             document.body.innerHTML = html;
 
+            // Generate challenge link
+            const link = window.location.origin + window.location.pathname + '?challenge=' + percent + '&q=' + questionIds + '&t=' + Date.now();
+            document.getElementById('challengeLink').textContent = link;
+
             setTimeout(() => {
                 let circle = document.getElementById("progressCircle");
                 let offset = circumference - (circumference * percent / 100);
                 circle.style.strokeDashoffset = offset;
             }, 100);
+        }
+
+        // ===== CHALLENGE FUNCTIONS =====
+        function getChallengeLink() {
+            return document.getElementById('challengeLink').textContent;
+        }
+
+        function shareChallenge(platform) {
+            const link = getChallengeLink();
+            const message = `🎯 I scored ${document.querySelector('.result-score-text').textContent} on SHORUTO!\n\nCan you beat me? Take the same test:\n${link}\n\n#Shoruto #UPSC #MockTest`;
+            
+            if (platform === 'whatsapp') {
+                window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(message));
+            } else if (platform === 'telegram') {
+                window.open('https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(message));
+            }
+        }
+
+        function copyChallengeLink() {
+            const link = getChallengeLink();
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ Challenge link copied to clipboard!');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = link;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ Challenge link copied to clipboard!');
+            });
+        }
+
+        // ===== CHECK FOR CHALLENGE ON LOAD =====
+        function checkForChallenge() {
+            const params = new URLSearchParams(window.location.search);
+            const challengerScore = params.get('challenge');
+            const questionIds = params.get('q');
+            
+            if (challengerScore && questionIds) {
+                // Show challenge banner
+                const banner = document.createElement('div');
+                banner.className = 'challenge-banner';
+                banner.innerHTML = `🏆 <strong>Your friend scored ${challengerScore}%</strong> — can you beat them? Take the same test!`;
+                const container = document.querySelector('.container');
+                const progressTitle = document.querySelector('.progress-title');
+                if (container && progressTitle) {
+                    container.insertBefore(banner, progressTitle);
+                }
+                
+                // Load specific questions
+                const ids = questionIds.split(',').map(Number);
+                // We'll load these after questions are loaded
+                window._challengeQuestions = ids;
+                window._challengerScore = challengerScore;
+            }
         }
 
         // ===== POPUP (Explain) =====
@@ -1551,6 +1730,26 @@
         Promise.all([loadQuestions(), loadAIFeedback()])
             .then(() => {
                 console.log('✅ Questions and AI feedback loaded successfully.');
+                
+                // Check for challenge
+                checkForChallenge();
+                
+                // If challenge questions are specified, use them
+                if (window._challengeQuestions && window._challengeQuestions.length > 0) {
+                    const challengeQuestions = window._challengeQuestions;
+                    // Filter questions to only those requested
+                    const filteredQuestions = [];
+                    challengeQuestions.forEach(id => {
+                        if (questions[id]) {
+                            filteredQuestions.push(questions[id]);
+                        }
+                    });
+                    if (filteredQuestions.length > 0) {
+                        questions = filteredQuestions;
+                        console.log('🎯 Challenge mode: Loaded ' + questions.length + ' specific questions.');
+                    }
+                }
+                
                 if (questions.length === 0) {
                     alert('No questions available. Please check questions.json.');
                 }
