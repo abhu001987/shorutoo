@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     
     <style>
-        /* ===== PAGE-SPECIFIC STYLES ===== */
+        /* ===== PAGE-SPECIFIC STYLES USING theme.css VARIABLES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -30,15 +30,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        [data-theme="light"] body {
-            background: var(--bg-0);
-        }
-
-        .container {
-            max-width: 1550px;
-            width: 100%;
-            margin: auto;
-        }
+        .container { max-width: 1550px; width: 100%; margin: auto; }
 
         .card {
             background: var(--panel);
@@ -69,9 +61,7 @@
             background: transparent;
             transition: 0.2s;
         }
-        .exit:hover {
-            background: var(--panel-strong);
-        }
+        .exit:hover { background: var(--panel-strong); }
 
         .logo {
             font-family: 'Orbitron', monospace;
@@ -88,11 +78,7 @@
             width: 60px;
             height: 60px;
         }
-        .panda-logo svg {
-            width: 48px;
-            height: 48px;
-            display: block;
-        }
+        .panda-logo svg { width: 48px; height: 48px; display: block; }
 
         .progress-title {
             font-family: 'Orbitron', monospace;
@@ -153,9 +139,7 @@
             transition: color 0.3s;
         }
 
-        .answer {
-            padding: 28px 30px;
-        }
+        .answer { padding: 28px 30px; }
         .answer h3 {
             font-family: 'Orbitron', monospace;
             color: var(--text);
@@ -210,9 +194,7 @@
             justify-content: center;
             gap: 8px;
         }
-        .voice:hover {
-            background: var(--panel-strong);
-        }
+        .voice:hover { background: var(--panel-strong); }
         .voice.listening {
             border-color: var(--blue);
             color: var(--blue);
@@ -236,9 +218,7 @@
             transform: scale(1.01);
             box-shadow: 0 6px 20px var(--blue-soft);
         }
-        .submit:active {
-            transform: scale(0.98);
-        }
+        .submit:active { transform: scale(0.98); }
 
         .side {
             display: flex;
@@ -246,9 +226,7 @@
             gap: 20px;
         }
 
-        .side-card {
-            padding: 24px 26px;
-        }
+        .side-card { padding: 24px 26px; }
         .side-card h2 {
             font-family: 'Orbitron', monospace;
             font-size: 17px;
@@ -266,9 +244,7 @@
             letter-spacing: 2px;
             transition: color 0.3s;
         }
-        .timer.critical {
-            color: #FF4F6D;
-        }
+        .timer.critical { color: #FF4F6D; }
 
         .bar {
             height: 6px;
@@ -284,14 +260,9 @@
             background: var(--blue);
             transition: width 1s linear, background 0.3s;
         }
-        .bar.critical span {
-            background: #FF4F6D;
-        }
+        .bar.critical span { background: #FF4F6D; }
 
-        ul {
-            padding-left: 18px;
-            list-style: none;
-        }
+        ul { padding-left: 18px; list-style: none; }
         li {
             margin: 12px 0;
             line-height: 1.6;
@@ -361,97 +332,34 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1100px) {
-            .main {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .question h1 {
-                font-size: 36px;
-            }
-            .container {
-                padding: 0;
-            }
-            .header {
-                gap: 10px;
-            }
-            .logo {
-                font-size: 28px;
-            }
-            .panda-logo svg {
-                width: 40px;
-                height: 40px;
-            }
-            textarea {
-                height: 200px;
-            }
-            .fact-line {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
+            .main { grid-template-columns: 1fr; gap: 20px; }
+            .question h1 { font-size: 36px; }
+            .container { padding: 0; }
+            .header { gap: 10px; }
+            .logo { font-size: 28px; }
+            .panda-logo svg { width: 40px; height: 40px; }
+            textarea { height: 200px; }
+            .fact-line { flex-direction: column; align-items: flex-start; gap: 8px; }
         }
 
         @media (max-width: 600px) {
-            body {
-                padding: 14px;
-            }
-            .question {
-                padding: 20px 18px;
-            }
-            .question h1 {
-                font-size: 26px;
-                margin: 12px 0;
-            }
-            .answer {
-                padding: 18px 16px;
-            }
-            .buttons {
-                flex-direction: column;
-            }
-            .voice,
-            .submit {
-                width: 100%;
-                flex: 1;
-                padding: 14px;
-                font-size: 14px;
-            }
-            .side-card {
-                padding: 18px 18px;
-            }
-            .timer {
-                font-size: 36px;
-            }
-            .logo {
-                font-size: 22px;
-            }
-            .exit {
-                padding: 8px 16px;
-                font-size: 11px;
-            }
-            .panda-logo {
-                width: 44px;
-                height: 44px;
-            }
-            .panda-logo svg {
-                width: 34px;
-                height: 34px;
-            }
-            .header {
-                margin-bottom: 14px;
-            }
-            .progress-title {
-                font-size: 11px;
-            }
-            .popup-box {
-                padding: 24px 20px;
-            }
-            .popup-actions {
-                flex-direction: column;
-            }
-            .popup-actions button {
-                width: 100%;
-                text-align: center;
-            }
+            body { padding: 14px; }
+            .question { padding: 20px 18px; }
+            .question h1 { font-size: 26px; margin: 12px 0; }
+            .answer { padding: 18px 16px; }
+            .buttons { flex-direction: column; }
+            .voice, .submit { width: 100%; flex: 1; padding: 14px; font-size: 14px; }
+            .side-card { padding: 18px 18px; }
+            .timer { font-size: 36px; }
+            .logo { font-size: 22px; }
+            .exit { padding: 8px 16px; font-size: 11px; }
+            .panda-logo { width: 44px; height: 44px; }
+            .panda-logo svg { width: 34px; height: 34px; }
+            .header { margin-bottom: 14px; }
+            .progress-title { font-size: 11px; }
+            .popup-box { padding: 24px 20px; }
+            .popup-actions { flex-direction: column; }
+            .popup-actions button { width: 100%; text-align: center; }
         }
 
         .dot-pulse {
@@ -508,9 +416,7 @@
             text-align: left;
             transition: color 0.3s;
         }
-        .popup-init-box .inst-item.warn {
-            color: var(--amber);
-        }
+        .popup-init-box .inst-item.warn { color: var(--amber); }
         .start-btn {
             width: 100%;
             padding: 14px;
@@ -528,9 +434,7 @@
             margin-top: 12px;
             transition: 0.2s;
         }
-        .start-btn:hover {
-            box-shadow: 0 0 36px rgba(62, 123, 250, 0.5);
-        }
+        .start-btn:hover { box-shadow: 0 0 36px rgba(62, 123, 250, 0.5); }
 
         /* ===== POPUP OVERLAY ===== */
         .popup-overlay {
@@ -545,9 +449,7 @@
             padding: 24px;
             transition: background 0.3s;
         }
-        .popup-overlay.active {
-            display: flex;
-        }
+        .popup-overlay.active { display: flex; }
         .popup-box {
             background: var(--panel);
             border: 1px solid var(--border);
@@ -583,16 +485,9 @@
             overflow-y: auto;
             padding-right: 4px;
         }
-        .popup-box .popup-body::-webkit-scrollbar {
-            width: 4px;
-        }
-        .popup-box .popup-body::-webkit-scrollbar-track {
-            background: var(--border);
-        }
-        .popup-box .popup-body::-webkit-scrollbar-thumb {
-            background: var(--violet);
-            border-radius: 4px;
-        }
+        .popup-box .popup-body::-webkit-scrollbar { width: 4px; }
+        .popup-box .popup-body::-webkit-scrollbar-track { background: var(--border); }
+        .popup-box .popup-body::-webkit-scrollbar-thumb { background: var(--violet); border-radius: 4px; }
         .popup-box ul {
             color: var(--text-dim);
             padding-left: 20px;
@@ -600,10 +495,7 @@
             list-style: disc;
             transition: color 0.3s;
         }
-        .popup-box ul li {
-            margin: 6px 0;
-            line-height: 1.6;
-        }
+        .popup-box ul li { margin: 6px 0; line-height: 1.6; }
         .popup-actions {
             display: flex;
             gap: 12px;
@@ -625,26 +517,17 @@
             color: var(--text-dim);
             transition: border-color 0.3s, color 0.3s;
         }
-        .popup-cancel:hover {
-            background: var(--panel-strong);
-        }
+        .popup-cancel:hover { background: var(--panel-strong); }
         .popup-confirm {
             background: linear-gradient(90deg, var(--violet), var(--blue));
             border: none;
             color: #ffffff;
             box-shadow: 0 4px 16px rgba(62, 123, 250, 0.3);
         }
-        .popup-confirm:hover {
-            transform: scale(1.02);
-        }
+        .popup-confirm:hover { transform: scale(1.02); }
 
         /* ===== RESULT STYLES ===== */
-        .result-container {
-            max-width: 1550px;
-            margin: auto;
-            padding: 20px;
-            width: 100%;
-        }
+        .result-container { max-width: 1550px; margin: auto; padding: 20px; width: 100%; }
         .result-header {
             background: var(--panel);
             border: 1px solid var(--border);
@@ -666,10 +549,7 @@
             height: 180px;
             margin: 20px auto;
         }
-        .result-circle-wrap svg {
-            width: 180px;
-            height: 180px;
-        }
+        .result-circle-wrap svg { width: 180px; height: 180px; }
         .result-score-text {
             position: absolute;
             top: 50%;
@@ -769,9 +649,7 @@
             border-left: 3px solid #FF4F6D;
             transition: background 0.3s, border-color 0.3s;
         }
-        .result-answer-box.correct-box {
-            border-left-color: var(--violet);
-        }
+        .result-answer-box.correct-box { border-left-color: var(--violet); }
         .result-answer-box .label {
             font-weight: 600;
             color: var(--text-dim);
@@ -810,17 +688,14 @@
             border: 1px solid var(--border);
             transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
-        .result-retry:hover {
-            background: var(--panel-strong);
-        }
+        .result-retry:hover { background: var(--panel-strong); }
         .result-home {
             background: linear-gradient(90deg, var(--violet), var(--blue));
             color: #ffffff;
             box-shadow: 0 0 22px rgba(62, 123, 250, 0.2);
         }
-        .result-home:hover {
-            box-shadow: 0 0 30px rgba(62, 123, 250, 0.3);
-        }
+        .result-home:hover { box-shadow: 0 0 30px rgba(62, 123, 250, 0.3); }
+
         .matched-tag {
             display: inline-block;
             background: var(--blue-soft);
@@ -924,29 +799,17 @@
             transition: 0.2s;
             font-weight: 600;
         }
-        .challenge-buttons .whatsapp {
-            background: #25D366;
-            color: white;
-        }
-        .challenge-buttons .whatsapp:hover {
-            background: #1da851;
-        }
-        .challenge-buttons .telegram {
-            background: #0088cc;
-            color: white;
-        }
-        .challenge-buttons .telegram:hover {
-            background: #0077b3;
-        }
+        .challenge-buttons .whatsapp { background: #25D366; color: white; }
+        .challenge-buttons .whatsapp:hover { background: #1da851; }
+        .challenge-buttons .telegram { background: #0088cc; color: white; }
+        .challenge-buttons .telegram:hover { background: #0077b3; }
         .challenge-buttons .copy {
             background: var(--input-bg);
             color: var(--text);
             border: 1px solid var(--border);
             transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
-        .challenge-buttons .copy:hover {
-            background: var(--panel-strong);
-        }
+        .challenge-buttons .copy:hover { background: var(--panel-strong); }
         .challenge-banner {
             background: rgba(255, 200, 87, 0.08);
             border: 1px solid rgba(255, 200, 87, 0.15);
@@ -965,6 +828,37 @@
     </style>
 </head>
 <body>
+    <!-- ===== FORCE THEME ON PAGE LOAD ===== -->
+    <script>
+        (function() {
+            // Get theme from localStorage
+            const theme = localStorage.getItem('shoruto-theme') || 'light';
+            console.log('🎨 Test page loading theme:', theme);
+            
+            // Apply to HTML element
+            document.documentElement.setAttribute('data-theme', theme);
+            
+            // Update panda logo immediately
+            const pandaLogo = document.getElementById('pandaLogo');
+            if (pandaLogo) {
+                const svg = pandaLogo.querySelector('svg');
+                if (svg) {
+                    const color = theme === 'dark' ? '#DCEEFF' : '#0b1a33';
+                    svg.querySelectorAll('circle, path').forEach(el => {
+                        if (el.getAttribute('stroke')) el.setAttribute('stroke', color);
+                        if (el.getAttribute('fill') && el.getAttribute('fill') !== 'none') {
+                            el.setAttribute('fill', color);
+                        }
+                    });
+                }
+            }
+            
+            // Also update any cards with the theme
+            document.querySelectorAll('.card, .panel, .side-card, .question, .answer').forEach(el => {
+                el.style.transition = 'background 0.3s, border-color 0.3s';
+            });
+        })();
+    </script>
 
     <!-- ===== POPUP INIT ===== -->
     <div class="popup-init" id="popupInit">
@@ -984,14 +878,14 @@
             <button class="exit" onclick="goBack()">← EXIT</button>
             <div class="logo">SHORUTO</div>
             <div class="panda-logo" id="pandaLogo">
-                <svg viewBox="0 0 60 60" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 60 60" fill="none" stroke="#0b1a33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="30" cy="28" r="22"/>
                     <circle cx="12" cy="10" r="7"/>
                     <circle cx="48" cy="10" r="7"/>
                     <circle cx="22" cy="25" r="4.5"/>
-                    <circle cx="22" cy="25" r="1.5" stroke="var(--text)" fill="var(--text)" fill-opacity="0.6"/>
+                    <circle cx="22" cy="25" r="1.5" stroke="#0b1a33" fill="#0b1a33" fill-opacity="0.6"/>
                     <circle cx="38" cy="25" r="4.5"/>
-                    <circle cx="38" cy="25" r="1.5" stroke="var(--text)" fill="var(--text)" fill-opacity="0.6"/>
+                    <circle cx="38" cy="25" r="1.5" stroke="#0b1a33" fill="#0b1a33" fill-opacity="0.6"/>
                     <path d="M27 33 L30 37 L33 33"/>
                     <path d="M26 38 Q30 43 34 38"/>
                     <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
@@ -1098,45 +992,15 @@
         </div>
     </div>
 
-    <!-- ===== THEME.JS - LOADS AND APPLIES THEME ===== -->
     <script>
-        // ===== THEME LOADER =====
-        (function() {
-            // Get stored theme or default to light
-            const storedTheme = localStorage.getItem('shoruto-theme') || 'light';
-            document.documentElement.setAttribute('data-theme', storedTheme);
-            
-            // Update panda logo colors based on theme
-            function updatePandaColors(theme) {
-                const pandaLogo = document.getElementById('pandaLogo');
-                if (!pandaLogo) return;
-                const svg = pandaLogo.querySelector('svg');
-                if (!svg) return;
-                const color = theme === 'dark' ? '#DCEEFF' : '#0b1a33';
-                svg.querySelectorAll('circle, path').forEach(el => {
-                    if (el.getAttribute('stroke')) {
-                        el.setAttribute('stroke', color);
-                    }
-                    if (el.getAttribute('fill') && el.getAttribute('fill') !== 'none') {
-                        el.setAttribute('fill', color);
-                    }
-                });
-            }
-            
-            // Apply theme on load
-            updatePandaColors(storedTheme);
-            
-            // Listen for theme changes from other pages
-            window.addEventListener('storage', function(e) {
-                if (e.key === 'shoruto-theme') {
-                    const newTheme = e.newValue || 'light';
-                    document.documentElement.setAttribute('data-theme', newTheme);
-                    updatePandaColors(newTheme);
-                }
-            });
-            
-            console.log('🎨 Theme loaded:', storedTheme);
-        })();
+        // ===== LOAD THEME.JS =====
+        // This loads after the page is rendered
+        document.addEventListener('DOMContentLoaded', function() {
+            // Re-apply theme to ensure it's correct
+            const theme = localStorage.getItem('shoruto-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            console.log('🎨 DOM loaded. Theme applied:', theme);
+        });
     </script>
 
     <script>
@@ -1832,6 +1696,5 @@
 
         console.log('🚀 SHORUTO initialized. Ready for mock test!');
     </script>
-
 </body>
 </html>
