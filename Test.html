@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>SHORUTO · UPSC Mock Test</title>
+    <meta name="description" content="Practice UPSC mock tests and improve answer writing with Shoruto. Simulate real exam conditions, track performance, and boost your preparation.">
+    <link rel="canonical" href="https://www.shoruto.com/mock">
+    <link rel="icon" href="/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #050816;
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+            padding: 24px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1550px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .card {
+            background: #091425;
+            border: 1px solid rgba(0, 255, 255, 0.12);
+            border-radius: 22px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.03);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .exit {
+            padding: 10px 24px;
+            border: 1px solid #6b4cff;
+            border-radius: 12px;
+            color: #c792ff;
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            cursor: pointer;
+            background: transparent;
+            transition: 0.2s;
+        }
+        .exit:hover {
+            background: rgba(107, 76, 255, 0.08);
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 34px;
+            color: #7fe8ff;
+            letter-spacing: 3px;
+        }
+
+        .panda-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+        }
+        .panda-logo svg {
+            width: 48px;
+            height: 48px;
+            display: block;
+        }
+
+        .progress-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #aab5c8;
+            letter-spacing: 0.5px;
+        }
+
+        .progress {
+            height: 8px;
+            background: #111c32;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 22px;
+        }
+        .progress span {
+            display: block;
+            height: 100%;
+            width: 10%;
+            background: linear-gradient(90deg, #9b5cff, #00ffff);
+            transition: width 0.5s ease;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 2.4fr 0.9fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .question {
+            padding: 30px 32px;
+            margin-bottom: 20px;
+        }
+        .question small {
+            font-family: 'Orbitron', monospace;
+            color: #c36dff;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        .question h1 {
+            font-size: 44px;
+            margin: 18px 0 16px;
+            line-height: 1.25;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        .question p {
+            color: #97a7be;
+            font-size: 17px;
+            font-weight: 400;
+        }
+
+        .answer {
+            padding: 28px 30px;
+        }
+        .answer h3 {
+            font-family: 'Orbitron', monospace;
+            color: #00f5ff;
+            font-size: 16px;
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 280px;
+            background: #07111f;
+            border: 2px solid rgba(0, 229, 255, 0.2);
+            border-radius: 18px;
+            padding: 20px 22px;
+            color: #ffffff;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+            outline: none;
+            transition: border 0.2s;
+            line-height: 1.7;
+        }
+        textarea:focus {
+            border-color: #00e5ff;
+            box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.06);
+        }
+        textarea::placeholder {
+            color: #4a5a78;
+            font-weight: 300;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 22px;
+        }
+        .voice {
+            flex: 1;
+            padding: 16px 18px;
+            background: #10142a;
+            border: 1px solid #5f45ff;
+            border-radius: 16px;
+            font-family: 'Orbitron', monospace;
+            color: #ca88ff;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .voice:hover {
+            background: rgba(95, 69, 255, 0.08);
+        }
+        .voice.listening {
+            border-color: #00ffff;
+            color: #00ffff;
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        .submit {
+            flex: 2;
+            padding: 16px 18px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(90deg, #19d8ff, #9552ff);
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 17px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 20px rgba(25, 216, 255, 0.15);
+        }
+        .submit:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 28px rgba(25, 216, 255, 0.25);
+        }
+        .submit:active {
+            transform: scale(0.98);
+        }
+
+        .side {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .side-card {
+            padding: 24px 26px;
+        }
+        .side-card h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 17px;
+            margin-bottom: 16px;
+            color: #7defff;
+            letter-spacing: 0.3px;
+        }
+
+        .timer {
+            font-size: 48px;
+            font-family: 'Orbitron', monospace;
+            color: #00ffff;
+            margin-bottom: 14px;
+            letter-spacing: 2px;
+        }
+        .timer.critical {
+            color: #ff4f6d;
+        }
+
+        .bar {
+            height: 6px;
+            background: #132239;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .bar span {
+            display: block;
+            width: 75%;
+            height: 100%;
+            background: #00ffff;
+            transition: width 1s linear;
+        }
+        .bar.critical span {
+            background: #ff4f6d;
+        }
+
+        ul {
+            padding-left: 18px;
+            list-style: none;
+        }
+        li {
+            margin: 12px 0;
+            line-height: 1.6;
+            color: #b8c3d5;
+            font-size: 15px;
+            padding-left: 16px;
+            position: relative;
+        }
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #00ffff;
+            font-weight: 700;
+        }
+
+        .assistant-btn {
+            margin-top: 18px;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            background: transparent;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .assistant-btn:hover {
+            background: rgba(0, 255, 255, 0.04);
+            border-color: #00ffff;
+        }
+
+        .fact-line {
+            margin-top: 28px;
+            padding: 14px 22px;
+            background: rgba(9, 20, 37, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.06);
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            font-size: 13px;
+            color: #6a7f9e;
+        }
+        .fact-line .fact-icon {
+            color: #00ffff;
+            margin-right: 6px;
+        }
+        .fact-line .fact-text {
+            color: #b8c3d5;
+            flex: 1;
+        }
+        .fact-line .fact-text strong {
+            color: #7defff;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 24px;
+        }
+        .popup-overlay.active {
+            display: flex;
+        }
+        .popup-box {
+            background: #091425;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 32px 36px;
+            max-width: 580px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            animation: popIn 0.25s ease;
+        }
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .popup-box h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            color: #7defff;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+        }
+        .popup-box p {
+            color: #b8c3d5;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .popup-box .popup-body {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .popup-box .popup-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .popup-box .popup-body::-webkit-scrollbar-track {
+            background: #0a1425;
+        }
+        .popup-box .popup-body::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 4px;
+        }
+        .popup-box ul {
+            color: #b8c3d5;
+            padding-left: 20px;
+            margin: 10px 0;
+            list-style: disc;
+        }
+        .popup-box ul li {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+        .popup-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+            justify-content: flex-end;
+        }
+        .popup-actions button {
+            padding: 10px 28px;
+            border-radius: 12px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .popup-cancel {
+            background: transparent;
+            border: 1px solid #4a5a78;
+            color: #aab5c8;
+        }
+        .popup-cancel:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .popup-confirm {
+            background: linear-gradient(90deg, #19d8ff, #9552ff);
+            border: none;
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(25, 216, 255, 0.15);
+        }
+        .popup-confirm:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 1100px) {
+            .main {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .question h1 {
+                font-size: 36px;
+            }
+            .container {
+                padding: 0;
+            }
+            .header {
+                gap: 10px;
+            }
+            .logo {
+                font-size: 28px;
+            }
+            .panda-logo svg {
+                width: 40px;
+                height: 40px;
+            }
+            textarea {
+                height: 200px;
+            }
+            .fact-line {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 14px;
+            }
+            .question {
+                padding: 20px 18px;
+            }
+            .question h1 {
+                font-size: 26px;
+                margin: 12px 0;
+            }
+            .answer {
+                padding: 18px 16px;
+            }
+            .buttons {
+                flex-direction: column;
+            }
+            .voice,
+            .submit {
+                width: 100%;
+                flex: 1;
+                padding: 14px;
+                font-size: 14px;
+            }
+            .side-card {
+                padding: 18px 18px;
+            }
+            .timer {
+                font-size: 36px;
+            }
+            .logo {
+                font-size: 22px;
+            }
+            .exit {
+                padding: 8px 16px;
+                font-size: 11px;
+            }
+            .panda-logo {
+                width: 44px;
+                height: 44px;
+            }
+            .panda-logo svg {
+                width: 34px;
+                height: 34px;
+            }
+            .header {
+                margin-bottom: 14px;
+            }
+            .progress-title {
+                font-size: 11px;
+            }
+            .popup-box {
+                padding: 24px 20px;
+            }
+            .popup-actions {
+                flex-direction: column;
+            }
+            .popup-actions button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        .dot-pulse {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #00ffff;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+            margin-right: 4px;
+        }
+        @keyframes pulse {
+            0% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8);
+            }
+        }
+
+        .popup-init {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+        .popup-init-box {
+            background: #091425;
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 32px 28px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+        }
+        .popup-init-box h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            color: #7defff;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+        .popup-init-box .inst-item {
+            font-size: 14px;
+            color: #b8c3d5;
+            padding: 6px 0;
+            text-align: left;
+        }
+        .popup-init-box .inst-item.warn {
+            color: #ffc857;
+        }
+        .start-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(90deg, #19d8ff, #9552ff);
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            border-radius: 40px;
+            box-shadow: 0 0 24px rgba(25, 216, 255, 0.3);
+            margin-top: 12px;
+            transition: 0.2s;
+        }
+        .start-btn:hover {
+            box-shadow: 0 0 36px rgba(25, 216, 255, 0.5);
+        }
+
+        /* Result Styles */
+        .result-container {
+            max-width: 1550px;
+            margin: auto;
+            padding: 20px;
+            width: 100%;
+        }
+        .result-header {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(0, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 18px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.06em;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .result-circle-wrap {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 20px auto;
+        }
+        .result-circle-wrap svg {
+            width: 180px;
+            height: 180px;
+        }
+        .result-score-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 34px;
+            font-weight: 900;
+            font-family: 'Orbitron', monospace;
+            color: #00ffff;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+        }
+        .result-status {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.04em;
+            margin-top: 6px;
+        }
+        .result-subtext {
+            text-align: center;
+            font-size: 14px;
+            color: #6a7f9e;
+            font-family: 'Share Tech Mono', monospace;
+            margin-top: 4px;
+        }
+        .result-stats {
+            display: flex;
+            gap: 14px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+        .result-stat-box {
+            flex: 1;
+            padding: 18px 16px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 255, 0.06);
+            text-align: center;
+            font-size: 13px;
+            color: #6a7f9e;
+            min-width: 110px;
+            backdrop-filter: blur(10px);
+        }
+        .result-stat-box .stat-number {
+            display: block;
+            font-size: 26px;
+            color: #00ffff;
+            font-family: 'Orbitron', monospace;
+            margin: 4px 0;
+            font-weight: 700;
+        }
+        .result-analysis-title {
+            margin-top: 24px;
+            font-family: 'Orbitron', monospace;
+            font-size: 17px;
+            color: #ffffff;
+            letter-spacing: 0.06em;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.06);
+            padding-bottom: 10px;
+        }
+        .result-q-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 255, 0.05);
+            padding: 18px 20px;
+            margin-top: 14px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+        .result-q-card .q-label {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .result-q-card .q-text {
+            color: #b8c3d5;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .result-answer-box {
+            margin-top: 8px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+            line-height: 1.6;
+            border-left: 3px solid #ff4f6d;
+        }
+        .result-answer-box.correct-box {
+            border-left-color: #00ffff;
+        }
+        .result-answer-box .label {
+            font-weight: 600;
+            color: #6a7f9e;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-answer-box .content {
+            color: #dcEEff;
+            margin-top: 2px;
+        }
+        .result-buttons {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .result-buttons button {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 16px;
+            border: none;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: 0.2s;
+            min-width: 120px;
+        }
+        .result-retry {
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .result-retry:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .result-home {
+            background: linear-gradient(90deg, #19d8ff, #9552ff);
+            color: #ffffff;
+            box-shadow: 0 0 22px rgba(25, 216, 255, 0.15);
+        }
+        .result-home:hover {
+            box-shadow: 0 0 30px rgba(25, 216, 255, 0.25);
+        }
+        .matched-tag {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.08);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            color: #4CF3FF;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 2px 4px 2px 0;
+        }
+        .matched-tag.partial {
+            border-color: rgba(255, 200, 87, 0.2);
+            color: #ffc857;
+        }
+        .missing-tag {
+            display: inline-block;
+            background: rgba(255, 200, 87, 0.1);
+            border: 1px solid rgba(255, 200, 87, 0.2);
+            color: #ffc857;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 2px 4px 2px 0;
+        }
+        .ai-analysis-box {
+            margin-top: 12px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: rgba(76, 243, 255, 0.05);
+            border-left: 4px solid #4CF3FF;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #b8c3d5;
+        }
+        .ai-analysis-box .ai-label {
+            font-weight: 700;
+            color: #4CF3FF;
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .ai-analysis-box .ai-feedback {
+            color: #DCEEFF;
+            margin-bottom: 4px;
+        }
+        .ai-analysis-box .ai-suggestion {
+            color: #6a7f9e;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="popup-init" id="popupInit">
+        <div class="popup-init-box">
+            <h3>📋 Instructions</h3>
+            <div class="inst-item">⏱️ 90 sec per question</div>
+            <div class="inst-item">🎤 Use Chrome for voice</div>
+            <div class="inst-item warn">⚠️ Evaluation may not be 100% accurate</div>
+            <button class="start-btn" onclick="startInterview()">Start</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="header">
+            <button class="exit" onclick="goBack()">← EXIT</button>
+            <div class="logo">SHORUTO</div>
+            <div class="panda-logo">
+                <svg viewBox="0 0 60 60" fill="none" stroke="#4CF3FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="30" cy="28" r="22"/>
+                    <circle cx="12" cy="10" r="7"/>
+                    <circle cx="48" cy="10" r="7"/>
+                    <circle cx="22" cy="25" r="4.5"/>
+                    <circle cx="22" cy="25" r="1.5" stroke="#4CF3FF" fill="#4CF3FF" fill-opacity="0.6"/>
+                    <circle cx="38" cy="25" r="4.5"/>
+                    <circle cx="38" cy="25" r="1.5" stroke="#4CF3FF" fill="#4CF3FF" fill-opacity="0.6"/>
+                    <path d="M27 33 L30 37 L33 33"/>
+                    <path d="M26 38 Q30 43 34 38"/>
+                    <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+                    <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="progress-title">QUESTION PROGRESS</div>
+        <div class="progress">
+            <span id="progressFill"></span>
+        </div>
+
+        <div class="main">
+
+            <div>
+
+                <div class="card question">
+                    <small id="qNum">• QUESTION 1 OF 10</small>
+                    <h1 id="questionText">Loading...</h1>
+                    <p>➜ Share your knowledge in detail. Structure, clarity and relevance matter.</p>
+                </div>
+
+                <div class="card answer">
+                    <h3>YOUR ANSWER</h3>
+                    <textarea id="answerInput" placeholder="Start typing your answer here...
+
+• Press Enter for a new paragraph
+• AI evaluation begins after submission"></textarea>
+
+                    <div class="buttons">
+                        <button class="voice" id="voiceBtn">🎤 VOICE INPUT</button>
+                        <button class="submit" id="submitBtn">SUBMIT ANSWER →</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="side">
+
+                <div class="card side-card">
+                    <h2>TIME REMAINING</h2>
+                    <div class="timer" id="timerDisplay">01:30</div>
+                    <div class="bar" id="timerBar">
+                        <span id="timerFill"></span>
+                    </div>
+                </div>
+
+                <div class="card side-card">
+                    <h2>AI TIPS</h2>
+                    <ul>
+                        <li>Structure your answer clearly with introduction, body and conclusion.</li>
+                        <li>Use real-world examples or data wherever possible.</li>
+                        <li>Focus on relevance, depth and clarity.</li>
+                        <li>Avoid repetition and stay concise.</li>
+                    </ul>
+                </div>
+
+                <div class="card side-card">
+                    <h2>AI ASSISTANT</h2>
+                    <p style="color:#aab5c8;margin-bottom:16px;">Need help understanding this topic?</p>
+                    <button class="assistant-btn" id="explainBtn">EXPLAIN THIS TOPIC</button>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="fact-line">
+            <div class="fact-text">
+                <span class="fact-icon">📖</span>
+                Gandhi demanded fair treatment for the untouchables, India's lowest caste; he underwent several fasts to support the cause. He called the untouchables <strong>harijans</strong>, which means <strong>"children of God."</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-box">
+            <h2>📘 EXPLAIN · PM E-DRIVE</h2>
+            <div class="popup-body">
+                <p><strong style="color:#7defff;">PM E-DRIVE</strong> (Electric Drive Revolution in Innovative Vehicle Enhancement) is a central sector scheme launched to accelerate EV adoption in India.</p>
+                <p><strong style="color:#7defff;">Key features:</strong></p>
+                <ul>
+                    <li>Upfront incentives for 2W, 3W, e-buses, and e-trucks</li>
+                    <li>Allocates funds for charging infrastructure</li>
+                    <li>Supports advanced cell chemistry battery manufacturing</li>
+                    <li>Promotes R&D in battery technology</li>
+                </ul>
+                <p><strong style="color:#7defff;">Significance:</strong></p>
+                <ul>
+                    <li>Reduces oil imports and fossil fuel dependence</li>
+                    <li>Lowers carbon emissions and urban pollution</li>
+                    <li>Fosters a domestic EV manufacturing hub</li>
+                    <li>Creates jobs in the EV ecosystem</li>
+                </ul>
+                <p style="color:#6a7f9e;font-size:13px;margin-top:12px;border-top:1px solid rgba(0,255,255,0.06);padding-top:12px;">The scheme is a key part of India's transition to clean mobility and aligns with the country's climate commitments.</p>
+            </div>
+            <div class="popup-actions">
+                <button class="popup-cancel" id="popupCancel">CLOSE</button>
+                <button class="popup-confirm" id="popupConfirm">GOT IT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ===== COMPLETE JS WITH WEIGHTED KEYWORD EVALUATION & AI FEEDBACK ===== */
+
+        let questions = [];
+        let current = 0;
+        let count = 1;
+        let totalScore = 0;
+        let maxScore = 0;
+        let answersLog = [];
+        let timer, timeLeft = 90;
+        let recognition;
+        let isListening = false;
+        let finalTranscript = "";
+        let usedQuestions = [];
+        let feedbackData = null;
+        let usedFeedbackIds = {
+            "0": [],
+            "1-5": [],
+            "5-10": [],
+            "10-20": [],
+            "20-30": [],
+            "30-40": [],
+            "40-50": [],
+            "50-60": [],
+            "60-70": [],
+            "70-80": [],
+            "80-90": [],
+            "90-100": []
+        };
+
+        // ===== LOAD QUESTIONS FROM questions.json ONLY =====
+        function loadQuestions() {
+            return fetch("questions.json")
+                .then(r => {
+                    if (!r.ok) throw new Error('Failed to load questions.json');
+                    return r.json();
+                })
+                .then(data => {
+                    if (data && data.length > 0) {
+                        questions = data;
+                    } else {
+                        throw new Error('questions.json is empty');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading questions:', err);
+                    alert('⚠️ Failed to load questions. Please refresh the page.');
+                });
+        }
+
+        // ===== LOAD AI FEEDBACK =====
+        function loadAIFeedback() {
+            return fetch("ai_feedback.json")
+                .then(r => {
+                    if (!r.ok) throw new Error('Failed to load ai_feedback.json');
+                    return r.json();
+                })
+                .then(data => {
+                    feedbackData = data;
+                })
+                .catch(err => {
+                    console.error('Error loading AI feedback:', err);
+                    feedbackData = null;
+                });
+        }
+
+        // ===== WEIGHTED KEYWORD EVALUATION =====
+        function evaluateWeightedAnswer(userAnswer, keywords) {
+            let totalPoints = 0;
+            let earnedPoints = 0;
+            let matchedKeywords = [];
+            let missingKeywords = [];
+
+            const cleanAnswer = userAnswer.toLowerCase().trim();
+
+            keywords.forEach(kw => {
+                totalPoints += kw.weight;
+                let matched = false;
+                let matchType = '';
+
+                for (let synonym of kw.synonyms) {
+                    if (cleanAnswer.includes(synonym.toLowerCase())) {
+                        matched = true;
+                        matchType = 'exact';
+                        earnedPoints += kw.weight;
+                        break;
+                    }
+                }
+
+                if (!matched) {
+                    for (let synonym of kw.synonyms) {
+                        const shortSynonym = synonym.toLowerCase().substring(0, 5);
+                        if (cleanAnswer.includes(shortSynonym) && shortSynonym.length > 3) {
+                            matched = true;
+                            matchType = 'partial';
+                            earnedPoints += (kw.weight * 0.5);
+                            break;
+                        }
+                    }
+                }
+
+                if (matched) {
+                    matchedKeywords.push({
+                        word: kw.word,
+                        weight: kw.weight,
+                        type: matchType,
+                        earned: matchType === 'exact' ? kw.weight : (kw.weight * 0.5)
+                    });
+                } else {
+                    missingKeywords.push({
+                        word: kw.word,
+                        weight: kw.weight,
+                        synonyms: kw.synonyms.slice(0, 3)
+                    });
+                }
+            });
+
+            const percentage = Math.round((earnedPoints / totalPoints) * 100);
+
+            return {
+                earnedPoints: Math.round(earnedPoints * 10) / 10,
+                totalPoints: Math.round(totalPoints * 10) / 10,
+                percentage: percentage,
+                matchedKeywords: matchedKeywords,
+                missingKeywords: missingKeywords,
+                totalMatched: matchedKeywords.length,
+                totalMissing: missingKeywords.length
+            };
+        }
+
+        // ===== GET AI FEEDBACK BASED ON KEYWORD COUNT =====
+        function getAIFeedback(matchedCount) {
+            if (!feedbackData) return null;
+
+            let category;
+            if (matchedCount === 0) category = '0';
+            else if (matchedCount <= 5) category = '1-5';
+            else if (matchedCount <= 10) category = '5-10';
+            else if (matchedCount <= 20) category = '10-20';
+            else if (matchedCount <= 30) category = '20-30';
+            else if (matchedCount <= 40) category = '30-40';
+            else if (matchedCount <= 50) category = '40-50';
+            else if (matchedCount <= 60) category = '50-60';
+            else if (matchedCount <= 70) category = '60-70';
+            else if (matchedCount <= 80) category = '70-80';
+            else if (matchedCount <= 90) category = '80-90';
+            else category = '90-100';
+
+            const pool = feedbackData.feedback[category];
+            if (!pool || pool.length === 0) return null;
+
+            let available = pool.filter(item => !usedFeedbackIds[category].includes(item.id));
+
+            if (available.length === 0) {
+                usedFeedbackIds[category] = [];
+                available = pool;
+            }
+
+            const randomIndex = Math.floor(Math.random() * available.length);
+            const selected = available[randomIndex];
+            usedFeedbackIds[category].push(selected.id);
+
+            return selected;
+        }
+
+        // ===== INTERVIEW FUNCTIONS =====
+        function startInterview() {
+            document.getElementById('popupInit').style.display = "none";
+            if (questions.length === 0) {
+                alert('No questions loaded. Please refresh.');
+                return;
+            }
+            usedQuestions = [];
+            usedFeedbackIds = {
+                "0": [], "1-5": [], "5-10": [], "10-20": [], "20-30": [],
+                "30-40": [], "40-50": [], "50-60": [], "60-70": [], "70-80": [],
+                "80-90": [], "90-100": []
+            };
+            count = 1;
+            totalScore = 0;
+            maxScore = 0;
+            answersLog = [];
+            loadQuestion(0);
+        }
+
+        function goBack() {
+            if (confirm('Exit the assessment?')) {
+                window.location.href = "/";
+            }
+        }
+
+        function updateProgress(n) {
+            const pct = Math.min(100, Math.round((n - 1) / 10 * 100));
+            document.getElementById("progressFill").style.width = pct + "%";
+            const qn = document.getElementById("qNum");
+            if (qn) qn.innerText = "• QUESTION " + n + " OF 10";
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 90;
+            const timerDisplay = document.getElementById("timerDisplay");
+            const timerFill = document.getElementById("timerFill");
+            const timerBar = document.getElementById("timerBar");
+            timerDisplay.classList.remove("critical");
+            timerBar.classList.remove("critical");
+
+            timer = setInterval(() => {
+                const mins = Math.floor(timeLeft / 60);
+                const secs = timeLeft % 60;
+                timerDisplay.textContent = String(mins).padStart(2, '0') + ":" + String(secs).padStart(2, '0');
+
+                const pct = (timeLeft / 90) * 100;
+                timerFill.style.width = pct + '%';
+
+                if (timeLeft <= 15) {
+                    timerDisplay.classList.add('critical');
+                    timerBar.classList.add('critical');
+                }
+                timeLeft--;
+                if (timeLeft < 0) submitAnswer();
+            }, 1000);
+        }
+
+        function getNextQuestionIndex() {
+            if (usedQuestions.length >= questions.length) {
+                usedQuestions = [];
+            }
+
+            let available = [];
+            for (let i = 0; i < questions.length; i++) {
+                if (!usedQuestions.includes(i)) {
+                    available.push(i);
+                }
+            }
+
+            if (available.length === 0) {
+                usedQuestions = [];
+                available = questions.map((_, i) => i);
+            }
+
+            const randomIndex = Math.floor(Math.random() * available.length);
+            const selected = available[randomIndex];
+            usedQuestions.push(selected);
+            return selected;
+        }
+
+        function loadQuestion(i) {
+            finalTranscript = "";
+            document.getElementById("answerInput").value = "";
+            const q = document.getElementById("questionText");
+            q.style.animation = "none";
+            void q.offsetWidth;
+            q.style.animation = "";
+            q.innerText = questions[i].q;
+            updateProgress(count);
+            startTimer();
+        }
+
+        function toggleListening() {
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            if (!SR) {
+                alert("Use Chrome browser for voice input.");
+                return;
+            }
+
+            const voiceBtn = document.getElementById("voiceBtn");
+
+            if (!isListening) {
+
+                recognition = new SR();
+                recognition.interimResults = true;
+
+                recognition.onresult = function(e) {
+                    let interim = "";
+                    const answerInput = document.getElementById("answerInput");
+
+                    for (let i = e.resultIndex; i < e.results.length; i++) {
+                        let t = e.results[i][0].transcript.trim();
+
+                        if (e.results[i].isFinal) {
+                            if (!finalTranscript.endsWith(t)) {
+                                finalTranscript += t + " ";
+                            }
+                        } else {
+                            interim += t;
+                        }
+                    }
+                    answerInput.value = finalTranscript + interim;
+                };
+
+                recognition.onend = function() {
+                    if (isListening) recognition.start();
+                };
+
+                recognition.start();
+                isListening = true;
+                voiceBtn.classList.add("listening");
+                voiceBtn.innerHTML = `<span class="dot-pulse"></span> LISTENING`;
+
+            } else {
+                isListening = false;
+                recognition.stop();
+                voiceBtn.classList.remove("listening");
+                voiceBtn.innerHTML = '🎤 VOICE INPUT';
+            }
+        }
+
+        function submitAnswer() {
+            clearInterval(timer);
+
+            if (recognition) {
+                recognition.stop();
+                isListening = false;
+                const btn = document.getElementById("voiceBtn");
+                btn.classList.remove("listening");
+                btn.innerHTML = '🎤 VOICE INPUT';
+            }
+
+            let ans = document.getElementById("answerInput").value;
+            let q = questions[current];
+
+            let result;
+            let aiFeedback = null;
+
+            if (q.keywords && q.keywords.length > 0 && q.keywords[0].synonyms) {
+                result = evaluateWeightedAnswer(ans, q.keywords);
+                totalScore += result.earnedPoints;
+                maxScore += result.totalPoints;
+
+                // Get AI feedback based on matched keywords count
+                const matchedCount = result.matchedKeywords.length;
+                aiFeedback = getAIFeedback(matchedCount);
+
+                answersLog.push({
+                    q: q.q,
+                    ans: ans,
+                    model: q.model,
+                    score: result.earnedPoints,
+                    total: result.totalPoints,
+                    percentage: result.percentage,
+                    missing: result.missingKeywords.map(k => k.word),
+                    matched: result.matchedKeywords,
+                    matchedCount: matchedCount,
+                    aiFeedback: aiFeedback
+                });
+            } else {
+                // Old format fallback
+                let cleanAns = cleanText(ans).replace(/\s/g, "");
+                let matched = [];
+                let keywords = q.keywords || [];
+
+                keywords.forEach(k => {
+                    let cleanKey = cleanText(k).replace(/\s/g, "");
+                    if (cleanAns.includes(cleanKey)) {
+                        matched.push(k);
+                    }
+                });
+
+                totalScore += matched.length;
+                maxScore += keywords.length;
+
+                const matchedCount = matched.length;
+                aiFeedback = getAIFeedback(matchedCount);
+
+                answersLog.push({
+                    q: q.q,
+                    ans: ans,
+                    model: q.model,
+                    score: matched.length,
+                    total: keywords.length,
+                    percentage: Math.round((matched.length / keywords.length) * 100),
+                    missing: keywords.filter(k => !matched.includes(k)),
+                    matched: matched,
+                    matchedCount: matchedCount,
+                    aiFeedback: aiFeedback
+                });
+            }
+
+            count++;
+
+            if (count > 10) {
+                showResult();
+                return;
+            }
+
+            current = getNextQuestionIndex();
+            loadQuestion(current);
+        }
+
+        function cleanText(text) {
+            return text.toLowerCase().replace(/[^a-z0-9\s]/g, "").replace(/\s+/g, " ").trim();
+        }
+
+        function showResult() {
+            let totalEarned = 0;
+            let totalPossible = 0;
+
+            answersLog.forEach(a => {
+                totalEarned += a.score;
+                totalPossible += a.total;
+            });
+
+            let percent = Math.round((totalEarned / totalPossible) * 100) || 0;
+
+            let status = "Needs Improvement";
+            let color = "#ff4f6d";
+
+            if (percent >= 70) {
+                status = "Excellent Work 🔥";
+                color = "#4CF3FF";
+            } else if (percent >= 40) {
+                status = "Good Try 👍";
+                color = "#FFC857";
+            }
+
+            let attempted = answersLog.filter(a => a.ans && a.ans.trim() !== "").length;
+            let skipped = answersLog.filter(a => !a.ans || a.ans.trim() === "").length;
+
+            const r = 70;
+            const circumference = 2 * Math.PI * r;
+            const offset = circumference - (circumference * percent / 100);
+
+            let html = `<div class="result-container">
+
+                <div class="result-header">🐼 RESULT DASHBOARD</div>
+
+                <div class="result-circle-wrap">
+                    <svg width="180" height="180">
+                        <defs>
+                            <linearGradient id="resultGrad">
+                                <stop offset="0%" stop-color="#4CF3FF"/>
+                                <stop offset="100%" stop-color="#B36BFF"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="90" cy="90" r="${r}" stroke="rgba(255,255,255,0.05)" stroke-width="10" fill="none"/>
+                        <circle id="progressCircle" cx="90" cy="90" r="${r}" stroke="url(#resultGrad)" stroke-width="10" fill="none"
+                            stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
+                            style="filter:drop-shadow(0 0 20px rgba(76,243,255,0.3));transition:1.2s ease;"/>
+                    </svg>
+                    <div class="result-score-text">${percent}%</div>
+                </div>
+
+                <div class="result-status" style="color:${color}">${status}</div>
+                <div class="result-subtext">Keep improving daily 🚀</div>
+
+                <div class="result-stats">
+                    <div class="result-stat-box">⭐<span class="stat-number">${Math.round(totalEarned)}</span>Points</div>
+                    <div class="result-stat-box">🎯<span class="stat-number">${percent}%</span>Accuracy</div>
+                    <div class="result-stat-box">📄<span class="stat-number">${attempted}</span>Attempted</div>
+                    <div class="result-stat-box">⏭<span class="stat-number">${skipped}</span>Skipped</div>
+                </div>
+
+                <div class="result-analysis-title">📋 Analysis</div>`;
+
+            answersLog.forEach((a, index) => {
+                const isCorrect = a.missing && a.missing.length === 0;
+                const borderColor = isCorrect ? '#4CF3FF' : '#ff4f6d';
+                const icon = isCorrect ? '✅' : '⚠️';
+
+                html += `
+                    <div class="result-q-card">
+                        <span class="q-label">${icon} Q${index + 1}:</span>
+                        <div class="q-text">${a.q}</div>
+
+                        <div class="result-answer-box" style="border-left-color: ${borderColor};">
+                            <div class="label">Your Answer:</div>
+                            <div class="content">${a.ans || "No answer"}</div>
+                        </div>
+
+                        <div class="result-answer-box correct-box" style="border-left-color: #4CF3FF; margin-top: 8px;">
+                            <div class="label">Model Answer:</div>
+                            <div class="content">${a.model || "N/A"}</div>
+                        </div>`;
+
+                // AI Analysis from feedback JSON
+                if (a.aiFeedback) {
+                    html += `
+                        <div class="ai-analysis-box">
+                            <span class="ai-label">🤖 AI Analysis:</span>
+                            <div class="ai-feedback">${a.aiFeedback.feedback}</div>
+                            <div class="ai-suggestion">💡 ${a.aiFeedback.suggestion}</div>
+                        </div>`;
+                }
+
+                // Show matched keywords if available
+                if (a.matched && a.matched.length > 0) {
+                    html += `<div style="margin-top: 8px;">`;
+                    if (Array.isArray(a.matched)) {
+                        a.matched.forEach(m => {
+                            if (typeof m === 'object' && m.word) {
+                                html += `<span class="matched-tag">✓ ${m.word}</span>`;
+                            } else {
+                                html += `<span class="matched-tag">✓ ${m}</span>`;
+                            }
+                        });
+                    }
+                    html += `</div>`;
+                }
+
+                // Show missing keywords
+                if (a.missing && a.missing.length > 0) {
+                    html += `<div style="margin-top: 6px;">`;
+                    a.missing.forEach(m => {
+                        if (typeof m === 'object' && m.word) {
+                            html += `<span class="missing-tag">✗ ${m.word}</span>`;
+                        } else {
+                            html += `<span class="missing-tag">✗ ${m}</span>`;
+                        }
+                    });
+                    html += `</div>`;
+                }
+
+                html += `</div>`;
+            });
+
+            html += `
+                <div class="result-buttons">
+                    <button class="result-retry" onclick="location.reload()">RETRY</button>
+                    <button class="result-home" onclick="goBack()">HOME</button>
+                </div>
+            </div>`;
+
+            document.body.innerHTML = html;
+
+            setTimeout(() => {
+                let circle = document.getElementById("progressCircle");
+                let offset = circumference - (circumference * percent / 100);
+                circle.style.strokeDashoffset = offset;
+            }, 100);
+        }
+
+        // ===== POPUP (Explain) =====
+        (function() {
+            const popupOverlay = document.getElementById('popupOverlay');
+            const popupCancel = document.getElementById('popupCancel');
+            const popupConfirm = document.getElementById('popupConfirm');
+            const explainBtn = document.getElementById('explainBtn');
+
+            function openPopup() {
+                popupOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closePopup() {
+                popupOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            explainBtn.addEventListener('click', openPopup);
+            popupCancel.addEventListener('click', closePopup);
+            popupConfirm.addEventListener('click', closePopup);
+
+            popupOverlay.addEventListener('click', function(e) {
+                if (e.target === this) closePopup();
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closePopup();
+            });
+        })();
+
+        // ===== EVENT LISTENERS =====
+        document.getElementById('voiceBtn').addEventListener('click', toggleListening);
+        document.getElementById('submitBtn').addEventListener('click', submitAnswer);
+
+        document.getElementById('answerInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + '\n' + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 1;
+            }
+        });
+
+        // ===== INIT: Load everything and start =====
+        Promise.all([loadQuestions(), loadAIFeedback()])
+            .then(() => {
+                console.log('✅ Questions and AI feedback loaded successfully.');
+                if (questions.length === 0) {
+                    alert('No questions available. Please check questions.json.');
+                }
+            })
+            .catch(err => {
+                console.error('❌ Initialization error:', err);
+            });
+
+        console.log('🚀 SHORUTO initialized. Ready for mock test!');
+    </script>
+
+</body>
+</html>
