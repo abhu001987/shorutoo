@@ -1,64 +1,32 @@
-// theme.js - Shared theme management for all pages
+// theme.js - Complete shared theme management for all pages
 
-// Load and apply saved theme
-function loadTheme() {
-  const saved = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = saved || (prefersDark ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme);
-  
-  // Update particle colors if they exist
-  setTimeout(() => updateParticleColors(theme), 300);
-}
-
-// Toggle between dark and light themes
-function toggleTheme() {
-  const html = document.documentElement;
-  const currentTheme = html.getAttribute('data-theme');
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-  html.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-  
-  // Update particle colors
-  updateParticleColors(newTheme);
-}
-
-// Update particle canvas colors (for your homepage)
-function updateParticleColors(theme) {
-  const canvas = document.getElementById('particleCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  // The particles will be redrawn with new colors automatically
-  // Just trigger a redraw if your particle system supports it
-  if (window._particleTick) {
-    // If you have a custom particle system, you can trigger redraw
-  }
-}
-
-// Listen for theme changes from other tabs/windows
-window.addEventListener('storage', function(e) {
-  if (e.key === 'theme') {
-    const newTheme = e.newValue;
-    if (newTheme) {
-      document.documentElement.setAttribute('data-theme', newTheme);
-      updateParticleColors(newTheme);
-    }
-  }
-});
-
-// Load theme immediately when script runs
-loadTheme();
-
-// Also load when DOM is fully ready
-document.addEventListener('DOMContentLoaded', loadTheme);
-
-// theme.js - Shared theme toggle
 (function() {
-    // Get stored theme or default to light
-    const storedTheme = localStorage.getItem('shoruto-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', storedTheme);
-    
-    // Update panda logo colors based on theme
+    // ===== CONFIG =====
+    const STORAGE_KEY = 'shoruto-theme';  // Consistent key name
+    const DEFAULT_THEME = 'light';
+
+    // ===== GET STORED THEME =====
+    function getStoredTheme() {
+        // Check both old and new keys for backward compatibility
+        const oldTheme = localStorage.getItem('theme');
+        const newTheme = localStorage.getItem(STORAGE_KEY);
+        if (oldTheme && !newTheme) {
+            // Migrate old theme to new key
+            localStorage.setItem(STORAGE_KEY, oldTheme);
+            localStorage.removeItem('theme');
+            return oldTheme;
+        }
+        return newTheme || DEFAULT_THEME;
+    }
+
+    // ===== APPLY THEME TO HTML =====
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        updatePandaColors(theme);
+        updateParticleColors(theme);
+    }
+
+    // ===== UPDATE PANDA LOGO COLORS =====
     function updatePandaColors(theme) {
         const pandaLogo = document.getElementById('pandaLogo');
         if (!pandaLogo) return;
@@ -74,16 +42,54 @@ document.addEventListener('DOMContentLoaded', loadTheme);
             }
         });
     }
-    
-    // Apply theme on load
-    updatePandaColors(storedTheme);
-    
-    // Listen for theme changes from other pages (optional)
+
+    // ===== UPDATE PARTICLE COLORS (for homepage) =====
+    function updateParticleColors(theme) {
+        const canvas = document.getElementById('particleCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        // Trigger particle redraw if available
+        if (window._particleTick) {
+            window._particleTick(theme);
+        }
+        if (window.redrawParticles) {
+            window.redrawParticles(theme);
+        }
+    }
+
+    // ===== TOGGLE THEME =====
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || DEFAULT_THEME;
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem(STORAGE_KEY, newTheme);
+        applyTheme(newTheme);
+        return newTheme;
+    }
+
+    // ===== EXPOSE TO GLOBAL SCOPE =====
+    window.toggleTheme = toggleTheme;
+    window.getStoredTheme = getStoredTheme;
+    window.applyTheme = applyTheme;
+    window.updateParticleColors = updateParticleColors;
+
+    // ===== INITIALIZE =====
+    const initialTheme = getStoredTheme();
+    applyTheme(initialTheme);
+
+    // ===== LISTEN FOR CHANGES FROM OTHER TABS =====
     window.addEventListener('storage', function(e) {
-        if (e.key === 'shoruto-theme') {
-            const newTheme = e.newValue || 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            updatePandaColors(newTheme);
+        if (e.key === STORAGE_KEY) {
+            const newTheme = e.newValue || DEFAULT_THEME;
+            applyTheme(newTheme);
         }
     });
+
+    // ===== APPLY ON DOM READY =====
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            applyTheme(getStoredTheme());
+        });
+    }
+
+    console.log('🎨 Theme system initialized. Current theme:', getStoredTheme());
 })();
