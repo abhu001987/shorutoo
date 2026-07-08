@@ -51,3 +51,39 @@ loadTheme();
 
 // Also load when DOM is fully ready
 document.addEventListener('DOMContentLoaded', loadTheme);
+
+// theme.js - Shared theme toggle
+(function() {
+    // Get stored theme or default to light
+    const storedTheme = localStorage.getItem('shoruto-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', storedTheme);
+    
+    // Update panda logo colors based on theme
+    function updatePandaColors(theme) {
+        const pandaLogo = document.getElementById('pandaLogo');
+        if (!pandaLogo) return;
+        const svg = pandaLogo.querySelector('svg');
+        if (!svg) return;
+        const color = theme === 'dark' ? '#DCEEFF' : '#0b1a33';
+        svg.querySelectorAll('circle, path').forEach(el => {
+            if (el.getAttribute('stroke')) {
+                el.setAttribute('stroke', color);
+            }
+            if (el.getAttribute('fill') && el.getAttribute('fill') !== 'none') {
+                el.setAttribute('fill', color);
+            }
+        });
+    }
+    
+    // Apply theme on load
+    updatePandaColors(storedTheme);
+    
+    // Listen for theme changes from other pages (optional)
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'shoruto-theme') {
+            const newTheme = e.newValue || 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            updatePandaColors(newTheme);
+        }
+    });
+})();
