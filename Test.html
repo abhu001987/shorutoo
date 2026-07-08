@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
@@ -8,8 +8,14 @@
     <link rel="canonical" href="https://www.shoruto.com/mock">
     <link rel="icon" href="/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <!-- ===== SHARED THEME SYSTEM ===== -->
+    <link rel="stylesheet" href="/theme.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    
     <style>
+        /* ===== PAGE-SPECIFIC STYLES (USING CSS VARIABLES) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -17,14 +23,15 @@
         }
 
         body {
-            background: #050816;
+            background: var(--bg-color);
             font-family: 'Inter', sans-serif;
-            color: #ffffff;
+            color: var(--text-color);
             padding: 24px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: background 0.3s, color 0.3s;
         }
 
         .container {
@@ -34,10 +41,11 @@
         }
 
         .card {
-            background: #091425;
-            border: 1px solid rgba(0, 255, 255, 0.12);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 22px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.03);
+            box-shadow: var(--shadow);
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
 
         .header {
@@ -51,9 +59,9 @@
 
         .exit {
             padding: 10px 24px;
-            border: 1px solid #6b4cff;
+            border: 1px solid var(--primary-color);
             border-radius: 12px;
-            color: #c792ff;
+            color: var(--primary-color);
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             cursor: pointer;
@@ -61,14 +69,15 @@
             transition: 0.2s;
         }
         .exit:hover {
-            background: rgba(107, 76, 255, 0.08);
+            background: var(--hover-bg);
         }
 
         .logo {
             font-family: 'Orbitron', monospace;
             font-size: 34px;
-            color: #7fe8ff;
+            color: var(--text-color);
             letter-spacing: 3px;
+            transition: color 0.3s;
         }
 
         .panda-logo {
@@ -83,27 +92,37 @@
             height: 48px;
             display: block;
         }
+        .panda-logo svg circle,
+        .panda-logo svg path {
+            stroke: var(--text-color);
+            transition: stroke 0.3s;
+        }
+        .panda-logo svg circle[fill] {
+            fill: var(--text-color);
+        }
 
         .progress-title {
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             margin-bottom: 10px;
-            color: #aab5c8;
+            color: var(--text-muted);
             letter-spacing: 0.5px;
+            transition: color 0.3s;
         }
 
         .progress {
             height: 8px;
-            background: #111c32;
+            background: var(--border-color);
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 22px;
+            transition: background 0.3s;
         }
         .progress span {
             display: block;
             height: 100%;
             width: 10%;
-            background: linear-gradient(90deg, #9b5cff, #00ffff);
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
             transition: width 0.5s ease;
         }
 
@@ -120,9 +139,10 @@
         }
         .question small {
             font-family: 'Orbitron', monospace;
-            color: #c36dff;
+            color: var(--primary-color);
             font-size: 12px;
             letter-spacing: 0.5px;
+            transition: color 0.3s;
         }
         .question h1 {
             font-size: 44px;
@@ -130,11 +150,14 @@
             line-height: 1.25;
             font-weight: 600;
             letter-spacing: -0.5px;
+            color: var(--text-color);
+            transition: color 0.3s;
         }
         .question p {
-            color: #97a7be;
+            color: var(--text-muted);
             font-size: 17px;
             font-weight: 400;
+            transition: color 0.3s;
         }
 
         .answer {
@@ -142,33 +165,34 @@
         }
         .answer h3 {
             font-family: 'Orbitron', monospace;
-            color: #00f5ff;
+            color: var(--text-color);
             font-size: 16px;
             margin-bottom: 16px;
             letter-spacing: 0.3px;
+            transition: color 0.3s;
         }
 
         textarea {
             width: 100%;
             height: 280px;
-            background: #07111f;
-            border: 2px solid rgba(0, 229, 255, 0.2);
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
             border-radius: 18px;
             padding: 20px 22px;
-            color: #ffffff;
+            color: var(--text-color);
             font-size: 16px;
             font-family: 'Inter', sans-serif;
             resize: vertical;
             outline: none;
-            transition: border 0.2s;
+            transition: border 0.2s, background 0.3s, color 0.3s;
             line-height: 1.7;
         }
         textarea:focus {
-            border-color: #00e5ff;
-            box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.06);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px var(--focus-ring);
         }
         textarea::placeholder {
-            color: #4a5a78;
+            color: var(--text-muted);
             font-weight: 300;
         }
 
@@ -180,26 +204,26 @@
         .voice {
             flex: 1;
             padding: 16px 18px;
-            background: #10142a;
-            border: 1px solid #5f45ff;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             font-family: 'Orbitron', monospace;
-            color: #ca88ff;
+            color: var(--primary-color);
             font-size: 15px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.2s, background 0.3s, border-color 0.3s, color 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
         .voice:hover {
-            background: rgba(95, 69, 255, 0.08);
+            background: var(--hover-bg);
         }
         .voice.listening {
-            border-color: #00ffff;
-            color: #00ffff;
-            background: rgba(0, 255, 255, 0.05);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: var(--focus-ring);
         }
 
         .submit {
@@ -207,17 +231,17 @@
             padding: 16px 18px;
             border: none;
             border-radius: 16px;
-            background: linear-gradient(90deg, #19d8ff, #9552ff);
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
             color: #ffffff;
             font-family: 'Orbitron', monospace;
             font-size: 17px;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 20px rgba(25, 216, 255, 0.15);
+            box-shadow: 0 4px 12px var(--shadow-color);
         }
         .submit:hover {
             transform: scale(1.01);
-            box-shadow: 0 6px 28px rgba(25, 216, 255, 0.25);
+            box-shadow: 0 6px 20px var(--shadow-color);
         }
         .submit:active {
             transform: scale(0.98);
@@ -236,36 +260,39 @@
             font-family: 'Orbitron', monospace;
             font-size: 17px;
             margin-bottom: 16px;
-            color: #7defff;
+            color: var(--text-color);
             letter-spacing: 0.3px;
+            transition: color 0.3s;
         }
 
         .timer {
             font-size: 48px;
             font-family: 'Orbitron', monospace;
-            color: #00ffff;
+            color: var(--text-color);
             margin-bottom: 14px;
             letter-spacing: 2px;
+            transition: color 0.3s;
         }
         .timer.critical {
-            color: #ff4f6d;
+            color: var(--danger-color);
         }
 
         .bar {
             height: 6px;
-            background: #132239;
+            background: var(--border-color);
             border-radius: 20px;
             overflow: hidden;
+            transition: background 0.3s;
         }
         .bar span {
             display: block;
             width: 75%;
             height: 100%;
-            background: #00ffff;
-            transition: width 1s linear;
+            background: var(--accent-color);
+            transition: width 1s linear, background 0.3s;
         }
         .bar.critical span {
-            background: #ff4f6d;
+            background: var(--danger-color);
         }
 
         ul {
@@ -275,43 +302,45 @@
         li {
             margin: 12px 0;
             line-height: 1.6;
-            color: #b8c3d5;
+            color: var(--text-muted);
             font-size: 15px;
             padding-left: 16px;
             position: relative;
+            transition: color 0.3s;
         }
         li::before {
             content: "•";
             position: absolute;
             left: 0;
-            color: #00ffff;
+            color: var(--accent-color);
             font-weight: 700;
+            transition: color 0.3s;
         }
 
         .assistant-btn {
             margin-top: 18px;
             padding: 14px;
             border-radius: 14px;
-            border: 1px solid rgba(0, 255, 255, 0.25);
+            border: 1px solid var(--border-color);
             background: transparent;
-            color: #00ffff;
+            color: var(--accent-color);
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             cursor: pointer;
             width: 100%;
-            transition: 0.2s;
+            transition: 0.2s, border-color 0.3s, color 0.3s;
             letter-spacing: 0.3px;
         }
         .assistant-btn:hover {
-            background: rgba(0, 255, 255, 0.04);
-            border-color: #00ffff;
+            background: var(--hover-bg);
+            border-color: var(--accent-color);
         }
 
         .fact-line {
             margin-top: 28px;
             padding: 14px 22px;
-            background: rgba(9, 20, 37, 0.6);
-            border: 1px solid rgba(0, 255, 255, 0.06);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 14px;
             display: flex;
             justify-content: space-between;
@@ -319,125 +348,25 @@
             flex-wrap: wrap;
             gap: 10px 20px;
             font-size: 13px;
-            color: #6a7f9e;
+            color: var(--text-muted);
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .fact-line .fact-icon {
-            color: #00ffff;
+            color: var(--accent-color);
             margin-right: 6px;
+            transition: color 0.3s;
         }
         .fact-line .fact-text {
-            color: #b8c3d5;
+            color: var(--text-muted);
             flex: 1;
+            transition: color 0.3s;
         }
         .fact-line .fact-text strong {
-            color: #7defff;
+            color: var(--text-color);
+            transition: color 0.3s;
         }
 
-        .popup-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            padding: 24px;
-        }
-        .popup-overlay.active {
-            display: flex;
-        }
-        .popup-box {
-            background: #091425;
-            border: 1px solid rgba(0, 255, 255, 0.15);
-            border-radius: 24px;
-            padding: 32px 36px;
-            max-width: 580px;
-            width: 100%;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
-            animation: popIn 0.25s ease;
-        }
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-        .popup-box h2 {
-            font-family: 'Orbitron', monospace;
-            font-size: 18px;
-            color: #7defff;
-            margin-bottom: 14px;
-            letter-spacing: 0.5px;
-        }
-        .popup-box p {
-            color: #b8c3d5;
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 10px;
-        }
-        .popup-box .popup-body {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .popup-box .popup-body::-webkit-scrollbar {
-            width: 4px;
-        }
-        .popup-box .popup-body::-webkit-scrollbar-track {
-            background: #0a1425;
-        }
-        .popup-box .popup-body::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 4px;
-        }
-        .popup-box ul {
-            color: #b8c3d5;
-            padding-left: 20px;
-            margin: 10px 0;
-            list-style: disc;
-        }
-        .popup-box ul li {
-            margin: 6px 0;
-            line-height: 1.6;
-        }
-        .popup-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 22px;
-            justify-content: flex-end;
-        }
-        .popup-actions button {
-            padding: 10px 28px;
-            border-radius: 12px;
-            font-family: 'Orbitron', monospace;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-            letter-spacing: 0.3px;
-        }
-        .popup-cancel {
-            background: transparent;
-            border: 1px solid #4a5a78;
-            color: #aab5c8;
-        }
-        .popup-cancel:hover {
-            background: rgba(255, 255, 255, 0.04);
-        }
-        .popup-confirm {
-            background: linear-gradient(90deg, #19d8ff, #9552ff);
-            border: none;
-            color: #ffffff;
-            box-shadow: 0 4px 16px rgba(25, 216, 255, 0.15);
-        }
-        .popup-confirm:hover {
-            transform: scale(1.02);
-        }
-
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 1100px) {
             .main {
                 grid-template-columns: 1fr;
@@ -536,10 +465,11 @@
             display: inline-block;
             width: 10px;
             height: 10px;
-            background: #00ffff;
+            background: var(--accent-color);
             border-radius: 50%;
             animation: pulse 1s infinite;
             margin-right: 4px;
+            transition: background 0.3s;
         }
         @keyframes pulse {
             0% {
@@ -560,45 +490,49 @@
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: rgba(0, 0, 0, 0.75);
+            background: var(--overlay-bg);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 18px;
+            transition: background 0.3s;
         }
         .popup-init-box {
-            background: #091425;
-            border: 1px solid rgba(0, 255, 255, 0.15);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 32px 28px;
             max-width: 380px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            box-shadow: var(--shadow);
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
         .popup-init-box h3 {
             font-family: 'Orbitron', monospace;
             font-size: 20px;
-            color: #7defff;
+            color: var(--text-color);
             margin-bottom: 16px;
             letter-spacing: 0.5px;
+            transition: color 0.3s;
         }
         .popup-init-box .inst-item {
             font-size: 14px;
-            color: #b8c3d5;
+            color: var(--text-muted);
             padding: 6px 0;
             text-align: left;
+            transition: color 0.3s;
         }
         .popup-init-box .inst-item.warn {
-            color: #ffc857;
+            color: var(--warning-color);
         }
         .start-btn {
             width: 100%;
             padding: 14px;
             border: none;
             cursor: pointer;
-            background: linear-gradient(90deg, #19d8ff, #9552ff);
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
             color: #ffffff;
             font-family: 'Orbitron', monospace;
             font-weight: 700;
@@ -606,15 +540,127 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             border-radius: 40px;
-            box-shadow: 0 0 24px rgba(25, 216, 255, 0.3);
+            box-shadow: 0 0 24px var(--shadow-color);
             margin-top: 12px;
             transition: 0.2s;
         }
         .start-btn:hover {
-            box-shadow: 0 0 36px rgba(25, 216, 255, 0.5);
+            box-shadow: 0 0 36px var(--shadow-color);
         }
 
-        /* Result Styles */
+        /* ===== POPUP OVERLAY ===== */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 24px;
+            transition: background 0.3s;
+        }
+        .popup-overlay.active {
+            display: flex;
+        }
+        .popup-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 32px 36px;
+            max-width: 580px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            animation: popIn 0.25s ease;
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .popup-box h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            color: var(--text-color);
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+        .popup-box p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        .popup-box .popup-body {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .popup-box .popup-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .popup-box .popup-body::-webkit-scrollbar-track {
+            background: var(--border-color);
+        }
+        .popup-box .popup-body::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+        .popup-box ul {
+            color: var(--text-muted);
+            padding-left: 20px;
+            margin: 10px 0;
+            list-style: disc;
+            transition: color 0.3s;
+        }
+        .popup-box ul li {
+            margin: 6px 0;
+            line-height: 1.6;
+        }
+        .popup-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+            justify-content: flex-end;
+        }
+        .popup-actions button {
+            padding: 10px 28px;
+            border-radius: 12px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .popup-cancel {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            transition: border-color 0.3s, color 0.3s;
+        }
+        .popup-cancel:hover {
+            background: var(--hover-bg);
+        }
+        .popup-confirm {
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border: none;
+            color: #ffffff;
+            box-shadow: 0 4px 16px var(--shadow-color);
+        }
+        .popup-confirm:hover {
+            transform: scale(1.02);
+        }
+
+        /* ===== RESULT STYLES ===== */
         .result-container {
             max-width: 1550px;
             margin: auto;
@@ -622,18 +668,19 @@
             width: 100%;
         }
         .result-header {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(0, 255, 255, 0.08);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             padding: 18px;
             border-radius: 18px;
             text-align: center;
             font-weight: 700;
             font-size: 20px;
-            color: #ffffff;
+            color: var(--text-color);
             font-family: 'Orbitron', monospace;
             letter-spacing: 0.06em;
             margin-bottom: 20px;
             backdrop-filter: blur(10px);
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .result-circle-wrap {
             position: relative;
@@ -653,8 +700,9 @@
             font-size: 34px;
             font-weight: 900;
             font-family: 'Orbitron', monospace;
-            color: #00ffff;
-            text-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+            color: var(--text-color);
+            text-shadow: 0 0 30px var(--shadow-color);
+            transition: color 0.3s, text-shadow 0.3s;
         }
         .result-status {
             text-align: center;
@@ -667,9 +715,10 @@
         .result-subtext {
             text-align: center;
             font-size: 14px;
-            color: #6a7f9e;
+            color: var(--text-muted);
             font-family: 'Share Tech Mono', monospace;
             margin-top: 4px;
+            transition: color 0.3s;
         }
         .result-stats {
             display: flex;
@@ -681,73 +730,82 @@
             flex: 1;
             padding: 18px 16px;
             border-radius: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(0, 255, 255, 0.06);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             text-align: center;
             font-size: 13px;
-            color: #6a7f9e;
+            color: var(--text-muted);
             min-width: 110px;
             backdrop-filter: blur(10px);
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .result-stat-box .stat-number {
             display: block;
             font-size: 26px;
-            color: #00ffff;
+            color: var(--text-color);
             font-family: 'Orbitron', monospace;
             margin: 4px 0;
             font-weight: 700;
+            transition: color 0.3s;
         }
         .result-analysis-title {
             margin-top: 24px;
             font-family: 'Orbitron', monospace;
             font-size: 17px;
-            color: #ffffff;
+            color: var(--text-color);
             letter-spacing: 0.06em;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.06);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
+            transition: color 0.3s, border-color 0.3s;
         }
         .result-q-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(0, 255, 255, 0.05);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             padding: 18px 20px;
             margin-top: 14px;
             border-radius: 16px;
             backdrop-filter: blur(10px);
+            transition: background 0.3s, border-color 0.3s;
         }
         .result-q-card .q-label {
-            color: #ffffff;
+            color: var(--text-color);
             font-size: 15px;
             font-weight: 600;
             display: block;
             margin-bottom: 8px;
+            transition: color 0.3s;
         }
         .result-q-card .q-text {
-            color: #b8c3d5;
+            color: var(--text-muted);
             font-size: 14px;
             margin-bottom: 10px;
+            transition: color 0.3s;
         }
         .result-answer-box {
             margin-top: 8px;
             padding: 12px 16px;
             border-radius: 12px;
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--input-bg);
             font-size: 14px;
             line-height: 1.6;
-            border-left: 3px solid #ff4f6d;
+            border-left: 3px solid var(--danger-color);
+            transition: background 0.3s, border-color 0.3s;
         }
         .result-answer-box.correct-box {
-            border-left-color: #00ffff;
+            border-left-color: var(--accent-color);
         }
         .result-answer-box .label {
             font-weight: 600;
-            color: #6a7f9e;
+            color: var(--text-muted);
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            transition: color 0.3s;
         }
         .result-answer-box .content {
-            color: #dcEEff;
+            color: var(--text-color);
             margin-top: 2px;
+            transition: color 0.3s;
         }
         .result-buttons {
             display: flex;
@@ -769,98 +827,109 @@
             min-width: 120px;
         }
         .result-retry {
-            background: rgba(255, 255, 255, 0.04);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
         .result-retry:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--hover-bg);
         }
         .result-home {
-            background: linear-gradient(90deg, #19d8ff, #9552ff);
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
             color: #ffffff;
-            box-shadow: 0 0 22px rgba(25, 216, 255, 0.15);
+            box-shadow: 0 0 22px var(--shadow-color);
         }
         .result-home:hover {
-            box-shadow: 0 0 30px rgba(25, 216, 255, 0.25);
+            box-shadow: 0 0 30px var(--shadow-color);
         }
         .matched-tag {
             display: inline-block;
-            background: rgba(0, 255, 255, 0.08);
-            border: 1px solid rgba(0, 255, 255, 0.15);
-            color: #4CF3FF;
+            background: var(--focus-ring);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
             padding: 2px 10px;
             border-radius: 12px;
             font-size: 12px;
             font-family: 'Share Tech Mono', monospace;
             margin: 2px 4px 2px 0;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .matched-tag.partial {
-            border-color: rgba(255, 200, 87, 0.2);
-            color: #ffc857;
+            border-color: var(--warning-color);
+            color: var(--warning-color);
         }
         .missing-tag {
             display: inline-block;
-            background: rgba(255, 200, 87, 0.1);
-            border: 1px solid rgba(255, 200, 87, 0.2);
-            color: #ffc857;
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: var(--danger-color);
             padding: 2px 10px;
             border-radius: 12px;
             font-size: 12px;
             font-family: 'Share Tech Mono', monospace;
             margin: 2px 4px 2px 0;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .ai-analysis-box {
             margin-top: 12px;
             padding: 14px 18px;
             border-radius: 12px;
-            background: rgba(76, 243, 255, 0.05);
-            border-left: 4px solid #4CF3FF;
+            background: var(--focus-ring);
+            border-left: 4px solid var(--accent-color);
             font-size: 14px;
             line-height: 1.7;
-            color: #b8c3d5;
+            color: var(--text-muted);
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .ai-analysis-box .ai-label {
             font-weight: 700;
-            color: #4CF3FF;
+            color: var(--accent-color);
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             letter-spacing: 0.05em;
             margin-bottom: 4px;
             display: block;
+            transition: color 0.3s;
         }
         .ai-analysis-box .ai-feedback {
-            color: #DCEEFF;
+            color: var(--text-color);
             margin-bottom: 4px;
+            transition: color 0.3s;
         }
         .ai-analysis-box .ai-suggestion {
-            color: #6a7f9e;
+            color: var(--text-muted);
             font-style: italic;
+            transition: color 0.3s;
         }
-        /* Challenge Styles */
+
+        /* ===== CHALLENGE STYLES ===== */
         .challenge-section {
             margin-top: 24px;
             padding: 20px;
-            background: rgba(76, 243, 255, 0.05);
-            border: 1px solid rgba(76, 243, 255, 0.12);
+            background: var(--focus-ring);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             text-align: center;
+            transition: background 0.3s, border-color 0.3s;
         }
         .challenge-section h3 {
             font-family: 'Orbitron', monospace;
             font-size: 16px;
-            color: #4CF3FF;
+            color: var(--text-color);
             margin-bottom: 12px;
+            transition: color 0.3s;
         }
         .challenge-section .challenge-link {
-            background: rgba(0, 0, 0, 0.3);
+            background: var(--input-bg);
             padding: 10px 14px;
             border-radius: 10px;
             font-size: 13px;
-            color: #6a7f9e;
+            color: var(--text-muted);
             word-break: break-all;
             margin-bottom: 12px;
             font-family: 'Share Tech Mono', monospace;
+            transition: background 0.3s, color 0.3s;
         }
         .challenge-buttons {
             display: flex;
@@ -893,12 +962,13 @@
             background: #0077b3;
         }
         .challenge-buttons .copy {
-            background: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--input-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
         .challenge-buttons .copy:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--hover-bg);
         }
         .challenge-banner {
             background: rgba(255, 200, 87, 0.08);
@@ -907,19 +977,22 @@
             padding: 12px 18px;
             margin-bottom: 16px;
             text-align: center;
-            color: #ffc857;
+            color: var(--warning-color);
             font-size: 15px;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .challenge-banner strong {
-            color: #4CF3FF;
+            color: var(--text-color);
+            transition: color 0.3s;
         }
         .challenge-result-box {
             margin-top: 16px;
             padding: 16px;
-            background: rgba(76, 243, 255, 0.06);
-            border: 1px solid rgba(76, 243, 255, 0.12);
+            background: var(--focus-ring);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             text-align: center;
+            transition: background 0.3s, border-color 0.3s;
         }
         .challenge-result-box .scores {
             display: flex;
@@ -928,10 +1001,10 @@
             margin: 12px 0;
         }
         .challenge-result-box .scores .you {
-            color: #4CF3FF;
+            color: var(--accent-color);
         }
         .challenge-result-box .scores .friend {
-            color: #ffc857;
+            color: var(--warning-color);
         }
         .challenge-result-box .scores .score-num {
             font-size: 28px;
@@ -942,11 +1015,14 @@
             font-size: 18px;
             font-weight: 700;
             font-family: 'Orbitron', monospace;
+            color: var(--text-color);
+            transition: color 0.3s;
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== POPUP INIT ===== -->
     <div class="popup-init" id="popupInit">
         <div class="popup-init-box">
             <h3>📋 Instructions</h3>
@@ -957,20 +1033,21 @@
         </div>
     </div>
 
+    <!-- ===== MAIN CONTAINER ===== -->
     <div class="container">
 
         <div class="header">
             <button class="exit" onclick="goBack()">← EXIT</button>
             <div class="logo">SHORUTO</div>
-            <div class="panda-logo">
-                <svg viewBox="0 0 60 60" fill="none" stroke="#4CF3FF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="panda-logo" id="pandaLogo">
+                <svg viewBox="0 0 60 60" fill="none" stroke="#0b1a33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="30" cy="28" r="22"/>
                     <circle cx="12" cy="10" r="7"/>
                     <circle cx="48" cy="10" r="7"/>
                     <circle cx="22" cy="25" r="4.5"/>
-                    <circle cx="22" cy="25" r="1.5" stroke="#4CF3FF" fill="#4CF3FF" fill-opacity="0.6"/>
+                    <circle cx="22" cy="25" r="1.5" stroke="#0b1a33" fill="#0b1a33" fill-opacity="0.6"/>
                     <circle cx="38" cy="25" r="4.5"/>
-                    <circle cx="38" cy="25" r="1.5" stroke="#4CF3FF" fill="#4CF3FF" fill-opacity="0.6"/>
+                    <circle cx="38" cy="25" r="1.5" stroke="#0b1a33" fill="#0b1a33" fill-opacity="0.6"/>
                     <path d="M27 33 L30 37 L33 33"/>
                     <path d="M26 38 Q30 43 34 38"/>
                     <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
@@ -1031,7 +1108,7 @@
 
                 <div class="card side-card">
                     <h2>AI ASSISTANT</h2>
-                    <p style="color:#aab5c8;margin-bottom:16px;">Need help understanding this topic?</p>
+                    <p style="color:var(--text-muted);margin-bottom:16px;transition:color 0.3s;">Need help understanding this topic?</p>
                     <button class="assistant-btn" id="explainBtn">EXPLAIN THIS TOPIC</button>
                 </div>
 
@@ -1048,26 +1125,27 @@
 
     </div>
 
+    <!-- ===== EXPLAIN POPUP ===== -->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-box">
             <h2>📘 EXPLAIN · PM E-DRIVE</h2>
             <div class="popup-body">
-                <p><strong style="color:#7defff;">PM E-DRIVE</strong> (Electric Drive Revolution in Innovative Vehicle Enhancement) is a central sector scheme launched to accelerate EV adoption in India.</p>
-                <p><strong style="color:#7defff;">Key features:</strong></p>
+                <p><strong style="color:var(--primary-color);">PM E-DRIVE</strong> (Electric Drive Revolution in Innovative Vehicle Enhancement) is a central sector scheme launched to accelerate EV adoption in India.</p>
+                <p><strong style="color:var(--primary-color);">Key features:</strong></p>
                 <ul>
                     <li>Upfront incentives for 2W, 3W, e-buses, and e-trucks</li>
                     <li>Allocates funds for charging infrastructure</li>
                     <li>Supports advanced cell chemistry battery manufacturing</li>
                     <li>Promotes R&D in battery technology</li>
                 </ul>
-                <p><strong style="color:#7defff;">Significance:</strong></p>
+                <p><strong style="color:var(--primary-color);">Significance:</strong></p>
                 <ul>
                     <li>Reduces oil imports and fossil fuel dependence</li>
                     <li>Lowers carbon emissions and urban pollution</li>
                     <li>Fosters a domestic EV manufacturing hub</li>
                     <li>Creates jobs in the EV ecosystem</li>
                 </ul>
-                <p style="color:#6a7f9e;font-size:13px;margin-top:12px;border-top:1px solid rgba(0,255,255,0.06);padding-top:12px;">The scheme is a key part of India's transition to clean mobility and aligns with the country's climate commitments.</p>
+                <p style="color:var(--text-muted);font-size:13px;margin-top:12px;border-top:1px solid var(--border-color);padding-top:12px;transition:color 0.3s, border-color 0.3s;">The scheme is a key part of India's transition to clean mobility and aligns with the country's climate commitments.</p>
             </div>
             <div class="popup-actions">
                 <button class="popup-cancel" id="popupCancel">CLOSE</button>
@@ -1075,6 +1153,9 @@
             </div>
         </div>
     </div>
+
+    <!-- ===== THEME.JS ===== -->
+    <script src="/theme.js"></script>
 
     <script>
         /* ===== COMPLETE JS WITH WEIGHTED KEYWORD EVALUATION & AI FEEDBACK ===== */
@@ -1483,20 +1564,19 @@
             let percent = Math.round((totalEarned / totalPossible) * 100) || 0;
 
             let status = "Needs Improvement";
-            let color = "#ff4f6d";
+            let color = "#dc2626";
 
             if (percent >= 70) {
                 status = "Excellent Work 🔥";
-                color = "#4CF3FF";
+                color = "#22c55e";
             } else if (percent >= 40) {
                 status = "Good Try 👍";
-                color = "#FFC857";
+                color = "#facc15";
             }
 
             let attempted = answersLog.filter(a => a.ans && a.ans.trim() !== "").length;
             let skipped = answersLog.filter(a => !a.ans || a.ans.trim() === "").length;
 
-            // Get question IDs for challenge
             let questionIds = answersLog.map(a => a.questionIndex).join(',');
 
             const r = 70;
@@ -1511,14 +1591,14 @@
                     <svg width="180" height="180">
                         <defs>
                             <linearGradient id="resultGrad">
-                                <stop offset="0%" stop-color="#4CF3FF"/>
-                                <stop offset="100%" stop-color="#B36BFF"/>
+                                <stop offset="0%" stop-color="var(--accent-color)"/>
+                                <stop offset="100%" stop-color="var(--primary-color)"/>
                             </linearGradient>
                         </defs>
-                        <circle cx="90" cy="90" r="${r}" stroke="rgba(255,255,255,0.05)" stroke-width="10" fill="none"/>
+                        <circle cx="90" cy="90" r="${r}" stroke="var(--border-color)" stroke-width="10" fill="none"/>
                         <circle id="progressCircle" cx="90" cy="90" r="${r}" stroke="url(#resultGrad)" stroke-width="10" fill="none"
                             stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="filter:drop-shadow(0 0 20px rgba(76,243,255,0.3));transition:1.2s ease;"/>
+                            style="filter:drop-shadow(0 0 20px var(--shadow-color));transition:1.2s ease;"/>
                     </svg>
                     <div class="result-score-text">${percent}%</div>
                 </div>
@@ -1533,10 +1613,9 @@
                     <div class="result-stat-box">⏭<span class="stat-number">${skipped}</span>Skipped</div>
                 </div>
 
-                <!-- Challenge Section -->
                 <div class="challenge-section">
                     <h3>🎯 CHALLENGE A FRIEND</h3>
-                    <p style="color:#6a7f9e;font-size:14px;margin-bottom:12px;">Share this challenge with your friends and see who scores higher!</p>
+                    <p style="color:var(--text-muted);font-size:14px;margin-bottom:12px;transition:color 0.3s;">Share this challenge with your friends and see who scores higher!</p>
                     <div class="challenge-link" id="challengeLink">Loading challenge link...</div>
                     <div class="challenge-buttons">
                         <button class="whatsapp" onclick="shareChallenge('whatsapp')">📱 WhatsApp</button>
@@ -1549,7 +1628,7 @@
 
             answersLog.forEach((a, index) => {
                 const isCorrect = a.missing && a.missing.length === 0;
-                const borderColor = isCorrect ? '#4CF3FF' : '#ff4f6d';
+                const borderColor = isCorrect ? 'var(--accent-color)' : 'var(--danger-color)';
                 const icon = isCorrect ? '✅' : '⚠️';
 
                 html += `
@@ -1562,7 +1641,7 @@
                             <div class="content">${a.ans || "No answer"}</div>
                         </div>
 
-                        <div class="result-answer-box correct-box" style="border-left-color: #4CF3FF; margin-top: 8px;">
+                        <div class="result-answer-box correct-box" style="border-left-color: var(--accent-color); margin-top: 8px;">
                             <div class="label">Model Answer:</div>
                             <div class="content">${a.model || "N/A"}</div>
                         </div>`;
@@ -1614,25 +1693,29 @@
 
             document.body.innerHTML = html;
 
-            // Generate challenge link
             const link = window.location.origin + window.location.pathname + '?challenge=' + percent + '&q=' + questionIds + '&t=' + Date.now();
-            document.getElementById('challengeLink').textContent = link;
+            const linkEl = document.getElementById('challengeLink');
+            if (linkEl) linkEl.textContent = link;
 
             setTimeout(() => {
                 let circle = document.getElementById("progressCircle");
-                let offset = circumference - (circumference * percent / 100);
-                circle.style.strokeDashoffset = offset;
+                if (circle) {
+                    let offset = circumference - (circumference * percent / 100);
+                    circle.style.strokeDashoffset = offset;
+                }
             }, 100);
         }
 
         // ===== CHALLENGE FUNCTIONS =====
         function getChallengeLink() {
-            return document.getElementById('challengeLink').textContent;
+            const el = document.getElementById('challengeLink');
+            return el ? el.textContent : '';
         }
 
         function shareChallenge(platform) {
             const link = getChallengeLink();
-            const message = `🎯 I scored ${document.querySelector('.result-score-text').textContent} on SHORUTO!\n\nCan you beat me? Take the same test:\n${link}\n\n#Shoruto #UPSC #MockTest`;
+            const scoreText = document.querySelector('.result-score-text');
+            const message = `🎯 I scored ${scoreText ? scoreText.textContent : ''} on SHORUTO!\n\nCan you beat me? Take the same test:\n${link}\n\n#Shoruto #UPSC #MockTest`;
             
             if (platform === 'whatsapp') {
                 window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(message));
@@ -1646,7 +1729,6 @@
             navigator.clipboard.writeText(link).then(() => {
                 alert('✅ Challenge link copied to clipboard!');
             }).catch(() => {
-                // Fallback
                 const textarea = document.createElement('textarea');
                 textarea.value = link;
                 document.body.appendChild(textarea);
@@ -1664,7 +1746,6 @@
             const questionIds = params.get('q');
             
             if (challengerScore && questionIds) {
-                // Show challenge banner
                 const banner = document.createElement('div');
                 banner.className = 'challenge-banner';
                 banner.innerHTML = `🏆 <strong>Your friend scored ${challengerScore}%</strong> — can you beat them? Take the same test!`;
@@ -1674,9 +1755,7 @@
                     container.insertBefore(banner, progressTitle);
                 }
                 
-                // Load specific questions
                 const ids = questionIds.split(',').map(Number);
-                // We'll load these after questions are loaded
                 window._challengeQuestions = ids;
                 window._challengerScore = challengerScore;
             }
@@ -1699,13 +1778,21 @@
                 document.body.style.overflow = '';
             }
 
-            explainBtn.addEventListener('click', openPopup);
-            popupCancel.addEventListener('click', closePopup);
-            popupConfirm.addEventListener('click', closePopup);
+            if (explainBtn) {
+                explainBtn.addEventListener('click', openPopup);
+            }
+            if (popupCancel) {
+                popupCancel.addEventListener('click', closePopup);
+            }
+            if (popupConfirm) {
+                popupConfirm.addEventListener('click', closePopup);
+            }
 
-            popupOverlay.addEventListener('click', function(e) {
-                if (e.target === this) closePopup();
-            });
+            if (popupOverlay) {
+                popupOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) closePopup();
+                });
+            }
 
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') closePopup();
@@ -1713,31 +1800,34 @@
         })();
 
         // ===== EVENT LISTENERS =====
-        document.getElementById('voiceBtn').addEventListener('click', toggleListening);
-        document.getElementById('submitBtn').addEventListener('click', submitAnswer);
+        const voiceBtn = document.getElementById('voiceBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const answerInput = document.getElementById('answerInput');
 
-        document.getElementById('answerInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                const start = this.selectionStart;
-                const end = this.selectionEnd;
-                this.value = this.value.substring(0, start) + '\n' + this.value.substring(end);
-                this.selectionStart = this.selectionEnd = start + 1;
-            }
-        });
+        if (voiceBtn) voiceBtn.addEventListener('click', toggleListening);
+        if (submitBtn) submitBtn.addEventListener('click', submitAnswer);
+
+        if (answerInput) {
+            answerInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    const start = this.selectionStart;
+                    const end = this.selectionEnd;
+                    this.value = this.value.substring(0, start) + '\n' + this.value.substring(end);
+                    this.selectionStart = this.selectionEnd = start + 1;
+                }
+            });
+        }
 
         // ===== INIT: Load everything and start =====
         Promise.all([loadQuestions(), loadAIFeedback()])
             .then(() => {
                 console.log('✅ Questions and AI feedback loaded successfully.');
                 
-                // Check for challenge
                 checkForChallenge();
                 
-                // If challenge questions are specified, use them
                 if (window._challengeQuestions && window._challengeQuestions.length > 0) {
                     const challengeQuestions = window._challengeQuestions;
-                    // Filter questions to only those requested
                     const filteredQuestions = [];
                     challengeQuestions.forEach(id => {
                         if (questions[id]) {
