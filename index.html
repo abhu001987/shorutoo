@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shoruto — Daily Mock Tests for Current Affairs & GS, Speak or Write</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Daily mock tests on trending current affairs, history, polity, economics, environment, geography, science, society, international relations and government schemes. Speak or write your answer and get instant AI evaluation.">
+  <link rel="icon" href="/icon-192.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Link to shared CSS and JS -->
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+
+<!-- NAV - Modern Rounded -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span>Shoruto</span>
+      </a>
+      <div class="nav-links">
+        <a href="#why">Why Shoruto</a>
+        <a href="#trending">Trending</a>
+        <a href="#subjects">Subjects</a>
+        <a href="#blog">Blog</a>
+        <a href="#ai">AI Evaluation</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="nav-cta">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg-glow"></div>
+  <canvas id="particleCanvas"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="dot"></span>Daily Mock Tests · Speak or Write · Available 24/7</span>
+      <h1>Answer today's question like you've already <span class="accent">written it 50 times.</span></h1>
+      <p>Daily mock tests on trending current affairs and the full GS syllabus — Polity, Economy, History, Environment, Geography, Science, Society, International Relations and Government Schemes. Speak or type your answer and get evaluated instantly.</p>
+      <div class="hero-actions">
+        <a href="#trending" class="btn btn-primary">Start Today's Mock Test
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#demo" class="btn btn-ghost">Watch Demo</a>
+      </div>
+    </div>
+    <div class="tilt-stage">
+      <div class="mock-card" id="mockCard">
+        <div class="mock-topbar">
+          <div class="mock-dots"><span></span><span></span><span></span></div>
+          <div class="mock-live"><span class="pulse"></span>LIVE MOCK TEST</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-avatar"></div>
+          <div class="mock-transcript">
+            <div class="mock-q">Q4 · Trending: Discuss the objectives of Jal Jeevan Mission.</div>
+            <div class="mock-typed" id="typedText"><span class="cursor"></span></div>
+          </div>
+        </div>
+        <div class="mock-meters">
+          <div class="meter"><div class="l">Knowledge</div><div class="bar"><i style="background:var(--blue); width:0%" data-w="82"></i></div></div>
+          <div class="meter"><div class="l">Confidence</div><div class="bar"><i style="background:var(--mint); width:0%" data-w="71"></i></div></div>
+          <div class="meter"><div class="l">Structure</div><div class="bar"><i style="background:var(--violet); width:0%" data-w="64"></i></div></div>
+        </div>
+        <div class="float-badge b1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          Score improved +18%
+        </div>
+        <div class="float-badge b2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M4 22c0-4 3.5-6 8-6s8 2 8 6"/></svg>
+          12,400 aspirants practicing
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <span>COVERING</span><span>·</span><span>DAILY CURRENT AFFAIRS</span><span>·</span>
+  <span>POLITY</span><span>·</span><span>ECONOMICS</span><span>·</span><span>HISTORY</span><span>·</span>
+  <span>ENVIRONMENT</span><span>·</span><span>GEOGRAPHY</span><span>·</span><span>SCIENCE</span><span>·</span>
+  <span>SOCIETY</span><span>·</span><span>INTERNATIONAL RELATIONS</span><span>·</span><span>SCHEMES</span>
+</div>
+
+<!-- TRENDING -->
+<section class="section" id="trending">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Updated Daily</span>
+      <h2>Trending right now — jump straight in.</h2>
+      <p>Whatever's in the news this week becomes a question. Pick one and start answering — no setup, no scrolling.</p>
+    </div>
+    <div class="trend-grid" id="trendGrid">
+      <a href="shoruto-3000.html?topic=jal-jeevan-mission" class="trend-tile"><span class="trend-live"></span><h5>Jal Jeevan Mission</h5><span class="tag">Govt Scheme</span></a>
+      <a href="shoruto-3000.html?topic=pm-vishwakarma-yojana" class="trend-tile"><span class="trend-live"></span><h5>PM Vishwakarma Yojana</h5><span class="tag">Govt Scheme</span></a>
+      <a href="shoruto-3000.html?topic=india-middle-east-europe-corridor" class="trend-tile"><span class="trend-live"></span><h5>India–Middle East–Europe Corridor</h5><span class="tag">International Relations</span></a>
+      <a href="shoruto-3000.html?topic=rbi-monetary-policy-update" class="trend-tile"><span class="trend-live"></span><h5>RBI Monetary Policy Update</h5><span class="tag">Economics</span></a>
+      <a href="shoruto-3000.html?topic=one-nation-one-election" class="trend-tile"><span class="trend-live"></span><h5>One Nation One Election</h5><span class="tag">Polity</span></a>
+      <a href="shoruto-3000.html?topic=cop-climate-summit-outcomes" class="trend-tile"><span class="trend-live"></span><h5>COP Climate Summit Outcomes</h5><span class="tag">Environment</span></a>
+      <a href="shoruto-3000.html?topic=chandrayaan-isro-missions" class="trend-tile"><span class="trend-live"></span><h5>Chandrayaan &amp; ISRO Missions</h5><span class="tag">Science &amp; Tech</span></a>
+      <a href="shoruto-3000.html?topic=smart-cities-mission" class="trend-tile"><span class="trend-live"></span><h5>Smart Cities Mission</h5><span class="tag">Govt Scheme</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section" id="why" style="padding-top:32px;">
+  <div class="wrap">
+    <div class="section-head center" style="margin:0 auto 40px;">
+      <span class="eyebrow">Why Shoruto</span>
+      <h2>Reading current affairs isn't the same as answering on it.</h2>
+      <p>Shoruto hands you a mic and a clock — speak or write your answer under real time pressure, and get evaluated instantly, so the exam day doesn't feel like the first time you've said it out loud.</p>
+    </div>
+    <div class="grid-4">
+      <div class="card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg></div>
+        <h4>Freedom to speak</h4>
+        <p>Answer out loud in your own words and build the confidence to say it the same way in the exam hall or viva.</p>
+      </div>
+      <div class="card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h8l-1 8 10-12h-8l1-8z"/></svg></div>
+        <h4>Instant AI evaluation</h4>
+        <p>Get scored on knowledge, structure, confidence and vocabulary — right after you answer.</p>
+      </div>
+      <div class="card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
+        <h4>See yourself improve</h4>
+        <p>Every session is logged. Watch your score climb across attempts, not just once.</p>
+      </div>
+      <div class="card">
+        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15z"/></svg></div>
+        <h4>One topic library</h4>
+        <p>Every scheme, department and topic in one place — learn it, then get asked about it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECTS -->
+<section class="section" id="subjects" style="padding-top:32px;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Subjects We Cover</span>
+      <h2>Every subject the exam actually asks from.</h2>
+      <p>Daily current affairs plus the full static GS syllabus — practice by subject, not by guesswork.</p>
+    </div>
+    <div class="cat-grid" id="subjectGrid">
+      <a href="shoruto-3000.html?subject=daily-current-affairs" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4z"/><path d="M8 8h8M8 12h8M8 16h4"/></svg></div><h5>Daily Current Affairs</h5><span class="tag">Updated Daily</span></a>
+      <a href="shoruto-3000.html?subject=history" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div><h5>History</h5><span class="tag">GS Paper 1</span></a>
+      <a href="shoruto-3000.html?subject=polity" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21h16M4 21V10L12 4l8 6v11M8 21v-7M12 21v-7M16 21v-7"/></svg></div><h5>Polity</h5><span class="tag">GS Paper 2</span></a>
+      <a href="shoruto-3000.html?subject=economics" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h5>Economics</h5><span class="tag">GS Paper 3</span></a>
+      <a href="shoruto-3000.html?subject=environment" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 21c0-9 6-15 15-15-1 9-6 15-15 15z"/><path d="M5 21c3-4 7-8 15-15"/></svg></div><h5>Environment</h5><span class="tag">GS Paper 3</span></a>
+      <a href="shoruto-3000.html?subject=geography" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg></div><h5>Geography</h5><span class="tag">GS Paper 1</span></a>
+      <a href="shoruto-3000.html?subject=science-and-technology" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg></div><h5>Science &amp; Technology</h5><span class="tag">GS Paper 3</span></a>
+      <a href="shoruto-3000.html?subject=society" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3.5 2.7-5.5 6-5.5s6 2 6 5.5M14 20c0-2.5 1.8-4 4-4s4 1.5 4 4"/></svg></div><h5>Society</h5><span class="tag">GS Paper 1</span></a>
+      <a href="shoruto-3000.html?subject=international-relations" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3v18M5 4h11l-2 4 2 4H5"/></svg></div><h5>International Relations</h5><span class="tag">GS Paper 2</span></a>
+      <a href="shoruto-3000.html?subject=government-schemes" class="cat-tile subject-tile"><div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg></div><h5>Government Schemes</h5><span class="tag">Current Affairs</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="section" id="blog" style="padding-top:32px; padding-bottom: 48px;">
+  <div class="wrap">
+    <div class="blog-head-row">
+      <div class="section-head" style="margin-bottom:0;">
+        <span class="eyebrow">From the Blog</span>
+        <h2>Learn while you practice.</h2>
+        <p>Short reads on answer structure, current affairs, and staying consistent.</p>
+      </div>
+      <a href="blog.html" class="blog-see-all">See all
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="blog-slider" id="blogSlider">
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#3E7BFA,#1a3a8f);">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+          <span class="blog-free-badge">FREE</span>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Answer Writing</span>
+          <h5>How to Structure a Mains-Style Answer in 200 Words</h5>
+          <p>Intro, body, conclusion — the framework that keeps your answer readable under time pressure.</p>
+          <a href="blog/structuring-mains-answers.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#8B7CFF,#3E2A8F);">
+          <img src="https://plus.unsplash.com/premium_photo-1661964303354-f0496d6d6e0b?q=80&w=1320&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Current Affairs</span>
+          <h5>This Week in Current Affairs: Schemes You Shouldn't Miss</h5>
+          <p>A quick roundup of the government schemes that made headlines this week.</p>
+          <a href="blog/weekly-current-affairs-roundup.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#34D399,#0d6b48);">
+          <img src="https://images.unsplash.com/photo-1605694554119-f980114426bf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+          <span class="blog-free-badge">FREE</span>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Confidence</span>
+          <h5>Beating Mic Fear: Why Speaking Your Answers Works</h5>
+          <p>The science behind why saying your answer out loud builds recall faster than re-reading notes.</p>
+          <a href="blog/beating-mic-fear.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#FFB84D,#8a5a00);">
+          <img src="https://images.unsplash.com/photo-1745866412504-d92c037de4e8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Polity</span>
+          <h5>Polity Simplified: The History Behind Article 370</h5>
+          <p>A quick, exam-ready timeline of one of the most frequently asked topics in GS Paper 2.</p>
+          <a href="blog/polity-article-370-explained.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#3E7BFA,#0f2d70);">
+          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Economics</span>
+          <h5>Reading the Economic Survey in 10 Minutes</h5>
+          <p>The charts and numbers examiners actually expect you to quote from memory.</p>
+          <a href="blog/reading-economic-survey.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#34D399,#166a4a);">
+          <img src="https://plus.unsplash.com/premium_photo-1661964303354-f0496d6d6e0b?q=80&w=1320&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Environment</span>
+          <h5>Environment &amp; Ecology: The Ramsar Sites You Must Know</h5>
+          <p>Every wetland site that's shown up in the last three years of current affairs.</p>
+          <a href="blog/ramsar-sites-explained.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#8B7CFF,#4a2f99);">
+          <img src="https://images.unsplash.com/photo-1605694554119-f980114426bf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">International Relations</span>
+          <h5>India's Foreign Policy Shifts: A Quick Primer</h5>
+          <p>The three relationships every aspirant should be able to speak on confidently.</p>
+          <a href="blog/india-foreign-policy-primer.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-thumb" style="background:linear-gradient(135deg,#FFB84D,#7a4a00);">
+          <img src="https://images.unsplash.com/photo-1745866412504-d92c037de4e8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
+          <span class="blog-free-badge">FREE</span>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Study Tips</span>
+          <h5>Daily Habit Stack: 20 Minutes a Day for GS Prep</h5>
+          <p>The small daily routine that compounds into serious answer-writing improvement.</p>
+          <a href="blog/daily-gs-prep-habit.html" class="blog-read">Read More</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="blog-controls">
+      <button class="blog-arrow" id="blogPrevBtn" aria-label="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="blog-arrow" id="blogNextBtn" aria-label="Next">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- AI EVALUATION -->
+<section class="section" id="ai" style="padding-top: 0;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">AI Features</span>
+      <h2>It doesn't just check keywords. It listens.</h2>
+      <p>Shoruto's evaluation model reads your answer the way a real evaluator would — structure, confidence, and completeness, not just whether you said the right word.</p>
+    </div>
+    <div class="eval-panel">
+      <div class="eval-bars">
+        <div class="eval-row"><span class="label">Knowledge</span><div class="track"><i data-w="82"></i></div><span class="val">82%</span></div>
+        <div class="eval-row"><span class="label">Confidence</span><div class="track"><i data-w="71"></i></div><span class="val">71%</span></div>
+        <div class="eval-row"><span class="label">Communication</span><div class="track"><i data-w="76"></i></div><span class="val">76%</span></div>
+        <div class="eval-row"><span class="label">Vocabulary</span><div class="track"><i data-w="68"></i></div><span class="val">68%</span></div>
+        <div class="eval-row"><span class="label">Answer Structure</span><div class="track"><i data-w="64"></i></div><span class="val">64%</span></div>
+        <div class="eval-row"><span class="label">Keyword Coverage</span><div class="track"><i data-w="88"></i></div><span class="val">88%</span></div>
+      </div>
+      <div class="feedback-sample">
+        <span class="tag-label">Sample AI Feedback</span>
+        <div class="user-ans">"Jal Jeevan Mission provides water."</div>
+        <div class="ai-fb">You covered the <b>basic objective</b> but missed <b>rural household coverage</b>, <b>sustainability</b>, and <b>community participation</b>. Try explaining the purpose before jumping to benefits.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section section-sm" style="padding-top: 32px;">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat"><div class="n" data-target="12400">0</div><div class="l">Mock tests attempted</div></div>
+      <div class="stat"><div class="n" data-target="94" data-suffix="%">0</div><div class="l">Report improved confidence</div></div>
+      <div class="stat"><div class="n" data-target="40" data-suffix="+">0</div><div class="l">Subjects &amp; trending topics</div></div>
+      <div class="stat"><div class="n" data-target="48" data-decimal="10">0</div><div class="l">Average rating out of 5</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="section" id="demo" style="padding-top: 0;">
+  <div class="wrap">
+    <div class="section-head center" style="margin:0 auto 32px;">
+      <span class="eyebrow">See it in action</span>
+      <h2>Two minutes. One real practice session.</h2>
+    </div>
+    <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:20px; overflow:hidden; border:1px solid var(--border);">
+      <iframe 
+        width="100%" 
+        height="100%" 
+        src="https://www.youtube.com/embed/ZuvM9ddlRb0" 
+        title="Shoruto Demo - Mock Test Walkthrough" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+        style="position:absolute; top:0; left:0; width:100%; height:100%;"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" id="testimonials" style="padding-top: 0;">
+  <div class="wrap">
+    <div class="section-head center" style="margin:0 auto 40px;">
+      <span class="eyebrow">Testimonials</span>
+      <h2>Illustrative feedback — swap in real user quotes</h2>
+    </div>
+    <div class="grid-3">
+      <div class="t-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Speaking my answers daily made writing them in the actual SSC mains feel like round two, not round one."</p>
+        <div class="t-person"><div class="t-avatar">A</div><div><div class="name">Ananya</div><div class="role">SSC Aspirant</div></div></div>
+      </div>
+      <div class="t-card">
+        <div class="stars">★★★★★</div>
+        <p class="quote">"Seeing my score go from 45% to 81% across attempts is what kept me coming back daily."</p>
+        <div class="t-person"><div class="t-avatar">R</div><div><div class="name">Rahul</div><div class="role">Banking Aspirant</div></div></div>
+      </div>
+      <div class="t-card">
+        <div class="stars">★★★★☆</div>
+        <p class="quote">"The AI feedback on structure was more specific than anything my offline coaching gave me."</p>
+        <div class="t-person"><div class="t-avatar">P</div><div><div class="name">Priya</div><div class="role">UPSC Aspirant</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq" style="padding-top: 0;">
+  <div class="wrap" style="max-width:760px;">
+    <div class="section-head center" style="margin:0 auto 20px;">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions, answered.</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is the AI evaluation actually accurate?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="faq-a"><p>It's indicative, not exam-certified — built to help you practice structure and coverage, not to replace a real evaluator's judgement.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Do I need to speak, or can I type my answers?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="faq-a"><p>Both work. Voice input is recommended since it builds the confidence to speak the answer aloud, but typing is fully supported.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Is Shoruto free to use?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="faq-a"><p>Core practice sessions are free. Premium adds unlimited mock tests, deeper voice analysis, and personalized study plans.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Which browser works best?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="faq-a"><p>Chrome gives the most reliable voice recognition. Other browsers work for typed answers.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section-sm" style="padding-top: 0; padding-bottom: 48px;">
+  <div class="wrap">
+    <div class="cta-band">
+      <span class="eyebrow" style="margin-bottom:14px;"><span class="dot"></span>Ready when you are</span>
+      <h2>Your next answer shouldn't be your first attempt.</h2>
+      <p>Start a free mock test and get evaluated in the next 5 minutes.</p>
+      <a href="#trending" class="btn btn-primary">Attempt Today's Mock Test
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <a href="index.html" class="logo" style="gap:0; font-size:20px;">Shoruto</a>
+        <p style="color:var(--text-dim); font-size:13.5px; margin-top:12px; max-width:280px;">Your daily mock test and answer-writing partner — speak or write on trending current affairs and GS topics, get evaluated instantly, and build real exam confidence.</p>
+      </div>
+      <div class="foot-col">
+        <h6>Product</h6>
+        <ul><li><a href="#trending">Trending</a></li><li><a href="#subjects">Subjects</a></li><li><a href="#ai">AI Evaluation</a></li><li><a href="pricing.html">Pricing</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h6>Company</h6>
+        <ul><li><a href="about.html">About</a></li><li><a href="blog.html">Blog</a></li><li><a href="careers.html">Careers</a></li><li><a href="contact.html">Contact</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h6>Legal</h6>
+        <ul><li><a href="privacy-policy.html">Privacy Policy</a></li><li><a href="terms-of-service.html">Terms of Service</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Shoruto. All rights reserved.</span>
+      <span>Built for aspirants, by aspirants.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ===== FAQ ===== */
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  /* ===== Theme toggle button ===== */
+  document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', toggleTheme);
+    }
+  });
+
+  /* ===== Blog slider ===== */
+  (function() {
+    const slider = document.getElementById('blogSlider');
+    if (!slider) return;
+    let cards = [...slider.querySelectorAll('.blog-card')];
+    let GAP = 190;
+
+    function computeGap() {
+      const w = cards[0] ? cards[0].offsetWidth : 260;
+      GAP = Math.round(w * 0.72);
+    }
+
+    function updateCards() {
+      cards.forEach((card, index) => {
+        let pos = index;
+        if (pos > cards.length / 2) pos -= cards.length;
+        const active = index === 0;
+        card.classList.toggle('active', active);
+        const scale = active ? 1.06 : 0.86;
+        const y = active ? -14 : (pos % 2 ? 10 : -10);
+        const rotate = active ? 0 : (pos % 2 ? 2 : -2);
+        card.style.transform =
+          `translate(-50%,-50%) translateX(${pos * GAP}px) translateY(${y}px) scale(${scale}) rotate(${rotate}deg)`;
+        card.style.zIndex = 100 - Math.abs(pos);
+        card.style.opacity = Math.abs(pos) > 3 ? 0 : 1;
+        card.style.pointerEvents = Math.abs(pos) > 3 ? 'none' : 'auto';
+      });
+    }
+
+    function next() { cards.push(cards.shift()); updateCards(); }
+    function prev() { cards.unshift(cards.pop()); updateCards(); }
+
+    document.getElementById('blogNextBtn').addEventListener('click', next);
+    document.getElementById('blogPrevBtn').addEventListener('click', prev);
+
+    cards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        const index = cards.indexOf(card);
+        if (index === 0) return;
+        e.preventDefault();
+        for (let i = 0; i < index; i++) { cards.push(cards.shift()); }
+        updateCards();
+      });
+    });
+
+    let touchStartX = 0;
+    slider.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => { computeGap(); updateCards(); });
+    computeGap();
+    updateCards();
+  })();
+
+  /* ===== Scroll reveal ===== */
+  function revealGrid(selector) {
+    const items = document.querySelectorAll(selector);
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const idx = Array.from(items).indexOf(entry.target);
+          entry.target.style.transitionDelay = (idx % 4) * 70 + 'ms';
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(el => obs.observe(el));
+  }
+  revealGrid('.subject-tile');
+  revealGrid('.trend-tile');
+
+  /* ===== Animated stats ===== */
+  const statEls = document.querySelectorAll('.stat .n');
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const decimals = el.dataset.decimal ? 1 : 0;
+        const suffix = el.dataset.suffix || (el.dataset.decimal ? '/5' : '');
+        const realTarget = el.dataset.decimal ? target / 10 : target;
+        let cur = 0;
+        const steps = 50;
+        const inc = realTarget / steps;
+        const timer = setInterval(() => {
+          cur += inc;
+          if (cur >= realTarget) { cur = realTarget; clearInterval(timer); }
+          el.textContent = (decimals ? cur.toFixed(1) : Math.round(cur).toLocaleString()) + suffix;
+        }, 24);
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  statEls.forEach(el => statObserver.observe(el));
+
+  /* ===== Eval bars ===== */
+  const evalBars = document.querySelectorAll('.eval-row .track i, .meter .bar i');
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const i = entry.target;
+        i.style.width = (i.dataset.w || 0) + '%';
+        barObserver.unobserve(i);
+      }
+    });
+  }, { threshold: 0.3 });
+  evalBars.forEach(i => barObserver.observe(i));
+
+  /* ===== Hero typing ===== */
+  const sampleAnswer = "Jal Jeevan Mission aims to provide safe, functional tap water to every rural household by 2028, focusing on sustainability and community-led management...";
+  const typedEl = document.getElementById('typedText');
+  let ti = 0;
+  function typeLoop() {
+    if (ti <= sampleAnswer.length) {
+      typedEl.innerHTML = sampleAnswer.slice(0, ti) + '<span class="cursor"></span>';
+      ti++;
+      setTimeout(typeLoop, 28);
+    } else {
+      setTimeout(() => { ti = 0; typeLoop(); }, 2200);
+    }
+  }
+  typeLoop();
+
+  /* ===== 3D tilt ===== */
+  const stage = document.querySelector('.tilt-stage');
+  const card = document.getElementById('mockCard');
+  if (stage && window.matchMedia('(pointer:fine)').matches) {
+    stage.addEventListener('mousemove', (e) => {
+      const r = stage.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `rotateY(${-10 + px * 14}deg) rotateX(${6 - py * 14}deg)`;
+    });
+    stage.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateY(-10deg) rotateX(6deg)';
+    });
+  }
+
+  /* ===== Particles ===== */
+  (function() {
+    const canvas = document.getElementById('particleCanvas');
+    if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+    
+    function getColors() {
+      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+      if (theme === 'light') {
+        return { stroke: '37, 99, 235', fill: '37, 99, 235' };
+      }
+      return { stroke: '62, 123, 250', fill: '106, 163, 255' };
+    }
+    
+    function resize() {
+      w = canvas.width = canvas.offsetWidth;
+      h = canvas.height = canvas.offsetHeight;
+    }
+    function init() {
+      resize();
+      const count = Math.min(60, Math.floor(w / 22));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3
+      }));
+    }
+    function tick() {
+      ctx.clearRect(0, 0, w, h);
+      const colors = getColors();
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 120) {
+            ctx.strokeStyle = `rgba(${colors.stroke}, ${0.12 * (1 - d / 120)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+        ctx.fillStyle = `rgba(${colors.fill}, 0.3)`;
+        ctx.beginPath(); ctx.arc(particles[i].x, particles[i].y, 1.6, 0, 7); ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    }
+    window.addEventListener('resize', init);
+    init();
+    tick();
+    
+    // Re-init on theme change
+    const observer = new MutationObserver(() => {
+      // Colors will update on next frame
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+</script>
+
+</body>
+</html>
