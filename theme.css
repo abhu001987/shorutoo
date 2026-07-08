@@ -692,3 +692,41 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
     }
+
+/* theme.css - Shared theme variables */
+:root {
+    /* Light theme (default) */
+    --bg-color: #f8fafc;
+    --text-color: #0b1a33;
+    --text-muted: #475569;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --input-bg: #f8fafc;
+    --hover-bg: #f1f5f9;
+    --focus-ring: rgba(25, 216, 255, 0.06);
+    --primary-color: #6b4cff;
+    --accent-color: #19d8ff;
+    --danger-color: #dc2626;
+    --warning-color: #facc15;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-color: rgba(25, 216, 255, 0.2);
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] {
+    --bg-color: #050816;
+    --text-color: #DCEEFF;
+    --text-muted: #6E82AC;
+    --card-bg: #091425;
+    --border-color: rgba(0, 255, 255, 0.12);
+    --input-bg: #07111f;
+    --hover-bg: rgba(255, 255, 255, 0.04);
+    --focus-ring: rgba(76, 243, 255, 0.06);
+    --primary-color: #4CF3FF;
+    --accent-color: #B36BFF;
+    --danger-color: #FF4F6D;
+    --warning-color: #FFC857;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --shadow-color: rgba(76, 243, 255, 0.15);
+    --overlay-bg: rgba(0, 0, 0, 0.75);
+}
