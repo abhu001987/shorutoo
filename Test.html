@@ -15,23 +15,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     
     <style>
-        /* ===== PAGE-SPECIFIC STYLES (USING CSS VARIABLES FROM theme.css) ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ===== PAGE-SPECIFIC STYLES ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--bg-color);
+            background: var(--bg-0);
             font-family: 'Inter', sans-serif;
-            color: var(--text-color);
+            color: var(--text);
             padding: 24px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: background 0.3s, color 0.3s;
+        }
+
+        [data-theme="light"] body {
+            background: var(--bg-0);
         }
 
         .container {
@@ -41,11 +41,12 @@
         }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--panel);
+            border: 1px solid var(--border);
             border-radius: 22px;
-            box-shadow: var(--shadow);
-            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+            box-shadow: var(--card-shadow);
+            transition: background 0.3s, border-color 0.3s;
+            backdrop-filter: blur(10px);
         }
 
         .header {
@@ -59,9 +60,9 @@
 
         .exit {
             padding: 10px 24px;
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--blue);
             border-radius: 12px;
-            color: var(--primary-color);
+            color: var(--blue);
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             cursor: pointer;
@@ -69,13 +70,13 @@
             transition: 0.2s;
         }
         .exit:hover {
-            background: var(--hover-bg);
+            background: var(--panel-strong);
         }
 
         .logo {
             font-family: 'Orbitron', monospace;
             font-size: 34px;
-            color: var(--text-color);
+            color: var(--text);
             letter-spacing: 3px;
             transition: color 0.3s;
         }
@@ -97,14 +98,14 @@
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             margin-bottom: 10px;
-            color: var(--text-muted);
+            color: var(--text-dim);
             letter-spacing: 0.5px;
             transition: color 0.3s;
         }
 
         .progress {
             height: 8px;
-            background: var(--border-color);
+            background: var(--border);
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 22px;
@@ -114,7 +115,7 @@
             display: block;
             height: 100%;
             width: 10%;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            background: linear-gradient(90deg, var(--blue), var(--violet));
             transition: width 0.5s ease;
         }
 
@@ -131,7 +132,7 @@
         }
         .question small {
             font-family: 'Orbitron', monospace;
-            color: var(--primary-color);
+            color: var(--blue);
             font-size: 12px;
             letter-spacing: 0.5px;
             transition: color 0.3s;
@@ -142,11 +143,11 @@
             line-height: 1.25;
             font-weight: 600;
             letter-spacing: -0.5px;
-            color: var(--text-color);
+            color: var(--text);
             transition: color 0.3s;
         }
         .question p {
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-size: 17px;
             font-weight: 400;
             transition: color 0.3s;
@@ -157,7 +158,7 @@
         }
         .answer h3 {
             font-family: 'Orbitron', monospace;
-            color: var(--text-color);
+            color: var(--text);
             font-size: 16px;
             margin-bottom: 16px;
             letter-spacing: 0.3px;
@@ -168,10 +169,10 @@
             width: 100%;
             height: 280px;
             background: var(--input-bg);
-            border: 2px solid var(--border-color);
+            border: 2px solid var(--border);
             border-radius: 18px;
             padding: 20px 22px;
-            color: var(--text-color);
+            color: var(--text);
             font-size: 16px;
             font-family: 'Inter', sans-serif;
             resize: vertical;
@@ -180,11 +181,11 @@
             line-height: 1.7;
         }
         textarea:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px var(--focus-ring);
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px var(--blue-soft);
         }
         textarea::placeholder {
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-weight: 300;
         }
 
@@ -197,10 +198,10 @@
             flex: 1;
             padding: 16px 18px;
             background: var(--input-bg);
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border);
             border-radius: 16px;
             font-family: 'Orbitron', monospace;
-            color: var(--primary-color);
+            color: var(--blue);
             font-size: 15px;
             cursor: pointer;
             transition: 0.2s, background 0.3s, border-color 0.3s, color 0.3s;
@@ -210,12 +211,12 @@
             gap: 8px;
         }
         .voice:hover {
-            background: var(--hover-bg);
+            background: var(--panel-strong);
         }
         .voice.listening {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background: var(--focus-ring);
+            border-color: var(--blue);
+            color: var(--blue);
+            background: var(--blue-soft);
         }
 
         .submit {
@@ -223,17 +224,17 @@
             padding: 16px 18px;
             border: none;
             border-radius: 16px;
-            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            background: linear-gradient(90deg, var(--violet), var(--blue));
             color: #ffffff;
             font-family: 'Orbitron', monospace;
             font-size: 17px;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 12px var(--shadow-color);
+            box-shadow: 0 4px 12px var(--blue-soft);
         }
         .submit:hover {
             transform: scale(1.01);
-            box-shadow: 0 6px 20px var(--shadow-color);
+            box-shadow: 0 6px 20px var(--blue-soft);
         }
         .submit:active {
             transform: scale(0.98);
@@ -252,7 +253,7 @@
             font-family: 'Orbitron', monospace;
             font-size: 17px;
             margin-bottom: 16px;
-            color: var(--text-color);
+            color: var(--text);
             letter-spacing: 0.3px;
             transition: color 0.3s;
         }
@@ -260,18 +261,18 @@
         .timer {
             font-size: 48px;
             font-family: 'Orbitron', monospace;
-            color: var(--text-color);
+            color: var(--text);
             margin-bottom: 14px;
             letter-spacing: 2px;
             transition: color 0.3s;
         }
         .timer.critical {
-            color: var(--danger-color);
+            color: #FF4F6D;
         }
 
         .bar {
             height: 6px;
-            background: var(--border-color);
+            background: var(--border);
             border-radius: 20px;
             overflow: hidden;
             transition: background 0.3s;
@@ -280,11 +281,11 @@
             display: block;
             width: 75%;
             height: 100%;
-            background: var(--accent-color);
+            background: var(--blue);
             transition: width 1s linear, background 0.3s;
         }
         .bar.critical span {
-            background: var(--danger-color);
+            background: #FF4F6D;
         }
 
         ul {
@@ -294,7 +295,7 @@
         li {
             margin: 12px 0;
             line-height: 1.6;
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-size: 15px;
             padding-left: 16px;
             position: relative;
@@ -304,7 +305,7 @@
             content: "•";
             position: absolute;
             left: 0;
-            color: var(--accent-color);
+            color: var(--violet);
             font-weight: 700;
             transition: color 0.3s;
         }
@@ -313,9 +314,9 @@
             margin-top: 18px;
             padding: 14px;
             border-radius: 14px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--border);
             background: transparent;
-            color: var(--accent-color);
+            color: var(--violet);
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             cursor: pointer;
@@ -324,15 +325,15 @@
             letter-spacing: 0.3px;
         }
         .assistant-btn:hover {
-            background: var(--hover-bg);
-            border-color: var(--accent-color);
+            background: var(--panel-strong);
+            border-color: var(--violet);
         }
 
         .fact-line {
             margin-top: 28px;
             padding: 14px 22px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--panel);
+            border: 1px solid var(--border);
             border-radius: 14px;
             display: flex;
             justify-content: space-between;
@@ -340,21 +341,21 @@
             flex-wrap: wrap;
             gap: 10px 20px;
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text-dim);
             transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .fact-line .fact-icon {
-            color: var(--accent-color);
+            color: var(--violet);
             margin-right: 6px;
             transition: color 0.3s;
         }
         .fact-line .fact-text {
-            color: var(--text-muted);
+            color: var(--text-dim);
             flex: 1;
             transition: color 0.3s;
         }
         .fact-line .fact-text strong {
-            color: var(--text-color);
+            color: var(--text);
             transition: color 0.3s;
         }
 
@@ -457,32 +458,23 @@
             display: inline-block;
             width: 10px;
             height: 10px;
-            background: var(--accent-color);
+            background: var(--violet);
             border-radius: 50%;
             animation: pulse 1s infinite;
             margin-right: 4px;
             transition: background 0.3s;
         }
         @keyframes pulse {
-            0% {
-                opacity: 0.3;
-                transform: scale(0.8);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.3);
-            }
-            100% {
-                opacity: 0.3;
-                transform: scale(0.8);
-            }
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.3); }
+            100% { opacity: 0.3; transform: scale(0.8); }
         }
 
         .popup-init {
             position: fixed;
             inset: 0;
             z-index: 9999;
-            background: var(--overlay-bg);
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
@@ -491,40 +483,40 @@
             transition: background 0.3s;
         }
         .popup-init-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--panel);
+            border: 1px solid var(--border);
             border-radius: 24px;
             padding: 32px 28px;
             max-width: 380px;
             width: 100%;
             text-align: center;
-            box-shadow: var(--shadow);
+            box-shadow: var(--card-shadow);
             transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
         .popup-init-box h3 {
             font-family: 'Orbitron', monospace;
             font-size: 20px;
-            color: var(--text-color);
+            color: var(--text);
             margin-bottom: 16px;
             letter-spacing: 0.5px;
             transition: color 0.3s;
         }
         .popup-init-box .inst-item {
             font-size: 14px;
-            color: var(--text-muted);
+            color: var(--text-dim);
             padding: 6px 0;
             text-align: left;
             transition: color 0.3s;
         }
         .popup-init-box .inst-item.warn {
-            color: var(--warning-color);
+            color: var(--amber);
         }
         .start-btn {
             width: 100%;
             padding: 14px;
             border: none;
             cursor: pointer;
-            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            background: linear-gradient(90deg, var(--violet), var(--blue));
             color: #ffffff;
             font-family: 'Orbitron', monospace;
             font-weight: 700;
@@ -532,19 +524,19 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
             border-radius: 40px;
-            box-shadow: 0 0 24px var(--shadow-color);
+            box-shadow: 0 0 24px rgba(62, 123, 250, 0.3);
             margin-top: 12px;
             transition: 0.2s;
         }
         .start-btn:hover {
-            box-shadow: 0 0 36px var(--shadow-color);
+            box-shadow: 0 0 36px rgba(62, 123, 250, 0.5);
         }
 
         /* ===== POPUP OVERLAY ===== */
         .popup-overlay {
             position: fixed;
             inset: 0;
-            background: var(--overlay-bg);
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(8px);
             display: none;
             align-items: center;
@@ -557,36 +549,30 @@
             display: flex;
         }
         .popup-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--panel);
+            border: 1px solid var(--border);
             border-radius: 24px;
             padding: 32px 36px;
             max-width: 580px;
             width: 100%;
-            box-shadow: var(--shadow);
+            box-shadow: var(--card-shadow);
             animation: popIn 0.25s ease;
             transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
         @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .popup-box h2 {
             font-family: 'Orbitron', monospace;
             font-size: 18px;
-            color: var(--text-color);
+            color: var(--text);
             margin-bottom: 14px;
             letter-spacing: 0.5px;
             transition: color 0.3s;
         }
         .popup-box p {
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-size: 15px;
             line-height: 1.7;
             margin-bottom: 10px;
@@ -601,14 +587,14 @@
             width: 4px;
         }
         .popup-box .popup-body::-webkit-scrollbar-track {
-            background: var(--border-color);
+            background: var(--border);
         }
         .popup-box .popup-body::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
+            background: var(--violet);
             border-radius: 4px;
         }
         .popup-box ul {
-            color: var(--text-muted);
+            color: var(--text-dim);
             padding-left: 20px;
             margin: 10px 0;
             list-style: disc;
@@ -635,18 +621,18 @@
         }
         .popup-cancel {
             background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
             transition: border-color 0.3s, color 0.3s;
         }
         .popup-cancel:hover {
-            background: var(--hover-bg);
+            background: var(--panel-strong);
         }
         .popup-confirm {
-            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            background: linear-gradient(90deg, var(--violet), var(--blue));
             border: none;
             color: #ffffff;
-            box-shadow: 0 4px 16px var(--shadow-color);
+            box-shadow: 0 4px 16px rgba(62, 123, 250, 0.3);
         }
         .popup-confirm:hover {
             transform: scale(1.02);
@@ -660,14 +646,14 @@
             width: 100%;
         }
         .result-header {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--panel);
+            border: 1px solid var(--border);
             padding: 18px;
             border-radius: 18px;
             text-align: center;
             font-weight: 700;
             font-size: 20px;
-            color: var(--text-color);
+            color: var(--text);
             font-family: 'Orbitron', monospace;
             letter-spacing: 0.06em;
             margin-bottom: 20px;
@@ -692,8 +678,8 @@
             font-size: 34px;
             font-weight: 900;
             font-family: 'Orbitron', monospace;
-            color: var(--text-color);
-            text-shadow: 0 0 30px var(--shadow-color);
+            color: var(--text);
+            text-shadow: 0 0 30px rgba(62, 123, 250, 0.3);
             transition: color 0.3s, text-shadow 0.3s;
         }
         .result-status {
@@ -707,7 +693,7 @@
         .result-subtext {
             text-align: center;
             font-size: 14px;
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-family: 'Share Tech Mono', monospace;
             margin-top: 4px;
             transition: color 0.3s;
@@ -722,11 +708,11 @@
             flex: 1;
             padding: 18px 16px;
             border-radius: 16px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--panel);
+            border: 1px solid var(--border);
             text-align: center;
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text-dim);
             min-width: 110px;
             backdrop-filter: blur(10px);
             transition: background 0.3s, border-color 0.3s, color 0.3s;
@@ -734,7 +720,7 @@
         .result-stat-box .stat-number {
             display: block;
             font-size: 26px;
-            color: var(--text-color);
+            color: var(--text);
             font-family: 'Orbitron', monospace;
             margin: 4px 0;
             font-weight: 700;
@@ -744,15 +730,15 @@
             margin-top: 24px;
             font-family: 'Orbitron', monospace;
             font-size: 17px;
-            color: var(--text-color);
+            color: var(--text);
             letter-spacing: 0.06em;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
             transition: color 0.3s, border-color 0.3s;
         }
         .result-q-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--panel);
+            border: 1px solid var(--border);
             padding: 18px 20px;
             margin-top: 14px;
             border-radius: 16px;
@@ -760,7 +746,7 @@
             transition: background 0.3s, border-color 0.3s;
         }
         .result-q-card .q-label {
-            color: var(--text-color);
+            color: var(--text);
             font-size: 15px;
             font-weight: 600;
             display: block;
@@ -768,7 +754,7 @@
             transition: color 0.3s;
         }
         .result-q-card .q-text {
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-size: 14px;
             margin-bottom: 10px;
             transition: color 0.3s;
@@ -780,22 +766,22 @@
             background: var(--input-bg);
             font-size: 14px;
             line-height: 1.6;
-            border-left: 3px solid var(--danger-color);
+            border-left: 3px solid #FF4F6D;
             transition: background 0.3s, border-color 0.3s;
         }
         .result-answer-box.correct-box {
-            border-left-color: var(--accent-color);
+            border-left-color: var(--violet);
         }
         .result-answer-box .label {
             font-weight: 600;
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             transition: color 0.3s;
         }
         .result-answer-box .content {
-            color: var(--text-color);
+            color: var(--text);
             margin-top: 2px;
             transition: color 0.3s;
         }
@@ -820,26 +806,26 @@
         }
         .result-retry {
             background: var(--input-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
+            color: var(--text);
+            border: 1px solid var(--border);
             transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
         .result-retry:hover {
-            background: var(--hover-bg);
+            background: var(--panel-strong);
         }
         .result-home {
-            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            background: linear-gradient(90deg, var(--violet), var(--blue));
             color: #ffffff;
-            box-shadow: 0 0 22px var(--shadow-color);
+            box-shadow: 0 0 22px rgba(62, 123, 250, 0.2);
         }
         .result-home:hover {
-            box-shadow: 0 0 30px var(--shadow-color);
+            box-shadow: 0 0 30px rgba(62, 123, 250, 0.3);
         }
         .matched-tag {
             display: inline-block;
-            background: var(--focus-ring);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
+            background: var(--blue-soft);
+            border: 1px solid var(--border);
+            color: var(--text);
             padding: 2px 10px;
             border-radius: 12px;
             font-size: 12px;
@@ -848,14 +834,14 @@
             transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .matched-tag.partial {
-            border-color: var(--warning-color);
-            color: var(--warning-color);
+            border-color: var(--amber);
+            color: var(--amber);
         }
         .missing-tag {
             display: inline-block;
-            background: rgba(220, 38, 38, 0.08);
-            border: 1px solid rgba(220, 38, 38, 0.2);
-            color: var(--danger-color);
+            background: rgba(255, 79, 109, 0.08);
+            border: 1px solid rgba(255, 79, 109, 0.2);
+            color: #FF4F6D;
             padding: 2px 10px;
             border-radius: 12px;
             font-size: 12px;
@@ -867,16 +853,16 @@
             margin-top: 12px;
             padding: 14px 18px;
             border-radius: 12px;
-            background: var(--focus-ring);
-            border-left: 4px solid var(--accent-color);
+            background: var(--blue-soft);
+            border-left: 4px solid var(--violet);
             font-size: 14px;
             line-height: 1.7;
-            color: var(--text-muted);
+            color: var(--text-dim);
             transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .ai-analysis-box .ai-label {
             font-weight: 700;
-            color: var(--accent-color);
+            color: var(--violet);
             font-family: 'Orbitron', monospace;
             font-size: 13px;
             letter-spacing: 0.05em;
@@ -885,22 +871,21 @@
             transition: color 0.3s;
         }
         .ai-analysis-box .ai-feedback {
-            color: var(--text-color);
+            color: var(--text);
             margin-bottom: 4px;
             transition: color 0.3s;
         }
         .ai-analysis-box .ai-suggestion {
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-style: italic;
             transition: color 0.3s;
         }
 
-        /* ===== CHALLENGE STYLES ===== */
         .challenge-section {
             margin-top: 24px;
             padding: 20px;
-            background: var(--focus-ring);
-            border: 1px solid var(--border-color);
+            background: var(--blue-soft);
+            border: 1px solid var(--border);
             border-radius: 16px;
             text-align: center;
             transition: background 0.3s, border-color 0.3s;
@@ -908,7 +893,7 @@
         .challenge-section h3 {
             font-family: 'Orbitron', monospace;
             font-size: 16px;
-            color: var(--text-color);
+            color: var(--text);
             margin-bottom: 12px;
             transition: color 0.3s;
         }
@@ -917,7 +902,7 @@
             padding: 10px 14px;
             border-radius: 10px;
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text-dim);
             word-break: break-all;
             margin-bottom: 12px;
             font-family: 'Share Tech Mono', monospace;
@@ -955,12 +940,12 @@
         }
         .challenge-buttons .copy {
             background: var(--input-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
+            color: var(--text);
+            border: 1px solid var(--border);
             transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
         .challenge-buttons .copy:hover {
-            background: var(--hover-bg);
+            background: var(--panel-strong);
         }
         .challenge-banner {
             background: rgba(255, 200, 87, 0.08);
@@ -969,45 +954,12 @@
             padding: 12px 18px;
             margin-bottom: 16px;
             text-align: center;
-            color: var(--warning-color);
+            color: var(--amber);
             font-size: 15px;
             transition: background 0.3s, border-color 0.3s, color 0.3s;
         }
         .challenge-banner strong {
-            color: var(--text-color);
-            transition: color 0.3s;
-        }
-        .challenge-result-box {
-            margin-top: 16px;
-            padding: 16px;
-            background: var(--focus-ring);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            text-align: center;
-            transition: background 0.3s, border-color 0.3s;
-        }
-        .challenge-result-box .scores {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 12px 0;
-        }
-        .challenge-result-box .scores .you {
-            color: var(--accent-color);
-        }
-        .challenge-result-box .scores .friend {
-            color: var(--warning-color);
-        }
-        .challenge-result-box .scores .score-num {
-            font-size: 28px;
-            font-weight: 700;
-            font-family: 'Orbitron', monospace;
-        }
-        .challenge-result-box .winner {
-            font-size: 18px;
-            font-weight: 700;
-            font-family: 'Orbitron', monospace;
-            color: var(--text-color);
+            color: var(--text);
             transition: color 0.3s;
         }
     </style>
@@ -1032,14 +984,14 @@
             <button class="exit" onclick="goBack()">← EXIT</button>
             <div class="logo">SHORUTO</div>
             <div class="panda-logo" id="pandaLogo">
-                <svg viewBox="0 0 60 60" fill="none" stroke="#0b1a33" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 60 60" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="30" cy="28" r="22"/>
                     <circle cx="12" cy="10" r="7"/>
                     <circle cx="48" cy="10" r="7"/>
                     <circle cx="22" cy="25" r="4.5"/>
-                    <circle cx="22" cy="25" r="1.5" stroke="#0b1a33" fill="#0b1a33" fill-opacity="0.6"/>
+                    <circle cx="22" cy="25" r="1.5" stroke="var(--text)" fill="var(--text)" fill-opacity="0.6"/>
                     <circle cx="38" cy="25" r="4.5"/>
-                    <circle cx="38" cy="25" r="1.5" stroke="#0b1a33" fill="#0b1a33" fill-opacity="0.6"/>
+                    <circle cx="38" cy="25" r="1.5" stroke="var(--text)" fill="var(--text)" fill-opacity="0.6"/>
                     <path d="M27 33 L30 37 L33 33"/>
                     <path d="M26 38 Q30 43 34 38"/>
                     <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
@@ -1100,7 +1052,7 @@
 
                 <div class="card side-card">
                     <h2>AI ASSISTANT</h2>
-                    <p style="color:var(--text-muted);margin-bottom:16px;transition:color 0.3s;">Need help understanding this topic?</p>
+                    <p style="color:var(--text-dim);margin-bottom:16px;transition:color 0.3s;">Need help understanding this topic?</p>
                     <button class="assistant-btn" id="explainBtn">EXPLAIN THIS TOPIC</button>
                 </div>
 
@@ -1122,22 +1074,22 @@
         <div class="popup-box">
             <h2>📘 EXPLAIN · PM E-DRIVE</h2>
             <div class="popup-body">
-                <p><strong style="color:var(--primary-color);">PM E-DRIVE</strong> (Electric Drive Revolution in Innovative Vehicle Enhancement) is a central sector scheme launched to accelerate EV adoption in India.</p>
-                <p><strong style="color:var(--primary-color);">Key features:</strong></p>
+                <p><strong style="color:var(--blue);">PM E-DRIVE</strong> (Electric Drive Revolution in Innovative Vehicle Enhancement) is a central sector scheme launched to accelerate EV adoption in India.</p>
+                <p><strong style="color:var(--blue);">Key features:</strong></p>
                 <ul>
                     <li>Upfront incentives for 2W, 3W, e-buses, and e-trucks</li>
                     <li>Allocates funds for charging infrastructure</li>
                     <li>Supports advanced cell chemistry battery manufacturing</li>
                     <li>Promotes R&D in battery technology</li>
                 </ul>
-                <p><strong style="color:var(--primary-color);">Significance:</strong></p>
+                <p><strong style="color:var(--blue);">Significance:</strong></p>
                 <ul>
                     <li>Reduces oil imports and fossil fuel dependence</li>
                     <li>Lowers carbon emissions and urban pollution</li>
                     <li>Fosters a domestic EV manufacturing hub</li>
                     <li>Creates jobs in the EV ecosystem</li>
                 </ul>
-                <p style="color:var(--text-muted);font-size:13px;margin-top:12px;border-top:1px solid var(--border-color);padding-top:12px;transition:color 0.3s, border-color 0.3s;">The scheme is a key part of India's transition to clean mobility and aligns with the country's climate commitments.</p>
+                <p style="color:var(--text-dim);font-size:13px;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;transition:color 0.3s, border-color 0.3s;">The scheme is a key part of India's transition to clean mobility and aligns with the country's climate commitments.</p>
             </div>
             <div class="popup-actions">
                 <button class="popup-cancel" id="popupCancel">CLOSE</button>
@@ -1148,7 +1100,7 @@
 
     <!-- ===== THEME.JS - LOADS AND APPLIES THEME ===== -->
     <script>
-        // ===== THEME LOADER (runs before anything else) =====
+        // ===== THEME LOADER =====
         (function() {
             // Get stored theme or default to light
             const storedTheme = localStorage.getItem('shoruto-theme') || 'light';
@@ -1217,7 +1169,7 @@
             "90-100": []
         };
 
-        // ===== LOAD QUESTIONS FROM questions.json ONLY =====
+        // ===== LOAD QUESTIONS =====
         function loadQuestions() {
             return fetch("questions.json")
                 .then(r => {
@@ -1317,7 +1269,7 @@
             };
         }
 
-        // ===== GET AI FEEDBACK BASED ON KEYWORD COUNT =====
+        // ===== GET AI FEEDBACK =====
         function getAIFeedback(matchedCount) {
             if (!feedbackData) return null;
 
@@ -1594,14 +1546,14 @@
             let percent = Math.round((totalEarned / totalPossible) * 100) || 0;
 
             let status = "Needs Improvement";
-            let color = "#dc2626";
+            let color = "#FF4F6D";
 
             if (percent >= 70) {
                 status = "Excellent Work 🔥";
-                color = "#22c55e";
+                color = "#34D399";
             } else if (percent >= 40) {
                 status = "Good Try 👍";
-                color = "#facc15";
+                color = "#FFB84D";
             }
 
             let attempted = answersLog.filter(a => a.ans && a.ans.trim() !== "").length;
@@ -1621,14 +1573,14 @@
                     <svg width="180" height="180">
                         <defs>
                             <linearGradient id="resultGrad">
-                                <stop offset="0%" stop-color="var(--accent-color)"/>
-                                <stop offset="100%" stop-color="var(--primary-color)"/>
+                                <stop offset="0%" stop-color="var(--violet)"/>
+                                <stop offset="100%" stop-color="var(--blue)"/>
                             </linearGradient>
                         </defs>
-                        <circle cx="90" cy="90" r="${r}" stroke="var(--border-color)" stroke-width="10" fill="none"/>
+                        <circle cx="90" cy="90" r="${r}" stroke="var(--border)" stroke-width="10" fill="none"/>
                         <circle id="progressCircle" cx="90" cy="90" r="${r}" stroke="url(#resultGrad)" stroke-width="10" fill="none"
                             stroke-linecap="round" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="filter:drop-shadow(0 0 20px var(--shadow-color));transition:1.2s ease;"/>
+                            style="filter:drop-shadow(0 0 20px rgba(62,123,250,0.3));transition:1.2s ease;"/>
                     </svg>
                     <div class="result-score-text">${percent}%</div>
                 </div>
@@ -1645,7 +1597,7 @@
 
                 <div class="challenge-section">
                     <h3>🎯 CHALLENGE A FRIEND</h3>
-                    <p style="color:var(--text-muted);font-size:14px;margin-bottom:12px;transition:color 0.3s;">Share this challenge with your friends and see who scores higher!</p>
+                    <p style="color:var(--text-dim);font-size:14px;margin-bottom:12px;transition:color 0.3s;">Share this challenge with your friends and see who scores higher!</p>
                     <div class="challenge-link" id="challengeLink">Loading challenge link...</div>
                     <div class="challenge-buttons">
                         <button class="whatsapp" onclick="shareChallenge('whatsapp')">📱 WhatsApp</button>
@@ -1658,7 +1610,7 @@
 
             answersLog.forEach((a, index) => {
                 const isCorrect = a.missing && a.missing.length === 0;
-                const borderColor = isCorrect ? 'var(--accent-color)' : 'var(--danger-color)';
+                const borderColor = isCorrect ? 'var(--violet)' : '#FF4F6D';
                 const icon = isCorrect ? '✅' : '⚠️';
 
                 html += `
@@ -1671,7 +1623,7 @@
                             <div class="content">${a.ans || "No answer"}</div>
                         </div>
 
-                        <div class="result-answer-box correct-box" style="border-left-color: var(--accent-color); margin-top: 8px;">
+                        <div class="result-answer-box correct-box" style="border-left-color: var(--violet); margin-top: 8px;">
                             <div class="label">Model Answer:</div>
                             <div class="content">${a.model || "N/A"}</div>
                         </div>`;
@@ -1849,7 +1801,7 @@
             });
         }
 
-        // ===== INIT: Load everything and start =====
+        // ===== INIT =====
         Promise.all([loadQuestions(), loadAIFeedback()])
             .then(() => {
                 console.log('✅ Questions and AI feedback loaded successfully.');
