@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge a Friend - Shoruto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-0, #05060C);
+            color: var(--text, #EAF0FF);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .challenge-container {
+            max-width: 480px;
+            width: 100%;
+            background: var(--panel, rgba(255,255,255,0.045));
+            border: 1px solid var(--border, rgba(255,255,255,0.09));
+            border-radius: 24px;
+            padding: 40px 32px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        /* Header */
+        .challenge-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .challenge-header .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .challenge-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #5B7FFF, #A78BFA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .challenge-header p {
+            color: var(--text-dim, #8993B8);
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        /* Topic Selection */
+        .topic-section {
+            background: var(--input-bg, rgba(255,255,255,0.04));
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border, rgba(255,255,255,0.09));
+        }
+
+        .topic-section .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dimmer, #5C6788);
+            font-weight: 600;
+        }
+
+        .topic-section .topic-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 4px;
+            color: var(--text, #EAF0FF);
+        }
+
+        .topic-section .topic-tag {
+            display: inline-block;
+            margin-top: 6px;
+            padding: 2px 12px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--blue-soft, rgba(62,123,250,0.2));
+            color: var(--blue, #3E7BFA);
+        }
+
+        /* Your Score */
+        .score-display {
+            text-align: center;
+            padding: 24px;
+            background: var(--blue-soft, rgba(62,123,250,0.08));
+            border-radius: 16px;
+            border: 1px solid var(--border, rgba(255,255,255,0.09));
+            margin-bottom: 28px;
+        }
+
+        .score-display .score-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 52px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #5B7FFF, #34D399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 14px;
+            color: var(--text-dim, #8993B8);
+            margin-top: 4px;
+        }
+
+        .score-display .score-emoji {
+            font-size: 28px;
+            margin-top: 6px;
+            display: block;
+        }
+
+        /* Challenge Button */
+        .challenge-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #5B7FFF, #A78BFA);
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(91, 127, 255, 0.35);
+            margin-bottom: 16px;
+        }
+
+        .challenge-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(91, 127, 255, 0.5);
+        }
+
+        .challenge-btn.secondary {
+            background: var(--panel, rgba(255,255,255,0.045));
+            border: 1px solid var(--border, rgba(255,255,255,0.09));
+            box-shadow: none;
+            color: var(--text, #EAF0FF);
+        }
+
+        .challenge-btn.secondary:hover {
+            background: var(--panel-strong, rgba(255,255,255,0.08));
+            transform: translateY(-2px);
+            box-shadow: none;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 20px 0;
+            color: var(--text-dimmer, #5C6788);
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border, rgba(255,255,255,0.09));
+        }
+
+        /* Share Options */
+        .share-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .share-btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border, rgba(255,255,255,0.09));
+            background: var(--panel, rgba(255,255,255,0.045));
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            color: var(--text, #EAF0FF);
+            font-size: 12px;
+        }
+
+        .share-btn:hover {
+            background: var(--panel-strong, rgba(255,255,255,0.08));
+            transform: translateY(-2px);
+        }
+
+        .share-btn .emoji {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* Leaderboard Preview */
+        .leaderboard-preview {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border, rgba(255,255,255,0.09));
+        }
+
+        .leaderboard-preview h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dim, #8993B8);
+            margin-bottom: 12px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--panel, rgba(255,255,255,0.025));
+            margin-bottom: 6px;
+        }
+
+        .leaderboard-item .rank {
+            font-weight: 700;
+            font-size: 14px;
+            width: 24px;
+            color: var(--text-dimmer, #5C6788);
+        }
+
+        .leaderboard-item .rank.gold { color: #FFB84D; }
+        .leaderboard-item .rank.silver { color: #94A3B8; }
+        .leaderboard-item .rank.bronze { color: #D97706; }
+
+        .leaderboard-item .name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .leaderboard-item .score {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--blue, #3E7BFA);
+        }
+
+        .leaderboard-item .badge {
+            font-size: 14px;
+        }
+
+        .leaderboard-item.you {
+            background: var(--blue-soft, rgba(62,123,250,0.1));
+            border: 1px solid var(--border, rgba(255,255,255,0.09));
+        }
+
+        .leaderboard-item.you .name::after {
+            content: ' (You)';
+            font-size: 11px;
+            color: var(--text-dimmer, #5C6788);
+            font-weight: 400;
+        }
+
+        /* Challenge Link Box */
+        .link-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: var(--input-bg, rgba(255,255,255,0.04));
+            border-radius: 12px;
+            border: 1px solid var(--border, rgba(255,255,255,0.09));
+        }
+
+        .link-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text, #EAF0FF);
+            font-size: 13px;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .link-box .copy-btn {
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: none;
+            background: var(--blue, #3E7BFA);
+            color: #fff;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .link-box .copy-btn:hover {
+            background: #5B7FFF;
+        }
+
+        /* Status Messages */
+        .status-msg {
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .status-msg.success {
+            display: block;
+            background: rgba(52, 211, 153, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: #34D399;
+        }
+
+        .status-msg.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #F87171;
+        }
+
+        /* Dark/Light Theme Support */
+        :root {
+            --bg-0: #05060C;
+            --panel: rgba(255, 255, 255, 0.045);
+            --panel-strong: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.09);
+            --blue: #3E7BFA;
+            --blue-soft: rgba(62, 123, 250, 0.35);
+            --text: #EAF0FF;
+            --text-dim: #8993B8;
+            --text-dimmer: #5C6788;
+            --input-bg: rgba(255, 255, 255, 0.04);
+        }
+
+        [data-theme="light"] {
+            --bg-0: #F0F4F8;
+            --panel: rgba(255, 255, 255, 0.7);
+            --panel-strong: rgba(255, 255, 255, 0.85);
+            --border: rgba(0, 0, 0, 0.08);
+            --blue: #5B7FFF;
+            --blue-soft: rgba(91, 127, 255, 0.12);
+            --text: #0F172A;
+            --text-dim: #475569;
+            --text-dimmer: #94A3B8;
+            --input-bg: rgba(0, 0, 0, 0.04);
+        }
+
+        [data-theme="light"] body {
+            background: linear-gradient(135deg, #D6E4FF 0%, #E8D5FF 40%, #D5F5E3 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .challenge-container {
+                padding: 24px 16px;
+            }
+            .challenge-header h1 {
+                font-size: 22px;
+            }
+            .score-display .score-number {
+                font-size: 40px;
+            }
+            .share-options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="challenge-container">
+        <!-- Header -->
+        <div class="challenge-header">
+            <span class="icon">⚔️</span>
+            <h1>Challenge a Friend</h1>
+            <p>Test your knowledge and challenge others!</p>
+        </div>
+
+        <!-- Topic Section -->
+        <div class="topic-section">
+            <div class="label">📚 Current Topic</div>
+            <div class="topic-name">Jal Jeevan Mission</div>
+            <span class="topic-tag">Government Scheme</span>
+        </div>
+
+        <!-- Your Score -->
+        <div class="score-display">
+            <div class="score-number">82</div>
+            <div class="score-label">Your Score</div>
+            <span class="score-emoji">⭐</span>
+        </div>
+
+        <!-- Main Challenge Button -->
+        <button class="challenge-btn" id="challengeBtn">
+            🎯 Challenge a Friend
+        </button>
+
+        <!-- Divider -->
+        <div class="divider">or share challenge link</div>
+
+        <!-- Challenge Link -->
+        <div class="link-box">
+            <input type="text" id="challengeLink" value="https://www.shoruto.com/challenge/xyz789" readonly>
+            <button class="copy-btn" id="copyBtn">Copy</button>
+        </div>
+
+        <!-- Status Message -->
+        <div class="status-msg" id="statusMsg">
+            ✅ Challenge link copied! Share with your friend.
+        </div>
+
+        <!-- Share Options -->
+        <div class="share-options">
+            <button class="share-btn" id="whatsappBtn">
+                <span class="emoji">💬</span>
+                WhatsApp
+            </button>
+            <button class="share-btn" id="twitterBtn">
+                <span class="emoji">🐦</span>
+                Twitter
+            </button>
+            <button class="share-btn" id="emailBtn">
+                <span class="emoji">📧</span>
+                Email
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider">🏆 Top Scores</div>
+
+        <!-- Leaderboard Preview -->
+        <div class="leaderboard-preview">
+            <div class="leaderboard-item you">
+                <span class="rank gold">#1</span>
+                <span class="badge">👑</span>
+                <span class="name">You</span>
+                <span class="score">82%</span>
+            </div>
+            <div class="leaderboard-item">
+                <span class="rank silver">#2</span>
+                <span class="badge">🌟</span>
+                <span class="name">Ananya</span>
+                <span class="score">78%</span>
+            </div>
+            <div class="leaderboard-item">
+                <span class="rank bronze">#3</span>
+                <span class="badge">🔥</span>
+                <span class="name">Rahul</span>
+                <span class="score">71%</span>
+            </div>
+            <div class="leaderboard-item">
+                <span class="rank">#4</span>
+                <span class="badge">💪</span>
+                <span class="name">Priya</span>
+                <span class="score">65%</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Just UI - No functionality yet
+
+        // Copy button placeholder
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const msg = document.getElementById('statusMsg');
+            msg.className = 'status-msg success';
+            msg.textContent = '✅ Challenge link copied! Share with your friend.';
+            setTimeout(() => {
+                msg.className = 'status-msg';
+            }, 3000);
+        });
+
+        // Challenge button placeholder
+        document.getElementById('challengeBtn').addEventListener('click', function() {
+            const msg = document.getElementById('statusMsg');
+            msg.className = 'status-msg success';
+            msg.textContent = '🎯 Challenge sent! Share the link with your friend.';
+            setTimeout(() => {
+                msg.className = 'status-msg';
+            }, 3000);
+        });
+
+        // Share buttons placeholder
+        document.querySelectorAll('.share-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const msg = document.getElementById('statusMsg');
+                msg.className = 'status-msg success';
+                msg.textContent = '📤 Sharing via ' + this.textContent.trim() + '...';
+                setTimeout(() => {
+                    msg.className = 'status-msg';
+                }, 3000);
+            });
+        });
+    </script>
+
+</body>
+</html>
