@@ -211,25 +211,25 @@
 
     <div class="vs-battle">
         <!-- You -->
-        <div class="player-card winner" id="youCard">
+        <div class="player-card" id="youCard">
             <div class="avatar you">Y</div>
             <div class="name">
                 You <span class="tag">(Challenger)</span>
             </div>
-            <div class="score" id="yourScore">82%</div>
+            <div class="score" id="yourScore">--%</div>
             <div class="score-label">Your Score</div>
-            <span class="trophy">🏆</span>
+            <span class="trophy" id="yourTrophy"></span>
         </div>
 
         <div class="vs-text">VS</div>
 
         <!-- Friend -->
         <div class="player-card" id="friendCard">
-            <div class="avatar friend">R</div>
+            <div class="avatar friend">F</div>
             <div class="name">
-                <span id="friendName">Rahul</span> <span class="tag">(Friend)</span>
+                <span id="friendName">Friend</span> <span class="tag">(Challenged)</span>
             </div>
-            <div class="score" id="friendScore">71%</div>
+            <div class="score" id="friendScore">--%</div>
             <div class="score-label">Their Score</div>
             <span class="trophy" id="friendTrophy"></span>
         </div>
@@ -239,8 +239,7 @@
     <div class="joke-box">
         <span class="joke-emoji" id="jokeEmoji">😅</span>
         <div class="joke-text" id="jokeText">
-            You got <span class="highlight">beaten</span> by your friend! 
-            Time to hit the books! 📚
+            Loading results...
         </div>
     </div>
 
@@ -254,13 +253,13 @@
 </div>
 
 <script>
-    // Get challenge data from URL
+    // Get result data from URL
     function getResultData() {
         const params = new URLSearchParams(window.location.search);
         return {
-            challenger: params.get('challenger') || 'Rahul',
-            yourScore: parseInt(params.get('yourScore')) || 82,
-            friendScore: parseInt(params.get('friendScore')) || 71,
+            challenger: params.get('challenger') || 'Friend',
+            yourScore: parseInt(params.get('yourScore')),
+            friendScore: parseInt(params.get('friendScore')),
             topic: params.get('topic') || 'Jal-Jeevan-Mission'
         };
     }
@@ -290,6 +289,14 @@
 
     function displayResults() {
         const data = getResultData();
+        
+        // Validate scores
+        if (isNaN(data.yourScore) || isNaN(data.friendScore)) {
+            document.getElementById('jokeText').innerHTML = '❌ Invalid scores! Please complete the challenge first.';
+            document.getElementById('jokeEmoji').textContent = '😵';
+            return;
+        }
+        
         const youWin = data.yourScore > data.friendScore;
         const isTie = data.yourScore === data.friendScore;
 
@@ -302,15 +309,18 @@
         if (youWin) {
             document.getElementById('youCard').classList.add('winner');
             document.getElementById('friendCard').classList.remove('winner');
+            document.getElementById('yourTrophy').textContent = '🏆';
             document.getElementById('friendTrophy').textContent = '';
         } else if (isTie) {
             document.getElementById('youCard').classList.remove('winner');
             document.getElementById('friendCard').classList.remove('winner');
+            document.getElementById('yourTrophy').textContent = '';
             document.getElementById('friendTrophy').textContent = '';
         } else {
             document.getElementById('friendCard').classList.add('winner');
             document.getElementById('youCard').classList.remove('winner');
             document.getElementById('friendTrophy').textContent = '🏆';
+            document.getElementById('yourTrophy').textContent = '';
         }
 
         // Show joke
