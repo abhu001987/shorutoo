@@ -14,7 +14,13 @@
   <script src="theme.js"></script>
 
   <style>
-    /* Page specific styles */
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       min-height: 100vh;
       display: flex;
@@ -24,13 +30,15 @@
         radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
         radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
       transition: background 0.3s ease, color 0.3s ease;
+      padding-top: 80px;
     }
 
+    /* ---- FULL WIDTH - NO LEFT/RIGHT SPACING ---- */
     .page-content {
       flex: 1;
-      padding: 60px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
+      padding: 0;
+      max-width: 100%;
+      margin: 0;
       width: 100%;
     }
 
@@ -47,14 +55,15 @@
       flex-shrink: 0;
     }
 
-    /* ---- Card Style ---- */
+    /* ---- Privacy Card - Full Width ---- */
     .privacy-card {
       background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 22px;
+      border: none;
+      border-radius: 0;
       backdrop-filter: blur(10px);
-      padding: 40px 48px;
+      padding: 50px 60px;
       transition: border-color 0.25s ease, transform 0.25s ease;
+      width: 100%;
     }
 
     .privacy-card h1 {
@@ -161,37 +170,119 @@
       height: 14px;
     }
 
-    @media (max-width: 768px) {
-      .page-content {
-        padding: 40px 16px;
-      }
-      .privacy-card {
-        padding: 24px 20px;
-        border-radius: 16px;
-      }
-      .privacy-card h1 {
-        font-size: 28px;
-      }
-      .privacy-card h2 {
-        font-size: 18px;
-      }
-      .privacy-card p {
-        font-size: 15px;
-      }
-      .privacy-card ul {
-        font-size: 14px;
-        padding-left: 20px;
-      }
-      .footer-link {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    /* ============================================ */
+    /* HEADER - Only Logo + Theme Toggle           */
+    /* ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 30px;
+      background: var(--panel);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease, border-color 0.3s ease;
+      width: 100%;
     }
 
-    @media (min-width: 769px) and (max-width: 1200px) {
-      .privacy-card {
-        padding: 32px 36px;
-      }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* LOGO - Only round icon, no text */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo .mark {
+      display: inline-flex;
+      width: 44px;
+      height: 44px;
+    }
+
+    .logo .mark svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .logo .logo-text {
+      display: none;
+    }
+
+    /* Hide navigation links */
+    .nav-links {
+      display: none;
+    }
+
+    /* Theme toggle */
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel-strong);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel);
+      border-color: var(--blue);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s ease;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+      color: var(--amber);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+      color: var(--blue);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
     }
 
     /* Animation */
@@ -205,63 +296,109 @@
         transform: translateY(0);
       }
     }
+
     .fade-in {
       animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
+    }
+
+    /* ---- Mobile Responsive ---- */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 72px;
+      }
+
+      .privacy-card {
+        padding: 24px 20px;
+      }
+
+      .privacy-card h1 {
+        font-size: 28px;
+      }
+
+      .privacy-card h2 {
+        font-size: 18px;
+      }
+
+      .privacy-card p {
+        font-size: 15px;
+      }
+
+      .privacy-card ul {
+        font-size: 14px;
+        padding-left: 20px;
+      }
+
+      .logo .mark {
+        width: 36px;
+        height: 36px;
+      }
+
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+      }
+
+      .nav {
+        padding: 10px 16px;
+      }
+
+      .footer-link {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .privacy-card {
+        padding: 36px 40px;
+      }
     }
   </style>
 </head>
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER (Full version with navigation)        -->
+  <!-- HEADER - Only Logo + Theme Toggle           -->
   <!-- ============================================ -->
   <nav class="nav">
-    <div class="wrap">
-      <div class="nav-inner">
-        <!-- LOGO -->
-        <a href="index.html" class="logo">
-          <span class="mark">
-            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="30" cy="28" r="22"/>
-              <circle cx="12" cy="10" r="7"/>
-              <circle cx="48" cy="10" r="7"/>
-              <circle cx="22" cy="25" r="4.5"/>
-              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-              <circle cx="38" cy="25" r="4.5"/>
-              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-              <path d="M27 33 L30 37 L33 33"/>
-              <path d="M26 38 Q30 43 34 38"/>
-              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-            </svg>
-          </span>
-          <span class="logo-text">Shoruto</span>
-        </a>
+    <div class="nav-inner">
+      <!-- LOGO (round only, no text) -->
+      <a href="index.html" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Shoruto</span>
+      </a>
 
-        <!-- NAVIGATION LINKS -->
-        <div class="nav-links">
-          <a href="index.html#why">Why Shoruto</a>
-          <a href="index.html#trending">Trending</a>
-          <a href="index.html#subjects">Subjects</a>
-          <a href="blog.html">Blog</a>
-          <a href="index.html#ai">AI Evaluation</a>
-          <a href="index.html#faq">FAQ</a>
-        </div>
+      <!-- NAVIGATION LINKS - REMOVED -->
+      <div class="nav-links"></div>
 
-        <!-- RIGHT SIDE: THEME TOGGLE -->
-        <div class="nav-cta">
-          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <span class="sun-icon">☀️</span>
-            <span class="moon-icon">🌙</span>
-          </button>
-        </div>
+      <!-- THEME TOGGLE -->
+      <div class="nav-cta">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
       </div>
     </div>
   </nav>
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- PRIVACY POLICY CONTENT                      -->
+  <!-- PRIVACY POLICY - FULL WIDTH                 -->
   <!-- ============================================ -->
   <main class="page-content">
     <div class="privacy-card fade-in">
