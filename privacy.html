@@ -1,414 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
-    <title>Privacy · Shoruto</title>
-    <meta name="description" content="Privacy policy for Shoruto. Learn how we handle your data, cookies, and your rights.">
-    <link rel="canonical" href="https://www.shoruto.com/privacy">
-    <link rel="icon" href="/icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" href="/icon-192.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy · Shoruto</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- ============================================ -->
-    <!-- SHARED CSS AND JS (MUST HAVE)                 -->
-    <!-- ============================================ -->
-    <link rel="stylesheet" href="theme.css">
-    <script src="theme.js"></script>
-    <!-- ============================================ -->
+  <!-- Shared CSS & JS -->
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
 
-    <style>
-        /* Page-local tokens */
-        :root {
-            --danger: #F2545F;
-            --danger-dim: rgba(242, 84, 95, 0.12);
-            --radius: 22px;
-            --radius-sm: 14px;
-            --ease: cubic-bezier(.4, 0, .2, 1);
-        }
+  <style>
+    /* Page specific styles */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-0);
+      background-image:
+        radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+        radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    .page-content {
+      flex: 1;
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      width: 100%;
+    }
 
-        body {
-            background: var(--bg-0);
-            background-image:
-                radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
-                radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            padding: 0;
-            min-height: 100vh;
-            transition: background 0.3s ease, color 0.3s ease;
-            padding-top: 76px; /* Space for fixed header */
-        }
+    /* ---- Icon system ---- */
+    .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
 
-        /* ---- FULL WIDTH CONTAINER ---- */
-        .container { 
-            max-width: 100%;
-            width: 100%; 
-            margin: 0;
-            padding: 0;
-        }
+    /* ---- Card Style ---- */
+    .privacy-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+      padding: 40px 48px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
 
-        /* ---- Icon system ---- */
-        .ic {
-            width: 1em; height: 1em;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            vertical-align: -0.14em;
-            flex-shrink: 0;
-        }
-        .ic-chip {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 34px; height: 34px;
-            border-radius: 10px;
-            font-size: 17px;
-            flex-shrink: 0;
-        }
+    .privacy-card h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeUp 0.5s var(--ease) both; }
+    .privacy-card .last-updated {
+      color: var(--text-dimmer);
+      font-size: 13px;
+      margin-bottom: 28px;
+      display: block;
+    }
 
-        .card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 0; /* No border radius - full width */
-            backdrop-filter: blur(10px);
-            transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
-            padding: 40px 60px;
-            margin: 0;
-            width: 100%;
-        }
+    .privacy-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 32px 0 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        /* ============================================ */
-        /* HEADER - Only Round Logo + Theme Toggle    */
-        /* ============================================ */
-        .nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 14px 30px;
-            background: var(--panel);
-            backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border-bottom: 1px solid var(--border);
-            transition: background 0.3s ease, border-color 0.3s ease;
-            width: 100%;
-        }
+    .privacy-card h2 .ic {
+      color: var(--blue);
+      width: 1.2em;
+      height: 1.2em;
+    }
 
-        .nav-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
+    .privacy-card p {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
 
-        /* ROUND LOGO ONLY - No text */
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
+    .privacy-card ul {
+      padding-left: 28px;
+      margin: 10px 0 18px;
+      color: var(--text-dim);
+      font-size: 15px;
+      line-height: 1.8;
+    }
 
-        .logo .mark {
-            display: inline-flex;
-            width: 44px;
-            height: 44px;
-        }
-        .logo .mark svg {
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* Hide the text */
-        .logo .logo-text {
-            display: none;
-        }
+    .privacy-card ul li {
+      margin-bottom: 6px;
+    }
 
-        /* Navigation links - HIDDEN */
-        .nav-links {
-            display: none;
-        }
+    .privacy-card strong {
+      color: var(--text);
+      font-weight: 600;
+    }
 
-        /* Right side: Theme toggle only */
-        .nav-cta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    .privacy-card .highlight-box {
+      background: var(--panel-strong);
+      border-left: 4px solid var(--blue);
+      padding: 18px 24px;
+      border-radius: 14px;
+      margin: 20px 0;
+    }
 
-        .theme-toggle {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--panel-strong);
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s var(--ease);
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-        .theme-toggle:hover {
-            background: var(--panel);
-            border-color: var(--blue);
-            transform: scale(1.06);
-        }
+    .privacy-card .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text-dim);
+    }
 
-        .theme-toggle .sun-icon,
-        .theme-toggle .moon-icon {
-            position: absolute;
-            transition: all 0.45s var(--ease);
-        }
-        .theme-toggle .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); color: var(--amber); }
-        .theme-toggle .moon-icon { opacity: 1; transform: rotate(0) scale(1); color: var(--blue); }
-        [data-theme="light"] .theme-toggle .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
-        [data-theme="light"] .theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+    .privacy-card .highlight-box.violet {
+      border-left-color: var(--violet);
+    }
 
-        /* ---- Privacy Content - Full Width ---- */
-        .privacy-content {
-            padding: 40px 60px;
-        }
-        
-        .privacy-content h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 36px;
-            letter-spacing: -0.3px;
-            margin-bottom: 8px;
-            color: var(--text);
-        }
-        .privacy-content .last-updated {
-            color: var(--text-dimmer);
-            font-size: 13px;
-            margin-bottom: 28px;
-            display: block;
-        }
-        .privacy-content h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 20px;
-            margin: 30px 0 12px;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .privacy-content h2 .ic { color: var(--blue); width: 1.2em; height: 1.2em; }
-        .privacy-content p {
-            color: var(--text-dim);
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 14px;
-        }
-        .privacy-content ul {
-            padding-left: 28px;
-            margin: 10px 0 18px;
-            color: var(--text-dim);
-            font-size: 15px;
-            line-height: 1.8;
-        }
-        .privacy-content ul li { margin-bottom: 6px; }
-        .privacy-content strong { color: var(--text); font-weight: 600; }
-        .privacy-content .highlight-box {
-            background: var(--panel-strong);
-            border-left: 4px solid var(--blue);
-            padding: 18px 24px;
-            border-radius: var(--radius-sm);
-            margin: 20px 0;
-        }
-        .privacy-content .highlight-box p { margin-bottom: 0; color: var(--text-dim); }
+    .footer-link {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-        .footer-link {
-            margin-top: 28px;
-            padding-top: 18px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .footer-link a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: color 0.2s var(--ease);
-        }
-        .footer-link a:hover { color: var(--blue); }
-        .footer-link .ic { width: 14px; height: 14px; }
+    .footer-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
 
-        /* ---- Mobile Responsive ---- */
-        @media (max-width: 768px) {
-            body { padding-top: 68px; }
-            .card { padding: 24px 20px; }
-            .privacy-content { padding: 24px 20px; }
-            .privacy-content h1 { font-size: 28px; }
-            .privacy-content h2 { font-size: 18px; }
-            .privacy-content p { font-size: 15px; }
-            .privacy-content ul { font-size: 14px; padding-left: 20px; }
-            .logo .mark { width: 36px; height: 36px; }
-            .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
-            .nav { padding: 10px 16px; }
-            .footer-link { flex-direction: column; align-items: flex-start; }
-        }
+    .footer-link a:hover {
+      color: var(--blue);
+    }
 
-        @media (min-width: 769px) and (max-width: 1200px) {
-            .card { padding: 32px 40px; }
-            .privacy-content { padding: 32px 40px; }
-        }
-    </style>
+    .footer-link .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .page-content {
+        padding: 40px 16px;
+      }
+      .privacy-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+      }
+      .privacy-card h1 {
+        font-size: 28px;
+      }
+      .privacy-card h2 {
+        font-size: 18px;
+      }
+      .privacy-card p {
+        font-size: 15px;
+      }
+      .privacy-card ul {
+        font-size: 14px;
+        padding-left: 20px;
+      }
+      .footer-link {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .privacy-card {
+        padding: 32px 36px;
+      }
+    }
+
+    /* Animation */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in {
+      animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- ============================================ -->
-    <!-- HEADER - Only Round Logo + Theme Toggle     -->
-    <!-- ============================================ -->
-    <nav class="nav">
-        <div class="nav-inner">
-            <!-- ROUND LOGO ONLY - No text -->
-            <a href="/" class="logo">
-                <span class="mark">
-                    <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="30" cy="28" r="22"/>
-                        <circle cx="12" cy="10" r="7"/>
-                        <circle cx="48" cy="10" r="7"/>
-                        <circle cx="22" cy="25" r="4.5"/>
-                        <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                        <circle cx="38" cy="25" r="4.5"/>
-                        <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                        <path d="M27 33 L30 37 L33 33"/>
-                        <path d="M26 38 Q30 43 34 38"/>
-                        <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-                        <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-                    </svg>
-                </span>
-                <span class="logo-text">Shoruto</span>
-            </a>
+  <!-- ============================================ -->
+  <!-- HEADER (Full version with navigation)        -->
+  <!-- ============================================ -->
+  <nav class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
 
-            <!-- NAVIGATION LINKS - HIDDEN -->
-            <div class="nav-links"></div>
-
-            <!-- THEME TOGGLE -->
-            <div class="nav-cta">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                    <span class="sun-icon">☀️</span>
-                    <span class="moon-icon">🌙</span>
-                </button>
-            </div>
+        <!-- NAVIGATION LINKS -->
+        <div class="nav-links">
+          <a href="index.html#why">Why Shoruto</a>
+          <a href="index.html#trending">Trending</a>
+          <a href="index.html#subjects">Subjects</a>
+          <a href="blog.html">Blog</a>
+          <a href="index.html#ai">AI Evaluation</a>
+          <a href="index.html#faq">FAQ</a>
         </div>
-    </nav>
-    <!-- ============================================ -->
 
-    <!-- ============================================ -->
-    <!-- FULL WIDTH CONTENT - NO PADDING             -->
-    <!-- ============================================ -->
-    <div class="container">
-        <div class="card privacy-content fade-in">
-            <h1>Privacy Policy</h1>
-            <span class="last-updated">Last updated: July 10, 2026</span>
-
-            <p>At Shoruto, we take your privacy seriously. This policy describes how we collect, use, and protect your personal data when you use our platform.</p>
-
-            <h2><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Information We Collect</h2>
-            <p>We collect minimal data to provide and improve our services. This includes:</p>
-            <ul>
-                <li><strong>Account info:</strong> Email address and username (if you create an account).</li>
-                <li><strong>Usage data:</strong> Test scores, answer content, and progress — all stored securely to help you track improvement.</li>
-                <li><strong>Technical data:</strong> Browser type, IP address (anonymized), and device info to optimize performance.</li>
-            </ul>
-
-            <h2><svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg> How We Use Your Data</h2>
-            <p>Your data helps us deliver a personalized learning experience. Specifically, we use it to:</p>
-            <ul>
-                <li>Generate mock tests and evaluate answers using AI (your answer content is never shared).</li>
-                <li>Provide feedback and suggestions to improve your performance.</li>
-                <li>Send occasional service updates (you can opt out at any time).</li>
-            </ul>
-
-            <div class="highlight-box">
-                <p><strong>🔒 We never sell or share your personal data</strong> with third parties for advertising or any other purpose. Your privacy is paramount.</p>
-            </div>
-
-            <h2><svg class="ic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/></svg> Cookies & Tracking</h2>
-            <p>We use essential cookies to keep you logged in and remember your preferences. We do <strong>not</strong> use analytics or tracking cookies that follow you across the web. Our cookie usage is minimal and transparent.</p>
-
-            <h2><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 11l2 2 4-4"/></svg> Your Rights</h2>
-            <p>You have the right to:</p>
-            <ul>
-                <li><strong>Access</strong> — request a copy of the data we hold about you.</li>
-                <li><strong>Rectify</strong> — correct any inaccurate information.</li>
-                <li><strong>Erase</strong> — ask us to delete your account and associated data.</li>
-                <li><strong>Object</strong> — opt out of non-essential communications.</li>
-            </ul>
-            <p>To exercise any of these rights, just email us at <strong>privacy@shoruto.com</strong>. We respond within 72 hours.</p>
-
-            <h2><svg class="ic" viewBox="0 0 24 24"><path d="M21 12h-4l-3 9-4-18-3 9H3"/></svg> Data Retention</h2>
-            <p>We keep your data only as long as your account is active. If you delete your account, all personal data is permanently removed within 30 days. Test performance data is anonymized and retained for aggregate analytics (no individual identification).</p>
-
-            <h2><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg> Changes to This Policy</h2>
-            <p>We may update this policy occasionally. When we do, we'll notify you via email or through the platform. Continued use of Shoruto signifies acceptance of the updated policy.</p>
-
-            <div class="highlight-box" style="border-left-color: var(--violet);">
-                <p><strong>📬 Questions?</strong> If you have any concerns about your privacy, please reach out to <strong>privacy@shoruto.com</strong>. We're here to help.</p>
-            </div>
-
-            <p style="margin-top: 12px; color: var(--text-dimmer); font-size: 13px;">This privacy policy is part of our commitment to transparency and trust. Thank you for using Shoruto.</p>
-
-            <div class="footer-link">
-                <a href="/">
-                    <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
-                    Back to Shoruto
-                </a>
-                <span style="color:var(--text-dimmer);font-size:12px;">© 2026 Shoruto</span>
-            </div>
+        <!-- RIGHT SIDE: THEME TOGGLE -->
+        <div class="nav-cta">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
         </div>
+      </div>
     </div>
+  </nav>
+  <!-- ============================================ -->
 
-    <!-- ============================================ -->
-    <!-- THEME TOGGLE SCRIPT                          -->
-    <!-- ============================================ -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) {
-                themeToggle.addEventListener('click', function() {
-                    if (typeof toggleTheme === 'function') {
-                        toggleTheme();
-                    } else {
-                        const html = document.documentElement;
-                        const current = html.getAttribute('data-theme');
-                        const next = current === 'light' ? 'dark' : 'light';
-                        html.setAttribute('data-theme', next);
-                        localStorage.setItem('theme', next);
-                    }
-                });
-            }
-        });
-    </script>
-    <!-- ============================================ -->
+  <!-- ============================================ -->
+  <!-- PRIVACY POLICY CONTENT                      -->
+  <!-- ============================================ -->
+  <main class="page-content">
+    <div class="privacy-card fade-in">
+      <h1>Privacy Policy</h1>
+      <span class="last-updated">Last updated: July 10, 2026</span>
+
+      <p>At Shoruto, we take your privacy seriously. This policy describes how we collect, use, and protect your personal data when you use our platform.</p>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        Information We Collect
+      </h2>
+      <p>We collect minimal data to provide and improve our services. This includes:</p>
+      <ul>
+        <li><strong>Account info:</strong> Email address and username (if you create an account).</li>
+        <li><strong>Usage data:</strong> Test scores, answer content, and progress — all stored securely to help you track improvement.</li>
+        <li><strong>Technical data:</strong> Browser type, IP address (anonymized), and device info to optimize performance.</li>
+      </ul>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
+        How We Use Your Data
+      </h2>
+      <p>Your data helps us deliver a personalized learning experience. Specifically, we use it to:</p>
+      <ul>
+        <li>Generate mock tests and evaluate answers using AI (your answer content is never shared).</li>
+        <li>Provide feedback and suggestions to improve your performance.</li>
+        <li>Send occasional service updates (you can opt out at any time).</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p><strong>🔒 We never sell or share your personal data</strong> with third parties for advertising or any other purpose. Your privacy is paramount.</p>
+      </div>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/></svg>
+        Cookies &amp; Tracking
+      </h2>
+      <p>We use essential cookies to keep you logged in and remember your preferences. We do <strong>not</strong> use analytics or tracking cookies that follow you across the web. Our cookie usage is minimal and transparent.</p>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 11l2 2 4-4"/></svg>
+        Your Rights
+      </h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li><strong>Access</strong> — request a copy of the data we hold about you.</li>
+        <li><strong>Rectify</strong> — correct any inaccurate information.</li>
+        <li><strong>Erase</strong> — ask us to delete your account and associated data.</li>
+        <li><strong>Object</strong> — opt out of non-essential communications.</li>
+      </ul>
+      <p>To exercise any of these rights, just email us at <strong>privacy@shoruto.com</strong>. We respond within 72 hours.</p>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M21 12h-4l-3 9-4-18-3 9H3"/></svg>
+        Data Retention
+      </h2>
+      <p>We keep your data only as long as your account is active. If you delete your account, all personal data is permanently removed within 30 days. Test performance data is anonymized and retained for aggregate analytics (no individual identification).</p>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+        Changes to This Policy
+      </h2>
+      <p>We may update this policy occasionally. When we do, we'll notify you via email or through the platform. Continued use of Shoruto signifies acceptance of the updated policy.</p>
+
+      <div class="highlight-box violet">
+        <p><strong>📬 Questions?</strong> If you have any concerns about your privacy, please reach out to <strong>privacy@shoruto.com</strong>. We're here to help.</p>
+      </div>
+
+      <p style="margin-top: 12px; color: var(--text-dimmer); font-size: 13px;">This privacy policy is part of our commitment to transparency and trust. Thank you for using Shoruto.</p>
+
+      <div class="footer-link">
+        <a href="index.html">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          Back to Shoruto
+        </a>
+        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- ============================================ -->
+  <!-- THEME TOGGLE SCRIPT                         -->
+  <!-- ============================================ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+    });
+  </script>
+  <!-- ============================================ -->
 
 </body>
 </html>
