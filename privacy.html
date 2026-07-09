@@ -9,7 +9,7 @@
     <link rel="icon" href="/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon-192.png">
 
-    <!-- Fonts (matches homepage) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
@@ -21,7 +21,7 @@
     <!-- ============================================ -->
 
     <style>
-        /* Page-local tokens not covered by the shared theme */
+        /* Page-local tokens */
         :root {
             --danger: #F2545F;
             --danger-dim: rgba(242, 84, 95, 0.12);
@@ -41,13 +41,10 @@
             color: var(--text);
             padding: 24px;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        .container { max-width: 1000px; width: 100%; margin: auto; }
+        .container { max-width: 1000px; width: 100%; margin: 40px auto 0; }
 
         /* ---- Icon system ---- */
         .ic {
@@ -71,8 +68,6 @@
         }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes popIn { from { opacity: 0; transform: scale(.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-
         .fade-in { animation: fadeUp 0.5s var(--ease) both; }
 
         .card {
@@ -85,50 +80,76 @@
         }
 
         /* ============================================ */
-        /* SIMPLE HEADER - Only Logo + Theme Toggle    */
+        /* ORIGINAL GLASS HEADER - Same as mock test   */
         /* ============================================ */
-        .simple-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-            padding: 0 4px;
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 12px 24px;
+            background: var(--panel);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
-        .simple-header .brand {
+        .wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .simple-header .logo {
+            text-decoration: none;
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--text);
-            text-decoration: none;
             letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-shrink: 0;
         }
 
-        .simple-header .logo .mark {
+        .logo .mark {
             display: inline-flex;
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
         }
-        .simple-header .logo .mark svg {
+        .logo .mark svg {
             width: 100%;
             height: 100%;
         }
 
-        .simple-header .theme-toggle-btn {
+        /* Navigation links - HIDDEN on privacy page */
+        .nav-links {
+            display: none;
+        }
+
+        /* Right side: Theme toggle only */
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-toggle {
             width: 42px;
             height: 42px;
             border-radius: 50%;
             border: 1px solid var(--border);
-            background: var(--panel);
+            background: var(--panel-strong);
             color: var(--text);
             display: flex;
             align-items: center;
@@ -137,26 +158,23 @@
             font-size: 18px;
             transition: all 0.3s var(--ease);
             backdrop-filter: blur(10px);
+            position: relative;
         }
-        .simple-header .theme-toggle-btn:hover {
-            background: var(--panel-strong);
+        .theme-toggle:hover {
+            background: var(--panel);
             border-color: var(--blue);
             transform: scale(1.06);
         }
 
-        .simple-header .theme-toggle-btn .sun-icon,
-        .simple-header .theme-toggle-btn .moon-icon {
+        .theme-toggle .sun-icon,
+        .theme-toggle .moon-icon {
             position: absolute;
-            color: var(--amber);
             transition: all 0.45s var(--ease);
         }
-        .simple-header .theme-toggle-btn .moon-icon { color: var(--blue); }
-        .simple-header .theme-toggle-btn .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
-        .simple-header .theme-toggle-btn .moon-icon { opacity: 1; transform: rotate(0) scale(1); }
-        [data-theme="light"] .simple-header .theme-toggle-btn .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
-        [data-theme="light"] .simple-header .theme-toggle-btn .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
-
-        .simple-header .theme-toggle-btn { position: relative; }
+        .theme-toggle .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); color: var(--amber); }
+        .theme-toggle .moon-icon { opacity: 1; transform: rotate(0) scale(1); color: var(--blue); }
+        [data-theme="light"] .theme-toggle .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="light"] .theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
 
         /* ---- Privacy Content ---- */
         .privacy-content h1 {
@@ -208,7 +226,6 @@
         }
         .privacy-content .highlight-box p { margin-bottom: 0; color: var(--text-dim); }
 
-        /* ---- Footer Link ---- */
         .footer-link {
             margin-top: 24px;
             padding-top: 16px;
@@ -231,51 +248,70 @@
         .footer-link a:hover { color: var(--blue); }
         .footer-link .ic { width: 14px; height: 14px; }
 
-        /* ---- Responsive ---- */
+        /* ---- Mobile Responsive ---- */
         @media (max-width: 600px) {
             body { padding: 14px 12px; }
+            .container { margin-top: 80px; }
             .card { padding: 20px 18px; }
             .privacy-content h1 { font-size: 26px; }
-            .simple-header .logo { font-size: 18px; }
-            .simple-header .logo .mark { width: 30px; height: 30px; }
-            .simple-header .theme-toggle-btn { width: 36px; height: 36px; font-size: 15px; }
+            .logo { font-size: 18px; }
+            .logo .mark { width: 30px; height: 30px; }
+            .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
             .footer-link { flex-direction: column; align-items: flex-start; }
+            .nav { padding: 10px 16px; }
+        }
+
+        @media (min-width: 601px) and (max-width: 900px) {
+            .container { margin-top: 80px; }
         }
     </style>
 </head>
 <body>
 
     <!-- ============================================ -->
-    <!-- SIMPLE HEADER - Logo + Theme Toggle Only     -->
+    <!-- ORIGINAL GLASS HEADER (same as mock test)   -->
     <!-- ============================================ -->
-    <div class="container">
-        <div class="simple-header">
-            <a href="/" class="logo">
-                <span class="mark">
-                    <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="30" cy="28" r="22"/>
-                        <circle cx="12" cy="10" r="7"/>
-                        <circle cx="48" cy="10" r="7"/>
-                        <circle cx="22" cy="25" r="4.5"/>
-                        <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                        <circle cx="38" cy="25" r="4.5"/>
-                        <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                        <path d="M27 33 L30 37 L33 33"/>
-                        <path d="M26 38 Q30 43 34 38"/>
-                        <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-                        <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-                    </svg>
-                </span>
-                <span>Shoruto</span>
-            </a>
+    <nav class="nav">
+        <div class="wrap">
+            <div class="nav-inner">
+                <!-- LOGO -->
+                <a href="/" class="logo">
+                    <span class="mark">
+                        <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="30" cy="28" r="22"/>
+                            <circle cx="12" cy="10" r="7"/>
+                            <circle cx="48" cy="10" r="7"/>
+                            <circle cx="22" cy="25" r="4.5"/>
+                            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+                            <circle cx="38" cy="25" r="4.5"/>
+                            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+                            <path d="M27 33 L30 37 L33 33"/>
+                            <path d="M26 38 Q30 43 34 38"/>
+                            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+                            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+                        </svg>
+                    </span>
+                    <span>Shoruto</span>
+                </a>
 
-            <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
-                <span class="sun-icon">☀️</span>
-                <span class="moon-icon">🌙</span>
-            </button>
+                <!-- NAVIGATION LINKS - HIDDEN on privacy page -->
+                <div class="nav-links">
+                    <!-- Hidden: Why Shoruto, Trending, Subjects, Blog, AI Evaluation, FAQ -->
+                </div>
+
+                <!-- RIGHT SIDE: THEME TOGGLE ONLY -->
+                <div class="nav-cta">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <span class="sun-icon">☀️</span>
+                        <span class="moon-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <!-- ============================================ -->
+    </nav>
+    <!-- ============================================ -->
 
+    <div class="container">
         <div class="card privacy-content fade-in">
             <h1>Privacy Policy</h1>
             <span class="last-updated">Last updated: July 10, 2026</span>
@@ -327,7 +363,6 @@
 
             <p style="margin-top: 12px; color: var(--text-dimmer); font-size: 13px;">This privacy policy is part of our commitment to transparency and trust. Thank you for using Shoruto.</p>
 
-            <!-- Footer link back to home -->
             <div class="footer-link">
                 <a href="/">
                     <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
@@ -339,18 +374,18 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- THEME TOGGLE SCRIPT (MUST HAVE)              -->
+    <!-- THEME TOGGLE SCRIPT                          -->
     <!-- ============================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) {
                 themeToggle.addEventListener('click', function() {
-                    // This assumes theme.js provides toggleTheme() function
+                    // Uses the toggleTheme function from theme.js
                     if (typeof toggleTheme === 'function') {
                         toggleTheme();
                     } else {
-                        // Fallback: manually toggle data-theme
+                        // Fallback
                         const html = document.documentElement;
                         const current = html.getAttribute('data-theme');
                         const next = current === 'light' ? 'dark' : 'light';
