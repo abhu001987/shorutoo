@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge - Shoruto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="theme.css">
+    <script src="theme.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-0, #05060C);
+            color: var(--text, #EAF0FF);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        :root {
+            --bg-0: #05060C;
+            --panel: rgba(255,255,255,0.045);
+            --border: rgba(255,255,255,0.09);
+            --blue: #3E7BFA;
+            --blue-soft: rgba(62,123,250,0.35);
+            --text: #EAF0FF;
+            --text-dim: #8993B8;
+            --text-dimmer: #5C6788;
+            --input-bg: rgba(255,255,255,0.04);
+            --mint: #34D399;
+        }
+        [data-theme="light"] {
+            --bg-0: #F0F4F8;
+            --panel: rgba(255,255,255,0.7);
+            --border: rgba(0,0,0,0.08);
+            --blue: #5B7FFF;
+            --blue-soft: rgba(91,127,255,0.12);
+            --text: #0F172A;
+            --text-dim: #475569;
+            --text-dimmer: #94A3B8;
+            --input-bg: rgba(0,0,0,0.04);
+        }
+        [data-theme="light"] body {
+            background: linear-gradient(135deg, #D6E4FF 0%, #E8D5FF 40%, #D5F5E3 100%);
+        }
+
+        .challenge-box {
+            max-width: 600px;
+            width: 100%;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px 32px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .header .challenger {
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+        .header .challenger strong {
+            color: var(--text);
+        }
+        .header .target {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--amber, #FFB84D);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--mint));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .question-number {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dimmer);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .option {
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .option:hover {
+            border-color: var(--blue);
+            background: var(--blue-soft);
+        }
+        .option .letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+            color: var(--text-dim);
+        }
+        .option.selected {
+            border-color: var(--blue);
+            background: var(--blue-soft);
+        }
+        .option.selected .letter {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--blue), #A78BFA);
+            color: #fff;
+        }
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(91, 127, 255, 0.35);
+        }
+        .next-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .question-counter {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .challenge-box { padding: 24px 16px; }
+            .question-text { font-size: 17px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="challenge-box">
+    <div class="header">
+        <div class="challenger">
+            ⚔️ Challenge from <strong id="challengerName">Rahul</strong>
+        </div>
+        <div class="target" id="targetScore">🎯 Beat: 82%</div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="fill" id="progressFill" style="width: 50%"></div>
+    </div>
+
+    <div class="question-number" id="questionNum">Question 1 of 2</div>
+    <div class="question-text" id="questionText">
+        What is the primary objective of the Jal Jeevan Mission?
+    </div>
+
+    <div class="options" id="optionsContainer">
+        <div class="option" onclick="selectOption(this)" data-index="0">
+            <span class="letter">A</span>
+            Provide water to urban areas
+        </div>
+        <div class="option" onclick="selectOption(this)" data-index="1">
+            <span class="letter">B</span>
+            Provide safe tap water to every rural household
+        </div>
+        <div class="option" onclick="selectOption(this)" data-index="2">
+            <span class="letter">C</span>
+            Build dams and reservoirs
+        </div>
+        <div class="option" onclick="selectOption(this)" data-index="3">
+            <span class="letter">D</span>
+            Create irrigation canals
+        </div>
+    </div>
+
+    <button class="next-btn" id="nextBtn" disabled>Next Question →</button>
+    <div class="question-counter" id="questionCounter">1 of 2</div>
+</div>
+
+<script>
+    // Sample questions data
+    const questions = [
+        {
+            question: "What is the primary objective of the Jal Jeevan Mission?",
+            options: [
+                "Provide water to urban areas",
+                "Provide safe tap water to every rural household",
+                "Build dams and reservoirs",
+                "Create irrigation canals"
+            ],
+            correct: 1
+        },
+        {
+            question: "When was the Jal Jeevan Mission launched?",
+            options: [
+                "2015",
+                "2017",
+                "2019",
+                "2021"
+            ],
+            correct: 2
+        }
+    ];
+
+    let currentQuestion = 0;
+    let selectedAnswers = [];
+    let totalQuestions = questions.length;
+
+    // Get URL params
+    function getParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            challenger: params.get('challenger') || 'Rahul',
+            targetScore: params.get('targetScore') || '82'
+        };
+    }
+
+    // Load question
+    function loadQuestion(index) {
+        const q = questions[index];
+        document.getElementById('questionNum').textContent = `Question ${index + 1} of ${totalQuestions}`;
+        document.getElementById('questionText').textContent = q.question;
+        document.getElementById('questionCounter').textContent = `${index + 1} of ${totalQuestions}`;
+        
+        // Update progress
+        const progress = ((index) / totalQuestions) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+
+        // Load options
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.setAttribute('data-index', i);
+            div.innerHTML = `<span class="letter">${letters[i]}</span> ${opt}`;
+            div.onclick = function() { selectOption(this); };
+            container.appendChild(div);
+        });
+
+        // Reset button
+        document.getElementById('nextBtn').disabled = true;
+        document.getElementById('nextBtn').textContent = index === totalQuestions - 1 ? '📊 View Results' : 'Next Question →';
+    }
+
+    function selectOption(el) {
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('nextBtn').disabled = false;
+        selectedAnswers[currentQuestion] = parseInt(el.dataset.index);
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', function() {
+        if (currentQuestion < totalQuestions - 1) {
+            currentQuestion++;
+            loadQuestion(currentQuestion);
+        } else {
+            // Calculate score
+            let correct = 0;
+            questions.forEach((q, i) => {
+                if (selectedAnswers[i] === q.correct) correct++;
+            });
+            const score = Math.round((correct / totalQuestions) * 100);
+            
+            // Get params
+            const params = getParams();
+            
+            // Navigate to result page with scores
+            window.location.href = `challenge-result.html?challenger=${params.challenger}&yourScore=${score}&friendScore=${params.targetScore}`;
+        }
+    });
+
+    // Load first question
+    const params = getParams();
+    document.getElementById('challengerName').textContent = params.challenger;
+    document.getElementById('targetScore').textContent = `🎯 Beat: ${params.targetScore}%`;
+    loadQuestion(0);
+</script>
+
+</body>
+</html>
