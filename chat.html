@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Shoruto Chat</title>
+
   <style>
     /* ===== RESET & BASE ===== */
     * {
@@ -18,31 +19,49 @@
       color: #EAF0FF;
       height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
-    /* ===== GLASSMORPHISM VARIABLES ===== */
+    /* ===== ANIMATED GLASS BACKGROUND ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(91, 127, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(139, 124, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(91, 127, 255, 0.03) 0%, transparent 70%);
+      animation: floatBg 20s ease-in-out infinite alternate;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes floatBg {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(2%, 2%) rotate(3deg); }
+    }
+
+    /* ===== GLASSMORPHISM CORE ===== */
     :root {
-      --bg-deep: #05060C;
-      --glass-bg: rgba(255, 255, 255, 0.04);
+      --glass-bg: rgba(255, 255, 255, 0.03);
       --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-      --glass-blur: blur(14px);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --glass-blur: blur(16px);
       --blue: #5B7FFF;
       --violet: #8B7CFF;
       --mint: #34D399;
-      --amber: #FFB84D;
       --text: #EAF0FF;
       --text-dim: #A8B2D9;
       --text-dimmer: #5C6788;
-      --radius-lg: 24px;
-      --radius-md: 16px;
-      --radius-sm: 40px;
     }
 
     /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--text-dimmer); border-radius: 8px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 8px; }
 
     /* ===== APP LAYOUT ===== */
     #app {
@@ -50,13 +69,13 @@
       flex-direction: column;
       height: 100vh;
       max-width: 100%;
-      background: var(--bg-deep);
       position: relative;
+      z-index: 1;
     }
 
     /* ===== GLASS HEADER ===== */
     #header {
-      padding: 14px 24px;
+      padding: 16px 28px;
       background: var(--glass-bg);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -66,21 +85,23 @@
       justify-content: space-between;
       flex-shrink: 0;
       box-shadow: var(--glass-shadow);
+      position: relative;
+      z-index: 10;
     }
 
-    /* ---- LOGO (svg + text replaced by pure logo) ---- */
+    /* ---- LOGO ---- */
     .logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-decoration: none;
       color: var(--text);
     }
     .logo .mark svg {
       display: block;
-      width: 40px;
-      height: 40px;
-      filter: drop-shadow(0 0 6px rgba(91, 127, 255, 0.3));
+      width: 38px;
+      height: 38px;
+      filter: drop-shadow(0 0 12px rgba(91, 127, 255, 0.2));
     }
     .logo .mark {
       line-height: 0;
@@ -98,8 +119,8 @@
       font-size: 13px;
       color: var(--text-dim);
       background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(4px);
-      padding: 6px 18px;
+      backdrop-filter: blur(8px);
+      padding: 6px 20px;
       border-radius: 40px;
       border: 1px solid var(--glass-border);
       font-weight: 500;
@@ -114,28 +135,45 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: var(--bg-deep);
+      background: rgba(5, 6, 12, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 28px;
+    }
+
+    #name-form .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+      padding: 48px 40px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 24px;
-      backdrop-filter: blur(2px);
+      max-width: 440px;
+      width: 90%;
     }
 
     #name-form .logo-big {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
     }
     #name-form .logo-big .mark svg {
       width: 72px;
       height: 72px;
-      filter: drop-shadow(0 0 20px rgba(91, 127, 255, 0.25));
+      filter: drop-shadow(0 0 30px rgba(91, 127, 255, 0.2));
     }
     #name-form .logo-big .brand {
-      font-size: 34px;
+      font-size: 36px;
       font-weight: 700;
       background: linear-gradient(135deg, var(--blue), var(--violet));
       -webkit-background-clip: text;
@@ -147,33 +185,50 @@
       color: var(--text-dim);
       font-size: 15px;
       text-align: center;
-      max-width: 340px;
       line-height: 1.6;
       font-weight: 400;
     }
 
     #name-input {
-      width: 340px;
-      max-width: 90vw;
+      width: 100%;
       padding: 16px 24px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.04);
+      border-radius: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(8px);
       color: var(--text);
       font-size: 16px;
       outline: none;
-      transition: border-color 0.25s, box-shadow 0.25s;
+      transition: all 0.3s;
       text-align: center;
       font-weight: 500;
     }
     #name-input:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(91, 127, 255, 0.15);
+      box-shadow: 0 0 0 4px rgba(91, 127, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
     }
     #name-input::placeholder {
       color: var(--text-dimmer);
       font-weight: 400;
+    }
+
+    #name-form .join-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 40px;
+      border: none;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(91, 127, 255, 0.2);
+    }
+    #name-form .join-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 32px rgba(91, 127, 255, 0.3);
     }
 
     /* ===== CHAT WRAPPER ===== */
@@ -181,106 +236,118 @@
       display: flex;
       flex: 1;
       overflow: hidden;
+      position: relative;
     }
 
-    /* ===== CHATLOG (Glass messages) ===== */
+    /* ===== CHATLOG ===== */
     #chatlog {
       flex: 1;
       overflow-y: auto;
-      padding: 20px 24px;
+      padding: 24px 28px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       scroll-behavior: smooth;
-      background: radial-gradient(circle at 20% 30%, rgba(91, 127, 255, 0.03), transparent 60%);
     }
 
+    /* ===== GLASS MESSAGES ===== */
     #chatlog .message {
-      padding: 12px 20px;
-      border-radius: var(--radius-md);
-      max-width: 78%;
+      padding: 14px 22px;
+      border-radius: 20px;
+      max-width: 75%;
       word-wrap: break-word;
-      line-height: 1.5;
+      line-height: 1.6;
       font-size: 15px;
-      animation: fadeSlide 0.2s ease;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      animation: glassIn 0.3s ease;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s;
     }
 
     #chatlog .message.self {
-      background: rgba(91, 127, 255, 0.22);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(91, 127, 255, 0.2);
+      background: rgba(91, 127, 255, 0.15);
+      border: 1px solid rgba(91, 127, 255, 0.15);
       color: #fff;
       align-self: flex-end;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 4px 16px rgba(91, 127, 255, 0.15);
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 8px 24px rgba(91, 127, 255, 0.1);
     }
 
     #chatlog .message.other {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.06);
       color: var(--text);
       align-self: flex-start;
-      border-bottom-left-radius: 4px;
+      border-bottom-left-radius: 6px;
     }
 
     #chatlog .message .username {
       font-weight: 600;
       font-size: 13px;
       display: block;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       color: var(--violet);
       letter-spacing: 0.2px;
     }
     #chatlog .message.self .username {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.6);
     }
 
     #chatlog .system-msg {
       color: var(--text-dim);
       font-size: 13px;
       text-align: center;
-      padding: 10px 0;
+      padding: 12px 0;
       font-style: italic;
-      opacity: 0.7;
+      opacity: 0.6;
       letter-spacing: 0.3px;
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(4px);
+      border-radius: 40px;
+      margin: 0 auto;
+      padding: 6px 20px;
     }
 
     #chatlog .spacer {
       flex: 1;
     }
 
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes glassIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     /* ===== ROSTER (Glass) ===== */
     #roster {
-      width: 210px;
-      padding: 20px 16px;
-      border-left: 1px solid var(--glass-border);
+      width: 220px;
+      padding: 24px 18px;
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
       overflow-y: auto;
       flex-shrink: 0;
       display: none;
       background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
     }
 
     #roster .roster-title {
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       color: var(--text-dimmer);
       margin-bottom: 16px;
       font-weight: 600;
     }
 
     #roster .roster-user {
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 40px;
       font-size: 14px;
       color: var(--text-dim);
@@ -288,12 +355,14 @@
       align-items: center;
       gap: 10px;
       background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(4px);
       margin-bottom: 4px;
-      transition: background 0.2s;
+      transition: all 0.2s;
+      border: 1px solid transparent;
     }
     #roster .roster-user:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.05);
     }
     #roster .roster-user .dot {
       width: 8px;
@@ -301,7 +370,13 @@
       border-radius: 50%;
       background: var(--mint);
       display: inline-block;
-      box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
     }
 
     @media(min-width: 768px) {
@@ -311,32 +386,35 @@
     /* ===== INPUT BAR (Glass) ===== */
     #input-bar {
       display: flex;
-      gap: 12px;
-      padding: 16px 24px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border-top: 1px solid var(--glass-border);
+      gap: 14px;
+      padding: 18px 28px;
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
       flex-shrink: 0;
-      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 5;
     }
 
     #chat-input {
       flex: 1;
-      padding: 14px 22px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--glass-border);
+      padding: 14px 24px;
+      border-radius: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(8px);
       color: var(--text);
       font-size: 16px;
       outline: none;
-      transition: border-color 0.25s, box-shadow 0.25s;
+      transition: all 0.3s;
       min-width: 0;
     }
     #chat-input:focus {
       border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(91, 127, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(91, 127, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
     }
     #chat-input::placeholder {
       color: var(--text-dimmer);
@@ -344,55 +422,56 @@
     }
 
     #send-btn {
-      padding: 14px 28px;
-      border-radius: var(--radius-sm);
+      padding: 14px 32px;
+      border-radius: 40px;
       border: none;
       background: linear-gradient(135deg, var(--blue), var(--violet));
       color: #fff;
       font-weight: 600;
       font-size: 15px;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.25s;
+      transition: all 0.3s;
       flex-shrink: 0;
       white-space: nowrap;
-      box-shadow: 0 4px 16px rgba(91, 127, 255, 0.2);
+      box-shadow: 0 4px 20px rgba(91, 127, 255, 0.2);
       letter-spacing: 0.3px;
     }
     #send-btn:hover {
-      transform: scale(1.03);
-      box-shadow: 0 8px 28px rgba(91, 127, 255, 0.35);
+      transform: scale(1.04);
+      box-shadow: 0 8px 32px rgba(91, 127, 255, 0.35);
     }
     #send-btn:active {
       transform: scale(0.95);
     }
 
     /* ===== MOBILE RESPONSIVE ===== */
-    @media(max-width: 600px) {
+    @media(max-width: 768px) {
       #header { padding: 12px 16px; }
-      .logo .mark svg { width: 32px; height: 32px; }
+      .logo .mark svg { width: 30px; height: 30px; }
       .logo span:last-child { font-size: 18px; }
-      #header .room-name { font-size: 11px; padding: 4px 12px; }
+      #header .room-name { font-size: 11px; padding: 4px 14px; }
 
       #input-bar { padding: 12px 14px; gap: 8px; }
       #chat-input { font-size: 15px; padding: 12px 16px; }
-      #send-btn { padding: 12px 18px; font-size: 13px; }
+      #send-btn { padding: 12px 20px; font-size: 13px; }
 
-      #chatlog { padding: 14px 12px; }
-      #chatlog .message { max-width: 92%; font-size: 14px; padding: 10px 14px; }
+      #chatlog { padding: 16px 14px; }
+      #chatlog .message { max-width: 90%; font-size: 14px; padding: 10px 16px; }
 
-      #name-input { width: 90vw; font-size: 16px; padding: 14px 18px; }
+      #name-form .glass-card { padding: 32px 24px; }
       #name-form .logo-big .mark svg { width: 56px; height: 56px; }
       #name-form .logo-big .brand { font-size: 28px; }
 
-      #roster { width: 140px; padding: 12px 8px; }
+      #roster { width: 140px; padding: 16px 10px; }
       #roster .roster-user { font-size: 12px; padding: 6px 10px; }
     }
 
     @media(max-width: 400px) {
       #input-bar { padding: 10px 10px; gap: 6px; }
       #chat-input { font-size: 14px; padding: 10px 12px; }
-      #send-btn { padding: 10px 14px; font-size: 12px; }
+      #send-btn { padding: 10px 16px; font-size: 12px; }
       #chatlog .message { font-size: 13px; }
+      #name-form .glass-card { padding: 24px 16px; }
     }
   </style>
 </head>
@@ -400,26 +479,29 @@
 
   <!-- ===== LOGIN FORM (Glass) ===== -->
   <form id="name-form">
-    <div class="logo-big">
-      <span class="mark">
-        <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="30" cy="28" r="22"/>
-          <circle cx="12" cy="10" r="7"/>
-          <circle cx="48" cy="10" r="7"/>
-          <circle cx="22" cy="25" r="4.5"/>
-          <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-          <circle cx="38" cy="25" r="4.5"/>
-          <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-          <path d="M27 33 L30 37 L33 33"/>
-          <path d="M26 38 Q30 43 34 38"/>
-          <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-          <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-        </svg>
-      </span>
-      <span class="brand">Shoruto</span>
+    <div class="glass-card">
+      <div class="logo-big">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="brand">Shoruto</span>
+      </div>
+      <p>Enter your name to join the conversation</p>
+      <input id="name-input" placeholder="Your name" autofocus />
+      <button type="submit" class="join-btn">Join Chat</button>
     </div>
-    <p>Enter your name to join the conversation</p>
-    <input id="name-input" placeholder="Your name" autofocus />
   </form>
 
   <!-- ===== MAIN APP ===== -->
@@ -467,7 +549,7 @@
   </div>
 
   <!-- ============================================================ -->
-  <!-- JAVASCRIPT (unchanged logic, only UI updated) -->
+  <!-- JAVASCRIPT (unchanged logic) -->
   <script>
     // --- DOM refs ---
     const nameForm = document.getElementById('name-form');
