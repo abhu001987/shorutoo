@@ -36,7 +36,7 @@
     /* ---- FULL WIDTH - NO LEFT/RIGHT SPACING ---- */
     .page-content {
       flex: 1;
-      padding: 40px 60px;
+      padding: 0;
       max-width: 100%;
       margin: 0;
       width: 100%;
@@ -55,65 +55,75 @@
       flex-shrink: 0;
     }
 
-    /* ---- NO CARD - Just clean text ---- */
-    .privacy-content h1 {
+    /* ---- Glass Card - Full Width ---- */
+    .privacy-card {
+      background: var(--panel);
+      border: none;
+      border-radius: 0;
+      backdrop-filter: blur(10px);
+      padding: 50px 60px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+      width: 100%;
+    }
+
+    .privacy-card h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 42px;
+      font-size: 38px;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 8px;
       letter-spacing: -0.3px;
     }
 
-    .privacy-content .last-updated {
+    .privacy-card .last-updated {
       color: var(--text-dimmer);
-      font-size: 14px;
+      font-size: 13px;
       margin-bottom: 28px;
       display: block;
     }
 
-    .privacy-content h2 {
+    .privacy-card h2 {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
-      font-size: 22px;
-      margin: 34px 0 12px;
+      font-size: 20px;
+      margin: 32px 0 12px;
       color: var(--text);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .privacy-content h2 .ic {
+    .privacy-card h2 .ic {
       color: var(--blue);
       width: 1.2em;
       height: 1.2em;
     }
 
-    .privacy-content p {
+    .privacy-card p {
       color: var(--text-dim);
-      font-size: 17px;
+      font-size: 16px;
       line-height: 1.8;
       margin-bottom: 14px;
     }
 
-    .privacy-content ul {
+    .privacy-card ul {
       padding-left: 28px;
       margin: 10px 0 18px;
       color: var(--text-dim);
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.8;
     }
 
-    .privacy-content ul li {
+    .privacy-card ul li {
       margin-bottom: 6px;
     }
 
-    .privacy-content strong {
+    .privacy-card strong {
       color: var(--text);
       font-weight: 600;
     }
 
-    .privacy-content .highlight-box {
+    .privacy-card .highlight-box {
       background: var(--panel-strong);
       border-left: 4px solid var(--blue);
       padding: 18px 24px;
@@ -121,17 +131,17 @@
       margin: 20px 0;
     }
 
-    .privacy-content .highlight-box p {
+    .privacy-card .highlight-box p {
       margin-bottom: 0;
       color: var(--text-dim);
     }
 
-    .privacy-content .highlight-box.violet {
+    .privacy-card .highlight-box.violet {
       border-left-color: var(--violet);
     }
 
     .footer-link {
-      margin-top: 32px;
+      margin-top: 28px;
       padding-top: 18px;
       border-top: 1px solid var(--border);
       display: flex;
@@ -161,7 +171,7 @@
     }
 
     /* ============================================ */
-    /* HEADER - Only Logo + Theme Toggle           */
+    /* HEADER - Logo + "Shoruto" Text + ThemeToggle */
     /* ============================================ */
     .nav {
       position: fixed;
@@ -188,19 +198,19 @@
       gap: 16px;
     }
 
-    /* LOGO - Only round icon, no text */
+    /* LOGO - Round icon + "Shoruto" text */
     .logo {
       display: flex;
       align-items: center;
-      gap: 0;
+      gap: 10px;
       text-decoration: none;
       flex-shrink: 0;
     }
 
     .logo .mark {
       display: inline-flex;
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
     }
 
     .logo .mark svg {
@@ -209,10 +219,14 @@
     }
 
     .logo .logo-text {
-      display: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
     }
 
-    /* Hide navigation links */
+    /* NAVIGATION LINKS - COMPLETELY REMOVED */
     .nav-links {
       display: none;
     }
@@ -297,30 +311,34 @@
         padding-top: 72px;
       }
 
-      .page-content {
+      .privacy-card {
         padding: 24px 20px;
       }
 
-      .privacy-content h1 {
+      .privacy-card h1 {
         font-size: 28px;
       }
 
-      .privacy-content h2 {
+      .privacy-card h2 {
         font-size: 18px;
       }
 
-      .privacy-content p {
+      .privacy-card p {
         font-size: 15px;
       }
 
-      .privacy-content ul {
+      .privacy-card ul {
         font-size: 14px;
         padding-left: 20px;
       }
 
       .logo .mark {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
+      }
+
+      .logo .logo-text {
+        font-size: 18px;
       }
 
       .theme-toggle {
@@ -340,8 +358,8 @@
     }
 
     @media (min-width: 769px) and (max-width: 1200px) {
-      .page-content {
-        padding: 32px 40px;
+      .privacy-card {
+        padding: 36px 40px;
       }
     }
   </style>
@@ -349,11 +367,11 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER - Only Logo + Theme Toggle           -->
+  <!-- HEADER - Logo + "Shoruto" + Theme Toggle    -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="nav-inner">
-      <!-- LOGO (round only, no text) -->
+      <!-- LOGO with "Shoruto" text -->
       <a href="index.html" class="logo">
         <span class="mark">
           <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -373,7 +391,7 @@
         <span class="logo-text">Shoruto</span>
       </a>
 
-      <!-- NAVIGATION LINKS - REMOVED -->
+      <!-- NAVIGATION LINKS - REMOVED (empty) -->
       <div class="nav-links"></div>
 
       <!-- THEME TOGGLE -->
@@ -388,10 +406,10 @@
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- PRIVACY POLICY - NO CARD, JUST TEXT         -->
+  <!-- PRIVACY POLICY - FULL WIDTH GLASS CARD      -->
   <!-- ============================================ -->
   <main class="page-content">
-    <div class="privacy-content fade-in">
+    <div class="privacy-card fade-in">
       <h1>Privacy Policy</h1>
       <span class="last-updated">Last updated: July 10, 2026</span>
 
