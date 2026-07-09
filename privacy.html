@@ -36,7 +36,7 @@
     /* ---- FULL WIDTH - NO LEFT/RIGHT SPACING ---- */
     .page-content {
       flex: 1;
-      padding: 0;
+      padding: 40px 60px;
       max-width: 100%;
       margin: 0;
       width: 100%;
@@ -55,75 +55,65 @@
       flex-shrink: 0;
     }
 
-    /* ---- Privacy Card - Full Width ---- */
-    .privacy-card {
-      background: var(--panel);
-      border: none;
-      border-radius: 0;
-      backdrop-filter: blur(10px);
-      padding: 50px 60px;
-      transition: border-color 0.25s ease, transform 0.25s ease;
-      width: 100%;
-    }
-
-    .privacy-card h1 {
+    /* ---- NO CARD - Just clean text ---- */
+    .privacy-content h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 38px;
+      font-size: 42px;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 8px;
       letter-spacing: -0.3px;
     }
 
-    .privacy-card .last-updated {
+    .privacy-content .last-updated {
       color: var(--text-dimmer);
-      font-size: 13px;
+      font-size: 14px;
       margin-bottom: 28px;
       display: block;
     }
 
-    .privacy-card h2 {
+    .privacy-content h2 {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
-      font-size: 20px;
-      margin: 32px 0 12px;
+      font-size: 22px;
+      margin: 34px 0 12px;
       color: var(--text);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .privacy-card h2 .ic {
+    .privacy-content h2 .ic {
       color: var(--blue);
       width: 1.2em;
       height: 1.2em;
     }
 
-    .privacy-card p {
+    .privacy-content p {
       color: var(--text-dim);
-      font-size: 16px;
+      font-size: 17px;
       line-height: 1.8;
       margin-bottom: 14px;
     }
 
-    .privacy-card ul {
+    .privacy-content ul {
       padding-left: 28px;
       margin: 10px 0 18px;
       color: var(--text-dim);
-      font-size: 15px;
+      font-size: 16px;
       line-height: 1.8;
     }
 
-    .privacy-card ul li {
+    .privacy-content ul li {
       margin-bottom: 6px;
     }
 
-    .privacy-card strong {
+    .privacy-content strong {
       color: var(--text);
       font-weight: 600;
     }
 
-    .privacy-card .highlight-box {
+    .privacy-content .highlight-box {
       background: var(--panel-strong);
       border-left: 4px solid var(--blue);
       padding: 18px 24px;
@@ -131,17 +121,17 @@
       margin: 20px 0;
     }
 
-    .privacy-card .highlight-box p {
+    .privacy-content .highlight-box p {
       margin-bottom: 0;
       color: var(--text-dim);
     }
 
-    .privacy-card .highlight-box.violet {
+    .privacy-content .highlight-box.violet {
       border-left-color: var(--violet);
     }
 
     .footer-link {
-      margin-top: 28px;
+      margin-top: 32px;
       padding-top: 18px;
       border-top: 1px solid var(--border);
       display: flex;
@@ -307,23 +297,23 @@
         padding-top: 72px;
       }
 
-      .privacy-card {
+      .page-content {
         padding: 24px 20px;
       }
 
-      .privacy-card h1 {
+      .privacy-content h1 {
         font-size: 28px;
       }
 
-      .privacy-card h2 {
+      .privacy-content h2 {
         font-size: 18px;
       }
 
-      .privacy-card p {
+      .privacy-content p {
         font-size: 15px;
       }
 
-      .privacy-card ul {
+      .privacy-content ul {
         font-size: 14px;
         padding-left: 20px;
       }
@@ -350,8 +340,8 @@
     }
 
     @media (min-width: 769px) and (max-width: 1200px) {
-      .privacy-card {
-        padding: 36px 40px;
+      .page-content {
+        padding: 32px 40px;
       }
     }
   </style>
@@ -398,10 +388,10 @@
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- PRIVACY POLICY - FULL WIDTH                 -->
+  <!-- PRIVACY POLICY - NO CARD, JUST TEXT         -->
   <!-- ============================================ -->
   <main class="page-content">
-    <div class="privacy-card fade-in">
+    <div class="privacy-content fade-in">
       <h1>Privacy Policy</h1>
       <span class="last-updated">Last updated: July 10, 2026</span>
 
