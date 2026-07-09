@@ -228,7 +228,7 @@
     <div class="challenger-info">
         <div class="challenger-avatar" id="challengerInitial">R</div>
         <div class="challenger-name">
-            <span id="challengerName">Rahul</span> <span>challenged you!</span>
+            <span id="challengerName">Friend</span> <span>challenged you!</span>
         </div>
     </div>
 
@@ -238,15 +238,15 @@
 
     <div class="challenger-score">
         <div class="label">🎯 Score to Beat</div>
-        <div class="score-number" id="challengerScore">82%</div>
-        <div class="score-label">by <span id="challengerName2">Rahul</span></div>
-        <div class="beat-text">💪 Can you beat <strong id="challengerName3">Rahul's</strong> score?</div>
+        <div class="score-number" id="challengerScore">--%</div>
+        <div class="score-label">by <span id="challengerName2">Friend</span></div>
+        <div class="beat-text">💪 Can you beat <strong id="challengerName3">Friend's</strong> score?</div>
     </div>
 
     <div class="topic-box">
         <div class="label">📚 Topic</div>
-        <div class="topic-name" id="topicName">Jal Jeevan Mission</div>
-        <span class="topic-tag" id="topicTag">Government Scheme</span>
+        <div class="topic-name" id="topicName">Loading...</div>
+        <span class="topic-tag" id="topicTag">Topic</span>
     </div>
 
     <button class="btn-accept" onclick="acceptChallenge()">
@@ -262,21 +262,31 @@
     function getChallengeData() {
         const params = new URLSearchParams(window.location.search);
         return {
-            challenger: params.get('challenger') || 'Rahul',
-            score: params.get('score') || '82',
+            challenger: params.get('challenger') || 'Friend',
+            score: params.get('score') || '--',
             topic: params.get('topic') || 'Jal-Jeevan-Mission'
         };
     }
 
     function displayChallenge() {
         const data = getChallengeData();
+        const score = data.score;
+        
         document.getElementById('challengerName').textContent = data.challenger;
         document.getElementById('challengerName2').textContent = data.challenger;
         document.getElementById('challengerName3').textContent = data.challenger + "'s";
-        document.getElementById('challengerScore').textContent = data.score + '%';
+        document.getElementById('challengerScore').textContent = score + '%';
         document.getElementById('challengerInitial').textContent = data.challenger.charAt(0);
+        
         const topicDisplay = data.topic.replace(/-/g, ' ');
         document.getElementById('topicName').textContent = topicDisplay;
+        document.getElementById('topicTag').textContent = 'Challenge';
+        
+        // If no score, show error
+        if (score === '--') {
+            document.getElementById('challengerScore').textContent = '?%';
+            document.getElementById('challengerScore').style.color = 'var(--text-dimmer)';
+        }
     }
 
     function acceptChallenge() {
