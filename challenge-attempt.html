@@ -31,6 +31,7 @@
             --text-dimmer: #5C6788;
             --input-bg: rgba(255,255,255,0.04);
             --mint: #34D399;
+            --amber: #FFB84D;
         }
         [data-theme="light"] {
             --bg-0: #F0F4F8;
@@ -76,7 +77,7 @@
         .header .target {
             font-size: 13px;
             font-weight: 600;
-            color: var(--amber, #FFB84D);
+            color: var(--amber);
         }
 
         .progress-bar {
@@ -196,7 +197,7 @@
 <div class="challenge-box">
     <div class="header">
         <div class="challenger">
-            ⚔️ Challenge from <strong id="challengerName">Rahul</strong>
+            ⚔️ Challenge from <strong id="challengerName">Friend</strong>
         </div>
         <div class="target" id="targetScore">🎯 Beat: 82%</div>
     </div>
@@ -266,8 +267,9 @@
     function getParams() {
         const params = new URLSearchParams(window.location.search);
         return {
-            challenger: params.get('challenger') || 'Rahul',
-            targetScore: params.get('targetScore') || '82'
+            challenger: params.get('challenger') || 'Friend',
+            targetScore: params.get('targetScore') || '82',
+            topic: params.get('topic') || 'Jal-Jeevan-Mission'
         };
     }
 
@@ -307,12 +309,13 @@
         selectedAnswers[currentQuestion] = parseInt(el.dataset.index);
     }
 
+    // Calculate REAL score and redirect
     document.getElementById('nextBtn').addEventListener('click', function() {
         if (currentQuestion < totalQuestions - 1) {
             currentQuestion++;
             loadQuestion(currentQuestion);
         } else {
-            // Calculate score
+            // Calculate REAL score based on answers
             let correct = 0;
             questions.forEach((q, i) => {
                 if (selectedAnswers[i] === q.correct) correct++;
@@ -321,9 +324,11 @@
             
             // Get params
             const params = getParams();
+            const topic = params.topic || 'Jal-Jeevan-Mission';
+            const challenger = params.challenger || 'You';
             
-            // Navigate to result page with scores
-            window.location.href = `challenge-result.html?challenger=${params.challenger}&yourScore=${score}&friendScore=${params.targetScore}`;
+            // Redirect with REAL score
+            window.location.href = `challenge-complete.html?score=${score}&topic=${topic}&challenger=${encodeURIComponent(challenger)}`;
         }
     });
 
