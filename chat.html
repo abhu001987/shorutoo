@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Shortu Chat</title>
-
+  <title>Shoruto Chat</title>
   <style>
-    /* ===== RESET ===== */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #05060C;
@@ -16,347 +20,431 @@
       overflow: hidden;
     }
 
-    /* ===== VARIABLES (Dark Theme) ===== */
+    /* ===== GLASSMORPHISM VARIABLES ===== */
     :root {
-      --bg-0: #05060C;
-      --bg-1: #0A0D1B;
-      --panel: rgba(255, 255, 255, 0.045);
-      --panel-strong: rgba(255, 255, 255, 0.08);
-      --border: rgba(255, 255, 255, 0.09);
-      --blue: #3E7BFA;
-      --blue-soft: rgba(62, 123, 250, 0.35);
+      --bg-deep: #05060C;
+      --glass-bg: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      --glass-blur: blur(14px);
+      --blue: #5B7FFF;
       --violet: #8B7CFF;
       --mint: #34D399;
       --amber: #FFB84D;
       --text: #EAF0FF;
-      --text-dim: #8993B8;
+      --text-dim: #A8B2D9;
       --text-dimmer: #5C6788;
-      --radius: 14px;
-      --nav-bg: rgba(5, 6, 12, 0.7);
-      --card-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
-      --input-bg: rgba(255, 255, 255, 0.04);
-      --glow-1: rgba(62, 123, 250, 0.18);
-      --glow-2: rgba(139, 124, 255, 0.14);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 40px;
     }
 
-    /* ===== LAYOUT ===== */
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-dimmer); border-radius: 8px; }
+
+    /* ===== APP LAYOUT ===== */
     #app {
       display: flex;
       flex-direction: column;
       height: 100vh;
       max-width: 100%;
-      background: var(--bg-0);
+      background: var(--bg-deep);
+      position: relative;
     }
 
-    /* ===== HEADER ===== */
+    /* ===== GLASS HEADER ===== */
     #header {
-      padding: 16px 24px;
-      background: var(--nav-bg);
-      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--glass-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-shrink: 0;
-      backdrop-filter: blur(12px);
+      box-shadow: var(--glass-shadow);
     }
-    #header h1 {
-      font-size: 20px;
+
+    /* ---- LOGO (svg + text replaced by pure logo) ---- */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .logo .mark svg {
+      display: block;
+      width: 40px;
+      height: 40px;
+      filter: drop-shadow(0 0 6px rgba(91, 127, 255, 0.3));
+    }
+    .logo .mark {
+      line-height: 0;
+    }
+    .logo span:last-child {
+      font-size: 22px;
       font-weight: 700;
       background: linear-gradient(135deg, var(--blue), var(--violet));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: -0.3px;
     }
+
     #header .room-name {
       font-size: 13px;
       color: var(--text-dim);
-      background: var(--panel-strong);
-      padding: 4px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(4px);
+      padding: 6px 18px;
+      border-radius: 40px;
+      border: 1px solid var(--glass-border);
+      font-weight: 500;
+      letter-spacing: 0.3px;
     }
 
-    /* ===== NAME FORM (Login) ===== */
+    /* ===== LOGIN FORM (Glass) ===== */
     #name-form {
       position: fixed;
-      z-index: 10;
+      z-index: 20;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: var(--bg-0);
+      background: var(--bg-deep);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 24px;
+      backdrop-filter: blur(2px);
     }
-    #name-form h1 {
-      font-size: 32px;
+
+    #name-form .logo-big {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    #name-form .logo-big .mark svg {
+      width: 72px;
+      height: 72px;
+      filter: drop-shadow(0 0 20px rgba(91, 127, 255, 0.25));
+    }
+    #name-form .logo-big .brand {
+      font-size: 34px;
       font-weight: 700;
       background: linear-gradient(135deg, var(--blue), var(--violet));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
+
     #name-form p {
       color: var(--text-dim);
       font-size: 15px;
       text-align: center;
       max-width: 340px;
       line-height: 1.6;
+      font-weight: 400;
     }
+
     #name-input {
-      width: 320px;
+      width: 340px;
       max-width: 90vw;
-      padding: 14px 20px;
-      border-radius: 40px;
-      border: 2px solid var(--border);
-      background: var(--input-bg);
+      padding: 16px 24px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
       color: var(--text);
       font-size: 16px;
       outline: none;
-      transition: border-color 0.3s;
+      transition: border-color 0.25s, box-shadow 0.25s;
       text-align: center;
+      font-weight: 500;
     }
     #name-input:focus {
       border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(91, 127, 255, 0.15);
     }
     #name-input::placeholder {
       color: var(--text-dimmer);
+      font-weight: 400;
     }
 
-    /* ===== CHAT AREA ===== */
+    /* ===== CHAT WRAPPER ===== */
     #chat-wrapper {
       display: flex;
       flex: 1;
       overflow: hidden;
     }
 
+    /* ===== CHATLOG (Glass messages) ===== */
     #chatlog {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 20px;
+      padding: 20px 24px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
       scroll-behavior: smooth;
+      background: radial-gradient(circle at 20% 30%, rgba(91, 127, 255, 0.03), transparent 60%);
     }
+
     #chatlog .message {
-      padding: 10px 16px;
-      border-radius: 12px;
-      max-width: 80%;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      max-width: 78%;
       word-wrap: break-word;
       line-height: 1.5;
       font-size: 15px;
-      animation: fadeIn 0.15s ease;
+      animation: fadeSlide 0.2s ease;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
+
     #chatlog .message.self {
-      background: var(--blue);
+      background: rgba(91, 127, 255, 0.22);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(91, 127, 255, 0.2);
       color: #fff;
       align-self: flex-end;
       border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 16px rgba(91, 127, 255, 0.15);
     }
+
     #chatlog .message.other {
-      background: var(--panel-strong);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       color: var(--text);
       align-self: flex-start;
       border-bottom-left-radius: 4px;
     }
+
     #chatlog .message .username {
       font-weight: 600;
       font-size: 13px;
       display: block;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
       color: var(--violet);
+      letter-spacing: 0.2px;
     }
     #chatlog .message.self .username {
       color: rgba(255, 255, 255, 0.7);
     }
+
     #chatlog .system-msg {
       color: var(--text-dim);
       font-size: 13px;
       text-align: center;
-      padding: 6px 0;
+      padding: 10px 0;
       font-style: italic;
+      opacity: 0.7;
+      letter-spacing: 0.3px;
     }
+
     #chatlog .spacer {
       flex: 1;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== ROSTER (User List) ===== */
+    /* ===== ROSTER (Glass) ===== */
     #roster {
-      width: 200px;
-      padding: 16px;
-      border-left: 1px solid var(--border);
+      width: 210px;
+      padding: 20px 16px;
+      border-left: 1px solid var(--glass-border);
       overflow-y: auto;
       flex-shrink: 0;
       display: none;
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(4px);
     }
+
     #roster .roster-title {
       font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
       color: var(--text-dimmer);
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      font-weight: 600;
     }
+
     #roster .roster-user {
-      padding: 6px 10px;
-      border-radius: 8px;
+      padding: 8px 12px;
+      border-radius: 40px;
       font-size: 14px;
       color: var(--text-dim);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(2px);
+      margin-bottom: 4px;
+      transition: background 0.2s;
+    }
+    #roster .roster-user:hover {
+      background: rgba(255, 255, 255, 0.05);
     }
     #roster .roster-user .dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--mint);
       display: inline-block;
+      box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
     }
 
     @media(min-width: 768px) {
       #roster { display: block; }
     }
 
-    /* ===== INPUT BAR ===== */
+    /* ===== INPUT BAR (Glass) ===== */
     #input-bar {
       display: flex;
-      gap: 10px;
-      padding: 12px 16px;
-      background: var(--nav-bg);
-      border-top: 1px solid var(--border);
+      gap: 12px;
+      padding: 16px 24px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border-top: 1px solid var(--glass-border);
       flex-shrink: 0;
-      backdrop-filter: blur(12px);
-      position: sticky;
-      bottom: 0;
-      z-index: 5;
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.3);
     }
+
     #chat-input {
       flex: 1;
-      padding: 12px 18px;
-      border-radius: 40px;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
+      padding: 14px 22px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(4px);
       color: var(--text);
       font-size: 16px;
       outline: none;
-      transition: border-color 0.3s;
+      transition: border-color 0.25s, box-shadow 0.25s;
       min-width: 0;
     }
     #chat-input:focus {
       border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(91, 127, 255, 0.1);
     }
     #chat-input::placeholder {
       color: var(--text-dimmer);
+      font-weight: 400;
     }
+
     #send-btn {
-      padding: 12px 20px;
-      border-radius: 40px;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
       border: none;
       background: linear-gradient(135deg, var(--blue), var(--violet));
       color: #fff;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 15px;
       cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.3s;
+      transition: transform 0.15s, box-shadow 0.25s;
       flex-shrink: 0;
       white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(91, 127, 255, 0.2);
+      letter-spacing: 0.3px;
     }
     #send-btn:hover {
       transform: scale(1.03);
-      box-shadow: 0 4px 20px var(--blue-soft);
+      box-shadow: 0 8px 28px rgba(91, 127, 255, 0.35);
     }
     #send-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.95);
     }
 
-    /* ===== SCROLLBAR ===== */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--text-dimmer); border-radius: 4px; }
-
-    /* ===== MOBILE FIXES ===== */
+    /* ===== MOBILE RESPONSIVE ===== */
     @media(max-width: 600px) {
-      #input-bar {
-        padding: 10px 12px;
-        gap: 8px;
-      }
-      #chat-input {
-        font-size: 16px;
-        padding: 10px 14px;
-      }
-      #send-btn {
-        padding: 10px 16px;
-        font-size: 13px;
-      }
-      #header h1 {
-        font-size: 16px;
-      }
-      #header {
-        padding: 12px 16px;
-      }
-      #chatlog .message {
-        max-width: 90%;
-        font-size: 14px;
-        padding: 8px 12px;
-      }
-      #name-input {
-        width: 90vw;
-        font-size: 16px;
-      }
-      #name-form h1 {
-        font-size: 24px;
-      }
-      #name-form p {
-        font-size: 13px;
-        padding: 0 20px;
-      }
-      #roster {
-        width: 140px;
-        padding: 10px;
-      }
-      #roster .roster-user {
-        font-size: 12px;
-        padding: 4px 6px;
-      }
+      #header { padding: 12px 16px; }
+      .logo .mark svg { width: 32px; height: 32px; }
+      .logo span:last-child { font-size: 18px; }
+      #header .room-name { font-size: 11px; padding: 4px 12px; }
+
+      #input-bar { padding: 12px 14px; gap: 8px; }
+      #chat-input { font-size: 15px; padding: 12px 16px; }
+      #send-btn { padding: 12px 18px; font-size: 13px; }
+
+      #chatlog { padding: 14px 12px; }
+      #chatlog .message { max-width: 92%; font-size: 14px; padding: 10px 14px; }
+
+      #name-input { width: 90vw; font-size: 16px; padding: 14px 18px; }
+      #name-form .logo-big .mark svg { width: 56px; height: 56px; }
+      #name-form .logo-big .brand { font-size: 28px; }
+
+      #roster { width: 140px; padding: 12px 8px; }
+      #roster .roster-user { font-size: 12px; padding: 6px 10px; }
     }
 
     @media(max-width: 400px) {
-      #input-bar {
-        padding: 8px 8px;
-        gap: 6px;
-      }
-      #chat-input {
-        font-size: 14px;
-        padding: 8px 12px;
-      }
-      #send-btn {
-        padding: 8px 12px;
-        font-size: 12px;
-      }
+      #input-bar { padding: 10px 10px; gap: 6px; }
+      #chat-input { font-size: 14px; padding: 10px 12px; }
+      #send-btn { padding: 10px 14px; font-size: 12px; }
+      #chatlog .message { font-size: 13px; }
     }
   </style>
 </head>
-
 <body>
-  <!-- ===== LOGIN FORM ===== -->
+
+  <!-- ===== LOGIN FORM (Glass) ===== -->
   <form id="name-form">
-    <h1>⚡ Shortu Chat</h1>
+    <div class="logo-big">
+      <span class="mark">
+        <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="30" cy="28" r="22"/>
+          <circle cx="12" cy="10" r="7"/>
+          <circle cx="48" cy="10" r="7"/>
+          <circle cx="22" cy="25" r="4.5"/>
+          <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+          <circle cx="38" cy="25" r="4.5"/>
+          <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+          <path d="M27 33 L30 37 L33 33"/>
+          <path d="M26 38 Q30 43 34 38"/>
+          <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+          <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+        </svg>
+      </span>
+      <span class="brand">Shoruto</span>
+    </div>
     <p>Enter your name to join the conversation</p>
     <input id="name-input" placeholder="Your name" autofocus />
   </form>
 
   <!-- ===== MAIN APP ===== -->
   <div id="app" style="display:none;">
-    <!-- Header -->
+
+    <!-- Header with custom logo -->
     <div id="header">
-      <h1>⚡ Shortu Chat</h1>
+      <a href="#" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span>Shoruto</span>
+      </a>
       <span class="room-name" id="room-display">#main</span>
     </div>
 
@@ -379,7 +467,7 @@
   </div>
 
   <!-- ============================================================ -->
-  <!-- JAVASCRIPT -->
+  <!-- JAVASCRIPT (unchanged logic, only UI updated) -->
   <script>
     // --- DOM refs ---
     const nameForm = document.getElementById('name-form');
