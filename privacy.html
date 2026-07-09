@@ -84,53 +84,81 @@
             padding: 28px 30px;
         }
 
-        .header {
+        /* ============================================ */
+        /* SIMPLE HEADER - Only Logo + Theme Toggle    */
+        /* ============================================ */
+        .simple-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 28px;
-            flex-wrap: wrap;
-            gap: 12px;
+            padding: 0 4px;
         }
 
-        .exit {
-            display: inline-flex;
+        .simple-header .brand {
+            display: flex;
             align-items: center;
-            gap: 7px;
-            padding: 10px 20px 10px 16px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-dim);
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            background: transparent;
-            transition: 0.2s var(--ease);
+            gap: 10px;
         }
-        .exit .ic { transition: transform 0.2s var(--ease); }
-        .exit:hover { background: var(--panel-strong); border-color: var(--violet); color: var(--violet); }
-        .exit:hover .ic { transform: translateX(-3px); }
 
-        .brand { display: flex; align-items: center; gap: 10px; }
-
-        .logo {
+        .simple-header .logo {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 26px;
+            font-size: 24px;
             color: var(--text);
+            text-decoration: none;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .panda-logo {
-            display: flex; justify-content: center; align-items: center;
-            width: 44px; height: 44px;
-            border-radius: 12px;
-            background: var(--blue-soft);
+        .simple-header .logo .mark {
+            display: inline-flex;
+            width: 38px;
+            height: 38px;
         }
-        .panda-logo svg { width: 26px; height: 26px; display: block; stroke: var(--blue); }
-        .panda-logo svg [fill]:not([fill="none"]) { fill: var(--blue); }
+        .simple-header .logo .mark svg {
+            width: 100%;
+            height: 100%;
+        }
 
+        .simple-header .theme-toggle-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s var(--ease);
+            backdrop-filter: blur(10px);
+        }
+        .simple-header .theme-toggle-btn:hover {
+            background: var(--panel-strong);
+            border-color: var(--blue);
+            transform: scale(1.06);
+        }
+
+        .simple-header .theme-toggle-btn .sun-icon,
+        .simple-header .theme-toggle-btn .moon-icon {
+            position: absolute;
+            color: var(--amber);
+            transition: all 0.45s var(--ease);
+        }
+        .simple-header .theme-toggle-btn .moon-icon { color: var(--blue); }
+        .simple-header .theme-toggle-btn .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+        .simple-header .theme-toggle-btn .moon-icon { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="light"] .simple-header .theme-toggle-btn .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="light"] .simple-header .theme-toggle-btn .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+
+        .simple-header .theme-toggle-btn { position: relative; }
+
+        /* ---- Privacy Content ---- */
         .privacy-content h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
@@ -180,87 +208,74 @@
         }
         .privacy-content .highlight-box p { margin-bottom: 0; color: var(--text-dim); }
 
-        .mini-theme-toggle {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 46px; height: 46px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--panel);
-            color: var(--text);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 19px;
-            z-index: 999;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s var(--ease);
+        /* ---- Footer Link ---- */
+        .footer-link {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .mini-theme-toggle:hover { background: var(--panel-strong); border-color: var(--blue); transform: scale(1.06); }
-        .mini-theme-toggle .sun-icon, .mini-theme-toggle .moon-icon { position: absolute; color: var(--amber); transition: all 0.45s var(--ease); }
-        .mini-theme-toggle .moon-icon { color: var(--blue); }
-        .mini-theme-toggle .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
-        .mini-theme-toggle .moon-icon { opacity: 1; transform: rotate(0) scale(1); }
-        [data-theme="light"] .mini-theme-toggle .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
-        [data-theme="light"] .mini-theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+        .footer-link a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s var(--ease);
+        }
+        .footer-link a:hover { color: var(--blue); }
+        .footer-link .ic { width: 14px; height: 14px; }
 
+        /* ---- Responsive ---- */
         @media (max-width: 600px) {
             body { padding: 14px 12px; }
             .card { padding: 20px 18px; }
             .privacy-content h1 { font-size: 26px; }
-            .logo { font-size: 18px; }
-            .exit { padding: 7px 14px; font-size: 12px; }
+            .simple-header .logo { font-size: 18px; }
+            .simple-header .logo .mark { width: 30px; height: 30px; }
+            .simple-header .theme-toggle-btn { width: 36px; height: 36px; font-size: 15px; }
+            .footer-link { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
 
     <!-- ============================================ -->
-    <!-- HEADER WITH LOGO & THEME TOGGLE              -->
+    <!-- SIMPLE HEADER - Logo + Theme Toggle Only     -->
     <!-- ============================================ -->
-    <nav class="nav">
-        <div class="wrap">
-            <div class="nav-inner">
-                <!-- LOGO -->
-                <a href="index.html" class="logo">
-                    <span class="mark">
-                        <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="30" cy="28" r="22"/>
-                            <circle cx="12" cy="10" r="7"/>
-                            <circle cx="48" cy="10" r="7"/>
-                            <circle cx="22" cy="25" r="4.5"/>
-                            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                            <circle cx="38" cy="25" r="4.5"/>
-                            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                            <path d="M27 33 L30 37 L33 33"/>
-                            <path d="M26 38 Q30 43 34 38"/>
-                            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-                            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-                        </svg>
-                    </span>
-                    <span>Shoruto</span>
-                </a>
-
-                <!-- NAVIGATION LINKS -->
-                <div class="nav-links">
-                    <a href="index.html#why">Why Shoruto</a>
-                    <a href="index.html#trending">Trending</a>
-                    <a href="index.html#subjects">Subjects</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="index.html#ai">AI Evaluation</a>
-                    <a href="index.html#faq">FAQ</a>
-                </div>
-
-                <!-- RIGHT SIDE: THEME TOGGLE -->
-                <div class="nav-cta">
-                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                        <span class="sun-icon">☀️</span>
-                        <span class="moon-icon">🌙</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- ============================================ -->
-
     <div class="container">
+        <div class="simple-header">
+            <a href="/" class="logo">
+                <span class="mark">
+                    <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="30" cy="28" r="22"/>
+                        <circle cx="12" cy="10" r="7"/>
+                        <circle cx="48" cy="10" r="7"/>
+                        <circle cx="22" cy="25" r="4.5"/>
+                        <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+                        <circle cx="38" cy="25" r="4.5"/>
+                        <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+                        <path d="M27 33 L30 37 L33 33"/>
+                        <path d="M26 38 Q30 43 34 38"/>
+                        <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+                        <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+                    </svg>
+                </span>
+                <span>Shoruto</span>
+            </a>
+
+            <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+                <span class="sun-icon">☀️</span>
+                <span class="moon-icon">🌙</span>
+            </button>
+        </div>
+        <!-- ============================================ -->
+
         <div class="card privacy-content fade-in">
             <h1>Privacy Policy</h1>
             <span class="last-updated">Last updated: July 10, 2026</span>
@@ -311,25 +326,39 @@
             </div>
 
             <p style="margin-top: 12px; color: var(--text-dimmer); font-size: 13px;">This privacy policy is part of our commitment to transparency and trust. Thank you for using Shoruto.</p>
+
+            <!-- Footer link back to home -->
+            <div class="footer-link">
+                <a href="/">
+                    <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+                    Back to Shoruto
+                </a>
+                <span style="color:var(--text-dimmer);font-size:12px;">© 2026 Shoruto</span>
+            </div>
         </div>
     </div>
-
-    <!-- ============================================ -->
-    <!-- MINI THEME TOGGLE (Bottom Right Corner)      -->
-    <!-- ============================================ -->
-    <button class="mini-theme-toggle" id="themeToggleMini" aria-label="Toggle theme">
-        <span class="sun-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
-        <span class="moon-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
-    </button>
-    <!-- ============================================ -->
 
     <!-- ============================================ -->
     <!-- THEME TOGGLE SCRIPT (MUST HAVE)              -->
     <!-- ============================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const toggle = document.getElementById('themeToggleMini');
-            if (toggle) toggle.addEventListener('click', toggleTheme);
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    // This assumes theme.js provides toggleTheme() function
+                    if (typeof toggleTheme === 'function') {
+                        toggleTheme();
+                    } else {
+                        // Fallback: manually toggle data-theme
+                        const html = document.documentElement;
+                        const current = html.getAttribute('data-theme');
+                        const next = current === 'light' ? 'dark' : 'light';
+                        html.setAttribute('data-theme', next);
+                        localStorage.setItem('theme', next);
+                    }
+                });
+            }
         });
     </script>
     <!-- ============================================ -->
