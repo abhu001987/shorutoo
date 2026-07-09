@@ -42,14 +42,15 @@
             padding: 0;
             min-height: 100vh;
             transition: background 0.3s ease, color 0.3s ease;
-            padding-top: 80px; /* Space for fixed header */
+            padding-top: 76px; /* Space for fixed header */
         }
 
+        /* ---- FULL WIDTH CONTAINER ---- */
         .container { 
-            max-width: 1000px; 
+            max-width: 100%;
             width: 100%; 
-            margin: 0 auto;
-            padding: 0 24px 40px;
+            margin: 0;
+            padding: 0;
         }
 
         /* ---- Icon system ---- */
@@ -79,14 +80,16 @@
         .card {
             background: var(--panel);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
+            border-radius: 0; /* No border radius - full width */
             backdrop-filter: blur(10px);
             transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
-            padding: 28px 30px;
+            padding: 40px 60px;
+            margin: 0;
+            width: 100%;
         }
 
         /* ============================================ */
-        /* ORIGINAL GLASS HEADER - Full width, no wrap */
+        /* HEADER - Only Round Logo + Theme Toggle    */
         /* ============================================ */
         .nav {
             position: fixed;
@@ -94,7 +97,7 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 12px 24px;
+            padding: 14px 30px;
             background: var(--panel);
             backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -113,30 +116,31 @@
             gap: 16px;
         }
 
+        /* ROUND LOGO ONLY - No text */
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0;
             text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 22px;
-            color: var(--text);
-            letter-spacing: 1px;
             flex-shrink: 0;
         }
 
         .logo .mark {
             display: inline-flex;
-            width: 36px;
-            height: 36px;
+            width: 44px;
+            height: 44px;
         }
         .logo .mark svg {
             width: 100%;
             height: 100%;
         }
+        
+        /* Hide the text */
+        .logo .logo-text {
+            display: none;
+        }
 
-        /* Navigation links - HIDDEN on privacy page */
+        /* Navigation links - HIDDEN */
         .nav-links {
             display: none;
         }
@@ -180,26 +184,30 @@
         [data-theme="light"] .theme-toggle .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
         [data-theme="light"] .theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
 
-        /* ---- Privacy Content ---- */
+        /* ---- Privacy Content - Full Width ---- */
+        .privacy-content {
+            padding: 40px 60px;
+        }
+        
         .privacy-content h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
-            font-size: 32px;
+            font-size: 36px;
             letter-spacing: -0.3px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             color: var(--text);
         }
         .privacy-content .last-updated {
             color: var(--text-dimmer);
             font-size: 13px;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             display: block;
         }
         .privacy-content h2 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
-            font-size: 18px;
-            margin: 28px 0 10px;
+            font-size: 20px;
+            margin: 30px 0 12px;
             color: var(--text);
             display: flex;
             align-items: center;
@@ -208,31 +216,31 @@
         .privacy-content h2 .ic { color: var(--blue); width: 1.2em; height: 1.2em; }
         .privacy-content p {
             color: var(--text-dim);
-            font-size: 15px;
-            line-height: 1.7;
-            margin-bottom: 12px;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 14px;
         }
         .privacy-content ul {
-            padding-left: 24px;
-            margin: 8px 0 16px;
+            padding-left: 28px;
+            margin: 10px 0 18px;
             color: var(--text-dim);
-            font-size: 14.5px;
-            line-height: 1.7;
+            font-size: 15px;
+            line-height: 1.8;
         }
         .privacy-content ul li { margin-bottom: 6px; }
         .privacy-content strong { color: var(--text); font-weight: 600; }
         .privacy-content .highlight-box {
             background: var(--panel-strong);
             border-left: 4px solid var(--blue);
-            padding: 16px 20px;
+            padding: 18px 24px;
             border-radius: var(--radius-sm);
-            margin: 18px 0;
+            margin: 20px 0;
         }
         .privacy-content .highlight-box p { margin-bottom: 0; color: var(--text-dim); }
 
         .footer-link {
-            margin-top: 24px;
-            padding-top: 16px;
+            margin-top: 28px;
+            padding-top: 18px;
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -243,7 +251,7 @@
         .footer-link a {
             color: var(--text-dim);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -253,31 +261,34 @@
         .footer-link .ic { width: 14px; height: 14px; }
 
         /* ---- Mobile Responsive ---- */
-        @media (max-width: 600px) {
-            body { padding-top: 72px; }
-            .container { padding: 0 12px 30px; }
-            .card { padding: 20px 18px; }
-            .privacy-content h1 { font-size: 26px; }
-            .logo { font-size: 18px; }
-            .logo .mark { width: 30px; height: 30px; }
+        @media (max-width: 768px) {
+            body { padding-top: 68px; }
+            .card { padding: 24px 20px; }
+            .privacy-content { padding: 24px 20px; }
+            .privacy-content h1 { font-size: 28px; }
+            .privacy-content h2 { font-size: 18px; }
+            .privacy-content p { font-size: 15px; }
+            .privacy-content ul { font-size: 14px; padding-left: 20px; }
+            .logo .mark { width: 36px; height: 36px; }
             .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
-            .footer-link { flex-direction: column; align-items: flex-start; }
             .nav { padding: 10px 16px; }
+            .footer-link { flex-direction: column; align-items: flex-start; }
         }
 
-        @media (min-width: 601px) and (max-width: 900px) {
-            .container { padding: 0 20px 30px; }
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .card { padding: 32px 40px; }
+            .privacy-content { padding: 32px 40px; }
         }
     </style>
 </head>
 <body>
 
     <!-- ============================================ -->
-    <!-- ORIGINAL GLASS HEADER - FULL WIDTH           -->
+    <!-- HEADER - Only Round Logo + Theme Toggle     -->
     <!-- ============================================ -->
     <nav class="nav">
         <div class="nav-inner">
-            <!-- LOGO -->
+            <!-- ROUND LOGO ONLY - No text -->
             <a href="/" class="logo">
                 <span class="mark">
                     <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -294,7 +305,7 @@
                         <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
                     </svg>
                 </span>
-                <span>Shoruto</span>
+                <span class="logo-text">Shoruto</span>
             </a>
 
             <!-- NAVIGATION LINKS - HIDDEN -->
@@ -311,6 +322,9 @@
     </nav>
     <!-- ============================================ -->
 
+    <!-- ============================================ -->
+    <!-- FULL WIDTH CONTENT - NO PADDING             -->
+    <!-- ============================================ -->
     <div class="container">
         <div class="card privacy-content fade-in">
             <h1>Privacy Policy</h1>
