@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challenge Complete! - Shoruto</title>
+    <title>Challenge - Shoruto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="theme.css">
@@ -48,8 +48,8 @@
             background: linear-gradient(135deg, #D6E4FF 0%, #E8D5FF 40%, #D5F5E3 100%);
         }
 
-        .result-box {
-            max-width: 480px;
+        .challenge-box {
+            max-width: 600px;
             width: 100%;
             background: var(--panel);
             border: 1px solid var(--border);
@@ -57,80 +57,107 @@
             padding: 40px 32px;
             backdrop-filter: blur(12px);
             box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-            text-align: center;
         }
 
-        .result-emoji {
-            font-size: 64px;
-            margin-bottom: 8px;
-            display: block;
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
         }
-
-        .result-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, #5B7FFF, #A78BFA);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .result-subtitle {
+        .header .challenger {
+            font-size: 13px;
             color: var(--text-dim);
-            font-size: 14px;
-            margin-bottom: 24px;
         }
-
-        .topic-badge {
-            display: inline-block;
-            padding: 4px 16px;
-            border-radius: 100px;
-            font-size: 12px;
+        .header .challenger strong {
+            color: var(--text);
+        }
+        .header .target {
+            font-size: 13px;
             font-weight: 600;
-            background: var(--blue-soft);
-            color: var(--blue);
-            border: 1px solid var(--border);
-            margin-bottom: 24px;
+            color: var(--amber);
         }
 
-        .score-circle {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            margin: 0 auto 24px;
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--mint));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .question-number {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-dimmer);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        .options {
             display: flex;
             flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .option {
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .option:hover {
+            border-color: var(--blue);
+            background: var(--blue-soft);
+        }
+        .option .letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
             align-items: center;
             justify-content: center;
-            background: conic-gradient(var(--blue) 0% 82%, var(--border) 82% 100%);
-            position: relative;
-        }
-        .score-circle::before {
-            content: '';
-            position: absolute;
-            inset: 8px;
-            border-radius: 50%;
-            background: var(--bg-0);
-        }
-        .score-circle .number {
-            position: relative;
-            z-index: 1;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1;
-        }
-        .score-circle .label {
-            position: relative;
-            z-index: 1;
             font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
             color: var(--text-dim);
         }
+        .option.selected {
+            border-color: var(--blue);
+            background: var(--blue-soft);
+        }
+        .option.selected .letter {
+            background: var(--blue);
+            color: #fff;
+        }
 
-        .challenge-btn {
+        .next-btn {
             width: 100%;
             padding: 14px;
             border: none;
@@ -139,266 +166,177 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(135deg, #5B7FFF, #A78BFA);
+            background: linear-gradient(135deg, var(--blue), #A78BFA);
             color: #fff;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
-        .challenge-btn:hover {
+        .next-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(91, 127, 255, 0.35);
         }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin: 16px 0 20px;
-            color: var(--text-dimmer);
-            font-size: 12px;
-        }
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
+        .next-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .share-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-        .share-btn {
-            padding: 12px 8px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--input-bg);
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .question-counter {
             text-align: center;
-            color: var(--text);
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .share-btn:hover {
-            background: var(--panel-strong);
-            transform: translateY(-2px);
-        }
-        .share-btn .emoji {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .link-box {
-            display: flex;
-            gap: 10px;
-            padding: 10px 14px;
-            background: var(--input-bg);
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-        .link-box input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--text);
-            font-size: 12px;
-            outline: none;
-            font-family: 'Inter', sans-serif;
-        }
-        .link-box .copy-btn {
-            padding: 4px 14px;
-            border-radius: 6px;
-            border: none;
-            background: var(--blue);
-            color: #fff;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .link-box .copy-btn:hover {
-            background: #5B7FFF;
-        }
-
-        .status-msg {
-            padding: 10px;
-            border-radius: 10px;
             font-size: 13px;
-            margin-bottom: 16px;
-            display: none;
-        }
-        .status-msg.success {
-            display: block;
-            background: rgba(52, 211, 153, 0.15);
-            border: 1px solid rgba(52, 211, 153, 0.3);
-            color: var(--mint);
-        }
-        .status-msg.error {
-            display: block;
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #F87171;
-        }
-
-        .back-btn {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: transparent;
             color: var(--text-dim);
-        }
-        .back-btn:hover {
-            background: var(--input-bg);
-            color: var(--text);
+            margin-top: 16px;
         }
 
         @media (max-width: 480px) {
-            .result-box { padding: 24px 16px; }
-            .score-circle { width: 120px; height: 120px; }
-            .score-circle .number { font-size: 34px; }
-            .share-options { grid-template-columns: 1fr 1fr 1fr; }
+            .challenge-box { padding: 24px 16px; }
+            .question-text { font-size: 17px; }
         }
     </style>
 </head>
 <body>
 
-<div class="result-box">
-    <span class="result-emoji" id="resultEmoji">🎉</span>
-    <div class="result-title" id="resultTitle">Challenge Complete!</div>
-    <div class="result-subtitle" id="resultSubtitle">You scored 82% on Jal Jeevan Mission</div>
-
-    <span class="topic-badge" id="topicBadge">📚 Jal Jeevan Mission</span>
-
-    <div class="score-circle">
-        <span class="number" id="scoreNumber">82%</span>
-        <span class="label">Your Score</span>
+<div class="challenge-box">
+    <div class="header">
+        <div class="challenger">
+            ⚔️ Challenge from <strong id="challengerName">Friend</strong>
+        </div>
+        <div class="target" id="targetScore">🎯 Beat: 82%</div>
     </div>
 
-    <button class="challenge-btn" id="challengeBtn">
-        ⚔️ Challenge a Friend
-    </button>
-
-    <div class="divider">or share challenge link</div>
-
-    <div class="link-box">
-        <input type="text" id="challengeLink" value="https://www.shoruto.com/challenge/xyz789" readonly>
-        <button class="copy-btn" id="copyBtn">Copy</button>
+    <div class="progress-bar">
+        <div class="fill" id="progressFill" style="width: 50%"></div>
     </div>
 
-    <div class="share-options">
-        <button class="share-btn" onclick="shareResult('whatsapp')">
-            <span class="emoji">💬</span>
-            WhatsApp
-        </button>
-        <button class="share-btn" onclick="shareResult('instagram')">
-            <span class="emoji">📸</span>
-            Instagram
-        </button>
-        <button class="share-btn" onclick="shareResult('telegram')">
-            <span class="emoji">✈️</span>
-            Telegram
-        </button>
+    <div class="question-number" id="questionNum">Question 1 of 2</div>
+    <div class="question-text" id="questionText">
+        What is the primary objective of the Jal Jeevan Mission?
     </div>
 
-    <div class="status-msg" id="statusMsg"></div>
+    <div class="options" id="optionsContainer">
+        <div class="option" onclick="selectOption(this)" data-index="0">
+            <span class="letter">A</span>
+            Provide water to urban areas
+        </div>
+        <div class="option" onclick="selectOption(this)" data-index="1">
+            <span class="letter">B</span>
+            Provide safe tap water to every rural household
+        </div>
+        <div class="option" onclick="selectOption(this)" data-index="2">
+            <span class="letter">C</span>
+            Build dams and reservoirs
+        </div>
+        <div class="option" onclick="selectOption(this)" data-index="3">
+            <span class="letter">D</span>
+            Create irrigation canals
+        </div>
+    </div>
 
-    <button class="back-btn" onclick="window.location.href='index.html'">
-        ← Back to Home
-    </button>
+    <button class="next-btn" id="nextBtn" disabled>Next Question →</button>
+    <div class="question-counter" id="questionCounter">1 of 2</div>
 </div>
 
 <script>
-    // Get score from URL parameters
-    function getScoreData() {
-        const params = new URLSearchParams(window.location.search);
-        const score = params.get('score');
-        const topic = params.get('topic') || 'Jal-Jeevan-Mission';
-        const challenger = params.get('challenger') || null;
-        
-        return { score, topic, challenger };
-    }
-
-    // Display the score
-    function displayScore() {
-        const data = getScoreData();
-        const score = data.score;
-        const topic = data.topic.replace(/-/g, ' ');
-        
-        // If no score in URL, redirect to test
-        if (!score) {
-            document.getElementById('statusMsg').className = 'status-msg error';
-            document.getElementById('statusMsg').textContent = '❌ No score found! Please take the test first.';
-            document.getElementById('challengeBtn').disabled = true;
-            document.getElementById('challengeBtn').style.opacity = '0.5';
-            document.getElementById('challengeBtn').style.cursor = 'not-allowed';
-            return;
+    // Sample questions data
+    const questions = [
+        {
+            question: "What is the primary objective of the Jal Jeevan Mission?",
+            options: [
+                "Provide water to urban areas",
+                "Provide safe tap water to every rural household",
+                "Build dams and reservoirs",
+                "Create irrigation canals"
+            ],
+            correct: 1
+        },
+        {
+            question: "When was the Jal Jeevan Mission launched?",
+            options: [
+                "2015",
+                "2017",
+                "2019",
+                "2021"
+            ],
+            correct: 2
         }
-        
-        // Update UI with real score
-        document.getElementById('scoreNumber').textContent = score + '%';
-        document.getElementById('resultSubtitle').textContent = `You scored ${score}% on ${topic}`;
-        document.getElementById('topicBadge').textContent = `📚 ${topic}`;
-        
-        // Set emoji based on score
-        const emoji = score >= 80 ? '🎉' : score >= 60 ? '💪' : '📚';
-        document.getElementById('resultEmoji').textContent = emoji;
-        
-        // Build challenge link with score
-        const challenger = data.challenger || 'You';
-        const challengeLink = `https://www.shoruto.com/accept-challenge.html?challenger=${challenger}&score=${score}&topic=${data.topic}`;
-        document.getElementById('challengeLink').value = challengeLink;
-    }
+    ];
 
-    // Share functions
-    document.getElementById('challengeBtn').addEventListener('click', function() {
-        const link = document.getElementById('challengeLink').value;
-        navigator.clipboard.writeText(link).then(() => {
-            const msg = document.getElementById('statusMsg');
-            msg.className = 'status-msg success';
-            msg.textContent = '🎯 Challenge link copied! Share with your friend.';
-            setTimeout(() => { msg.className = 'status-msg'; }, 3000);
-        });
-    });
+    let currentQuestion = 0;
+    let selectedAnswers = [];
+    let totalQuestions = questions.length;
 
-    document.getElementById('copyBtn').addEventListener('click', function() {
-        const input = document.getElementById('challengeLink');
-        input.select();
-        document.execCommand('copy');
-        const msg = document.getElementById('statusMsg');
-        msg.className = 'status-msg success';
-        msg.textContent = '✅ Link copied to clipboard!';
-        setTimeout(() => { msg.className = 'status-msg'; }, 3000);
-    });
-
-    function shareResult(platform) {
-        const link = document.getElementById('challengeLink').value;
-        const msg = document.getElementById('statusMsg');
-        const messages = {
-            whatsapp: `💬 Sharing via WhatsApp: ${link}`,
-            instagram: `📸 Sharing via Instagram: ${link}`,
-            telegram: `✈️ Sharing via Telegram: ${link}`
+    // Get URL params
+    function getParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            challenger: params.get('challenger') || 'Friend',
+            targetScore: params.get('targetScore') || '82',
+            topic: params.get('topic') || 'Jal-Jeevan-Mission'
         };
-        msg.className = 'status-msg success';
-        msg.textContent = messages[platform] || '✅ Shared!';
-        setTimeout(() => { msg.className = 'status-msg'; }, 3000);
     }
 
-    // Load on page load
-    displayScore();
+    // Load question
+    function loadQuestion(index) {
+        const q = questions[index];
+        document.getElementById('questionNum').textContent = `Question ${index + 1} of ${totalQuestions}`;
+        document.getElementById('questionText').textContent = q.question;
+        document.getElementById('questionCounter').textContent = `${index + 1} of ${totalQuestions}`;
+        
+        // Update progress
+        const progress = ((index) / totalQuestions) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+
+        // Load options
+        const container = document.getElementById('optionsContainer');
+        container.innerHTML = '';
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, i) => {
+            const div = document.createElement('div');
+            div.className = 'option';
+            div.setAttribute('data-index', i);
+            div.innerHTML = `<span class="letter">${letters[i]}</span> ${opt}`;
+            div.onclick = function() { selectOption(this); };
+            container.appendChild(div);
+        });
+
+        // Reset button
+        document.getElementById('nextBtn').disabled = true;
+        document.getElementById('nextBtn').textContent = index === totalQuestions - 1 ? '📊 View Results' : 'Next Question →';
+    }
+
+    function selectOption(el) {
+        document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('nextBtn').disabled = false;
+        selectedAnswers[currentQuestion] = parseInt(el.dataset.index);
+    }
+
+    // Calculate REAL score and redirect
+    document.getElementById('nextBtn').addEventListener('click', function() {
+        if (currentQuestion < totalQuestions - 1) {
+            currentQuestion++;
+            loadQuestion(currentQuestion);
+        } else {
+            // Calculate REAL score based on answers
+            let correct = 0;
+            questions.forEach((q, i) => {
+                if (selectedAnswers[i] === q.correct) correct++;
+            });
+            const score = Math.round((correct / totalQuestions) * 100);
+            
+            // Get params
+            const params = getParams();
+            const topic = params.topic || 'Jal-Jeevan-Mission';
+            const challenger = params.challenger || 'You';
+            
+            // Redirect with REAL score
+            window.location.href = `challenge-complete.html?score=${score}&topic=${topic}&challenger=${encodeURIComponent(challenger)}`;
+        }
+    });
+
+    // Load first question
+    const params = getParams();
+    document.getElementById('challengerName').textContent = params.challenger;
+    document.getElementById('targetScore').textContent = `🎯 Beat: ${params.targetScore}%`;
+    loadQuestion(0);
 </script>
 
 </body>
