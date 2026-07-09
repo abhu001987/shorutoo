@@ -242,6 +242,12 @@
             border: 1px solid rgba(52, 211, 153, 0.3);
             color: var(--mint);
         }
+        .status-msg.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #F87171;
+        }
 
         .back-btn {
             width: 100%;
@@ -271,14 +277,14 @@
 <body>
 
 <div class="result-box">
-    <span class="result-emoji">🎉</span>
-    <div class="result-title">Challenge Complete!</div>
-    <div class="result-subtitle">You scored 82% on Jal Jeevan Mission</div>
+    <span class="result-emoji" id="resultEmoji">🎉</span>
+    <div class="result-title" id="resultTitle">Challenge Complete!</div>
+    <div class="result-subtitle" id="resultSubtitle">You scored 82% on Jal Jeevan Mission</div>
 
-    <span class="topic-badge">📚 Jal Jeevan Mission</span>
+    <span class="topic-badge" id="topicBadge">📚 Jal Jeevan Mission</span>
 
     <div class="score-circle">
-        <span class="number">82%</span>
+        <span class="number" id="scoreNumber">82%</span>
         <span class="label">Your Score</span>
     </div>
 
@@ -288,13 +294,11 @@
 
     <div class="divider">or share challenge link</div>
 
-    <!-- Share Link -->
     <div class="link-box">
         <input type="text" id="challengeLink" value="https://www.shoruto.com/challenge/xyz789" readonly>
         <button class="copy-btn" id="copyBtn">Copy</button>
     </div>
 
-    <!-- Share Options -->
     <div class="share-options">
         <button class="share-btn" onclick="shareResult('whatsapp')">
             <span class="emoji">💬</span>
@@ -310,9 +314,7 @@
         </button>
     </div>
 
-    <div class="status-msg success" id="statusMsg">
-        ✅ Link copied! Share with your friends.
-    </div>
+    <div class="status-msg" id="statusMsg"></div>
 
     <button class="back-btn" onclick="window.location.href='index.html'">
         ← Back to Home
@@ -320,11 +322,56 @@
 </div>
 
 <script>
+    // Get score from URL parameters
+    function getScoreData() {
+        const params = new URLSearchParams(window.location.search);
+        const score = params.get('score');
+        const topic = params.get('topic') || 'Jal-Jeevan-Mission';
+        const challenger = params.get('challenger') || null;
+        
+        return { score, topic, challenger };
+    }
+
+    // Display the score
+    function displayScore() {
+        const data = getScoreData();
+        const score = data.score;
+        const topic = data.topic.replace(/-/g, ' ');
+        
+        // If no score in URL, redirect to test
+        if (!score) {
+            document.getElementById('statusMsg').className = 'status-msg error';
+            document.getElementById('statusMsg').textContent = '❌ No score found! Please take the test first.';
+            document.getElementById('challengeBtn').disabled = true;
+            document.getElementById('challengeBtn').style.opacity = '0.5';
+            document.getElementById('challengeBtn').style.cursor = 'not-allowed';
+            return;
+        }
+        
+        // Update UI with real score
+        document.getElementById('scoreNumber').textContent = score + '%';
+        document.getElementById('resultSubtitle').textContent = `You scored ${score}% on ${topic}`;
+        document.getElementById('topicBadge').textContent = `📚 ${topic}`;
+        
+        // Set emoji based on score
+        const emoji = score >= 80 ? '🎉' : score >= 60 ? '💪' : '📚';
+        document.getElementById('resultEmoji').textContent = emoji;
+        
+        // Build challenge link with score
+        const challenger = data.challenger || 'You';
+        const challengeLink = `https://www.shoruto.com/accept-challenge.html?challenger=${challenger}&score=${score}&topic=${data.topic}`;
+        document.getElementById('challengeLink').value = challengeLink;
+    }
+
+    // Share functions
     document.getElementById('challengeBtn').addEventListener('click', function() {
-        const msg = document.getElementById('statusMsg');
-        msg.className = 'status-msg success';
-        msg.textContent = '🎯 Challenge link generated! Share with your friend.';
-        setTimeout(() => { msg.className = 'status-msg'; }, 3000);
+        const link = document.getElementById('challengeLink').value;
+        navigator.clipboard.writeText(link).then(() => {
+            const msg = document.getElementById('statusMsg');
+            msg.className = 'status-msg success';
+            msg.textContent = '🎯 Challenge link copied! Share with your friend.';
+            setTimeout(() => { msg.className = 'status-msg'; }, 3000);
+        });
     });
 
     document.getElementById('copyBtn').addEventListener('click', function() {
@@ -338,16 +385,20 @@
     });
 
     function shareResult(platform) {
+        const link = document.getElementById('challengeLink').value;
         const msg = document.getElementById('statusMsg');
         const messages = {
-            whatsapp: '💬 Sharing via WhatsApp...',
-            instagram: '📸 Sharing via Instagram...',
-            telegram: '✈️ Sharing via Telegram...'
+            whatsapp: `💬 Sharing via WhatsApp: ${link}`,
+            instagram: `📸 Sharing via Instagram: ${link}`,
+            telegram: `✈️ Sharing via Telegram: ${link}`
         };
         msg.className = 'status-msg success';
         msg.textContent = messages[platform] || '✅ Shared!';
         setTimeout(() => { msg.className = 'status-msg'; }, 3000);
     }
+
+    // Load on page load
+    displayScore();
 </script>
 
 </body>
