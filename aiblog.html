@@ -14,28 +14,22 @@
   <script src="theme.js"></script>
 
   <style>
-    /* Page specific styles */
+    /* ===== RESET ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+
     body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg-0);
       background-image:
         radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
         radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
-      transition: background 0.3s ease, color 0.3s ease;
+      color: var(--text);
+      min-height: 100vh;
       padding-top: 80px;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .page-content {
-      flex: 1;
-      padding: 40px 20px 60px;
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    /* ---- Icon system ---- */
     .ic {
       width: 1em;
       height: 1em;
@@ -49,7 +43,7 @@
     }
 
     /* ============================================ */
-    /* HEADER - FIXED: No extra wrap wrapper       */
+    /* HEADER - Glass Header                       */
     /* ============================================ */
     .nav {
       position: fixed;
@@ -103,15 +97,9 @@
       letter-spacing: 1px;
     }
 
-    .nav-links {
-      display: none;
-    }
+    .nav-links { display: none; }
 
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
 
     .theme-toggle {
       width: 42px;
@@ -165,19 +153,22 @@
     }
 
     /* ============================================ */
-    /* BLOG CARD - Same style as Terms card        */
+    /* BLOG LAYOUT - Modern Blog Design            */
     /* ============================================ */
-    .blog-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      backdrop-filter: blur(10px);
-      padding: 40px 48px;
-      transition: border-color 0.25s ease, transform 0.25s ease;
+    .blog-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+      width: 100%;
     }
 
-    /* ---- Blog Hero ---- */
-    .blog-hero .badge {
+    /* ---- Blog Post ---- */
+    .blog-post {
+      animation: fadeUp 0.6s cubic-bezier(.4, 0, .2, 1) both;
+    }
+
+    /* Category Badge */
+    .post-category {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -187,84 +178,100 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--violet);
-      background: var(--panel-strong);
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
       margin-bottom: 16px;
     }
 
-    .blog-hero .badge .ic {
+    .post-category .ic {
       width: 14px;
       height: 14px;
       color: var(--violet);
     }
 
-    .blog-hero h1 {
+    /* Title */
+    .post-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 38px;
+      font-size: 44px;
       font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.5px;
-      line-height: 1.15;
-      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      transition: color 0.3s ease;
     }
 
-    .blog-hero .meta {
+    .post-title .highlight {
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Meta */
+    .post-meta {
       display: flex;
       align-items: center;
       gap: 16px;
       flex-wrap: wrap;
       color: var(--text-dim);
       font-size: 14px;
+      margin-bottom: 24px;
+      transition: color 0.3s ease;
     }
 
-    .blog-hero .meta .author {
+    .post-meta .author {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .blog-hero .meta .author-avatar {
-      width: 28px;
-      height: 28px;
+    .post-meta .author-avatar {
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--blue), var(--violet));
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 700;
       font-family: 'Space Grotesk', sans-serif;
     }
 
-    .blog-hero .meta .dot {
+    .post-meta .dot {
       width: 4px;
       height: 4px;
       border-radius: 50%;
       background: var(--text-dimmer);
     }
 
-    .blog-hero .meta .live-dot {
+    .post-meta .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--mint);
+      font-weight: 600;
+    }
+
+    .post-meta .live-badge .pulse {
       display: inline-block;
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--mint);
-      animation: pulseDot 1.6s ease-in-out infinite;
+      animation: pulse 1.6s ease-in-out infinite;
     }
 
-    @keyframes pulseDot {
-      0%, 100% { opacity: 0.5; transform: scale(0.85); }
-      50% { opacity: 1; transform: scale(1.15); }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* ---- Featured Image ---- */
+    /* Featured Image */
     .featured-image {
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: hidden;
-      margin: 24px 0 32px;
+      margin-bottom: 32px;
       background: var(--panel);
       border: 1px solid var(--border);
       transition: border-color 0.3s ease, background 0.3s ease;
@@ -276,7 +283,7 @@
       display: block;
       aspect-ratio: 16/9;
       object-fit: cover;
-      transition: transform 0.6s var(--ease);
+      transition: transform 0.5s cubic-bezier(.4, 0, .2, 1);
     }
 
     .featured-image:hover img {
@@ -291,26 +298,26 @@
       transition: border-color 0.3s ease, color 0.3s ease;
     }
 
-    /* ---- Blog Body ---- */
-    .blog-body p {
+    /* Content */
+    .post-content p {
       color: var(--text-dim);
-      font-size: 17px;
+      font-size: 18px;
       line-height: 1.9;
       margin-bottom: 20px;
       transition: color 0.3s ease;
     }
 
-    .blog-body h2 {
+    .post-content h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
       color: var(--text);
-      margin: 36px 0 16px;
-      letter-spacing: -0.3px;
+      margin: 40px 0 16px;
+      letter-spacing: -0.02em;
       transition: color 0.3s ease;
     }
 
-    .blog-body h3 {
+    .post-content h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 20px;
       font-weight: 600;
@@ -319,7 +326,7 @@
       transition: color 0.3s ease;
     }
 
-    .blog-body ul {
+    .post-content ul {
       padding-left: 24px;
       margin: 16px 0 24px;
       color: var(--text-dim);
@@ -328,33 +335,33 @@
       transition: color 0.3s ease;
     }
 
-    .blog-body ul li {
+    .post-content ul li {
       margin-bottom: 8px;
     }
 
-    .blog-body .highlight-box {
+    .post-content .highlight-box {
       background: var(--panel-strong);
       border-left: 4px solid var(--blue);
       padding: 20px 24px;
       border-radius: 14px;
-      margin: 24px 0;
+      margin: 28px 0;
       transition: background 0.3s ease, border-color 0.3s ease;
     }
 
-    .blog-body .highlight-box p {
+    .post-content .highlight-box p {
       margin-bottom: 0;
       font-size: 16px;
     }
 
-    .blog-body .highlight-box.violet {
+    .post-content .highlight-box.violet {
       border-left-color: var(--violet);
     }
 
     /* ============================================ */
-    /* WIKI LINKS - Separate Section               */
+    /* WIKI LINKS                                  */
     /* ============================================ */
     .wiki-section {
-      margin-top: 40px;
+      margin-top: 48px;
       padding-top: 32px;
       border-top: 2px solid var(--border);
       transition: border-color 0.3s ease;
@@ -364,7 +371,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .wiki-section .wiki-header h3 {
@@ -382,23 +389,23 @@
     }
 
     .wiki-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .wiki-link {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 16px;
+      gap: 8px;
+      padding: 8px 16px;
       background: var(--panel-strong);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 20px;
       color: var(--text-dim);
       text-decoration: none;
-      font-size: 14px;
-      transition: all 0.3s var(--ease);
+      font-size: 13px;
+      transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
     }
 
     .wiki-link:hover {
@@ -410,40 +417,39 @@
 
     .wiki-link .ic {
       color: var(--blue);
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
     }
 
-    .wiki-link .wiki-tag {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-dimmer);
-      background: var(--panel);
-      padding: 2px 8px;
-      border-radius: 10px;
-      margin-left: auto;
-      border: 1px solid var(--border);
-    }
-
-    /* ---- Related Posts ---- */
+    /* ============================================ */
+    /* RELATED POSTS                               */
+    /* ============================================ */
     .related-posts {
-      margin-top: 40px;
+      margin-top: 48px;
       padding-top: 32px;
       border-top: 1px solid var(--border);
       transition: border-color 0.3s ease;
     }
 
-    .related-posts h3 {
+    .related-posts .related-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .related-posts .related-header h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 18px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 20px;
       transition: color 0.3s ease;
+    }
+
+    .related-posts .related-header .ic {
+      color: var(--blue);
+      width: 20px;
+      height: 20px;
     }
 
     .related-grid {
@@ -457,7 +463,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 20px;
-      transition: all 0.3s var(--ease);
+      transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
       cursor: pointer;
       text-decoration: none;
       color: var(--text);
@@ -500,18 +506,19 @@
     }
 
     /* ---- Footer ---- */
-    .footer-link {
-      margin-top: 32px;
-      padding-top: 18px;
+    .post-footer {
+      margin-top: 48px;
+      padding-top: 24px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
+      transition: border-color 0.3s ease;
     }
 
-    .footer-link a {
+    .post-footer a {
       color: var(--text-dim);
       text-decoration: none;
       font-size: 14px;
@@ -521,11 +528,11 @@
       transition: color 0.2s ease;
     }
 
-    .footer-link a:hover {
+    .post-footer a:hover {
       color: var(--blue);
     }
 
-    .footer-link .ic {
+    .post-footer .ic {
       width: 14px;
       height: 14px;
     }
@@ -534,15 +541,12 @@
     @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
-    }
-    .fade-in {
-      animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
     }
 
     /* ---- Responsive ---- */
@@ -552,34 +556,27 @@
       .logo .mark { width: 32px; height: 32px; }
       .logo .logo-text { font-size: 18px; }
       .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
-      .page-content { padding: 24px 16px 40px; }
-      .blog-card { padding: 24px 20px; border-radius: 16px; }
-      .blog-hero h1 { font-size: 28px; }
-      .blog-body p { font-size: 15px; }
-      .blog-body h2 { font-size: 22px; }
-      .blog-body h3 { font-size: 18px; }
-      .wiki-grid { grid-template-columns: 1fr 1fr; }
+      .blog-container { padding: 16px 16px 40px; }
+      .post-title { font-size: 30px; }
+      .post-content p { font-size: 16px; }
+      .post-content h2 { font-size: 24px; }
+      .post-content h3 { font-size: 18px; }
       .related-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 480px) {
-      .wiki-grid { grid-template-columns: 1fr; }
-      .blog-hero .meta { font-size: 12px; gap: 10px; }
-    }
-
-    @media (min-width: 769px) and (max-width: 1200px) {
-      .blog-card { padding: 32px 36px; }
+      .post-title { font-size: 26px; }
+      .post-meta { font-size: 12px; gap: 10px; }
     }
   </style>
 </head>
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER - FIXED: No extra wrap wrapper       -->
+  <!-- HEADER - Glass Header                       -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="nav-inner">
-      <!-- LOGO -->
       <a href="index.html" class="logo">
         <span class="mark">
           <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -599,10 +596,8 @@
         <span class="logo-text">Shoruto</span>
       </a>
 
-      <!-- NAVIGATION LINKS (Hidden) -->
       <div class="nav-links"></div>
 
-      <!-- RIGHT SIDE: THEME TOGGLE -->
       <div class="nav-cta">
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <span class="sun-icon">☀️</span>
@@ -614,33 +609,38 @@
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- BLOG CONTENT                                -->
+  <!-- BLOG CONTENT - Clean, Modern Layout         -->
   <!-- ============================================ -->
-  <main class="page-content">
-    <div class="blog-card fade-in">
+  <main class="blog-container">
+    <article class="blog-post">
 
-      <!-- Hero -->
-      <div class="blog-hero">
-        <div class="badge">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
-          Featured Story
-        </div>
-        <h1>Elon Musk's xAI Unveils Grok-3: The Next Frontier in AI</h1>
-        <div class="meta">
-          <span class="author">
-            <span class="author-avatar">EM</span>
-            <span>Elon Musk</span>
-          </span>
-          <span class="dot"></span>
-          <span>December 15, 2025</span>
-          <span class="dot"></span>
-          <span>12 min read</span>
-          <span class="dot"></span>
-          <span style="display:inline-flex;align-items:center;gap:4px;color:var(--mint);">
-            <span class="live-dot"></span>
-            Trending
-          </span>
-        </div>
+      <!-- Category -->
+      <div class="post-category">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
+        Featured Story
+      </div>
+
+      <!-- Title -->
+      <h1 class="post-title">
+        Elon Musk's <span class="highlight">xAI</span> Unveils<br>
+        Grok-3: The Next Frontier in AI
+      </h1>
+
+      <!-- Meta -->
+      <div class="post-meta">
+        <span class="author">
+          <span class="author-avatar">EM</span>
+          <span>Elon Musk</span>
+        </span>
+        <span class="dot"></span>
+        <span>December 15, 2025</span>
+        <span class="dot"></span>
+        <span>12 min read</span>
+        <span class="dot"></span>
+        <span class="live-badge">
+          <span class="pulse"></span>
+          Trending
+        </span>
       </div>
 
       <!-- Featured Image -->
@@ -654,8 +654,8 @@
         <figcaption class="caption">Elon Musk at the xAI Grok-3 launch event in San Francisco</figcaption>
       </figure>
 
-      <!-- Blog Body -->
-      <div class="blog-body">
+      <!-- Content -->
+      <div class="post-content">
 
         <p>
           In a landmark announcement that sent ripples through the tech world, Elon Musk's xAI unveiled Grok-3 — the latest iteration of their flagship AI model. Dubbed "the most powerful AI ever created," Grok-3 promises to redefine the boundaries of artificial intelligence with unprecedented reasoning capabilities and real-time learning.
@@ -696,7 +696,7 @@
         </p>
 
         <!-- ============================================ -->
-        <!-- WIKI LINKS - Separate Section               -->
+        <!-- WIKI LINKS                                  -->
         <!-- ============================================ -->
         <div class="wiki-section">
           <div class="wiki-header">
@@ -707,49 +707,46 @@
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Artificial Intelligence
-              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Machine Learning
-              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Neural Networks
-              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Quantum Computing
-              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Elon Musk
-              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               xAI
-              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Tesla
-              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               SpaceX
-              <span class="wiki-tag">Wiki</span>
             </a>
           </div>
         </div>
 
-        <!-- Related Posts -->
+        <!-- ============================================ -->
+        <!-- RELATED POSTS                               -->
+        <!-- ============================================ -->
         <div class="related-posts">
-          <h3>Related Posts</h3>
+          <div class="related-header">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
+            <h3>Related Posts</h3>
+          </div>
           <div class="related-grid">
             <a href="#" class="related-card">
               <div class="thumb">
@@ -778,7 +775,7 @@
       </div>
 
       <!-- Footer -->
-      <div class="footer-link">
+      <div class="post-footer">
         <a href="index.html">
           <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
           Back to Shoruto
@@ -786,7 +783,7 @@
         <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
       </div>
 
-    </div>
+    </article>
   </main>
 
   <!-- ============================================ -->
