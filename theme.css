@@ -804,3 +804,196 @@ footer { border-top: 1px solid var(--border); padding: 50px 0 30px; background: 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+/* Page specific styles */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-0);
+      background-image:
+        radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+        radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .page-content {
+  flex: 1;
+  padding: 60px 20px;
+  max-width: 1400px; /* Increased from 1000px */
+  margin: 0 auto;
+  width: 100%;
+}
+    /* ---- Icon system ---- */
+    .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
+
+    /* ---- Card Style ---- */
+    .privacy-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+      padding: 40px 48px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .privacy-card h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .privacy-card .last-updated {
+      color: var(--text-dimmer);
+      font-size: 13px;
+      margin-bottom: 28px;
+      display: block;
+    }
+
+    .privacy-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 32px 0 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .privacy-card h2 .ic {
+      color: var(--blue);
+      width: 1.2em;
+      height: 1.2em;
+    }
+
+    .privacy-card p {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .privacy-card ul {
+      padding-left: 28px;
+      margin: 10px 0 18px;
+      color: var(--text-dim);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .privacy-card ul li {
+      margin-bottom: 6px;
+    }
+
+    .privacy-card strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .privacy-card .highlight-box {
+      background: var(--panel-strong);
+      border-left: 4px solid var(--blue);
+      padding: 18px 24px;
+      border-radius: 14px;
+      margin: 20px 0;
+    }
+
+    .privacy-card .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text-dim);
+    }
+
+    .privacy-card .highlight-box.violet {
+      border-left-color: var(--violet);
+    }
+
+    .footer-link {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link a:hover {
+      color: var(--blue);
+    }
+
+    .footer-link .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .page-content {
+        padding: 40px 16px;
+      }
+      .privacy-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+      }
+      .privacy-card h1 {
+        font-size: 28px;
+      }
+      .privacy-card h2 {
+        font-size: 18px;
+      }
+      .privacy-card p {
+        font-size: 15px;
+      }
+      .privacy-card ul {
+        font-size: 14px;
+        padding-left: 20px;
+      }
+      .footer-link {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .privacy-card {
+        padding: 32px 36px;
+      }
+    }
+
+    /* Animation */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in {
+      animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
+    }
