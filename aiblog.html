@@ -14,7 +14,7 @@
   <script src="theme.js"></script>
 
   <style>
-    /* --- Page specific styles (mirror terms/contact) --- */
+    /* --- Page specific styles --- */
     body {
       min-height: 100vh;
       display: flex;
@@ -34,7 +34,7 @@
       width: 100%;
     }
 
-    /* Icon system (same) */
+    /* Icon system */
     .ic {
       width: 1em;
       height: 1em;
@@ -47,7 +47,7 @@
       flex-shrink: 0;
     }
 
-    /* Card style (identical) */
+    /* Card style (identical to terms) */
     .blog-card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -62,28 +62,28 @@
       font-size: 38px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       letter-spacing: -0.3px;
     }
 
-    .blog-card .meta {
+    .blog-card .blog-meta {
       color: var(--text-dimmer);
       font-size: 14px;
       margin-bottom: 28px;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px 20px;
+      gap: 8px 24px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 18px;
+      padding-bottom: 16px;
     }
 
-    .blog-card .meta span {
+    .blog-card .blog-meta span {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .blog-card .meta .ic {
+    .blog-card .blog-meta .ic {
       width: 16px;
       height: 16px;
       color: var(--blue);
@@ -118,12 +118,12 @@
       font-weight: 600;
     }
 
-    /* --- hero image --- */
+    /* --- Hero Image --- */
     .hero-image {
       width: 100%;
       border-radius: 18px;
       overflow: hidden;
-      margin: 18px 0 28px;
+      margin: 16px 0 10px;
       border: 1px solid var(--border);
       background: var(--bg-0);
     }
@@ -141,16 +141,16 @@
       transform: scale(1.01);
     }
 
-    .caption {
-      font-size: 14px;
+    .image-caption {
+      font-size: 13px;
       color: var(--text-dimmer);
       text-align: center;
-      padding: 8px 0 4px;
+      padding: 6px 0 14px;
       border-bottom: 1px solid var(--border);
       margin-bottom: 20px;
     }
 
-    /* --- note boxes (highlight boxes extended) --- */
+    /* --- Note Boxes (highlight boxes with titles) --- */
     .note-box {
       background: var(--panel-strong);
       border-radius: 16px;
@@ -200,7 +200,7 @@
     }
 
     .note-box ul {
-      margin: 10px 0 0 20px;
+      margin: 8px 0 0 20px;
       color: var(--text-dim);
       font-size: 15px;
       line-height: 1.7;
@@ -210,7 +210,50 @@
       margin-bottom: 4px;
     }
 
-    /* footer link (same) */
+    /* --- Pull quote style --- */
+    .pull-quote {
+      background: var(--panel-strong);
+      border-radius: 16px;
+      padding: 24px 30px;
+      margin: 28px 0;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .pull-quote blockquote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+      quotes: "“" "”" "‘" "’";
+      margin: 0;
+    }
+
+    .pull-quote blockquote::before {
+      content: "“";
+      font-size: 32px;
+      color: var(--blue);
+      margin-right: 4px;
+    }
+
+    .pull-quote blockquote::after {
+      content: "”";
+      font-size: 32px;
+      color: var(--blue);
+      margin-left: 4px;
+    }
+
+    .pull-quote .attribution {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dimmer);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* footer link (same as terms) */
     .footer-link {
       margin-top: 36px;
       padding-top: 18px;
@@ -259,12 +302,18 @@
       .blog-card p {
         font-size: 15px;
       }
+      .blog-meta {
+        flex-direction: column;
+        gap: 4px;
+      }
       .note-box {
         padding: 16px 18px;
       }
-      .meta {
-        flex-direction: column;
-        gap: 4px;
+      .pull-quote {
+        padding: 18px 20px;
+      }
+      .pull-quote blockquote {
+        font-size: 17px;
       }
       .footer-link {
         flex-direction: column;
@@ -278,7 +327,7 @@
       }
     }
 
-    /* fade-in (same) */
+    /* fade-in animation */
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -297,7 +346,7 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER (exact copy from terms/contact)       -->
+  <!-- HEADER (identical to terms)                  -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -322,7 +371,7 @@
           <span class="logo-text">Shoruto</span>
         </a>
 
-        <!-- NAVIGATION LINKS (same) -->
+        <!-- NAVIGATION LINKS -->
         <div class="nav-links">
           <a href="index.html#why"></a>
           <a href="index.html#trending"></a>
@@ -345,79 +394,109 @@
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- BLOG CONTENT                                -->
+  <!-- BLOG PAGE CONTENT                           -->
   <!-- ============================================ -->
   <main class="page-content">
     <div class="blog-card fade-in">
 
+      <!-- Blog Header -->
       <h1>Elon Musk &amp; the Future of AI</h1>
-      <div class="meta">
-        <span><svg class="ic" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></svg> Nov 04, 2025</span>
-        <span><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 6 min read</span>
-        <span><svg class="ic" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> By Shoruto Team</span>
+
+      <!-- Blog Meta -->
+      <div class="blog-meta">
+        <span>
+          <svg class="ic" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18"/></svg>
+          Nov 04, 2025
+        </span>
+        <span>
+          <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          6 min read
+        </span>
+        <span>
+          <svg class="ic" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          By Shoruto Team
+        </span>
       </div>
 
-      <!-- Hero image (exactly from the URL) -->
+      <!-- Hero Image -->
       <div class="hero-image">
-        <img src="https://c.ndtvimg.com/2025-11/srcae7f8_elon-musk_625x300_04_November_25.jpeg?im=FeatureCrop,algorithm=dnn,width=773,height=435" alt="Elon Musk speaking about AI and technology" loading="lazy" />
+        <img
+          src="https://c.ndtvimg.com/2025-11/srcae7f8_elon-musk_625x300_04_November_25.jpeg?im=FeatureCrop,algorithm=dnn,width=773,height=435"
+          alt="Elon Musk speaking at the Global AI Summit 2025"
+          loading="lazy"
+        />
       </div>
-      <div class="caption">Elon Musk at the Global AI Summit 2025 · Source: NDTV</div>
+      <div class="image-caption">Elon Musk at the Global AI Summit 2025 · Source: NDTV</div>
 
-      <p>Elon Musk has once again set the tech world abuzz with his latest predictions about artificial intelligence. Speaking at the Global AI Summit in November 2025, Musk outlined a vision where AI becomes humanity's "most profound partner" — but only if we navigate the risks with unprecedented care.</p>
+      <!-- Introduction -->
+      <p>Elon Musk has once again set the tech world abuzz with his latest predictions about artificial intelligence. Speaking at the Global AI Summit in November 2025, Musk outlined a vision where AI becomes humanity's <strong>"most profound partner"</strong> — but only if we navigate the risks with unprecedented care.</p>
 
       <p>From <strong>Neuralink's brain-computer interfaces</strong> to <strong>Grok-3</strong> and the ambitious <strong>Optimus robotics</strong> program, Musk's ventures are pushing the boundaries of what machines can do. But with great power comes great responsibility, and Musk didn't shy away from the ethical dilemmas ahead.</p>
 
-      <!-- NOTE BOX 1 (blue) -->
+      <!-- NOTE BOX 1: Key Takeaway -->
       <div class="note-box">
         <div class="note-title">
           <svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 11l2 2 4-4"/></svg>
-          Key takeaway #1
+          Key Takeaway #1
         </div>
-        <p><strong>AI regulation is inevitable</strong> — Musk called for a "global AI safety commission" to establish guardrails before AGI (Artificial General Intelligence) emerges. He compared it to the nuclear non-proliferation treaties, but with a tighter timeline.</p>
+        <p><strong>AI regulation is inevitable</strong> — Musk called for a <strong>"global AI safety commission"</strong> to establish guardrails before AGI (Artificial General Intelligence) emerges. He compared it to the nuclear non-proliferation treaties, but with a tighter timeline.</p>
       </div>
 
+      <!-- Section: Optimus Revolution -->
       <h2>
         <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
         The Optimus Revolution
       </h2>
       <p>One of the most striking moments was the live demo of the latest Optimus humanoid robot. Musk revealed that Optimus can now perform complex assembly tasks with <strong>near-human dexterity</strong>, and the cost is expected to drop below $20,000 within two years. "This will be the biggest product ever — bigger than the car," he claimed.</p>
 
-      <!-- NOTE BOX 2 (violet) -->
+      <!-- NOTE BOX 2: Critical Insight (violet) -->
       <div class="note-box violet">
         <div class="note-title">
           <svg class="ic" viewBox="0 0 24 24"><path d="M21 12h-4l-3 9-4-18-3 9H3"/></svg>
-          Critical insight
+          Critical Insight
         </div>
         <ul>
-          <li><strong>Job displacement:</strong> Musk acknowledged that 20-30% of current jobs could be automated within a decade, but argued that new roles in AI supervision and creativity will emerge.</li>
-          <li><strong>Universal basic income:</strong> He suggested that UBI might become a necessity, but stressed that "meaningful work" will still be essential for human well-being.</li>
+          <li><strong>Job displacement:</strong> Musk acknowledged that 20–30% of current jobs could be automated within a decade, but argued that new roles in AI supervision and creativity will emerge.</li>
+          <li><strong>Universal basic income:</strong> He suggested that UBI might become a necessity, but stressed that <strong>"meaningful work"</strong> will still be essential for human well-being.</li>
         </ul>
       </div>
 
+      <!-- Pull Quote -->
+      <div class="pull-quote">
+        <blockquote>
+          We are building the mind of humanity's next chapter. Let's make sure it's a wise one.
+        </blockquote>
+        <span class="attribution">— Elon Musk, Global AI Summit 2025</span>
+      </div>
+
+      <!-- Section: Grok-3 -->
       <h2>
         <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
         Grok-3 and the Truth-Seeking AI
       </h2>
-      <p>Musk also unveiled Grok-3, the latest iteration of xAI's large language model. Unlike its predecessors, Grok-3 is designed to be <strong>"maximally truth-seeking"</strong> — with built-in fact-checking and real-time sourcing. Early benchmarks show it outperforms GPT-5 on reasoning tasks, though Musk cautioned that "no AI is infallible."</p>
+      <p>Musk also unveiled Grok-3, the latest iteration of xAI's large language model. Unlike its predecessors, Grok-3 is designed to be <strong>"maximally truth-seeking"</strong> — with built-in fact-checking and real-time sourcing. Early benchmarks show it outperforms GPT-5 on reasoning tasks, though Musk cautioned that <strong>"no AI is infallible."</strong></p>
 
-      <!-- NOTE BOX 3 (gold) -->
+      <!-- NOTE BOX 3: UPSC Relevance (gold) -->
       <div class="note-box gold">
         <div class="note-title">
           <svg class="ic" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          What this means for UPSC aspirants
+          What This Means for UPSC Aspirants
         </div>
-        <p><strong>AI is now a core topic</strong> for GS Paper III (Technology & Economic Development) and Essay papers. Expect questions on AI governance, ethics, and socio-economic impact. Shoruto's AI-driven mock tests now include dedicated modules on these emerging themes.</p>
+        <p><strong>AI is now a core topic</strong> for GS Paper III (Technology &amp; Economic Development) and Essay papers. Expect questions on AI governance, ethics, and socio-economic impact. Shoruto's AI-driven mock tests now include dedicated modules on these emerging themes.</p>
       </div>
 
+      <!-- Section: The Road Ahead -->
       <h2>
         <svg class="ic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/></svg>
         The Road Ahead
       </h2>
-      <p>Musk concluded with a sobering thought: "We are building the mind of humanity's next chapter. Let's make sure it's a wise one." The next five years, he argued, will define whether AI becomes our greatest tool or our last invention.</p>
+      <p>Musk concluded with a sobering thought: <strong>"We are building the mind of humanity's next chapter. Let's make sure it's a wise one."</strong> The next five years, he argued, will define whether AI becomes our greatest tool or our last invention.</p>
 
-      <p style="margin-top: 20px; color: var(--text-dimmer); font-size: 14px;">Stay tuned to Shoruto for more analysis, and don't forget to check our <strong>AI & Ethics</strong> section in the mock test series.</p>
+      <p style="margin-top: 20px; color: var(--text-dimmer); font-size: 14px;">
+        Stay tuned to Shoruto for more analysis, and don't forget to check our <strong>AI &amp; Ethics</strong> section in the mock test series.
+      </p>
 
-      <!-- footer link (same as terms/contact) -->
+      <!-- Footer Link (same as terms) -->
       <div class="footer-link">
         <a href="index.html">
           <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
@@ -430,7 +509,7 @@
   </main>
 
   <!-- ============================================ -->
-  <!-- THEME TOGGLE SCRIPT (identical)             -->
+  <!-- THEME TOGGLE SCRIPT                         -->
   <!-- ============================================ -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
