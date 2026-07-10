@@ -14,22 +14,28 @@
   <script src="theme.js"></script>
 
   <style>
-    /* ===== RESET ===== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
-
+    /* Page specific styles */
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       background: var(--bg-0);
       background-image:
         radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
         radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
-      color: var(--text);
-      min-height: 100vh;
-      padding-top: 80px;
       transition: background 0.3s ease, color 0.3s ease;
+      padding-top: 80px;
     }
 
+    .page-content {
+      flex: 1;
+      padding: 40px 20px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ---- Icon system ---- */
     .ic {
       width: 1em;
       height: 1em;
@@ -43,7 +49,7 @@
     }
 
     /* ============================================ */
-    /* HEADER - Glass Header                       */
+    /* HEADER - EXACT SAME AS TERMS PAGE           */
     /* ============================================ */
     .nav {
       position: fixed;
@@ -60,10 +66,13 @@
       width: 100%;
     }
 
-    .nav-inner {
+    .wrap {
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
+    }
+
+    .nav-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -97,9 +106,15 @@
       letter-spacing: 1px;
     }
 
-    .nav-links { display: none; }
+    .nav-links {
+      display: none;
+    }
 
-    .nav-cta { display: flex; align-items: center; gap: 12px; }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
     .theme-toggle {
       width: 42px;
@@ -153,22 +168,19 @@
     }
 
     /* ============================================ */
-    /* BLOG LAYOUT - Modern Blog Design            */
+    /* BLOG CARD - Same style as Terms card        */
     /* ============================================ */
-    .blog-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px 24px 60px;
-      width: 100%;
+    .blog-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+      padding: 40px 48px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
     }
 
-    /* ---- Blog Post ---- */
-    .blog-post {
-      animation: fadeUp 0.6s cubic-bezier(.4, 0, .2, 1) both;
-    }
-
-    /* Category Badge */
-    .post-category {
+    /* ---- Blog Hero ---- */
+    .blog-hero .badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -178,100 +190,84 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--violet);
+      background: var(--panel-strong);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
       margin-bottom: 16px;
     }
 
-    .post-category .ic {
+    .blog-hero .badge .ic {
       width: 14px;
       height: 14px;
       color: var(--violet);
     }
 
-    /* Title */
-    .post-title {
+    .blog-hero h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 44px;
+      font-size: 38px;
       font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 16px;
-      transition: color 0.3s ease;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 12px;
     }
 
-    .post-title .highlight {
-      background: linear-gradient(135deg, var(--blue), var(--violet));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Meta */
-    .post-meta {
+    .blog-hero .meta {
       display: flex;
       align-items: center;
       gap: 16px;
       flex-wrap: wrap;
       color: var(--text-dim);
       font-size: 14px;
-      margin-bottom: 24px;
-      transition: color 0.3s ease;
     }
 
-    .post-meta .author {
+    .blog-hero .meta .author {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .post-meta .author-avatar {
-      width: 36px;
-      height: 36px;
+    .blog-hero .meta .author-avatar {
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--blue), var(--violet));
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 700;
       font-family: 'Space Grotesk', sans-serif;
     }
 
-    .post-meta .dot {
+    .blog-hero .meta .dot {
       width: 4px;
       height: 4px;
       border-radius: 50%;
       background: var(--text-dimmer);
     }
 
-    .post-meta .live-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--mint);
-      font-weight: 600;
-    }
-
-    .post-meta .live-badge .pulse {
+    .blog-hero .meta .live-dot {
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: var(--mint);
-      animation: pulse 1.6s ease-in-out infinite;
+      animation: pulseDot 1.6s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.5; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
     }
 
-    /* Featured Image */
+    /* ---- Featured Image ---- */
     .featured-image {
-      border-radius: 18px;
+      border-radius: 16px;
       overflow: hidden;
-      margin-bottom: 32px;
+      margin: 24px 0 32px;
       background: var(--panel);
       border: 1px solid var(--border);
       transition: border-color 0.3s ease, background 0.3s ease;
@@ -283,7 +279,7 @@
       display: block;
       aspect-ratio: 16/9;
       object-fit: cover;
-      transition: transform 0.5s cubic-bezier(.4, 0, .2, 1);
+      transition: transform 0.6s var(--ease);
     }
 
     .featured-image:hover img {
@@ -298,26 +294,26 @@
       transition: border-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Content */
-    .post-content p {
+    /* ---- Blog Body ---- */
+    .blog-body p {
       color: var(--text-dim);
-      font-size: 18px;
+      font-size: 17px;
       line-height: 1.9;
       margin-bottom: 20px;
       transition: color 0.3s ease;
     }
 
-    .post-content h2 {
+    .blog-body h2 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       color: var(--text);
-      margin: 40px 0 16px;
-      letter-spacing: -0.02em;
+      margin: 36px 0 16px;
+      letter-spacing: -0.3px;
       transition: color 0.3s ease;
     }
 
-    .post-content h3 {
+    .blog-body h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 20px;
       font-weight: 600;
@@ -326,7 +322,7 @@
       transition: color 0.3s ease;
     }
 
-    .post-content ul {
+    .blog-body ul {
       padding-left: 24px;
       margin: 16px 0 24px;
       color: var(--text-dim);
@@ -335,33 +331,33 @@
       transition: color 0.3s ease;
     }
 
-    .post-content ul li {
+    .blog-body ul li {
       margin-bottom: 8px;
     }
 
-    .post-content .highlight-box {
+    .blog-body .highlight-box {
       background: var(--panel-strong);
       border-left: 4px solid var(--blue);
       padding: 20px 24px;
       border-radius: 14px;
-      margin: 28px 0;
+      margin: 24px 0;
       transition: background 0.3s ease, border-color 0.3s ease;
     }
 
-    .post-content .highlight-box p {
+    .blog-body .highlight-box p {
       margin-bottom: 0;
       font-size: 16px;
     }
 
-    .post-content .highlight-box.violet {
+    .blog-body .highlight-box.violet {
       border-left-color: var(--violet);
     }
 
     /* ============================================ */
-    /* WIKI LINKS                                  */
+    /* WIKI LINKS - Separate Section               */
     /* ============================================ */
     .wiki-section {
-      margin-top: 48px;
+      margin-top: 40px;
       padding-top: 32px;
       border-top: 2px solid var(--border);
       transition: border-color 0.3s ease;
@@ -371,7 +367,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .wiki-section .wiki-header h3 {
@@ -389,23 +385,23 @@
     }
 
     .wiki-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
     }
 
     .wiki-link {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
+      gap: 10px;
+      padding: 12px 16px;
       background: var(--panel-strong);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 12px;
       color: var(--text-dim);
       text-decoration: none;
-      font-size: 13px;
-      transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+      font-size: 14px;
+      transition: all 0.3s var(--ease);
     }
 
     .wiki-link:hover {
@@ -417,39 +413,40 @@
 
     .wiki-link .ic {
       color: var(--blue);
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
     }
 
-    /* ============================================ */
-    /* RELATED POSTS                               */
-    /* ============================================ */
+    .wiki-link .wiki-tag {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dimmer);
+      background: var(--panel);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: auto;
+      border: 1px solid var(--border);
+    }
+
+    /* ---- Related Posts ---- */
     .related-posts {
-      margin-top: 48px;
+      margin-top: 40px;
       padding-top: 32px;
       border-top: 1px solid var(--border);
       transition: border-color 0.3s ease;
     }
 
-    .related-posts .related-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .related-posts .related-header h3 {
+    .related-posts h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 18px;
       font-weight: 700;
       color: var(--text);
+      margin-bottom: 20px;
       transition: color 0.3s ease;
-    }
-
-    .related-posts .related-header .ic {
-      color: var(--blue);
-      width: 20px;
-      height: 20px;
     }
 
     .related-grid {
@@ -463,7 +460,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 20px;
-      transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+      transition: all 0.3s var(--ease);
       cursor: pointer;
       text-decoration: none;
       color: var(--text);
@@ -506,19 +503,18 @@
     }
 
     /* ---- Footer ---- */
-    .post-footer {
-      margin-top: 48px;
-      padding-top: 24px;
+    .footer-link {
+      margin-top: 32px;
+      padding-top: 18px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      transition: border-color 0.3s ease;
     }
 
-    .post-footer a {
+    .footer-link a {
       color: var(--text-dim);
       text-decoration: none;
       font-size: 14px;
@@ -528,11 +524,11 @@
       transition: color 0.2s ease;
     }
 
-    .post-footer a:hover {
+    .footer-link a:hover {
       color: var(--blue);
     }
 
-    .post-footer .ic {
+    .footer-link .ic {
       width: 14px;
       height: 14px;
     }
@@ -541,12 +537,15 @@
     @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(10px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
+    }
+    .fade-in {
+      animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
     }
 
     /* ---- Responsive ---- */
@@ -556,91 +555,104 @@
       .logo .mark { width: 32px; height: 32px; }
       .logo .logo-text { font-size: 18px; }
       .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
-      .blog-container { padding: 16px 16px 40px; }
-      .post-title { font-size: 30px; }
-      .post-content p { font-size: 16px; }
-      .post-content h2 { font-size: 24px; }
-      .post-content h3 { font-size: 18px; }
+      .page-content { padding: 24px 16px 40px; }
+      .blog-card { padding: 24px 20px; border-radius: 16px; }
+      .blog-hero h1 { font-size: 28px; }
+      .blog-body p { font-size: 15px; }
+      .blog-body h2 { font-size: 22px; }
+      .blog-body h3 { font-size: 18px; }
+      .wiki-grid { grid-template-columns: 1fr 1fr; }
       .related-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 480px) {
-      .post-title { font-size: 26px; }
-      .post-meta { font-size: 12px; gap: 10px; }
+      .wiki-grid { grid-template-columns: 1fr; }
+      .blog-hero .meta { font-size: 12px; gap: 10px; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .blog-card { padding: 32px 36px; }
     }
   </style>
 </head>
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER - Glass Header                       -->
+  <!-- HEADER (EXACT SAME AS TERMS PAGE)           -->
   <!-- ============================================ -->
   <nav class="nav">
-    <div class="nav-inner">
-      <a href="index.html" class="logo">
-        <span class="mark">
-          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="30" cy="28" r="22"/>
-            <circle cx="12" cy="10" r="7"/>
-            <circle cx="48" cy="10" r="7"/>
-            <circle cx="22" cy="25" r="4.5"/>
-            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <circle cx="38" cy="25" r="4.5"/>
-            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <path d="M27 33 L30 37 L33 33"/>
-            <path d="M26 38 Q30 43 34 38"/>
-            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-          </svg>
-        </span>
-        <span class="logo-text">Shoruto</span>
-      </a>
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
 
-      <div class="nav-links"></div>
+        <!-- NAVIGATION LINKS (Hidden) -->
+        <div class="nav-links">
+          <a href="index.html#why"></a>
+          <a href="index.html#trending"></a>
+          <a href="index.html#subjects"></a>
+          <a href="blog.html"></a>
+          <a href="index.html#ai"></a>
+          <a href="index.html#faq"></a>
+        </div>
 
-      <div class="nav-cta">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <span class="sun-icon">☀️</span>
-          <span class="moon-icon">🌙</span>
-        </button>
+        <!-- RIGHT SIDE: THEME TOGGLE -->
+        <div class="nav-cta">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- BLOG CONTENT - Clean, Modern Layout         -->
+  <!-- BLOG CONTENT                                -->
   <!-- ============================================ -->
-  <main class="blog-container">
-    <article class="blog-post">
+  <main class="page-content">
+    <div class="blog-card fade-in">
 
-      <!-- Category -->
-      <div class="post-category">
-        <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
-        Featured Story
-      </div>
-
-      <!-- Title -->
-      <h1 class="post-title">
-        Elon Musk's <span class="highlight">xAI</span> Unveils<br>
-        Grok-3: The Next Frontier in AI
-      </h1>
-
-      <!-- Meta -->
-      <div class="post-meta">
-        <span class="author">
-          <span class="author-avatar">EM</span>
-          <span>Elon Musk</span>
-        </span>
-        <span class="dot"></span>
-        <span>December 15, 2025</span>
-        <span class="dot"></span>
-        <span>12 min read</span>
-        <span class="dot"></span>
-        <span class="live-badge">
-          <span class="pulse"></span>
-          Trending
-        </span>
+      <!-- Hero -->
+      <div class="blog-hero">
+        <div class="badge">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
+          Featured Story
+        </div>
+        <h1>Elon Musk's xAI Unveils Grok-3: The Next Frontier in AI</h1>
+        <div class="meta">
+          <span class="author">
+            <span class="author-avatar">EM</span>
+            <span>Elon Musk</span>
+          </span>
+          <span class="dot"></span>
+          <span>December 15, 2025</span>
+          <span class="dot"></span>
+          <span>12 min read</span>
+          <span class="dot"></span>
+          <span style="display:inline-flex;align-items:center;gap:4px;color:var(--mint);">
+            <span class="live-dot"></span>
+            Trending
+          </span>
+        </div>
       </div>
 
       <!-- Featured Image -->
@@ -654,8 +666,8 @@
         <figcaption class="caption">Elon Musk at the xAI Grok-3 launch event in San Francisco</figcaption>
       </figure>
 
-      <!-- Content -->
-      <div class="post-content">
+      <!-- Blog Body -->
+      <div class="blog-body">
 
         <p>
           In a landmark announcement that sent ripples through the tech world, Elon Musk's xAI unveiled Grok-3 — the latest iteration of their flagship AI model. Dubbed "the most powerful AI ever created," Grok-3 promises to redefine the boundaries of artificial intelligence with unprecedented reasoning capabilities and real-time learning.
@@ -696,7 +708,7 @@
         </p>
 
         <!-- ============================================ -->
-        <!-- WIKI LINKS                                  -->
+        <!-- WIKI LINKS - Separate Section               -->
         <!-- ============================================ -->
         <div class="wiki-section">
           <div class="wiki-header">
@@ -707,46 +719,49 @@
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Artificial Intelligence
+              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Machine Learning
+              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Neural Networks
+              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Quantum Computing
+              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Elon Musk
+              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               xAI
+              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               Tesla
+              <span class="wiki-tag">Wiki</span>
             </a>
             <a href="#" class="wiki-link">
               <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
               SpaceX
+              <span class="wiki-tag">Wiki</span>
             </a>
           </div>
         </div>
 
-        <!-- ============================================ -->
-        <!-- RELATED POSTS                               -->
-        <!-- ============================================ -->
+        <!-- Related Posts -->
         <div class="related-posts">
-          <div class="related-header">
-            <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
-            <h3>Related Posts</h3>
-          </div>
+          <h3>Related Posts</h3>
           <div class="related-grid">
             <a href="#" class="related-card">
               <div class="thumb">
@@ -775,7 +790,7 @@
       </div>
 
       <!-- Footer -->
-      <div class="post-footer">
+      <div class="footer-link">
         <a href="index.html">
           <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
           Back to Shoruto
@@ -783,7 +798,7 @@
         <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
       </div>
 
-    </article>
+    </div>
   </main>
 
   <!-- ============================================ -->
