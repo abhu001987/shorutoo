@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog · The future of AI · Shoruto</title>
+  <title>Beyond the algorithm · Shoruto</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Shared CSS & JS (theme.css / theme.js) -->
+  <!-- Shared CSS & JS -->
   <link rel="stylesheet" href="theme.css">
   <script src="theme.js"></script>
 
   <style>
-    /* ----- page specific – inherits theme.css vars ----- */
     body {
       min-height: 100vh;
       display: flex;
@@ -26,15 +25,6 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .page-content {
-      flex: 1;
-      padding: 60px 20px;
-      max-width: 1400px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    /* icon system (reuse) */
     .ic {
       width: 1em;
       height: 1em;
@@ -47,109 +37,117 @@
       flex-shrink: 0;
     }
 
-    /* card – blog style */
-    .blog-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      backdrop-filter: blur(10px);
-      padding: 44px 52px;
-      transition: border-color 0.25s ease, transform 0.25s ease;
+    /* FULL WIDTH BLOG — no card/box */
+    .blog-wrapper {
+      flex: 1;
+      padding: 40px 20px 80px;
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    .blog-card .meta {
+    /* meta row */
+    .blog-meta {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
       align-items: center;
       color: var(--text-dimmer);
-      font-size: 14px;
-      margin-bottom: 18px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 18px;
     }
 
-    .blog-card .meta .tag {
+    .blog-meta .tag {
       background: var(--panel-strong);
       padding: 4px 14px;
       border-radius: 40px;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--blue);
       border: 1px solid var(--border);
-      font-size: 12px;
-      letter-spacing: 0.3px;
+      font-size: 11px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
     }
 
-    .blog-card h1 {
+    /* HERO */
+    .blog-hero h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: 42px;
-      letter-spacing: -0.4px;
+      font-size: 52px;
+      letter-spacing: -0.5px;
       color: var(--text);
-      margin: 8px 0 12px;
-      line-height: 1.2;
+      margin: 0 0 10px;
+      line-height: 1.1;
     }
 
-    .blog-card .subhead {
-      font-size: 18px;
+    .blog-hero .subhead {
+      font-size: 20px;
       color: var(--text-dim);
-      margin-bottom: 28px;
       font-weight: 400;
       line-height: 1.6;
-      max-width: 90%;
+      margin-bottom: 10px;
     }
 
-    .blog-card .featured-image {
+    .blog-hero .byline {
+      color: var(--text-dimmer);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    /* featured image — full width */
+    .blog-featured {
+      margin: 32px 0 40px;
+      border-radius: 18px;
+      height: 260px;
       background: var(--panel-strong);
-      border-radius: 20px;
-      height: 220px;
-      margin-bottom: 32px;
+      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid var(--border);
-      background-image: radial-gradient(circle at 30% 40%, var(--glow-1), transparent 60%), 
-                        radial-gradient(circle at 70% 60%, var(--glow-2), transparent 55%);
+      background-image: radial-gradient(circle at 30% 30%, var(--glow-1), transparent 60%),
+                        radial-gradient(circle at 70% 70%, var(--glow-2), transparent 55%);
       color: var(--text-dimmer);
+      font-size: 20px;
       font-weight: 500;
-      font-size: 18px;
-      transition: background 0.3s ease;
     }
 
-    .blog-card .featured-image span {
+    .blog-featured span {
       background: var(--panel);
-      padding: 10px 26px;
+      padding: 12px 32px;
       border-radius: 60px;
       border: 1px solid var(--border);
       backdrop-filter: blur(6px);
       color: var(--text);
     }
 
-    .blog-card h2 {
+    /* body text — full width, clean */
+    .blog-body h2 {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
-      font-size: 24px;
-      margin: 40px 0 16px;
+      font-size: 26px;
+      margin: 44px 0 16px;
       color: var(--text);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .blog-card h2 .ic {
+    .blog-body h2 .ic {
       color: var(--violet);
       width: 1.3em;
       height: 1.3em;
     }
 
-    .blog-card p {
+    .blog-body p {
       color: var(--text-dim);
       font-size: 17px;
       line-height: 1.9;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
-    .blog-card ul {
+    .blog-body ul {
       padding-left: 28px;
       margin: 12px 0 24px;
       color: var(--text-dim);
@@ -157,23 +155,23 @@
       line-height: 1.8;
     }
 
-    .blog-card ul li {
+    .blog-body ul li {
       margin-bottom: 8px;
     }
 
-    .blog-card blockquote {
+    .blog-body blockquote {
       background: var(--panel-strong);
       border-left: 6px solid var(--blue);
-      padding: 18px 28px;
+      padding: 20px 30px;
       border-radius: 14px;
-      margin: 28px 0;
+      margin: 30px 0;
       font-style: italic;
       color: var(--text);
-      font-size: 18px;
+      font-size: 19px;
       line-height: 1.7;
     }
 
-    .blog-card blockquote cite {
+    .blog-body blockquote cite {
       display: block;
       margin-top: 10px;
       font-style: normal;
@@ -181,7 +179,7 @@
       font-size: 14px;
     }
 
-    .blog-card .highlight-box {
+    .blog-body .highlight-box {
       background: var(--panel-strong);
       border-left: 4px solid var(--violet);
       padding: 18px 24px;
@@ -189,14 +187,19 @@
       margin: 28px 0;
     }
 
-    .blog-card .highlight-box p {
+    .blog-body .highlight-box p {
       margin-bottom: 0;
       color: var(--text-dim);
     }
 
-    .blog-card .footer-link {
-      margin-top: 36px;
-      padding-top: 20px;
+    .blog-body .highlight-box.blue {
+      border-left-color: var(--blue);
+    }
+
+    /* footer */
+    .blog-footer {
+      margin-top: 48px;
+      padding-top: 22px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -205,7 +208,7 @@
       gap: 12px;
     }
 
-    .blog-card .footer-link a {
+    .blog-footer a {
       color: var(--text-dim);
       text-decoration: none;
       font-size: 14px;
@@ -215,53 +218,43 @@
       transition: color 0.2s ease;
     }
 
-    .blog-card .footer-link a:hover {
+    .blog-footer a:hover {
       color: var(--blue);
     }
 
-    .blog-card .footer-link .ic {
+    .blog-footer .ic {
       width: 14px;
       height: 14px;
     }
 
+    /* responsiveness */
     @media (max-width: 768px) {
-      .page-content {
-        padding: 32px 14px;
+      .blog-wrapper {
+        padding: 20px 16px 60px;
       }
-      .blog-card {
-        padding: 24px 18px;
-        border-radius: 18px;
+      .blog-hero h1 {
+        font-size: 32px;
       }
-      .blog-card h1 {
-        font-size: 28px;
+      .blog-hero .subhead {
+        font-size: 17px;
       }
-      .blog-card .subhead {
-        font-size: 16px;
-        max-width: 100%;
+      .blog-body h2 {
+        font-size: 21px;
       }
-      .blog-card h2 {
-        font-size: 20px;
-      }
-      .blog-card p {
+      .blog-body p {
         font-size: 15px;
       }
-      .blog-card .featured-image {
-        height: 140px;
+      .blog-featured {
+        height: 160px;
         font-size: 14px;
+        margin: 20px 0 28px;
       }
-      .blog-card .meta {
+      .blog-meta {
         font-size: 12px;
         gap: 12px;
       }
     }
 
-    @media (min-width: 769px) and (max-width: 1200px) {
-      .blog-card {
-        padding: 34px 36px;
-      }
-    }
-
-    /* fade animation */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
@@ -273,13 +266,10 @@
 </head>
 <body>
 
-  <!-- ========================================== -->
-  <!-- HEADER – exactly same as terms page       -->
-  <!-- ========================================== -->
+  <!-- ===== HEADER (same as terms) ===== -->
   <nav class="nav">
     <div class="wrap">
       <div class="nav-inner">
-        <!-- LOGO -->
         <a href="index.html" class="logo">
           <span class="mark">
             <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -299,7 +289,6 @@
           <span class="logo-text">Shoruto</span>
         </a>
 
-        <!-- NAVIGATION LINKS (kept as in terms) -->
         <div class="nav-links">
           <a href="index.html#why"></a>
           <a href="index.html#trending"></a>
@@ -309,7 +298,6 @@
           <a href="index.html#faq"></a>
         </div>
 
-        <!-- RIGHT: THEME TOGGLE -->
         <div class="nav-cta">
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <span class="sun-icon">☀️</span>
@@ -319,30 +307,32 @@
       </div>
     </div>
   </nav>
-  <!-- ========================================== -->
 
-  <!-- ========================================== -->
-  <!-- BLOG CONTENT – future of AI               -->
-  <!-- ========================================== -->
-  <main class="page-content">
-    <div class="blog-card fade-in">
-      <!-- meta -->
-      <div class="meta">
-        <span class="tag">🧠 AI · future</span>
-        <span>📅 July 10, 2026</span>
-        <span>⏱ 8 min read</span>
-        <span>✍️ Shoruto editorial</span>
-      </div>
+  <!-- ===== BLOG — FULL WIDTH, NO BOX ===== -->
+  <main class="blog-wrapper fade-in">
 
+    <!-- meta -->
+    <div class="blog-meta">
+      <span class="tag">🧠 AI · future</span>
+      <span>July 10, 2026</span>
+      <span>8 min read</span>
+      <span>Shoruto editorial</span>
+    </div>
+
+    <!-- hero -->
+    <div class="blog-hero">
       <h1>Beyond the algorithm: the human–AI symbiosis</h1>
-      <div class="subhead">
-        How artificial intelligence is evolving from a tool to a partner — and what that means for creativity, work, and consciousness.
-      </div>
+      <p class="subhead">How artificial intelligence is evolving from a tool to a partner — and what that means for creativity, work, and consciousness.</p>
+      <p class="byline">By Shoruto editorial team</p>
+    </div>
 
-      <!-- featured placeholder (visual) -->
-      <div class="featured-image">
-        <span>✦  AI / human future  ✦</span>
-      </div>
+    <!-- featured image -->
+    <div class="blog-featured">
+      <span>✦  AI / human future  ✦</span>
+    </div>
+
+    <!-- body -->
+    <div class="blog-body">
 
       <p><strong>We are standing at the threshold of a new era.</strong> Not because machines have become sentient, but because they have become <em>relational</em>. The future of AI is not about replacing human intelligence — it's about extending it, challenging it, and collaborating with it in ways we are only beginning to imagine.</p>
 
@@ -404,26 +394,26 @@
       <p>So, what does this mean for us — as individuals, as organisations, as a society? It means we need to <strong>learn</strong> how to work with AI, not just use it. It means we need to invest in digital literacy, critical thinking, and ethical reasoning. It means we need to create institutions that can govern AI with the same care we govern other powerful technologies.</p>
       <p>At Shoruto, we believe that the future of AI is not a distant sci-fi scenario — it is being written today, in classrooms, in labs, and in the conversations we have with each other. We are committed to building AI that is transparent, fair, and empowering. Because the best future is one where humans and machines grow together.</p>
 
-      <div class="highlight-box" style="border-left-color: var(--blue);">
+      <div class="highlight-box blue">
         <p><strong>🚀 Shoruto's vision:</strong> We are building AI that helps you learn, think, and create — not in isolation, but in partnership. Because the future is not about AI vs. human; it's about AI <em>with</em> human.</p>
       </div>
 
       <p style="margin-top: 16px; color: var(--text-dimmer); font-size: 14px;">This blog is part of our ongoing series on technology, society, and the future of learning. We'd love to hear your thoughts — reach out at <strong>blog@shoruto.com</strong>.</p>
 
-      <!-- footer link (same as terms) -->
-      <div class="footer-link">
-        <a href="index.html">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
-          Back to Shoruto
-        </a>
-        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto · insights</span>
-      </div>
     </div>
+
+    <!-- footer -->
+    <div class="blog-footer">
+      <a href="index.html">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        Back to Shoruto
+      </a>
+      <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto · insights</span>
+    </div>
+
   </main>
 
-  <!-- ========================================== -->
-  <!-- THEME TOGGLE (same as terms)             -->
-  <!-- ========================================== -->
+  <!-- ===== THEME TOGGLE ===== -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const themeToggle = document.getElementById('themeToggle');
@@ -432,7 +422,6 @@
       }
     });
   </script>
-  <!-- ========================================== -->
 
 </body>
 </html>
