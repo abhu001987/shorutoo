@@ -49,7 +49,7 @@
     }
 
     /* ============================================ */
-    /* HEADER - EXACT SAME AS PRIVACY PAGE         */
+    /* HEADER - FIXED: No extra wrap wrapper       */
     /* ============================================ */
     .nav {
       position: fixed;
@@ -66,13 +66,10 @@
       width: 100%;
     }
 
-    .wrap {
+    .nav-inner {
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
-    }
-
-    .nav-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -168,7 +165,7 @@
     }
 
     /* ============================================ */
-    /* BLOG CARD - Same style as Privacy card      */
+    /* BLOG CARD - Same style as Terms card        */
     /* ============================================ */
     .blog-card {
       background: var(--panel);
@@ -578,48 +575,39 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER (EXACT SAME AS PRIVACY PAGE)         -->
+  <!-- HEADER - FIXED: No extra wrap wrapper       -->
   <!-- ============================================ -->
   <nav class="nav">
-    <div class="wrap">
-      <div class="nav-inner">
-        <!-- LOGO -->
-        <a href="index.html" class="logo">
-          <span class="mark">
-            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="30" cy="28" r="22"/>
-              <circle cx="12" cy="10" r="7"/>
-              <circle cx="48" cy="10" r="7"/>
-              <circle cx="22" cy="25" r="4.5"/>
-              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-              <circle cx="38" cy="25" r="4.5"/>
-              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-              <path d="M27 33 L30 37 L33 33"/>
-              <path d="M26 38 Q30 43 34 38"/>
-              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-            </svg>
-          </span>
-          <span class="logo-text">Shoruto</span>
-        </a>
+    <div class="nav-inner">
+      <!-- LOGO -->
+      <a href="index.html" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Shoruto</span>
+      </a>
 
-        <!-- NAVIGATION LINKS (Hidden) -->
-        <div class="nav-links">
-          <a href="index.html#why"></a>
-          <a href="index.html#trending"></a>
-          <a href="index.html#subjects"></a>
-          <a href="blog.html"></a>
-          <a href="index.html#ai"></a>
-          <a href="index.html#faq"></a>
-        </div>
+      <!-- NAVIGATION LINKS (Hidden) -->
+      <div class="nav-links"></div>
 
-        <!-- RIGHT SIDE: THEME TOGGLE -->
-        <div class="nav-cta">
-          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-            <span class="sun-icon">☀️</span>
-            <span class="moon-icon">🌙</span>
-          </button>
-        </div>
+      <!-- RIGHT SIDE: THEME TOGGLE -->
+      <div class="nav-cta">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
       </div>
     </div>
   </nav>
