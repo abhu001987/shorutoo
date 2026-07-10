@@ -6,7 +6,7 @@
 <title>SHORUTO — Challenge a Friend</title>
 
 <!-- ============================================================
-     THEME INIT
+     THEME INIT — runs before CSS paints
      ============================================================ -->
 <script>
 (function () {
@@ -401,7 +401,7 @@
     <div class="nav-actions">
       <a href="blog.html" class="nav-link">Blog</a>
       <a href="index.html#why" class="nav-link">About</a>
-      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
         <svg class="ic sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
         <svg class="ic moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
@@ -828,6 +828,14 @@ function shareMyResult(){
   navigator.clipboard?.writeText(msg).catch(()=>{});
   showToast('Result copied to share');
 }
+
+/* ---------------- Theme toggle event listener ---------------- */
+document.addEventListener('DOMContentLoaded', function() {
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+  }
+});
 </script>
 </body>
 </html>
