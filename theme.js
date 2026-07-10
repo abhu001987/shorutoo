@@ -3,7 +3,7 @@
 (function() {
     // ===== CONFIG =====
     const STORAGE_KEY = 'shoruto-theme';  // Consistent key name
-    const DEFAULT_THEME = 'light';
+    const DEFAULT_THEME = 'dark';
 
     // ===== GET STORED THEME =====
     function getStoredTheme() {
