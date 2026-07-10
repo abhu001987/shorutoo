@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog · The future of AI · Shoruto</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Shared CSS & JS (theme.css / theme.js) -->
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
+
+  <style>
+    /* ----- page specific – inherits theme.css vars ----- */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-0);
+      background-image:
+        radial-gradient(circle at 20% 10%, var(--glow-1), transparent 50%),
+        radial-gradient(circle at 80% 30%, var(--glow-2), transparent 45%);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .page-content {
+      flex: 1;
+      padding: 60px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* icon system (reuse) */
+    .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
+
+    /* card – blog style */
+    .blog-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      backdrop-filter: blur(10px);
+      padding: 44px 52px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .blog-card .meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: var(--text-dimmer);
+      font-size: 14px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+    }
+
+    .blog-card .meta .tag {
+      background: var(--panel-strong);
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-weight: 500;
+      color: var(--blue);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .blog-card h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 42px;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      margin: 8px 0 12px;
+      line-height: 1.2;
+    }
+
+    .blog-card .subhead {
+      font-size: 18px;
+      color: var(--text-dim);
+      margin-bottom: 28px;
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 90%;
+    }
+
+    .blog-card .featured-image {
+      background: var(--panel-strong);
+      border-radius: 20px;
+      height: 220px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      background-image: radial-gradient(circle at 30% 40%, var(--glow-1), transparent 60%), 
+                        radial-gradient(circle at 70% 60%, var(--glow-2), transparent 55%);
+      color: var(--text-dimmer);
+      font-weight: 500;
+      font-size: 18px;
+      transition: background 0.3s ease;
+    }
+
+    .blog-card .featured-image span {
+      background: var(--panel);
+      padding: 10px 26px;
+      border-radius: 60px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+      color: var(--text);
+    }
+
+    .blog-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      margin: 40px 0 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .blog-card h2 .ic {
+      color: var(--violet);
+      width: 1.3em;
+      height: 1.3em;
+    }
+
+    .blog-card p {
+      color: var(--text-dim);
+      font-size: 17px;
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+
+    .blog-card ul {
+      padding-left: 28px;
+      margin: 12px 0 24px;
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .blog-card ul li {
+      margin-bottom: 8px;
+    }
+
+    .blog-card blockquote {
+      background: var(--panel-strong);
+      border-left: 6px solid var(--blue);
+      padding: 18px 28px;
+      border-radius: 14px;
+      margin: 28px 0;
+      font-style: italic;
+      color: var(--text);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .blog-card blockquote cite {
+      display: block;
+      margin-top: 10px;
+      font-style: normal;
+      color: var(--text-dimmer);
+      font-size: 14px;
+    }
+
+    .blog-card .highlight-box {
+      background: var(--panel-strong);
+      border-left: 4px solid var(--violet);
+      padding: 18px 24px;
+      border-radius: 14px;
+      margin: 28px 0;
+    }
+
+    .blog-card .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text-dim);
+    }
+
+    .blog-card .footer-link {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .blog-card .footer-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .blog-card .footer-link a:hover {
+      color: var(--blue);
+    }
+
+    .blog-card .footer-link .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .page-content {
+        padding: 32px 14px;
+      }
+      .blog-card {
+        padding: 24px 18px;
+        border-radius: 18px;
+      }
+      .blog-card h1 {
+        font-size: 28px;
+      }
+      .blog-card .subhead {
+        font-size: 16px;
+        max-width: 100%;
+      }
+      .blog-card h2 {
+        font-size: 20px;
+      }
+      .blog-card p {
+        font-size: 15px;
+      }
+      .blog-card .featured-image {
+        height: 140px;
+        font-size: 14px;
+      }
+      .blog-card .meta {
+        font-size: 12px;
+        gap: 12px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .blog-card {
+        padding: 34px 36px;
+      }
+    }
+
+    /* fade animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeUp 0.6s cubic-bezier(.4, 0, .2, 1) both;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================== -->
+  <!-- HEADER – exactly same as terms page       -->
+  <!-- ========================================== -->
+  <nav class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
+
+        <!-- NAVIGATION LINKS (kept as in terms) -->
+        <div class="nav-links">
+          <a href="index.html#why"></a>
+          <a href="index.html#trending"></a>
+          <a href="index.html#subjects"></a>
+          <a href="blog.html"></a>
+          <a href="index.html#ai"></a>
+          <a href="index.html#faq"></a>
+        </div>
+
+        <!-- RIGHT: THEME TOGGLE -->
+        <div class="nav-cta">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- ========================================== -->
+
+  <!-- ========================================== -->
+  <!-- BLOG CONTENT – future of AI               -->
+  <!-- ========================================== -->
+  <main class="page-content">
+    <div class="blog-card fade-in">
+      <!-- meta -->
+      <div class="meta">
+        <span class="tag">🧠 AI · future</span>
+        <span>📅 July 10, 2026</span>
+        <span>⏱ 8 min read</span>
+        <span>✍️ Shoruto editorial</span>
+      </div>
+
+      <h1>Beyond the algorithm: the human–AI symbiosis</h1>
+      <div class="subhead">
+        How artificial intelligence is evolving from a tool to a partner — and what that means for creativity, work, and consciousness.
+      </div>
+
+      <!-- featured placeholder (visual) -->
+      <div class="featured-image">
+        <span>✦  AI / human future  ✦</span>
+      </div>
+
+      <p><strong>We are standing at the threshold of a new era.</strong> Not because machines have become sentient, but because they have become <em>relational</em>. The future of AI is not about replacing human intelligence — it's about extending it, challenging it, and collaborating with it in ways we are only beginning to imagine.</p>
+
+      <p>Over the last decade, AI has moved from pattern recognition to pattern generation. From large language models that write poetry to diffusion models that paint like masters, the technology has crossed a threshold of fluency. But the next decade? That will be about <strong>meaning</strong>.</p>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        From automation to augmentation
+      </h2>
+      <p>The first wave of AI was about efficiency: automating repetitive tasks, sorting data, detecting anomalies. The second wave, which is already upon us, is about augmentation: amplifying human capabilities. Doctors use AI to spot early signs of disease; architects generate hundreds of design variations in seconds; teachers personalise learning paths for each student.</p>
+      <p>But the third wave — the truly transformative one — will be about <strong>collaboration</strong>. AI will not just suggest; it will debate. It will not just answer; it will ask probing questions. It will become a Socratic partner, not a mere oracle.</p>
+
+      <blockquote>
+        “The future of AI is not artificial intelligence, but <strong>amplified intelligence</strong> — a partnership where each side brings its own strengths: human intuition, ethics, and creativity, paired with machine speed, scale, and pattern recognition.”
+        <cite>— Dr. Fei-Fei Li, Stanford</cite>
+      </blockquote>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        The creative frontier
+      </h2>
+      <p>One of the most exciting frontiers is creative AI. We've already seen AI-generated art, music, and literature. But the real breakthrough is not in generating content — it's in <strong>co-creating</strong>. Musicians are using AI to generate harmonies they wouldn't have thought of; writers use it to break through writer's block; game designers generate entire worlds from a single prompt.</p>
+      <p>However, this raises a fundamental question: <em>can a machine be creative?</em> The answer may be less important than the realisation that creativity is not a solo act. It is a dialogue. And AI is becoming a fluent conversationalist.</p>
+
+      <div class="highlight-box">
+        <p><strong>🔮 The emergent property:</strong> When humans and AI collaborate, the output is often greater than the sum of its parts. This "hybrid intelligence" is already outperforming both humans and AI alone in areas like drug discovery, climate modelling, and game design.</p>
+      </div>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/></svg>
+        Ethics &amp; alignment: the hard problem
+      </h2>
+      <p>As AI becomes more capable, the ethical stakes rise. Bias, privacy, job displacement, and the concentration of power are not new concerns, but they are becoming more acute. The future of AI depends on our ability to <strong>align</strong> these systems with human values.</p>
+      <p>This is not a technical problem alone — it is a social, political, and philosophical one. It requires diverse voices: not just engineers, but philosophers, sociologists, artists, and everyday users. The future is not something that happens <em>to</em> us; it is something we <em>build</em> together.</p>
+
+      <ul>
+        <li><strong>Transparency:</strong> AI systems must be interpretable and accountable.</li>
+        <li><strong>Fairness:</strong> Algorithms should not perpetuate or amplify bias.</li>
+        <li><strong>Privacy:</strong> User data must be protected and used responsibly.</li>
+        <li><strong>Human agency:</strong> AI should augment, not replace, human decision-making.</li>
+      </ul>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M21 12h-4l-3 9-4-18-3 9H3"/></svg>
+        The long view: AI and consciousness
+      </h2>
+      <p>Will AI ever become conscious? Some researchers believe it's possible, while others argue that consciousness is an emergent property of biological life. But perhaps we are asking the wrong question. Rather than asking whether AI can be conscious, we might ask: <strong>what kind of relationship do we want to have with intelligent machines?</strong></p>
+      <p>In the coming decades, we will likely see AI that can hold meaningful conversations, understand emotional context, and even develop a form of "digital empathy." These systems will not be human, but they will be <em>human-like</em> in their interactions. This will challenge our definitions of intelligence, creativity, and even friendship.</p>
+
+      <blockquote>
+        “We are not building a tool; we are building a <strong>partner</strong>. And like any partnership, it requires trust, respect, and a shared vision.”
+        <cite>— Mustafa Suleyman, co-founder DeepMind</cite>
+      </blockquote>
+
+      <h2>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 11l2 2 4-4"/></svg>
+        Preparing for the next decade
+      </h2>
+      <p>So, what does this mean for us — as individuals, as organisations, as a society? It means we need to <strong>learn</strong> how to work with AI, not just use it. It means we need to invest in digital literacy, critical thinking, and ethical reasoning. It means we need to create institutions that can govern AI with the same care we govern other powerful technologies.</p>
+      <p>At Shoruto, we believe that the future of AI is not a distant sci-fi scenario — it is being written today, in classrooms, in labs, and in the conversations we have with each other. We are committed to building AI that is transparent, fair, and empowering. Because the best future is one where humans and machines grow together.</p>
+
+      <div class="highlight-box" style="border-left-color: var(--blue);">
+        <p><strong>🚀 Shoruto's vision:</strong> We are building AI that helps you learn, think, and create — not in isolation, but in partnership. Because the future is not about AI vs. human; it's about AI <em>with</em> human.</p>
+      </div>
+
+      <p style="margin-top: 16px; color: var(--text-dimmer); font-size: 14px;">This blog is part of our ongoing series on technology, society, and the future of learning. We'd love to hear your thoughts — reach out at <strong>blog@shoruto.com</strong>.</p>
+
+      <!-- footer link (same as terms) -->
+      <div class="footer-link">
+        <a href="index.html">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          Back to Shoruto
+        </a>
+        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto · insights</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- THEME TOGGLE (same as terms)             -->
+  <!-- ========================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+    });
+  </script>
+  <!-- ========================================== -->
+
+</body>
+</html>
