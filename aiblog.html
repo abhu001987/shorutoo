@@ -1,46 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog · Shoruto</title>
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- ============================================ -->
-  <!-- SHARED THEME (MUST HAVE)                     -->
-  <!-- ============================================ -->
+  <!-- Shared CSS & JS -->
   <link rel="stylesheet" href="theme.css">
   <script src="theme.js"></script>
-  <!-- ============================================ -->
 
   <style>
-    /* ===== RESET ===== */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    /* Page specific styles */
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       background: var(--bg-0);
       background-image:
         radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
         radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
-      color: var(--text);
-      min-height: 100vh;
-      padding-top: 80px;
       transition: background 0.3s ease, color 0.3s ease;
+      padding-top: 80px;
     }
 
-    /* Page-local tokens */
-    :root {
-      --radius-lg: 22px;
-      --ease: cubic-bezier(.4, 0, .2, 1);
+    .page-content {
+      flex: 1;
+      padding: 40px 20px 60px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    .ic { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; flex-shrink: 0; }
+    /* ---- Icon system ---- */
+    .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
 
     /* ============================================ */
-    /* HEADER - Only Round Logo + Theme Toggle     */
+    /* HEADER - EXACT SAME AS TERMS PAGE           */
     /* ============================================ */
     .nav {
       position: fixed;
@@ -57,37 +66,44 @@
       width: 100%;
     }
 
-    .nav-inner {
+    .wrap {
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
+    }
+
+    .nav-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
     }
 
-    .logo-link {
+    .logo {
       display: flex;
       align-items: center;
-      gap: 0;
+      gap: 10px;
       text-decoration: none;
       flex-shrink: 0;
     }
 
-    .logo-link .mark {
+    .logo .mark {
       display: inline-flex;
       width: 40px;
       height: 40px;
     }
 
-    .logo-link .mark svg {
+    .logo .mark svg {
       width: 100%;
       height: 100%;
     }
 
-    .logo-link .logo-text {
-      display: none;
+    .logo .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
     }
 
     .nav-links {
@@ -152,21 +168,18 @@
     }
 
     /* ============================================ */
-    /* BLOG CONTENT                                */
+    /* BLOG CARD - Same style as Terms card        */
     /* ============================================ */
-    .blog-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 40px 24px;
-      width: 100%;
+    .blog-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+      padding: 40px 48px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
     }
 
-    /* Hero Section */
-    .blog-hero {
-      margin-bottom: 48px;
-      animation: fadeUp 0.8s var(--ease) both;
-    }
-
+    /* ---- Blog Hero ---- */
     .blog-hero .badge {
       display: inline-flex;
       align-items: center;
@@ -192,7 +205,7 @@
 
     .blog-hero h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 42px;
+      font-size: 38px;
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.5px;
@@ -236,15 +249,27 @@
       background: var(--text-dimmer);
     }
 
-    /* Featured Image */
+    .blog-hero .meta .live-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.5; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    /* ---- Featured Image ---- */
     .featured-image {
-      border-radius: var(--radius-lg);
+      border-radius: 16px;
       overflow: hidden;
-      margin-bottom: 40px;
+      margin: 24px 0 32px;
       background: var(--panel);
       border: 1px solid var(--border);
-      animation: fadeUp 0.8s var(--ease) both;
-      animation-delay: 0.1s;
       transition: border-color 0.3s ease, background 0.3s ease;
     }
 
@@ -269,12 +294,7 @@
       transition: border-color 0.3s ease, color 0.3s ease;
     }
 
-    /* Blog Body */
-    .blog-body {
-      animation: fadeUp 0.8s var(--ease) both;
-      animation-delay: 0.2s;
-    }
-
+    /* ---- Blog Body ---- */
     .blog-body p {
       color: var(--text-dim);
       font-size: 17px;
@@ -333,9 +353,88 @@
       border-left-color: var(--violet);
     }
 
-    /* Blog Grid for related posts */
+    /* ============================================ */
+    /* WIKI LINKS - Separate Section               */
+    /* ============================================ */
+    .wiki-section {
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border);
+      transition: border-color 0.3s ease;
+    }
+
+    .wiki-section .wiki-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .wiki-section .wiki-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .wiki-section .wiki-header .ic {
+      color: var(--violet);
+      width: 22px;
+      height: 22px;
+    }
+
+    .wiki-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .wiki-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .wiki-link:hover {
+      border-color: var(--blue);
+      color: var(--text);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--blue-soft);
+    }
+
+    .wiki-link .ic {
+      color: var(--blue);
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .wiki-link .wiki-tag {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dimmer);
+      background: var(--panel);
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: auto;
+      border: 1px solid var(--border);
+    }
+
+    /* ---- Related Posts ---- */
     .related-posts {
-      margin-top: 56px;
+      margin-top: 40px;
       padding-top: 32px;
       border-top: 1px solid var(--border);
       transition: border-color 0.3s ease;
@@ -357,11 +456,11 @@
     }
 
     .related-card {
-      background: var(--panel);
+      background: var(--panel-strong);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      border-radius: 16px;
       padding: 20px;
-      transition: transform 0.3s var(--ease), border-color 0.3s ease, background 0.3s ease;
+      transition: all 0.3s var(--ease);
       cursor: pointer;
       text-decoration: none;
       color: var(--text);
@@ -370,6 +469,7 @@
     .related-card:hover {
       transform: translateY(-4px);
       border-color: var(--violet);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
     .related-card .thumb {
@@ -402,77 +502,124 @@
       transition: color 0.3s ease;
     }
 
-    /* Animations */
+    /* ---- Footer ---- */
+    .footer-link {
+      margin-top: 32px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link a:hover {
+      color: var(--blue);
+    }
+
+    .footer-link .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ---- Animations ---- */
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in {
+      animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    .pulse-dot {
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    /* ============================================ */
-    /* MOBILE RESPONSIVE                           */
-    /* ============================================ */
+    /* ---- Responsive ---- */
     @media (max-width: 768px) {
       body { padding-top: 72px; }
       .nav { padding: 10px 16px; }
-      .logo-link .mark { width: 32px; height: 32px; }
+      .logo .mark { width: 32px; height: 32px; }
+      .logo .logo-text { font-size: 18px; }
       .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
-      .blog-container { padding: 24px 16px; }
+      .page-content { padding: 24px 16px 40px; }
+      .blog-card { padding: 24px 20px; border-radius: 16px; }
       .blog-hero h1 { font-size: 28px; }
       .blog-body p { font-size: 15px; }
       .blog-body h2 { font-size: 22px; }
       .blog-body h3 { font-size: 18px; }
+      .wiki-grid { grid-template-columns: 1fr 1fr; }
       .related-grid { grid-template-columns: 1fr; }
     }
 
+    @media (max-width: 480px) {
+      .wiki-grid { grid-template-columns: 1fr; }
+      .blog-hero .meta { font-size: 12px; gap: 10px; }
+    }
+
     @media (min-width: 769px) and (max-width: 1200px) {
-      .blog-container { padding: 32px 32px; }
+      .blog-card { padding: 32px 36px; }
     }
   </style>
 </head>
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER - Only Round Logo + Theme Toggle     -->
+  <!-- HEADER (EXACT SAME AS TERMS PAGE)           -->
   <!-- ============================================ -->
   <nav class="nav">
-    <div class="nav-inner">
-      <a href="index.html" class="logo-link">
-        <span class="mark">
-          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="30" cy="28" r="22"/>
-            <circle cx="12" cy="10" r="7"/>
-            <circle cx="48" cy="10" r="7"/>
-            <circle cx="22" cy="25" r="4.5"/>
-            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <circle cx="38" cy="25" r="4.5"/>
-            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <path d="M27 33 L30 37 L33 33"/>
-            <path d="M26 38 Q30 43 34 38"/>
-            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-          </svg>
-        </span>
-        <span class="logo-text">Shoruto</span>
-      </a>
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
 
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:var(--text-dim);">Blog</span>
-      </div>
+        <!-- NAVIGATION LINKS (Hidden) -->
+        <div class="nav-links">
+          <a href="index.html#why"></a>
+          <a href="index.html#trending"></a>
+          <a href="index.html#subjects"></a>
+          <a href="blog.html"></a>
+          <a href="index.html#ai"></a>
+          <a href="index.html#faq"></a>
+        </div>
 
-      <div class="nav-cta">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <span class="sun-icon">☀️</span>
-          <span class="moon-icon">🌙</span>
-        </button>
+        <!-- RIGHT SIDE: THEME TOGGLE -->
+        <div class="nav-cta">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -481,110 +628,174 @@
   <!-- ============================================ -->
   <!-- BLOG CONTENT                                -->
   <!-- ============================================ -->
-  <main class="blog-container">
+  <main class="page-content">
+    <div class="blog-card fade-in">
 
-    <!-- Hero Section -->
-    <article class="blog-hero">
-      <div class="badge">
-        <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
-        Featured Story
-      </div>
-      <h1>Elon Musk's xAI Unveils Grok-3: The Next Frontier in AI</h1>
-      <div class="meta">
-        <span class="author">
-          <span class="author-avatar">EM</span>
-          <span>Elon Musk</span>
-        </span>
-        <span class="dot"></span>
-        <span>December 15, 2025</span>
-        <span class="dot"></span>
-        <span>12 min read</span>
-        <span class="dot"></span>
-        <span style="display:inline-flex;align-items:center;gap:4px;color:var(--mint);">
-          <span class="pulse-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mint);"></span>
-          Trending
-        </span>
-      </div>
-    </article>
-
-    <!-- Featured Image -->
-    <figure class="featured-image">
-      <img
-        src="https://c.ndtvimg.com/2025-11/srcae7f8_elon-musk_625x300_04_November_25.jpeg?im=FeatureCrop,algorithm=dnn,width=773,height=435"
-        alt="Elon Musk speaking at xAI event"
-        loading="lazy"
-        onerror="this.style.display='none'"
-      />
-      <figcaption class="caption">Elon Musk at the xAI Grok-3 launch event in San Francisco</figcaption>
-    </figure>
-
-    <!-- Blog Body -->
-    <div class="blog-body">
-
-      <p>
-        In a landmark announcement that sent ripples through the tech world, Elon Musk's xAI unveiled Grok-3 — the latest iteration of their flagship AI model. Dubbed "the most powerful AI ever created," Grok-3 promises to redefine the boundaries of artificial intelligence with unprecedented reasoning capabilities and real-time learning.
-      </p>
-
-      <h2>What Makes Grok-3 Different?</h2>
-      <p>
-        Unlike its predecessors, Grok-3 is built on a revolutionary architecture that combines transformer-based processing with quantum-inspired neural networks. This hybrid approach allows the model to process information not just sequentially, but in parallel dimensions — effectively "thinking" in multiple directions simultaneously.
-      </p>
-
-      <div class="highlight-box">
-        <p><strong>🔑 Key Innovation:</strong> Grok-3 introduces "contextual reasoning" — the ability to understand and respond to complex scenarios with human-like intuition. Early tests show a 300% improvement in reasoning accuracy compared to GPT-5.</p>
-      </div>
-
-      <h3>Real-Time Learning Capabilities</h3>
-      <p>
-        One of the most groundbreaking features of Grok-3 is its ability to learn and adapt in real-time. Unlike traditional models that rely on pre-trained data, Grok-3 continuously updates its knowledge base through active engagement with users and real-world data streams.
-      </p>
-
-      <ul>
-        <li><strong>Adaptive Intelligence:</strong> The model evolves its responses based on user interactions, creating personalized experiences.</li>
-        <li><strong>Multi-Modal Mastery:</strong> Seamlessly processes text, images, audio, and video — understanding context across all formats.</li>
-        <li><strong>Ethical Framework:</strong> Built-in safeguards ensure responsible AI usage with transparent decision-making processes.</li>
-      </ul>
-
-      <h2>Impact on the AI Landscape</h2>
-      <p>
-        The introduction of Grok-3 has already sparked a new wave of innovation across industries. From healthcare to education, the possibilities are vast. Early adopters include research institutions, tech giants, and government agencies exploring its potential for complex problem-solving.
-      </p>
-
-      <div class="highlight-box violet">
-        <p><strong>🌍 Global Implications:</strong> With Grok-3, xAI aims to democratize advanced AI capabilities, making them accessible to developers and researchers worldwide. The company has announced a free tier for academic use.</p>
-      </div>
-
-      <h3>What's Next for xAI?</h3>
-      <p>
-        Musk hinted at an even more ambitious roadmap, including plans to integrate Grok-3 with Tesla's autonomous systems and SpaceX's mission planning. "We're just scratching the surface," Musk said during the launch event. "Grok-3 is the foundation for a new era of human-AI collaboration."
-      </p>
-
-      <!-- Related Posts -->
-      <div class="related-posts">
-        <h3>Related Posts</h3>
-        <div class="related-grid">
-          <a href="#" class="related-card">
-            <div class="thumb">
-              <img src="https://picsum.photos/seed/ai/400/200" alt="AI Future" loading="lazy" />
-            </div>
-            <h4>The Future of AI: Beyond GPT</h4>
-            <p>Exploring the next generation of language models</p>
-          </a>
-          <a href="#" class="related-card">
-            <div class="thumb">
-              <img src="https://picsum.photos/seed/tech/400/200" alt="Tech Trends" loading="lazy" />
-            </div>
-            <h4>How AI is Reshaping Industries</h4>
-            <p>From healthcare to finance, the AI revolution continues</p>
-          </a>
-          <a href="#" class="related-card">
-            <div class="thumb">
-              <img src="https://picsum.photos/seed/space/400/200" alt="Space Tech" loading="lazy" />
-            </div>
-            <h4>SpaceX and AI: A New Era of Exploration</h4>
-            <p>How AI is powering the next frontier</p>
-          </a>
+      <!-- Hero -->
+      <div class="blog-hero">
+        <div class="badge">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
+          Featured Story
         </div>
+        <h1>Elon Musk's xAI Unveils Grok-3: The Next Frontier in AI</h1>
+        <div class="meta">
+          <span class="author">
+            <span class="author-avatar">EM</span>
+            <span>Elon Musk</span>
+          </span>
+          <span class="dot"></span>
+          <span>December 15, 2025</span>
+          <span class="dot"></span>
+          <span>12 min read</span>
+          <span class="dot"></span>
+          <span style="display:inline-flex;align-items:center;gap:4px;color:var(--mint);">
+            <span class="live-dot"></span>
+            Trending
+          </span>
+        </div>
+      </div>
+
+      <!-- Featured Image -->
+      <figure class="featured-image">
+        <img
+          src="https://c.ndtvimg.com/2025-11/srcae7f8_elon-musk_625x300_04_November_25.jpeg?im=FeatureCrop,algorithm=dnn,width=773,height=435"
+          alt="Elon Musk speaking at xAI event"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        />
+        <figcaption class="caption">Elon Musk at the xAI Grok-3 launch event in San Francisco</figcaption>
+      </figure>
+
+      <!-- Blog Body -->
+      <div class="blog-body">
+
+        <p>
+          In a landmark announcement that sent ripples through the tech world, Elon Musk's xAI unveiled Grok-3 — the latest iteration of their flagship AI model. Dubbed "the most powerful AI ever created," Grok-3 promises to redefine the boundaries of artificial intelligence with unprecedented reasoning capabilities and real-time learning.
+        </p>
+
+        <h2>What Makes Grok-3 Different?</h2>
+        <p>
+          Unlike its predecessors, Grok-3 is built on a revolutionary architecture that combines transformer-based processing with quantum-inspired neural networks. This hybrid approach allows the model to process information not just sequentially, but in parallel dimensions — effectively "thinking" in multiple directions simultaneously.
+        </p>
+
+        <div class="highlight-box">
+          <p><strong>🔑 Key Innovation:</strong> Grok-3 introduces "contextual reasoning" — the ability to understand and respond to complex scenarios with human-like intuition. Early tests show a 300% improvement in reasoning accuracy compared to GPT-5.</p>
+        </div>
+
+        <h3>Real-Time Learning Capabilities</h3>
+        <p>
+          One of the most groundbreaking features of Grok-3 is its ability to learn and adapt in real-time. Unlike traditional models that rely on pre-trained data, Grok-3 continuously updates its knowledge base through active engagement with users and real-world data streams.
+        </p>
+
+        <ul>
+          <li><strong>Adaptive Intelligence:</strong> The model evolves its responses based on user interactions, creating personalized experiences.</li>
+          <li><strong>Multi-Modal Mastery:</strong> Seamlessly processes text, images, audio, and video — understanding context across all formats.</li>
+          <li><strong>Ethical Framework:</strong> Built-in safeguards ensure responsible AI usage with transparent decision-making processes.</li>
+        </ul>
+
+        <h2>Impact on the AI Landscape</h2>
+        <p>
+          The introduction of Grok-3 has already sparked a new wave of innovation across industries. From healthcare to education, the possibilities are vast. Early adopters include research institutions, tech giants, and government agencies exploring its potential for complex problem-solving.
+        </p>
+
+        <div class="highlight-box violet">
+          <p><strong>🌍 Global Implications:</strong> With Grok-3, xAI aims to democratize advanced AI capabilities, making them accessible to developers and researchers worldwide. The company has announced a free tier for academic use.</p>
+        </div>
+
+        <h3>What's Next for xAI?</h3>
+        <p>
+          Musk hinted at an even more ambitious roadmap, including plans to integrate Grok-3 with Tesla's autonomous systems and SpaceX's mission planning. "We're just scratching the surface," Musk said during the launch event. "Grok-3 is the foundation for a new era of human-AI collaboration."
+        </p>
+
+        <!-- ============================================ -->
+        <!-- WIKI LINKS - Separate Section               -->
+        <!-- ============================================ -->
+        <div class="wiki-section">
+          <div class="wiki-header">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
+            <h3>Wiki · Related Articles</h3>
+          </div>
+          <div class="wiki-grid">
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Artificial Intelligence
+              <span class="wiki-tag">Wiki</span>
+            </a>
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Machine Learning
+              <span class="wiki-tag">Wiki</span>
+            </a>
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Neural Networks
+              <span class="wiki-tag">Wiki</span>
+            </a>
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Quantum Computing
+              <span class="wiki-tag">Wiki</span>
+            </a>
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Elon Musk
+              <span class="wiki-tag">Wiki</span>
+            </a>
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              xAI
+              <span class="wiki-tag">Wiki</span>
+            </a>
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              Tesla
+              <span class="wiki-tag">Wiki</span>
+            </a>
+            <a href="#" class="wiki-link">
+              <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              SpaceX
+              <span class="wiki-tag">Wiki</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Related Posts -->
+        <div class="related-posts">
+          <h3>Related Posts</h3>
+          <div class="related-grid">
+            <a href="#" class="related-card">
+              <div class="thumb">
+                <img src="https://picsum.photos/seed/ai-future/400/200" alt="AI Future" loading="lazy" />
+              </div>
+              <h4>The Future of AI: Beyond GPT</h4>
+              <p>Exploring the next generation of language models</p>
+            </a>
+            <a href="#" class="related-card">
+              <div class="thumb">
+                <img src="https://picsum.photos/seed/tech-trends/400/200" alt="Tech Trends" loading="lazy" />
+              </div>
+              <h4>How AI is Reshaping Industries</h4>
+              <p>From healthcare to finance, the AI revolution continues</p>
+            </a>
+            <a href="#" class="related-card">
+              <div class="thumb">
+                <img src="https://picsum.photos/seed/space-tech/400/200" alt="Space Tech" loading="lazy" />
+              </div>
+              <h4>SpaceX and AI: A New Era of Exploration</h4>
+              <p>How AI is powering the next frontier</p>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-link">
+        <a href="index.html">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          Back to Shoruto
+        </a>
+        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
       </div>
 
     </div>
@@ -600,10 +811,6 @@
         themeToggle.addEventListener('click', toggleTheme);
       }
     });
-
-    // Set initial theme
-    const theme = localStorage.getItem('shoruto-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', theme);
   </script>
   <!-- ============================================ -->
 
