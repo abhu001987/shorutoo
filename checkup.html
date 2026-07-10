@@ -88,7 +88,7 @@
   ::selection{ background:var(--gold); color:#151635; }
 
   /* ============================================================
-     HEADER — EXACTLY like Terms page (rounded bottom corners)
+     HEADER — EXACTLY like Terms page (very rounded bottom corners)
      ============================================================ */
   .nav {
     position: fixed;
@@ -101,7 +101,7 @@
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     border-bottom: 1px solid var(--border);
-    border-radius: 0 0 20px 20px;  /* ROUNDED BOTTOM CORNERS */
+    border-radius: 0 0 30px 30px;  /* VERY ROUNDED like Terms page */
     transition: background 0.3s ease, border-color 0.3s ease;
     width: 100%;
   }
@@ -463,7 +463,7 @@
 
   @media (max-width: 768px) {
     body { padding-top: 68px; }
-    .nav { padding: 10px 16px; border-radius: 0 0 14px 14px; }
+    .nav { padding: 10px 16px; border-radius: 0 0 20px 20px; }
     .logo .logo-text { font-size: 18px; }
     .logo .mark { width: 32px; height: 32px; }
     .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
@@ -480,6 +480,7 @@
     .logo .logo-text { font-size: 16px; }
     .logo .mark { width: 28px; height: 28px; }
     .theme-toggle { width: 32px; height: 32px; font-size: 13px; }
+    .nav { border-radius: 0 0 16px 16px; }
   }
 </style>
 </head>
