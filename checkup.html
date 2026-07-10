@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SHORUTO — Challenge a Friend</title>
 
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
 <!-- ============================================================
      THEME INIT — runs before CSS paints
      ============================================================ -->
@@ -19,10 +23,6 @@
   }
 })();
 </script>
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   /* ============================================================
@@ -84,20 +84,9 @@
   }
   ::selection{ background:var(--gold); color:#151635; }
 
-  /* ===== ICON SYSTEM ===== */
-  .ic {
-    width: 1em;
-    height: 1em;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    vertical-align: -0.14em;
-    flex-shrink: 0;
-  }
-
-  /* ===== HEADER (from Terms page) ===== */
+  /* ============================================================
+     HEADER — EXACTLY like Terms page
+     ============================================================ */
   .nav {
     border-bottom: 1px solid var(--border);
     background: var(--panel);
@@ -198,7 +187,9 @@
   [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
   [data-theme="dark"] .theme-toggle .moon-icon { display: block; }
 
-  /* ===== QUIZ CONTENT — FULL WIDTH ===== */
+  /* ============================================================
+     QUIZ CONTENT
+     ============================================================ */
   .quiz-wrapper {
     flex: 1;
     padding: 40px 20px 80px;
@@ -475,7 +466,7 @@
 <body>
 
 <!-- ============================================ -->
-<!-- HEADER (from Terms page)                     -->
+<!-- HEADER — EXACTLY like Terms page             -->
 <!-- ============================================ -->
 <nav class="nav">
   <div class="wrap">
@@ -500,7 +491,7 @@
         <span class="logo-text">Shoruto</span>
       </a>
 
-      <!-- NAVIGATION LINKS -->
+      <!-- NAVIGATION LINKS — same as Terms page -->
       <div class="nav-links">
         <a href="index.html#why">Why</a>
         <a href="index.html#trending">Trending</a>
