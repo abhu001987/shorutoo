@@ -74,7 +74,7 @@
   html,body{ height:100%; }
   body{
     margin:0;
-    padding-top: 80px;
+    padding-top: 72px;
     background:
       radial-gradient(1200px 600px at 15% -10%, var(--glow-1), transparent 60%),
       radial-gradient(1000px 600px at 100% 10%, var(--glow-2), transparent 55%),
@@ -88,7 +88,7 @@
   ::selection{ background:var(--gold); color:#151635; }
 
   /* ============================================================
-     HEADER — EXACTLY like Terms page (very rounded bottom corners)
+     HEADER — EXACTLY like Terms page (straight, no rounded corners)
      ============================================================ */
   .nav {
     position: fixed;
@@ -101,7 +101,6 @@
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     border-bottom: 1px solid var(--border);
-    border-radius: 0 0 30px 30px;  /* VERY ROUNDED like Terms page */
     transition: background 0.3s ease, border-color 0.3s ease;
     width: 100%;
   }
@@ -209,7 +208,7 @@
   }
 
   /* ============================================================
-     QUIZ CONTENT
+     QUIZ CONTENT — with rounded cards like Terms page
      ============================================================ */
   .quiz-wrapper {
     flex: 1;
@@ -242,7 +241,7 @@
   .card{
     background:var(--panel);
     border:1px solid var(--border);
-    border-radius:18px;
+    border-radius:22px;  /* Same as Terms card */
     padding:24px;
     position:relative;
     overflow:hidden;
@@ -462,8 +461,8 @@
   }
 
   @media (max-width: 768px) {
-    body { padding-top: 68px; }
-    .nav { padding: 10px 16px; border-radius: 0 0 20px 20px; }
+    body { padding-top: 60px; }
+    .nav { padding: 10px 16px; }
     .logo .logo-text { font-size: 18px; }
     .logo .mark { width: 32px; height: 32px; }
     .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
@@ -471,7 +470,7 @@
     h1.display{ font-size:30px !important; }
     .bignum{ font-size:60px; }
     .vs-score{ font-size:32px; }
-    .card{ padding:18px; }
+    .card{ padding:18px; border-radius:16px; }
     .share-icons{ flex-wrap:wrap; }
     .share-icons a{ flex:1 1 45%; }
   }
@@ -480,7 +479,6 @@
     .logo .logo-text { font-size: 16px; }
     .logo .mark { width: 28px; height: 28px; }
     .theme-toggle { width: 32px; height: 32px; font-size: 13px; }
-    .nav { border-radius: 0 0 16px 16px; }
   }
 </style>
 </head>
