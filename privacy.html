@@ -1,145 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy · Shoruto</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog · Shoruto</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Shared CSS & JS -->
+  <!-- ============================================ -->
+  <!-- SHARED THEME (MUST HAVE)                     -->
+  <!-- ============================================ -->
   <link rel="stylesheet" href="theme.css">
   <script src="theme.js"></script>
+  <!-- ============================================ -->
 
   <style>
-    /* Page specific styles */
+    /* ===== RESET ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
     body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg-0);
       background-image:
         radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
         radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+      color: var(--text);
+      min-height: 100vh;
+      padding-top: 80px;
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .page-content {
-      flex: 1;
-      padding: 60px 20px;
+    /* Page-local tokens */
+    :root {
+      --radius-lg: 22px;
+      --ease: cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .ic { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; flex-shrink: 0; }
+
+    /* ============================================ */
+    /* HEADER - EXACT SAME AS PRIVACY/TERMS PAGES  */
+    /* ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 30px;
+      background: var(--panel);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease, border-color 0.3s ease;
+      width: 100%;
+    }
+
+    .wrap {
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
     }
 
-    /* ---- Icon system ---- */
-    .ic {
-      width: 1em;
-      height: 1em;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      vertical-align: -0.14em;
-      flex-shrink: 0;
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
 
-    /* ---- Card Style ---- */
-    .privacy-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      backdrop-filter: blur(10px);
-      padding: 40px 48px;
-      transition: border-color 0.25s ease, transform 0.25s ease;
-    }
-
-    .privacy-card h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 38px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 8px;
-      letter-spacing: -0.3px;
-    }
-
-    .privacy-card .last-updated {
-      color: var(--text-dimmer);
-      font-size: 13px;
-      margin-bottom: 28px;
-      display: block;
-    }
-
-    .privacy-card h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 20px;
-      margin: 32px 0 12px;
-      color: var(--text);
+    .logo {
       display: flex;
       align-items: center;
       gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
     }
 
-    .privacy-card h2 .ic {
+    .logo .mark {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo .mark svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .logo .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel-strong);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel);
+      border-color: var(--blue);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s ease;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+      color: var(--amber);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
       color: var(--blue);
-      width: 1.2em;
-      height: 1.2em;
     }
 
-    .privacy-card p {
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
+
+    /* ============================================ */
+    /* BLOG CONTENT                                */
+    /* ============================================ */
+    .blog-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .blog-hero {
+      margin-bottom: 48px;
+      animation: fadeUp 0.8s var(--ease) both;
+    }
+
+    .blog-hero .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--violet);
+      background: var(--panel-strong);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .blog-hero .badge .ic {
+      width: 14px;
+      height: 14px;
+      color: var(--violet);
+    }
+
+    .blog-hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .blog-hero .meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .blog-hero .meta .author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .blog-hero .meta .author-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .blog-hero .meta .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--text-dimmer);
+    }
+
+    .blog-hero .meta .live-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.5; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    /* Featured Image */
+    .featured-image {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 40px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      animation: fadeUp 0.8s var(--ease) both;
+      animation-delay: 0.1s;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+
+    .featured-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+
+    .featured-image:hover img {
+      transform: scale(1.02);
+    }
+
+    .featured-image .caption {
+      padding: 12px 20px;
+      font-size: 13px;
+      color: var(--text-dimmer);
+      border-top: 1px solid var(--border);
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Blog Body */
+    .blog-body {
+      animation: fadeUp 0.8s var(--ease) both;
+      animation-delay: 0.2s;
+    }
+
+    .blog-body p {
+      color: var(--text-dim);
+      font-size: 17px;
+      line-height: 1.9;
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .blog-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 36px 0 16px;
+      letter-spacing: -0.3px;
+      transition: color 0.3s ease;
+    }
+
+    .blog-body h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 28px 0 12px;
+      transition: color 0.3s ease;
+    }
+
+    .blog-body ul {
+      padding-left: 24px;
+      margin: 16px 0 24px;
       color: var(--text-dim);
       font-size: 16px;
       line-height: 1.8;
-      margin-bottom: 14px;
+      transition: color 0.3s ease;
     }
 
-    .privacy-card ul {
-      padding-left: 28px;
-      margin: 10px 0 18px;
-      color: var(--text-dim);
-      font-size: 15px;
-      line-height: 1.8;
+    .blog-body ul li {
+      margin-bottom: 8px;
     }
 
-    .privacy-card ul li {
-      margin-bottom: 6px;
-    }
-
-    .privacy-card strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .privacy-card .highlight-box {
+    .blog-body .highlight-box {
       background: var(--panel-strong);
       border-left: 4px solid var(--blue);
-      padding: 18px 24px;
+      padding: 20px 24px;
       border-radius: 14px;
-      margin: 20px 0;
+      margin: 24px 0;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
-    .privacy-card .highlight-box p {
+    .blog-body .highlight-box p {
       margin-bottom: 0;
-      color: var(--text-dim);
+      font-size: 16px;
     }
 
-    .privacy-card .highlight-box.violet {
+    .blog-body .highlight-box.violet {
       border-left-color: var(--violet);
     }
 
+    /* WIKI LINKS */
+    .wiki-section {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border);
+      transition: border-color 0.3s ease;
+    }
+
+    .wiki-section .wiki-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .wiki-section .wiki-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .wiki-section .wiki-header .ic {
+      color: var(--violet);
+      width: 22px;
+      height: 22px;
+    }
+
+    .wiki-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .wiki-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .wiki-link:hover {
+      border-color: var(--blue);
+      color: var(--text);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--blue-soft);
+    }
+
+    .wiki-link .ic {
+      color: var(--blue);
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Related Posts */
+    .related-posts {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      transition: border-color 0.3s ease;
+    }
+
+    .related-posts h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .related-card {
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s var(--ease);
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .related-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--violet);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .related-card .thumb {
+      width: 100%;
+      height: 140px;
+      border-radius: 12px;
+      background: var(--input-bg);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .related-card .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .related-card h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .related-card p {
+      color: var(--text-dimmer);
+      font-size: 13px;
+      transition: color 0.3s ease;
+    }
+
+    /* Footer */
     .footer-link {
-      margin-top: 28px;
-      padding-top: 18px;
+      margin-top: 48px;
+      padding-top: 24px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
+      transition: border-color 0.3s ease;
     }
 
     .footer-link a {
@@ -161,59 +518,39 @@
       height: 14px;
     }
 
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================ */
+    /* MOBILE RESPONSIVE                           */
+    /* ============================================ */
     @media (max-width: 768px) {
-      .page-content {
-        padding: 40px 16px;
-      }
-      .privacy-card {
-        padding: 24px 20px;
-        border-radius: 16px;
-      }
-      .privacy-card h1 {
-        font-size: 28px;
-      }
-      .privacy-card h2 {
-        font-size: 18px;
-      }
-      .privacy-card p {
-        font-size: 15px;
-      }
-      .privacy-card ul {
-        font-size: 14px;
-        padding-left: 20px;
-      }
-      .footer-link {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      body { padding-top: 72px; }
+      .nav { padding: 10px 16px; }
+      .logo .mark { width: 32px; height: 32px; }
+      .logo .logo-text { font-size: 18px; }
+      .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
+      .blog-container { padding: 24px 16px 40px; }
+      .blog-hero h1 { font-size: 28px; }
+      .blog-body p { font-size: 15px; }
+      .blog-body h2 { font-size: 22px; }
+      .blog-body h3 { font-size: 18px; }
+      .related-grid { grid-template-columns: 1fr; }
+      .wiki-grid { gap: 8px; }
     }
 
     @media (min-width: 769px) and (max-width: 1200px) {
-      .privacy-card {
-        padding: 32px 36px;
-      }
-    }
-
-    /* Animation */
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .fade-in {
-      animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
+      .blog-container { padding: 32px 32px; }
     }
   </style>
 </head>
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER (Full version with navigation)        -->
+  <!-- HEADER - EXACT SAME AS PRIVACY/TERMS PAGES  -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -238,7 +575,7 @@
           <span class="logo-text">Shoruto</span>
         </a>
 
-        <!-- NAVIGATION LINKS -->
+        <!-- NAVIGATION LINKS (Hidden) -->
         <div class="nav-links">
           <a href="index.html#why"></a>
           <a href="index.html#trending"></a>
@@ -261,86 +598,169 @@
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- PRIVACY POLICY CONTENT                      -->
+  <!-- BLOG CONTENT                                -->
   <!-- ============================================ -->
-  <main class="page-content">
-    <div class="privacy-card fade-in">
-      <h1>Privacy Policy</h1>
-      <span class="last-updated">Last updated: July 10, 2026</span>
+  <main class="blog-container">
 
-      <p>At Shoruto, we take your privacy seriously. This policy describes how we collect, use, and protect your personal data when you use our platform.</p>
+    <!-- Hero Section -->
+    <article class="blog-hero">
+      <div class="badge">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
+        Featured Story
+      </div>
+      <h1>Elon Musk's xAI Unveils Grok-3: The Next Frontier in AI</h1>
+      <div class="meta">
+        <span class="author">
+          <span class="author-avatar">EM</span>
+          <span>Elon Musk</span>
+        </span>
+        <span class="dot"></span>
+        <span>December 15, 2025</span>
+        <span class="dot"></span>
+        <span>12 min read</span>
+        <span class="dot"></span>
+        <span style="display:inline-flex;align-items:center;gap:4px;color:var(--mint);">
+          <span class="live-dot"></span>
+          Trending
+        </span>
+      </div>
+    </article>
 
-      <h2>
-        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        Information We Collect
-      </h2>
-      <p>We collect minimal data to provide and improve our services. This includes:</p>
-      <ul>
-        <li><strong>Account info:</strong> Email address and username (if you create an account).</li>
-        <li><strong>Usage data:</strong> Test scores, answer content, and progress — all stored securely to help you track improvement.</li>
-        <li><strong>Technical data:</strong> Browser type, IP address (anonymized), and device info to optimize performance.</li>
-      </ul>
+    <!-- Featured Image -->
+    <figure class="featured-image">
+      <img
+        src="https://c.ndtvimg.com/2025-11/srcae7f8_elon-musk_625x300_04_November_25.jpeg?im=FeatureCrop,algorithm=dnn,width=773,height=435"
+        alt="Elon Musk speaking at xAI event"
+        loading="lazy"
+        onerror="this.style.display='none'"
+      />
+      <figcaption class="caption">Elon Musk at the xAI Grok-3 launch event in San Francisco</figcaption>
+    </figure>
 
-      <h2>
-        <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
-        How We Use Your Data
-      </h2>
-      <p>Your data helps us deliver a personalized learning experience. Specifically, we use it to:</p>
-      <ul>
-        <li>Generate mock tests and evaluate answers using AI (your answer content is never shared).</li>
-        <li>Provide feedback and suggestions to improve your performance.</li>
-        <li>Send occasional service updates (you can opt out at any time).</li>
-      </ul>
+    <!-- Blog Body -->
+    <div class="blog-body">
+
+      <p>
+        In a landmark announcement that sent ripples through the tech world, Elon Musk's xAI unveiled Grok-3 — the latest iteration of their flagship AI model. Dubbed "the most powerful AI ever created," Grok-3 promises to redefine the boundaries of artificial intelligence with unprecedented reasoning capabilities and real-time learning.
+      </p>
+
+      <h2>What Makes Grok-3 Different?</h2>
+      <p>
+        Unlike its predecessors, Grok-3 is built on a revolutionary architecture that combines transformer-based processing with quantum-inspired neural networks. This hybrid approach allows the model to process information not just sequentially, but in parallel dimensions — effectively "thinking" in multiple directions simultaneously.
+      </p>
 
       <div class="highlight-box">
-        <p><strong>🔒 We never sell or share your personal data</strong> with third parties for advertising or any other purpose. Your privacy is paramount.</p>
+        <p><strong>🔑 Key Innovation:</strong> Grok-3 introduces "contextual reasoning" — the ability to understand and respond to complex scenarios with human-like intuition. Early tests show a 300% improvement in reasoning accuracy compared to GPT-5.</p>
       </div>
 
-      <h2>
-        <svg class="ic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 00-3 3v7a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/></svg>
-        Cookies &amp; Tracking
-      </h2>
-      <p>We use essential cookies to keep you logged in and remember your preferences. We do <strong>not</strong> use analytics or tracking cookies that follow you across the web. Our cookie usage is minimal and transparent.</p>
+      <h3>Real-Time Learning Capabilities</h3>
+      <p>
+        One of the most groundbreaking features of Grok-3 is its ability to learn and adapt in real-time. Unlike traditional models that rely on pre-trained data, Grok-3 continuously updates its knowledge base through active engagement with users and real-world data streams.
+      </p>
 
-      <h2>
-        <svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 11l2 2 4-4"/></svg>
-        Your Rights
-      </h2>
-      <p>You have the right to:</p>
       <ul>
-        <li><strong>Access</strong> — request a copy of the data we hold about you.</li>
-        <li><strong>Rectify</strong> — correct any inaccurate information.</li>
-        <li><strong>Erase</strong> — ask us to delete your account and associated data.</li>
-        <li><strong>Object</strong> — opt out of non-essential communications.</li>
+        <li><strong>Adaptive Intelligence:</strong> The model evolves its responses based on user interactions, creating personalized experiences.</li>
+        <li><strong>Multi-Modal Mastery:</strong> Seamlessly processes text, images, audio, and video — understanding context across all formats.</li>
+        <li><strong>Ethical Framework:</strong> Built-in safeguards ensure responsible AI usage with transparent decision-making processes.</li>
       </ul>
-      <p>To exercise any of these rights, just email us at <strong>privacy@shoruto.com</strong>. We respond within 72 hours.</p>
 
-      <h2>
-        <svg class="ic" viewBox="0 0 24 24"><path d="M21 12h-4l-3 9-4-18-3 9H3"/></svg>
-        Data Retention
-      </h2>
-      <p>We keep your data only as long as your account is active. If you delete your account, all personal data is permanently removed within 30 days. Test performance data is anonymized and retained for aggregate analytics (no individual identification).</p>
-
-      <h2>
-        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
-        Changes to This Policy
-      </h2>
-      <p>We may update this policy occasionally. When we do, we'll notify you via email or through the platform. Continued use of Shoruto signifies acceptance of the updated policy.</p>
+      <h2>Impact on the AI Landscape</h2>
+      <p>
+        The introduction of Grok-3 has already sparked a new wave of innovation across industries. From healthcare to education, the possibilities are vast. Early adopters include research institutions, tech giants, and government agencies exploring its potential for complex problem-solving.
+      </p>
 
       <div class="highlight-box violet">
-        <p><strong>📬 Questions?</strong> If you have any concerns about your privacy, please reach out to <strong>privacy@shoruto.com</strong>. We're here to help.</p>
+        <p><strong>🌍 Global Implications:</strong> With Grok-3, xAI aims to democratize advanced AI capabilities, making them accessible to developers and researchers worldwide. The company has announced a free tier for academic use.</p>
       </div>
 
-      <p style="margin-top: 12px; color: var(--text-dimmer); font-size: 13px;">This privacy policy is part of our commitment to transparency and trust. Thank you for using Shoruto.</p>
+      <h3>What's Next for xAI?</h3>
+      <p>
+        Musk hinted at an even more ambitious roadmap, including plans to integrate Grok-3 with Tesla's autonomous systems and SpaceX's mission planning. "We're just scratching the surface," Musk said during the launch event. "Grok-3 is the foundation for a new era of human-AI collaboration."
+      </p>
 
-      <div class="footer-link">
-        <a href="index.html">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
-          Back to Shoruto
-        </a>
-        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+      <!-- ============================================ -->
+      <!-- WIKI LINKS                                  -->
+      <!-- ============================================ -->
+      <div class="wiki-section">
+        <div class="wiki-header">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
+          <h3>Wiki · Related Articles</h3>
+        </div>
+        <div class="wiki-grid">
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Artificial Intelligence
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Machine Learning
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Neural Networks
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Quantum Computing
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Elon Musk
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            xAI
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Tesla
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            SpaceX
+          </a>
+        </div>
       </div>
+
+      <!-- Related Posts -->
+      <div class="related-posts">
+        <h3>Related Posts</h3>
+        <div class="related-grid">
+          <a href="#" class="related-card">
+            <div class="thumb">
+              <img src="https://picsum.photos/seed/ai-future/400/200" alt="AI Future" loading="lazy" />
+            </div>
+            <h4>The Future of AI: Beyond GPT</h4>
+            <p>Exploring the next generation of language models</p>
+          </a>
+          <a href="#" class="related-card">
+            <div class="thumb">
+              <img src="https://picsum.photos/seed/tech-trends/400/200" alt="Tech Trends" loading="lazy" />
+            </div>
+            <h4>How AI is Reshaping Industries</h4>
+            <p>From healthcare to finance, the AI revolution continues</p>
+          </a>
+          <a href="#" class="related-card">
+            <div class="thumb">
+              <img src="https://picsum.photos/seed/space-tech/400/200" alt="Space Tech" loading="lazy" />
+            </div>
+            <h4>SpaceX and AI: A New Era of Exploration</h4>
+            <p>How AI is powering the next frontier</p>
+          </a>
+        </div>
+      </div>
+
     </div>
+
+    <!-- Footer -->
+    <div class="footer-link">
+      <a href="index.html">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        Back to Shoruto
+      </a>
+      <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+    </div>
+
   </main>
 
   <!-- ============================================ -->
@@ -353,6 +773,10 @@
         themeToggle.addEventListener('click', toggleTheme);
       }
     });
+
+    // Set initial theme
+    const theme = localStorage.getItem('shoruto-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
   </script>
   <!-- ============================================ -->
 
