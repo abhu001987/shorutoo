@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Shoruto Chat</title>
+  <title>Chat · Shoruto</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,6 +22,9 @@
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg-0);
+      background-image:
+        radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+        radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
       color: var(--text);
       height: 100vh;
       overflow: hidden;
@@ -29,10 +32,7 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* Page-local tokens genuinely missing from theme.css.
-       --radius and --card-shadow are NOT redeclared here — theme.css
-       already defines both correctly per-theme; overriding them here
-       would silently break the light-mode shadow. */
+    /* Page-local tokens */
     :root {
       --radius-lg: 22px;
       --ease: cubic-bezier(.4, 0, .2, 1);
@@ -97,20 +97,69 @@
       z-index: 1;
     }
 
-    /* ===== HEADER ===== */
-    #header {
-      padding: 14px 22px;
-      background: var(--nav-bg);
+    /* ============================================ */
+    /* HEADER - Only Round Logo + Theme Toggle     */
+    /* ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 14px 30px;
+      background: var(--panel);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
       border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease, border-color 0.3s ease;
+      width: 100%;
+    }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-shrink: 0;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      transition: background 0.3s ease, border-color 0.3s ease;
+      gap: 16px;
     }
-    #header .room-name {
+
+    /* LOGO - Only round icon, no text */
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-link .mark {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo-link .mark svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .logo-link .logo-text {
+      display: none;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .room-badge {
       display: inline-flex; align-items: center; gap: 6px;
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
@@ -121,16 +170,71 @@
       border-radius: 20px;
       border: 1px solid var(--border);
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      margin-right: 10px;
     }
-    #header .room-name .ic { color: var(--violet); width: 13px; height: 13px; }
+    .room-badge .ic { color: var(--violet); width: 13px; height: 13px; }
+
     .status-pill {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 11px; font-weight: 600;
       color: var(--mint);
-      margin-left: 10px;
     }
     .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 8px var(--mint); animation: floatDot 1.6s ease-in-out infinite; }
     @keyframes floatDot { 0%,100% { opacity: 0.5; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+
+    /* ============================================ */
+    /* THEME TOGGLE BUTTON                         */
+    /* ============================================ */
+    .theme-toggle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel-strong);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel);
+      border-color: var(--blue);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s ease;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+      color: var(--amber);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+      color: var(--blue);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
 
     /* ===== NAME FORM (Login) ===== */
     #name-form {
@@ -218,6 +322,7 @@
       display: flex;
       flex: 1;
       overflow: hidden;
+      margin-top: 72px;
     }
 
     #chatlog {
@@ -423,15 +528,15 @@
     ::-webkit-scrollbar-thumb { background: var(--text-dimmer); border-radius: 4px; transition: background 0.3s ease; }
 
     /* ===== MOBILE FIXES ===== */
-    @media(max-width: 600px) {
+    @media(max-width: 768px) {
       .bg-blob { display: none; }
       #input-bar { padding: 10px 12px; gap: 8px; }
       #chat-input { font-size: 16px; padding: 11px 16px; }
       #send-btn { width: 42px; height: 42px; }
-      .logo .word { font-size: 16px; }
-      .logo .mark { width: 28px; height: 28px; border-radius: 8px; }
-      .logo .mark svg { width: 16px; height: 16px; }
-      #header { padding: 11px 14px; }
+      .logo-link .mark { width: 32px; height: 32px; }
+      .nav { padding: 10px 16px; }
+      .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
+      .room-badge { font-size: 11px; padding: 4px 10px; }
       .status-pill { display: none; }
       .msg-row { max-width: 90%; }
       #chatlog .message { font-size: 14px; padding: 9px 13px; }
@@ -442,6 +547,7 @@
       #name-form p { font-size: 13px; }
       #roster { width: 150px; padding: 12px 10px; }
       #roster .roster-user { font-size: 12px; padding: 6px 7px; }
+      #chat-wrapper { margin-top: 64px; }
     }
 
     @media(max-width: 400px) {
@@ -449,34 +555,59 @@
       #chat-input { font-size: 14px; padding: 9px 14px; }
       #send-btn { width: 38px; height: 38px; }
     }
-
-    /* ===== MINI THEME TOGGLE (Bottom Right Corner) ===== */
-    .mini-theme-toggle {
-      position: fixed; bottom: 20px; right: 20px;
-      width: 46px; height: 46px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; font-size: 19px;
-      z-index: 999;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s var(--ease), background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-    }
-    .mini-theme-toggle:hover { background: var(--panel-strong); border-color: var(--blue); transform: scale(1.06); }
-    .mini-theme-toggle .sun-icon, .mini-theme-toggle .moon-icon { position: absolute; color: var(--amber); transition: all 0.45s var(--ease); }
-    .mini-theme-toggle .moon-icon { color: var(--blue); }
-    .mini-theme-toggle .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
-    .mini-theme-toggle .moon-icon { opacity: 1; transform: rotate(0) scale(1); }
-    [data-theme="light"] .mini-theme-toggle .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
-    [data-theme="light"] .mini-theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
   </style>
 </head>
 
 <body>
   <div class="bg-blob b1"></div>
   <div class="bg-blob b2"></div>
+
+  <!-- ============================================ -->
+  <!-- HEADER - Only Round Logo + Theme Toggle     -->
+  <!-- ============================================ -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <!-- LOGO - Only round icon, no text -->
+      <a href="index.html" class="logo-link">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Shoruto</span>
+      </a>
+
+      <div style="display:flex;align-items:center;">
+        <span class="room-badge" id="room-display">
+          <svg class="ic" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+          main
+        </span>
+        <span class="status-pill"><span class="dot"></span>Live</span>
+      </div>
+
+      <!-- ============================================ -->
+      <!-- THEME TOGGLE BUTTON                         -->
+      <!-- ============================================ -->
+      <div class="nav-cta">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+      <!-- ============================================ -->
+    </div>
+  </nav>
+  <!-- ============================================ -->
 
   <!-- ===== LOGIN FORM ===== -->
   <form id="name-form">
@@ -511,32 +642,6 @@
 
   <!-- ===== MAIN APP ===== -->
   <div id="app" style="display:none;">
-    <!-- Header -->
-    <div id="header">
-      <a href="index.html" class="logo" onclick="return false;">
-        <span class="mark">
-          <svg viewBox="0 0 60 60" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="30" cy="28" r="22"/>
-            <circle cx="12" cy="10" r="7"/>
-            <circle cx="48" cy="10" r="7"/>
-            <circle cx="22" cy="25" r="4.5"/>
-            <circle cx="22" cy="25" r="1.5" fill="currentColor" fill-opacity="0.6"/>
-            <circle cx="38" cy="25" r="4.5"/>
-            <circle cx="38" cy="25" r="1.5" fill="currentColor" fill-opacity="0.6"/>
-            <path d="M27 33 L30 37 L33 33"/>
-            <path d="M26 38 Q30 43 34 38"/>
-            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-          </svg>
-        </span>
-        <span class="word">Shoruto</span>
-      </a>
-      <div style="display:flex;align-items:center;">
-        <span class="room-name" id="room-display"><svg class="ic" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>main</span>
-        <span class="status-pill"><span class="dot"></span>Live</span>
-      </div>
-    </div>
-
     <!-- Chat + Roster -->
     <div id="chat-wrapper">
       <div id="chatlog">
@@ -556,12 +661,16 @@
   </div>
 
   <!-- ============================================ -->
-  <!-- MINI THEME TOGGLE (Bottom Right Corner)      -->
+  <!-- THEME TOGGLE SCRIPT                         -->
   <!-- ============================================ -->
-  <button class="mini-theme-toggle" id="themeToggle" aria-label="Toggle theme">
-    <span class="sun-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
-    <span class="moon-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
-  </button>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+    });
+  </script>
   <!-- ============================================ -->
 
   <script>
@@ -612,7 +721,7 @@
       isAtBottom = chatlog.scrollTop + chatlog.clientHeight >= chatlog.scrollHeight - 10;
     });
 
-    // --- Avatar color helper (presentation only) ---
+    // --- Avatar color helper ---
     const AVATAR_PALETTE = ['#3E7BFA', '#8B7CFF', '#34D399', '#FFB84D', '#FF7A9C', '#4FD1E8'];
     function avatarColor(name) {
       let hash = 0;
@@ -708,8 +817,6 @@
 
     // --- WebSocket ---
     function startChat() {
-      // room-display now wraps an icon + text, so we update the trailing
-      // text node instead of overwriting the whole element with textContent
       const roomLabel = roomDisplay.childNodes[roomDisplay.childNodes.length - 1];
       if (roomLabel && roomLabel.nodeType === Node.TEXT_NODE) {
         roomLabel.textContent = roomname;
@@ -757,24 +864,10 @@
       });
     }
 
-    // ============================================ //
-    // THEME TOGGLE                                  //
-    // theme.js already: applies the saved theme on  //
-    // load, exposes window.toggleTheme(), and syncs //
-    // across tabs via its own 'storage' listener.   //
-    // This page just needs to wire the button to it.//
-    // ============================================ //
-    document.addEventListener('DOMContentLoaded', function() {
-      const themeToggle = document.getElementById('themeToggle');
-      if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
-      }
-    });
-  </script>
-  <script>
+    // --- Set initial theme ---
     const theme = localStorage.getItem('shoruto-theme') || 'light';
     document.documentElement.setAttribute('data-theme', theme);
     console.log('🎨 Chat theme set to:', theme);
-</script>
+  </script>
 </body>
 </html>
