@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us · Shoruto</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared CSS & JS (theme) -->
+  <link rel="stylesheet" href="theme.css" />
+  <script src="theme.js"></script>
+
+  <style>
+    /* --- Page specific styles (mirror terms page) --- */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-0);
+      background-image:
+        radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+        radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .page-content {
+      flex: 1;
+      padding: 60px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Icon system (same as terms) */
+    .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
+
+    /* Card style (identical) */
+    .contact-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+      padding: 40px 48px;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .contact-card h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .contact-card .subhead {
+      color: var(--text-dimmer);
+      font-size: 15px;
+      margin-bottom: 32px;
+      display: block;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+    }
+
+    .contact-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 32px 0 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-card h2 .ic {
+      color: var(--blue);
+      width: 1.2em;
+      height: 1.2em;
+    }
+
+    .contact-card p {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .contact-card .highlight-box {
+      background: var(--panel-strong);
+      border-left: 4px solid var(--blue);
+      padding: 18px 24px;
+      border-radius: 14px;
+      margin: 20px 0;
+    }
+
+    .contact-card .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text-dim);
+    }
+
+    .contact-card .highlight-box.violet {
+      border-left-color: var(--violet);
+    }
+
+    /* --- contact form style --- */
+    .contact-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 28px;
+      margin: 28px 0 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--bg-0);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+      resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px var(--blue-alpha, rgba(91, 127, 255, 0.15));
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+    }
+
+    .form-group .hint {
+      font-size: 13px;
+      color: var(--text-dimmer);
+      margin-top: 4px;
+    }
+
+    .btn-submit {
+      background: var(--blue);
+      border: none;
+      border-radius: 40px;
+      padding: 14px 36px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      justify-self: start;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--violet);
+      transform: scale(1.02);
+      box-shadow: 0 8px 18px rgba(91, 127, 255, 0.25);
+    }
+
+    .btn-submit .ic {
+      width: 1.2em;
+      height: 1.2em;
+      stroke: currentColor;
+    }
+
+    .footer-link {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link a:hover {
+      color: var(--blue);
+    }
+
+    .footer-link .ic {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* email link in background (inline subtle) */
+    .email-bg-link {
+      display: inline-block;
+      background: var(--panel-strong);
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--blue);
+      border: 1px solid var(--border);
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+
+    .email-bg-link:hover {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    @media (max-width: 768px) {
+      .page-content {
+        padding: 40px 16px;
+      }
+      .contact-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+      }
+      .contact-card h1 {
+        font-size: 28px;
+      }
+      .contact-card h2 {
+        font-size: 18px;
+      }
+      .contact-form {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .btn-submit {
+        width: 100%;
+        justify-content: center;
+      }
+      .footer-link {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .contact-card {
+        padding: 32px 36px;
+      }
+    }
+
+    /* fade-in animation (same) */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in {
+      animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- HEADER (exact copy from terms)               -->
+  <!-- ============================================ -->
+  <nav class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
+
+        <!-- NAVIGATION LINKS (same as terms) -->
+        <div class="nav-links">
+          <a href="index.html#why"></a>
+          <a href="index.html#trending"></a>
+          <a href="index.html#subjects"></a>
+          <a href="blog.html"></a>
+          <a href="index.html#ai"></a>
+          <a href="index.html#faq"></a>
+        </div>
+
+        <!-- RIGHT SIDE: THEME TOGGLE -->
+        <div class="nav-cta">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- ============================================ -->
+
+  <!-- ============================================ -->
+  <!-- CONTACT US PAGE CONTENT                     -->
+  <!-- ============================================ -->
+  <main class="page-content">
+    <div class="contact-card fade-in">
+
+      <h1>Contact Us</h1>
+      <span class="subhead">We’d love to hear from you. Reach out anytime.</span>
+
+      <!-- intro -->
+      <p>Have a question, suggestion, or feedback about Shoruto? Fill out the form below or drop us an email directly. Our team typically replies within 24 hours.</p>
+
+      <!-- contact form -->
+      <form class="contact-form" action="#" method="POST">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" placeholder="e.g. Ananya Sharma" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group full-width">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="What's this about?" />
+        </div>
+        <div class="form-group full-width">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+          <span class="hint">We take your privacy seriously. Your data is safe with us.</span>
+        </div>
+        <div class="form-group full-width" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <button type="submit" class="btn-submit">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Send message
+          </button>
+          <span style="font-size: 14px; color: var(--text-dimmer);">or</span>
+          <!-- email link in background (inline, visible) -->
+          <a href="mailto:legal@shoruto.com" class="email-bg-link">
+            ✉️ legal@shoruto.com
+          </a>
+        </div>
+      </form>
+
+      <!-- extra contact info (mirror highlight boxes) -->
+      <div class="highlight-box" style="margin-top: 20px;">
+        <p><strong>📬 Direct email</strong> — For general inquiries: <a href="mailto:legal@shoruto.com" style="color: var(--blue); text-decoration: none; font-weight: 500;">legal@shoruto.com</a> &nbsp;·&nbsp; We respond within 1 business day.</p>
+      </div>
+
+      <div class="highlight-box violet">
+        <p><strong>📍 Office</strong> — Shoruto HQ · 42 Knowledge Lane, New Delhi 110001 (virtual visits welcome).</p>
+      </div>
+
+      <!-- additional context (same style as terms) -->
+      <p style="margin-top: 18px; color: var(--text-dimmer); font-size: 13px;">
+        We value your feedback and are constantly improving Shoruto. Your voice matters.
+      </p>
+
+      <!-- footer link (exactly as terms) -->
+      <div class="footer-link">
+        <a href="index.html">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          Back to Shoruto
+        </a>
+        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ============================================ -->
+  <!-- THEME TOGGLE SCRIPT (identical)             -->
+  <!-- ============================================ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+    });
+  </script>
+  <!-- ============================================ -->
+
+</body>
+</html>
