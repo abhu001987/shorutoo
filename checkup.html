@@ -6,9 +6,7 @@
 <title>SHORUTO — Challenge a Friend</title>
 
 <!-- ============================================================
-     THEME INIT — runs before any CSS paints, same pattern as
-     your theme.js: read saved preference (or OS preference),
-     set data-theme on <html> immediately so there's no flash.
+     THEME INIT
      ============================================================ -->
 <script>
 (function () {
@@ -26,16 +24,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
   /* ============================================================
-     THEME TOKENS — same naming convention as your site theme.css
-     (--bg-0, --panel, --panel-strong, --border, --text, --text-dim,
-     --text-dimmer, --blue, --violet, --glow-1, --glow-2).
-     I don't have your actual theme.css values, so these are
-     reasonable stand-ins under the SAME variable names — swap the
-     hex values below for your real ones and everything else here
-     will pick it up automatically since it's all var()-driven.
-     Extra accent vars (gold/coral/teal/danger) are quiz-specific
-     and layered on top since a quiz needs more accent colors than
-     a typical content page.
+     THEME TOKENS — same as your site's theme.css
      ============================================================ */
   :root,
   [data-theme="dark"] {
@@ -71,7 +60,6 @@
     --blue: #0EA595;
     --violet: #7C5CFC;
 
-    /* quiz accents (darkened for light-bg contrast) */
     --gold: #B4880C;
     --coral: #DE5142;
     --teal: #0EA595;
@@ -93,19 +81,49 @@
     transition: background 0.3s ease, color 0.3s ease;
   }
   ::selection{ background:var(--gold); color:#151635; }
+
   .wrap{ max-width:640px; margin:0 auto; padding:28px 18px 60px; }
 
   .ic{ width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-0.14em; flex-shrink:0; }
 
-  .topline{ display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; }
+  /* ===== HEADER ===== */
+  .topline{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:26px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+
   .logo{
     font-family:'Anton',sans-serif;
     letter-spacing:.03em;
     font-size:26px;
-    display:flex; align-items:baseline; gap:2px;
+    display:flex;
+    align-items:baseline;
+    gap:2px;
     text-transform:uppercase;
+    text-decoration:none;
+    color:var(--text);
   }
   .logo span{ color:var(--gold); }
+
+  .nav-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .nav-link{
+    font-family:'Manrope',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-dim);
+    text-decoration:none;
+    transition:color 0.2s ease;
+  }
+  .nav-link:hover{ color:var(--blue); }
 
   .theme-toggle{
     width:38px; height:38px; border-radius:10px;
@@ -227,7 +245,6 @@
   }
   .opt-label{ font-size:14.5px; }
 
-  /* banner */
   .banner{
     background:linear-gradient(135deg, rgba(255,107,91,0.16), rgba(245,197,24,0.10));
     border:1px solid rgba(255,107,91,0.4);
@@ -244,7 +261,6 @@
     padding:2px 8px; border-radius:6px; font-size:11px; letter-spacing:.05em;
   }
 
-  /* result */
   .scoreboard{ text-align:center; padding:10px 0 6px; }
   .grade-pill{
     display:inline-block;
@@ -302,7 +318,6 @@
   }
   .share-icons a:hover, .share-icons button:hover{ border-color:var(--gold); }
 
-  /* VS matchup */
   .vs-wrap{ position:relative; margin:8px 0 18px; }
   .vs-card{
     display:flex; border-radius:16px; overflow:hidden; border:1px solid var(--border);
@@ -363,16 +378,34 @@
     .screen.active{ animation:none; }
     .btn, .opt{ transition:none; }
   }
+
+  @media (max-width: 480px) {
+    .wrap{ padding:16px 12px 40px; }
+    .topline{ flex-wrap:wrap; gap:10px; }
+    .logo{ font-size:22px; }
+    .nav-link{ font-size:12px; }
+    h1.display{ font-size:30px !important; }
+    .bignum{ font-size:60px; }
+    .vs-score{ font-size:32px; }
+    .card{ padding:18px; }
+    .share-icons{ flex-wrap:wrap; }
+    .share-icons a{ flex:1 1 45%; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
+  <!-- ===== HEADER ===== -->
   <div class="topline">
-    <div class="logo">SHOR<span>UTO</span></div>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
-      <svg class="ic sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      <svg class="ic moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
+    <a href="index.html" class="logo">SHOR<span>UTO</span></a>
+    <div class="nav-actions">
+      <a href="blog.html" class="nav-link">Blog</a>
+      <a href="index.html#why" class="nav-link">About</a>
+      <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="ic sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="ic moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
   </div>
 
   <!-- HOME -->
@@ -491,7 +524,7 @@ function toggleTheme(){
   const html = document.documentElement;
   const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
   html.setAttribute('data-theme', next);
-  try{ localStorage.setItem('shoruto-theme', next); }catch(e){ /* ignore storage errors */ }
+  try{ localStorage.setItem('shoruto-theme', next); }catch(e){ /* ignore */ }
 }
 
 /* ---------------- Question bank ---------------- */
@@ -510,18 +543,18 @@ const QUESTIONS = [
 
 /* ---------------- State ---------------- */
 let state = {
-  mode: 'own',           // 'own' | 'challenge'
+  mode: 'own',
   order: [0,1,2,3,4,5,6,7,8,9],
   current: 0,
   answers: {},
   startTs: null,
   timerId: null,
   remaining: 600,
-  challenger: null       // {score, name, code, marks: "1011010111"}
+  challenger: null
 };
 
 const TEST_SECONDS = 600;
-const BASE_URL = 'https://shoruto.com/checkup'; // update to your real path if different
+const BASE_URL = 'https://shoruto.com/checkup';
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -645,9 +678,6 @@ function randomCode(){
   return out;
 }
 
-/* Only ONE query param on the link now — `d` — everything else
-   (score, question order, code, name, marks) lives inside the
-   encoded payload instead of sitting as plain-text query params. */
 function buildChallengeLink(result){
   const code = randomCode();
   const qIds = state.order.join(',');
@@ -699,7 +729,6 @@ function parseChallengeString(raw){
     const params = new URLSearchParams(raw);
     d = params.get('d');
   } else {
-    // allow pasting just the raw token itself
     d = raw;
   }
   if(!d) throw new Error('This link is missing its challenge data.');
@@ -731,9 +760,6 @@ function loadChallenge(payload){
   startTest('challenge');
 }
 
-// Auto-detect a real ?d=... URL when this page is hosted for real.
-// Only `d` is read now — no `challenge=` or `q=` params are used,
-// so nothing is visible until the payload is decoded.
 (function autoDetect(){
   try{
     const params = new URLSearchParams(window.location.search);
@@ -742,7 +768,7 @@ function loadChallenge(payload){
       const payload = JSON.parse(atob(decodeURIComponent(d)));
       loadChallenge(payload);
     }
-  }catch(e){ /* ignore — not a challenge link */ }
+  }catch(e){ /* ignore */ }
 })();
 
 /* ---------------- Challenge result ---------------- */
@@ -767,7 +793,6 @@ function renderChallengeResult(result, timeTaken){
 
   renderBreakdown('qaBreakdownChallenge', state.order, result.marks, ch.marks);
 
-  // stash for rematch/share
   state._lastResult = result;
   state._lastTime = timeTaken;
 }
@@ -790,7 +815,6 @@ function renderBreakdown(containerId, order, myMarks, otherMarks){
   });
 }
 
-/* ---------------- Rematch / share from challenge result ---------------- */
 function rematch(){
   const result = state._lastResult;
   const link = buildChallengeLink(result);
