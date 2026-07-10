@@ -2,50 +2,133 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SHORUTO — Challenge a Friend</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+<title>SHORUTO — Challenge a Friend</title>
 
-  :root{
-    --bg: #10122A;
-    --bg-2: #171A3A;
-    --surface: #1C1F45;
-    --surface-2: #242864;
-    --line: #33366E;
+<!-- ============================================================
+     THEME INIT — runs before any CSS paints, same pattern as
+     your theme.js: read saved preference (or OS preference),
+     set data-theme on <html> immediately so there's no flash.
+     ============================================================ -->
+<script>
+(function () {
+  try {
+    var stored = localStorage.getItem('shoruto-theme');
+    var theme = stored || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  /* ============================================================
+     THEME TOKENS — same naming convention as your site theme.css
+     (--bg-0, --panel, --panel-strong, --border, --text, --text-dim,
+     --text-dimmer, --blue, --violet, --glow-1, --glow-2).
+     I don't have your actual theme.css values, so these are
+     reasonable stand-ins under the SAME variable names — swap the
+     hex values below for your real ones and everything else here
+     will pick it up automatically since it's all var()-driven.
+     Extra accent vars (gold/coral/teal/danger) are quiz-specific
+     and layered on top since a quiz needs more accent colors than
+     a typical content page.
+     ============================================================ */
+  :root,
+  [data-theme="dark"] {
+    --bg-0: #10122A;
+    --glow-1: rgba(245,197,24,0.09);
+    --glow-2: rgba(45,217,196,0.08);
+    --panel: rgba(28,31,69,0.72);
+    --panel-strong: #1C1F45;
+    --border: #33366E;
     --text: #F3F4FC;
-    --muted: #9498C9;
+    --text-dim: #C3C6E8;
+    --text-dimmer: #9498C9;
+    --blue: #2DD9C4;
+    --violet: #8B7CF6;
+
+    /* quiz accents */
     --gold: #F5C518;
     --coral: #FF6B5B;
     --teal: #2DD9C4;
     --danger: #FF5D7A;
   }
+
+  [data-theme="light"] {
+    --bg-0: #F5F6FB;
+    --glow-1: rgba(245,197,24,0.14);
+    --glow-2: rgba(37,99,235,0.08);
+    --panel: rgba(255,255,255,0.78);
+    --panel-strong: #FFFFFF;
+    --border: #E1E3F0;
+    --text: #14162E;
+    --text-dim: #4B4E76;
+    --text-dimmer: #7B7EA3;
+    --blue: #0EA595;
+    --violet: #7C5CFC;
+
+    /* quiz accents (darkened for light-bg contrast) */
+    --gold: #B4880C;
+    --coral: #DE5142;
+    --teal: #0EA595;
+    --danger: #D63A5C;
+  }
+
   *{ box-sizing:border-box; }
   html,body{ height:100%; }
   body{
     margin:0;
     background:
-      radial-gradient(1200px 600px at 15% -10%, rgba(245,197,24,0.09), transparent 60%),
-      radial-gradient(1000px 600px at 100% 10%, rgba(45,217,196,0.08), transparent 55%),
-      var(--bg);
+      radial-gradient(1200px 600px at 15% -10%, var(--glow-1), transparent 60%),
+      radial-gradient(1000px 600px at 100% 10%, var(--glow-2), transparent 55%),
+      var(--bg-0);
     color:var(--text);
     font-family:'Manrope',sans-serif;
     -webkit-font-smoothing:antialiased;
     min-height:100vh;
+    transition: background 0.3s ease, color 0.3s ease;
   }
   ::selection{ background:var(--gold); color:#151635; }
   .wrap{ max-width:640px; margin:0 auto; padding:28px 18px 60px; }
+
+  .ic{ width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:-0.14em; flex-shrink:0; }
+
+  .topline{ display:flex; align-items:center; justify-content:space-between; margin-bottom:26px; }
+  .logo{
+    font-family:'Anton',sans-serif;
+    letter-spacing:.03em;
+    font-size:26px;
+    display:flex; align-items:baseline; gap:2px;
+    text-transform:uppercase;
+  }
+  .logo span{ color:var(--gold); }
+
+  .theme-toggle{
+    width:38px; height:38px; border-radius:10px;
+    background:var(--panel-strong); border:1px solid var(--border);
+    color:var(--text-dim); display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:border-color .15s ease, color .15s ease;
+  }
+  .theme-toggle:hover{ border-color:var(--blue); color:var(--text); }
+  .theme-toggle .ic{ width:18px; height:18px; }
+  .theme-toggle .moon{ display:none; }
+  [data-theme="dark"] .theme-toggle .sun{ display:none; }
+  [data-theme="dark"] .theme-toggle .moon{ display:block; }
 
   .eyebrow{
     font-family:'JetBrains Mono',monospace;
     font-size:11.5px;
     letter-spacing:.14em;
     text-transform:uppercase;
-    color:var(--teal);
+    color:var(--blue);
     display:flex; align-items:center; gap:8px;
     margin-bottom:10px;
   }
-  .eyebrow::before{ content:''; width:16px; height:2px; background:var(--teal); display:inline-block; }
+  .eyebrow::before{ content:''; width:16px; height:2px; background:var(--blue); display:inline-block; }
 
   h1.display{
     font-family:'Anton',sans-serif;
@@ -55,29 +138,22 @@
     text-transform:uppercase;
     margin:0 0 6px;
   }
-  .logo{
-    font-family:'Anton',sans-serif;
-    letter-spacing:.03em;
-    font-size:26px;
-    display:flex; align-items:baseline; gap:2px;
-    margin-bottom:26px;
-    text-transform:uppercase;
-  }
-  .logo span{ color:var(--gold); }
 
   .card{
-    background:linear-gradient(180deg, var(--surface), var(--bg-2));
-    border:1px solid var(--line);
+    background:var(--panel);
+    border:1px solid var(--border);
     border-radius:18px;
     padding:24px;
     position:relative;
     overflow:hidden;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.25s ease, background 0.3s ease;
   }
   .screen{ display:none; }
   .screen.active{ display:block; animation:rise .38s cubic-bezier(.2,.8,.2,1); }
   @keyframes rise{ from{ opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
 
-  p.lede{ color:var(--muted); font-size:15px; line-height:1.55; margin:0 0 22px; }
+  p.lede{ color:var(--text-dim); font-size:15px; line-height:1.55; margin:0 0 22px; }
 
   .btn{
     font-family:'Manrope',sans-serif;
@@ -93,33 +169,33 @@
   }
   .btn:hover{ filter:brightness(1.08); transform:translateY(-1px); }
   .btn:active{ transform:translateY(0); }
-  .btn:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  .btn:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
   .btn-primary{ background:var(--gold); color:#191A2E; }
   .btn-coral{ background:var(--coral); color:#221016; }
   .btn-teal{ background:var(--teal); color:#062522; }
   .btn-ghost{
     background:transparent; color:var(--text);
-    border:1px solid var(--line);
+    border:1px solid var(--border);
   }
-  .btn-ghost:hover{ border-color:var(--muted); }
+  .btn-ghost:hover{ border-color:var(--text-dimmer); }
   .btn-row{ display:flex; gap:10px; margin-top:10px; }
   .btn-row .btn{ width:auto; flex:1; }
 
   .qcount{
     font-family:'JetBrains Mono',monospace;
     font-size:12px;
-    color:var(--muted);
+    color:var(--text-dimmer);
   }
   .progress{
-    height:6px; background:var(--bg-2); border-radius:6px; overflow:hidden;
-    margin:12px 0 22px; border:1px solid var(--line);
+    height:6px; background:var(--panel-strong); border-radius:6px; overflow:hidden;
+    margin:12px 0 22px; border:1px solid var(--border);
   }
   .progress-fill{ height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); transition:width .3s ease; }
 
   .timer{
     font-family:'JetBrains Mono',monospace;
-    background:var(--bg-2);
-    border:1px solid var(--line);
+    background:var(--panel-strong);
+    border:1px solid var(--border);
     color:var(--gold);
     padding:6px 12px;
     border-radius:8px;
@@ -130,19 +206,19 @@
   .qtext{ font-size:19px; font-weight:700; line-height:1.4; margin:6px 0 20px; }
   .opt{
     display:flex; align-items:center; gap:12px;
-    background:var(--bg-2);
-    border:1px solid var(--line);
+    background:var(--panel-strong);
+    border:1px solid var(--border);
     border-radius:12px;
     padding:14px 16px;
     margin-bottom:10px;
     cursor:pointer;
     transition:border-color .15s ease, background .15s ease;
   }
-  .opt:hover{ border-color:var(--muted); }
+  .opt:hover{ border-color:var(--text-dimmer); }
   .opt.selected{ border-color:var(--gold); background:rgba(245,197,24,0.08); }
   .opt .dot{
     width:18px; height:18px; border-radius:50%;
-    border:2px solid var(--muted); flex:0 0 auto;
+    border:2px solid var(--text-dimmer); flex:0 0 auto;
     position:relative;
   }
   .opt.selected .dot{ border-color:var(--gold); }
@@ -174,8 +250,8 @@
     display:inline-block;
     font-family:'JetBrains Mono',monospace;
     font-size:12px; letter-spacing:.1em;
-    color:var(--teal);
-    border:1px solid var(--teal);
+    color:var(--blue);
+    border:1px solid var(--blue);
     padding:3px 10px; border-radius:20px;
     margin-bottom:14px;
   }
@@ -183,66 +259,67 @@
     font-family:'Anton',sans-serif;
     font-size:84px;
     line-height:0.9;
-    background:linear-gradient(180deg,#fff, var(--gold));
+    background:linear-gradient(180deg,var(--text), var(--gold));
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
   .bignum sup{ font-size:28px; color:var(--gold); -webkit-text-fill-color:var(--gold); }
   .stats-row{ display:flex; gap:10px; margin:22px 0 8px; }
   .stat{
-    flex:1; background:var(--bg-2); border:1px solid var(--line);
+    flex:1; background:var(--panel-strong); border:1px solid var(--border);
     border-radius:12px; padding:14px 10px; text-align:center;
   }
   .stat .v{ font-family:'Anton',sans-serif; font-size:24px; color:var(--text); }
-  .stat .l{ font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; margin-top:2px;}
+  .stat .l{ font-family:'JetBrains Mono',monospace; font-size:10.5px; color:var(--text-dimmer); letter-spacing:.06em; text-transform:uppercase; margin-top:2px;}
 
-  .divider{ height:1px; background:var(--line); margin:24px 0; border:none; }
+  .divider{ height:1px; background:var(--border); margin:24px 0; border:none; }
 
   .share-title{ font-weight:800; font-size:15px; margin-bottom:4px; }
-  .share-sub{ color:var(--muted); font-size:13px; margin-bottom:14px; }
+  .share-sub{ color:var(--text-dimmer); font-size:13px; margin-bottom:14px; }
 
   .link-box{
-    display:flex; gap:8px; background:var(--bg-2); border:1px solid var(--line);
+    display:flex; gap:8px; background:var(--panel-strong); border:1px solid var(--border);
     border-radius:10px; padding:10px 10px 10px 14px; margin-bottom:14px; align-items:center;
   }
   .link-box input{
-    flex:1; background:transparent; border:none; color:var(--teal);
+    flex:1; background:transparent; border:none; color:var(--blue);
     font-family:'JetBrains Mono',monospace; font-size:12.5px; outline:none;
+    min-width: 0;
   }
   .copy-btn{
-    background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+    background:var(--panel); border:1px solid var(--border); color:var(--text);
     font-size:12px; font-weight:700; padding:8px 12px; border-radius:8px; cursor:pointer;
     font-family:'Manrope',sans-serif; white-space:nowrap;
   }
-  .copy-btn:hover{ border-color:var(--teal); }
+  .copy-btn:hover{ border-color:var(--blue); }
 
   .share-icons{ display:flex; gap:10px; margin-bottom:6px; }
   .share-icons a, .share-icons button{
     flex:1; text-decoration:none;
     display:flex; align-items:center; justify-content:center; gap:8px;
     padding:12px; border-radius:10px; font-weight:700; font-size:13px;
-    border:1px solid var(--line); cursor:pointer; font-family:'Manrope',sans-serif;
-    background:var(--bg-2); color:var(--text);
+    border:1px solid var(--border); cursor:pointer; font-family:'Manrope',sans-serif;
+    background:var(--panel-strong); color:var(--text);
   }
   .share-icons a:hover, .share-icons button:hover{ border-color:var(--gold); }
 
   /* VS matchup */
   .vs-wrap{ position:relative; margin:8px 0 18px; }
   .vs-card{
-    display:flex; border-radius:16px; overflow:hidden; border:1px solid var(--line);
+    display:flex; border-radius:16px; overflow:hidden; border:1px solid var(--border);
   }
   .vs-side{ flex:1; padding:22px 14px; text-align:center; position:relative; }
-  .vs-side.challenger{ background:linear-gradient(160deg, rgba(245,197,24,0.14), var(--surface)); }
-  .vs-side.friend{ background:linear-gradient(200deg, rgba(45,217,196,0.14), var(--surface)); }
-  .vs-name{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px;}
+  .vs-side.challenger{ background:linear-gradient(160deg, rgba(245,197,24,0.14), var(--panel)); }
+  .vs-side.friend{ background:linear-gradient(200deg, rgba(45,217,196,0.14), var(--panel)); }
+  .vs-name{ font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-dimmer); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px;}
   .vs-score{ font-family:'Anton',sans-serif; font-size:46px; }
   .vs-side.challenger .vs-score{ color:var(--gold); }
   .vs-side.friend .vs-score{ color:var(--teal); }
   .vs-badge{
     position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
     width:44px; height:44px; border-radius:50%;
-    background:var(--bg); border:2px solid var(--line);
+    background:var(--bg-0); border:2px solid var(--border);
     display:flex; align-items:center; justify-content:center;
-    font-family:'Anton',sans-serif; font-size:13px; color:var(--muted); z-index:2;
+    font-family:'Anton',sans-serif; font-size:13px; color:var(--text-dimmer); z-index:2;
   }
 
   .verdict{
@@ -256,10 +333,10 @@
 
   .qa-row{
     display:flex; align-items:center; gap:10px;
-    padding:10px 12px; border-radius:10px; background:var(--bg-2);
-    border:1px solid var(--line); margin-bottom:6px; font-size:13px;
+    padding:10px 12px; border-radius:10px; background:var(--panel-strong);
+    border:1px solid var(--border); margin-bottom:6px; font-size:13px;
   }
-  .qa-row .qn{ font-family:'JetBrains Mono',monospace; color:var(--muted); width:26px; flex:0 0 auto;}
+  .qa-row .qn{ font-family:'JetBrains Mono',monospace; color:var(--text-dimmer); width:26px; flex:0 0 auto;}
   .qa-row .marks{ display:flex; gap:6px; margin-left:auto; }
   .mk{ width:24px; height:24px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800;}
   .mk.ok{ background:rgba(45,217,196,0.18); color:var(--teal); }
@@ -268,15 +345,15 @@
   .paste-box{ margin-top:26px; }
   .paste-box textarea{
     width:100%; min-height:64px; resize:vertical;
-    background:var(--bg-2); border:1px solid var(--line); border-radius:10px;
+    background:var(--panel-strong); border:1px solid var(--border); border-radius:10px;
     color:var(--text); font-family:'JetBrains Mono',monospace; font-size:12.5px;
     padding:12px; outline:none; margin-bottom:10px;
   }
-  .paste-box textarea:focus{ border-color:var(--teal); }
-  .small-note{ font-size:11.5px; color:var(--muted); line-height:1.5; margin-top:10px; }
+  .paste-box textarea:focus{ border-color:var(--blue); }
+  .small-note{ font-size:11.5px; color:var(--text-dimmer); line-height:1.5; margin-top:10px; }
   .toast{
     position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px);
-    background:var(--text); color:#141530; font-weight:700; font-size:13px;
+    background:var(--text); color:var(--bg-0); font-weight:700; font-size:13px;
     padding:10px 18px; border-radius:30px; opacity:0; pointer-events:none;
     transition:all .25s ease; z-index:50;
   }
@@ -290,7 +367,13 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="logo">SHOR<span>UTO</span></div>
+  <div class="topline">
+    <div class="logo">SHOR<span>UTO</span></div>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg class="ic sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <svg class="ic moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
 
   <!-- HOME -->
   <section id="screen-home" class="screen active">
@@ -305,8 +388,8 @@
 
     <div class="paste-box">
       <div class="share-title">Got a challenge link?</div>
-      <div class="share-sub">Paste the link (or just the code) a friend sent you to take their exact test.</div>
-      <textarea id="pasteInput" placeholder="https://shoruto.com/test?challenge=70&amp;q=0,1,2,3,4,5,6,7,8,9&amp;code=abc123..."></textarea>
+      <div class="share-sub">Paste the link a friend sent you to take their exact test.</div>
+      <textarea id="pasteInput" placeholder="https://shoruto.com/checkup?d=eyJzY29yZSI6NzAs..."></textarea>
       <button class="btn btn-teal" onclick="openPastedChallenge()">Accept Challenge</button>
       <div id="pasteError" class="small-note" style="color:var(--danger); display:none;"></div>
     </div>
@@ -316,7 +399,7 @@
   <section id="screen-test" class="screen">
     <div id="challengeBanner" class="banner" style="display:none;">
       <span class="tag">CHALLENGE</span>
-      <span id="bannerText">Your friend scored 72% — can you beat them?</span>
+      <span id="bannerText">Your friend just finished. Can you beat them?</span>
     </div>
     <div class="topbar">
       <div class="qcount">QUESTION <span id="qNow">1</span> / <span id="qTotal">10</span></div>
@@ -355,7 +438,7 @@
 
     <div class="card">
       <div class="share-title">🎯 Challenge a Friend</div>
-      <div class="share-sub">Send them the exact same 10 questions. Whoever scores higher wins.</div>
+      <div class="share-sub">Send them the exact same 10 questions. Your score stays hidden in the link until they finish.</div>
       <div class="link-box">
         <input id="challengeLink" readonly>
         <button class="copy-btn" onclick="copyLink()">Copy</button>
@@ -364,7 +447,7 @@
         <a id="waShare" href="#" target="_blank" rel="noopener">WhatsApp</a>
         <a id="tgShare" href="#" target="_blank" rel="noopener">Telegram</a>
       </div>
-      <div class="small-note">Everything — your score, the question set, and a unique challenge code — is packed into that one link. No account, no database.</div>
+      <div class="small-note">Your score, the question set and a unique challenge code are packed into one opaque link token — nothing shows up as plain text in the URL bar. Note: this hides it from casual view, it isn't encryption — someone could still decode the token if they went looking for it.</div>
     </div>
 
     <button class="btn btn-ghost" style="margin-top:14px;" onclick="goHome()">Back to Home</button>
@@ -403,6 +486,14 @@
 <div class="toast" id="toast">Copied to clipboard</div>
 
 <script>
+/* ---------------- Theme toggle ---------------- */
+function toggleTheme(){
+  const html = document.documentElement;
+  const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  html.setAttribute('data-theme', next);
+  try{ localStorage.setItem('shoruto-theme', next); }catch(e){ /* ignore storage errors */ }
+}
+
 /* ---------------- Question bank ---------------- */
 const QUESTIONS = [
   { q:"What is the capital of Australia?", opts:["Sydney","Canberra","Melbourne","Perth"], a:1 },
@@ -430,6 +521,7 @@ let state = {
 };
 
 const TEST_SECONDS = 600;
+const BASE_URL = 'https://shoruto.com/checkup'; // update to your real path if different
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -449,7 +541,7 @@ function startTest(mode){
   document.getElementById('challengeBanner').style.display = (mode==='challenge') ? 'flex' : 'none';
   if(mode==='challenge' && state.challenger){
     document.getElementById('bannerText').textContent =
-      `Your friend scored ${state.challenger.score}% — can you beat them?`;
+      `${state.challenger.name} sent you a challenge — their score stays hidden until you finish.`;
   }
   document.getElementById('qTotal').textContent = state.order.length;
   renderQuestion();
@@ -553,6 +645,17 @@ function randomCode(){
   return out;
 }
 
+/* Only ONE query param on the link now — `d` — everything else
+   (score, question order, code, name, marks) lives inside the
+   encoded payload instead of sitting as plain-text query params. */
+function buildChallengeLink(result){
+  const code = randomCode();
+  const qIds = state.order.join(',');
+  const payload = { score: result.score, q: qIds, code, marks: result.marks, name: 'Challenger' };
+  const b64 = btoa(JSON.stringify(payload));
+  return `${BASE_URL}?d=${encodeURIComponent(b64)}`;
+}
+
 function renderOwnResult(result, timeTaken){
   document.getElementById('scoreValue').textContent = result.score;
   document.getElementById('gradePill').textContent = 'GRADE ' + gradeFor(result.score);
@@ -562,23 +665,18 @@ function renderOwnResult(result, timeTaken){
 
   renderBreakdown('qaBreakdownOwn', state.order, result.marks, null);
 
-  const code = randomCode();
-  const qIds = state.order.join(',');
-  const payload = { score: result.score, q: qIds, code, marks: result.marks, name:'Challenger' };
-  const b64 = btoa(JSON.stringify(payload));
-  const link = `https://shoruto.com/test?challenge=${result.score}&q=${qIds}&code=${code}&d=${encodeURIComponent(b64)}`;
-
+  const link = buildChallengeLink(result);
   document.getElementById('challengeLink').value = link;
 
-  const msg = `🎯 I scored ${result.score}% on SHORUTO! Can you beat me? Take the same test here: ${link}`;
+  const msg = `🎯 I just took a quiz on SHORUTO. Think you can beat me? Take the same test here: ${link}`;
   document.getElementById('waShare').href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-  document.getElementById('tgShare').href = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('🎯 I scored '+result.score+'% on SHORUTO! Can you beat me?')}`;
+  document.getElementById('tgShare').href = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('🎯 Think you can beat my SHORUTO score?')}`;
 }
 
 function copyLink(){
   const input = document.getElementById('challengeLink');
   input.select();
-  navigator.clipboard?.writeText(input.value).then(showToast).catch(()=>{
+  navigator.clipboard?.writeText(input.value).then(()=>showToast()).catch(()=>{
     document.execCommand('copy'); showToast();
   });
 }
@@ -592,16 +690,18 @@ function showToast(msg){
 /* ---------------- Accepting a challenge ---------------- */
 function parseChallengeString(raw){
   raw = raw.trim();
-  if(!raw) throw new Error('Paste a challenge link or code first.');
-  let params;
+  if(!raw) throw new Error('Paste a challenge link first.');
+  let d;
   if(raw.includes('?')){
-    params = new URLSearchParams(raw.split('?')[1]);
+    const params = new URLSearchParams(raw.split('?')[1]);
+    d = params.get('d');
   } else if(raw.includes('=')) {
-    params = new URLSearchParams(raw);
+    const params = new URLSearchParams(raw);
+    d = params.get('d');
   } else {
-    throw new Error("That doesn't look like a valid challenge link.");
+    // allow pasting just the raw token itself
+    d = raw;
   }
-  const d = params.get('d');
   if(!d) throw new Error('This link is missing its challenge data.');
   const payload = JSON.parse(atob(decodeURIComponent(d)));
   return payload;
@@ -631,12 +731,15 @@ function loadChallenge(payload){
   startTest('challenge');
 }
 
-// Auto-detect a real ?challenge=...&d=... URL if this page is ever hosted for real.
+// Auto-detect a real ?d=... URL when this page is hosted for real.
+// Only `d` is read now — no `challenge=` or `q=` params are used,
+// so nothing is visible until the payload is decoded.
 (function autoDetect(){
   try{
     const params = new URLSearchParams(window.location.search);
-    if(params.get('challenge') && params.get('d')){
-      const payload = JSON.parse(atob(decodeURIComponent(params.get('d'))));
+    const d = params.get('d');
+    if(d){
+      const payload = JSON.parse(atob(decodeURIComponent(d)));
       loadChallenge(payload);
     }
   }catch(e){ /* ignore — not a challenge link */ }
@@ -690,18 +793,14 @@ function renderBreakdown(containerId, order, myMarks, otherMarks){
 /* ---------------- Rematch / share from challenge result ---------------- */
 function rematch(){
   const result = state._lastResult;
-  const code = randomCode();
-  const qIds = state.order.join(',');
-  const payload = { score: result.score, q: qIds, code, marks: result.marks, name:'Challenger' };
-  const b64 = btoa(JSON.stringify(payload));
-  const link = `https://shoruto.com/test?challenge=${result.score}&q=${qIds}&code=${code}&d=${encodeURIComponent(b64)}`;
+  const link = buildChallengeLink(result);
   navigator.clipboard?.writeText(link).catch(()=>{});
   showToast('New rematch link copied — send it to someone else!');
 }
 
 function shareMyResult(){
   const result = state._lastResult;
-  const msg = `🎯 I scored ${result.score}% on SHORUTO in a challenge! Think you can beat me? shoruto.com`;
+  const msg = `🎯 I just finished a SHORUTO challenge! Think you can beat me? shoruto.com`;
   navigator.clipboard?.writeText(msg).catch(()=>{});
   showToast('Result copied to share');
 }
