@@ -579,18 +579,7 @@
     let roomname = 'main';
     let currentWebSocket = null;
     let isAtBottom = true;
-
-    // The chat UI (this HTML) is served from GitHub Pages, but the
-    // WebSocket/Durable Object backend only exists on the Cloudflare
-    // Worker. window.location.host is always truthy, so we can't just
-    // fall back on "|| workerHost" — we have to explicitly check whether
-    // we're already on the Worker's own domain (e.g. when testing
-    // directly against *.workers.dev) and only use that; otherwise
-    // (GitHub Pages, a custom domain, etc.) always point at the Worker.
-    const WORKER_HOST = 'edge-chat-demo.abhu001987.workers.dev';
-    const hostname = window.location.host.endsWith('workers.dev')
-      ? window.location.host
-      : WORKER_HOST;
+    const hostname = window.location.host || 'edge-chat-demo.abhu001987.workers.dev';
 
     // --- Name submit ---
     nameForm.addEventListener('submit', e => {
@@ -782,5 +771,10 @@
       }
     });
   </script>
+  <script>
+    const theme = localStorage.getItem('shoruto-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    console.log('🎨 Chat theme set to:', theme);
+</script>
 </body>
 </html>
