@@ -8,6 +8,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- ============================================ -->
+  <!-- SHARED THEME (MUST HAVE)                     -->
+  <!-- ============================================ -->
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
+  <!-- ============================================ -->
+
   <style>
     /* ===== RESET ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,30 +26,15 @@
       height: 100vh;
       overflow: hidden;
       position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* ===== VARIABLES (Dark Theme) ===== */
+    /* Page-local tokens genuinely missing from theme.css.
+       --radius and --card-shadow are NOT redeclared here — theme.css
+       already defines both correctly per-theme; overriding them here
+       would silently break the light-mode shadow. */
     :root {
-      --bg-0: #05060C;
-      --bg-1: #0A0D1B;
-      --panel: rgba(255, 255, 255, 0.045);
-      --panel-strong: rgba(255, 255, 255, 0.08);
-      --border: rgba(255, 255, 255, 0.09);
-      --blue: #3E7BFA;
-      --blue-soft: rgba(62, 123, 250, 0.35);
-      --violet: #8B7CFF;
-      --mint: #34D399;
-      --amber: #FFB84D;
-      --text: #EAF0FF;
-      --text-dim: #8993B8;
-      --text-dimmer: #5C6788;
-      --radius: 14px;
       --radius-lg: 22px;
-      --nav-bg: rgba(5, 6, 12, 0.6);
-      --card-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
-      --input-bg: rgba(255, 255, 255, 0.04);
-      --glow-1: rgba(62, 123, 250, 0.18);
-      --glow-2: rgba(139, 124, 255, 0.14);
       --ease: cubic-bezier(.4, 0, .2, 1);
     }
 
@@ -54,6 +46,7 @@
       pointer-events: none;
       z-index: 0;
       opacity: 0.8;
+      transition: background 0.4s ease;
     }
     .bg-blob.b1 {
       width: 480px; height: 480px;
@@ -78,6 +71,7 @@
       border-radius: 10px;
       background: var(--blue-soft);
       flex-shrink: 0;
+      transition: background 0.3s ease;
     }
     .logo .mark svg { width: 20px; height: 20px; stroke: var(--blue); }
     .logo .mark svg [fill]:not([fill="none"]) { fill: var(--blue); }
@@ -85,6 +79,7 @@
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
       letter-spacing: 0.2px;
+      transition: color 0.3s ease;
     }
     .logo.lg .mark { width: 56px; height: 56px; border-radius: 16px; }
     .logo.lg .mark svg { width: 32px; height: 32px; }
@@ -113,6 +108,7 @@
       flex-shrink: 0;
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
     #header .room-name {
       display: inline-flex; align-items: center; gap: 6px;
@@ -124,6 +120,7 @@
       padding: 6px 14px 6px 12px;
       border-radius: 20px;
       border: 1px solid var(--border);
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
     #header .room-name .ic { color: var(--violet); width: 13px; height: 13px; }
     .status-pill {
@@ -148,6 +145,7 @@
       gap: 10px;
       padding: 24px;
       text-align: center;
+      transition: background 0.3s ease;
     }
     .login-card {
       position: relative;
@@ -166,6 +164,7 @@
       max-width: 420px;
       width: 100%;
       animation: cardIn 0.5s var(--ease) both;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
     @keyframes cardIn { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
     #name-form p {
@@ -173,11 +172,13 @@
       font-size: 14.5px;
       line-height: 1.6;
       max-width: 320px;
+      transition: color 0.3s ease;
     }
     .name-input-wrap { position: relative; width: 100%; }
     .name-input-wrap .ic {
       position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
       color: var(--text-dimmer); width: 17px; height: 17px;
+      transition: color 0.3s ease;
     }
     #name-input {
       width: 100%;
@@ -188,7 +189,7 @@
       color: var(--text);
       font-size: 15.5px;
       outline: none;
-      transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.3s ease, color 0.3s ease;
     }
     #name-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
     #name-input::placeholder { color: var(--text-dimmer); }
@@ -204,7 +205,7 @@
       font-size: 14.5px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center; gap: 9px;
-      transition: transform 0.15s var(--ease), box-shadow 0.25s var(--ease), filter 0.2s;
+      transition: transform 0.15s var(--ease), box-shadow 0.25s var(--ease), filter 0.2s, background 0.3s ease;
       box-shadow: 0 4px 20px var(--blue-soft);
     }
     .join-btn:hover { filter: brightness(1.07); box-shadow: 0 6px 26px var(--blue-soft); }
@@ -256,6 +257,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid transparent;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
     @keyframes msgIn { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
@@ -291,6 +293,7 @@
       border: 1px solid var(--border);
       border-radius: 20px;
       animation: msgIn 0.25s var(--ease);
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
     .system-msg .ic { width: 12px; height: 12px; color: var(--text-dimmer); }
     .system-msg.warn .ic { color: var(--amber); }
@@ -311,6 +314,7 @@
       display: none;
       background: var(--panel);
       backdrop-filter: blur(14px);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
     #roster .roster-title {
       display: flex; align-items: center; gap: 7px;
@@ -321,6 +325,7 @@
       letter-spacing: 0.06em;
       color: var(--text-dimmer);
       margin-bottom: 14px;
+      transition: color 0.3s ease;
     }
     #roster .roster-title .ic { color: var(--blue); }
     #roster .roster-user {
@@ -331,7 +336,7 @@
       display: flex;
       align-items: center;
       gap: 9px;
-      transition: background 0.2s var(--ease);
+      transition: background 0.2s var(--ease), color 0.3s ease;
       margin-bottom: 2px;
     }
     #roster .roster-user:hover { background: var(--panel-strong); }
@@ -374,6 +379,7 @@
       position: sticky;
       bottom: 0;
       z-index: 5;
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
     #chat-input {
       flex: 1;
@@ -384,7 +390,7 @@
       color: var(--text);
       font-size: 15.5px;
       outline: none;
-      transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.3s ease, color 0.3s ease;
       min-width: 0;
     }
     #chat-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-soft); }
@@ -396,7 +402,7 @@
       background: linear-gradient(135deg, var(--blue), var(--violet));
       color: #fff;
       cursor: pointer;
-      transition: transform 0.15s var(--ease), box-shadow 0.3s var(--ease), filter 0.2s;
+      transition: transform 0.15s var(--ease), box-shadow 0.3s var(--ease), filter 0.2s, background 0.3s ease;
       flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 4px 16px var(--blue-soft);
@@ -414,7 +420,7 @@
     /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--text-dimmer); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--text-dimmer); border-radius: 4px; transition: background 0.3s ease; }
 
     /* ===== MOBILE FIXES ===== */
     @media(max-width: 600px) {
@@ -443,6 +449,28 @@
       #chat-input { font-size: 14px; padding: 9px 14px; }
       #send-btn { width: 38px; height: 38px; }
     }
+
+    /* ===== MINI THEME TOGGLE (Bottom Right Corner) ===== */
+    .mini-theme-toggle {
+      position: fixed; bottom: 20px; right: 20px;
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 19px;
+      z-index: 999;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s var(--ease), background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+    .mini-theme-toggle:hover { background: var(--panel-strong); border-color: var(--blue); transform: scale(1.06); }
+    .mini-theme-toggle .sun-icon, .mini-theme-toggle .moon-icon { position: absolute; color: var(--amber); transition: all 0.45s var(--ease); }
+    .mini-theme-toggle .moon-icon { color: var(--blue); }
+    .mini-theme-toggle .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+    .mini-theme-toggle .moon-icon { opacity: 1; transform: rotate(0) scale(1); }
+    [data-theme="light"] .mini-theme-toggle .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
+    [data-theme="light"] .mini-theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
   </style>
 </head>
 
@@ -527,9 +555,15 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- JAVASCRIPT (logic unchanged — only internal rendering markup in
-       addMessage / addSystem / updateRoster was restyled) -->
+  <!-- ============================================ -->
+  <!-- MINI THEME TOGGLE (Bottom Right Corner)      -->
+  <!-- ============================================ -->
+  <button class="mini-theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <span class="sun-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+    <span class="moon-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
+  </button>
+  <!-- ============================================ -->
+
   <script>
     // --- DOM refs ---
     const nameForm = document.getElementById('name-form');
@@ -545,7 +579,18 @@
     let roomname = 'main';
     let currentWebSocket = null;
     let isAtBottom = true;
-    const hostname = window.location.host || 'edge-chat-demo.abhu001987.workers.dev';
+
+    // The chat UI (this HTML) is served from GitHub Pages, but the
+    // WebSocket/Durable Object backend only exists on the Cloudflare
+    // Worker. window.location.host is always truthy, so we can't just
+    // fall back on "|| workerHost" — we have to explicitly check whether
+    // we're already on the Worker's own domain (e.g. when testing
+    // directly against *.workers.dev) and only use that; otherwise
+    // (GitHub Pages, a custom domain, etc.) always point at the Worker.
+    const WORKER_HOST = 'edge-chat-demo.abhu001987.workers.dev';
+    const hostname = window.location.host.endsWith('workers.dev')
+      ? window.location.host
+      : WORKER_HOST;
 
     // --- Name submit ---
     nameForm.addEventListener('submit', e => {
@@ -722,6 +767,20 @@
         ws.close();
       });
     }
+
+    // ============================================ //
+    // THEME TOGGLE                                  //
+    // theme.js already: applies the saved theme on  //
+    // load, exposes window.toggleTheme(), and syncs //
+    // across tabs via its own 'storage' listener.   //
+    // This page just needs to wire the button to it.//
+    // ============================================ //
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+    });
   </script>
 </body>
 </html>
