@@ -40,7 +40,7 @@
     .ic { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.14em; flex-shrink: 0; }
 
     /* ============================================ */
-    /* HEADER - Only Round Logo + Theme Toggle     */
+    /* HEADER - EXACT SAME AS PRIVACY PAGE         */
     /* ============================================ */
     .nav {
       position: fixed;
@@ -57,37 +57,44 @@
       width: 100%;
     }
 
-    .nav-inner {
+    .wrap {
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
+    }
+
+    .nav-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
     }
 
-    .logo-link {
+    .logo {
       display: flex;
       align-items: center;
-      gap: 0;
+      gap: 10px;
       text-decoration: none;
       flex-shrink: 0;
     }
 
-    .logo-link .mark {
+    .logo .mark {
       display: inline-flex;
       width: 40px;
       height: 40px;
     }
 
-    .logo-link .mark svg {
+    .logo .mark svg {
       width: 100%;
       height: 100%;
     }
 
-    .logo-link .logo-text {
-      display: none;
+    .logo .logo-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
     }
 
     .nav-links {
@@ -157,7 +164,7 @@
     .blog-container {
       max-width: 1000px;
       margin: 0 auto;
-      padding: 40px 24px;
+      padding: 40px 24px 60px;
       width: 100%;
     }
 
@@ -234,6 +241,20 @@
       height: 4px;
       border-radius: 50%;
       background: var(--text-dimmer);
+    }
+
+    .blog-hero .meta .live-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+      animation: pulseDot 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.5; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
     }
 
     /* Featured Image */
@@ -333,9 +354,71 @@
       border-left-color: var(--violet);
     }
 
-    /* Blog Grid for related posts */
+    /* WIKI LINKS */
+    .wiki-section {
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border);
+      transition: border-color 0.3s ease;
+    }
+
+    .wiki-section .wiki-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .wiki-section .wiki-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .wiki-section .wiki-header .ic {
+      color: var(--violet);
+      width: 22px;
+      height: 22px;
+    }
+
+    .wiki-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .wiki-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .wiki-link:hover {
+      border-color: var(--blue);
+      color: var(--text);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px var(--blue-soft);
+    }
+
+    .wiki-link .ic {
+      color: var(--blue);
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Related Posts */
     .related-posts {
-      margin-top: 56px;
+      margin-top: 48px;
       padding-top: 32px;
       border-top: 1px solid var(--border);
       transition: border-color 0.3s ease;
@@ -357,11 +440,11 @@
     }
 
     .related-card {
-      background: var(--panel);
+      background: var(--panel-strong);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      border-radius: 16px;
       padding: 20px;
-      transition: transform 0.3s var(--ease), border-color 0.3s ease, background 0.3s ease;
+      transition: all 0.3s var(--ease);
       cursor: pointer;
       text-decoration: none;
       color: var(--text);
@@ -370,6 +453,7 @@
     .related-card:hover {
       transform: translateY(-4px);
       border-color: var(--violet);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
 
     .related-card .thumb {
@@ -402,19 +486,42 @@
       transition: color 0.3s ease;
     }
 
+    /* Footer */
+    .footer-link {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      transition: border-color 0.3s ease;
+    }
+
+    .footer-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link a:hover {
+      color: var(--blue);
+    }
+
+    .footer-link .ic {
+      width: 14px;
+      height: 14px;
+    }
+
     /* Animations */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    .pulse-dot {
-      animation: pulse 2s ease-in-out infinite;
     }
 
     /* ============================================ */
@@ -423,14 +530,16 @@
     @media (max-width: 768px) {
       body { padding-top: 72px; }
       .nav { padding: 10px 16px; }
-      .logo-link .mark { width: 32px; height: 32px; }
+      .logo .mark { width: 32px; height: 32px; }
+      .logo .logo-text { font-size: 18px; }
       .theme-toggle { width: 36px; height: 36px; font-size: 15px; }
-      .blog-container { padding: 24px 16px; }
+      .blog-container { padding: 24px 16px 40px; }
       .blog-hero h1 { font-size: 28px; }
       .blog-body p { font-size: 15px; }
       .blog-body h2 { font-size: 22px; }
       .blog-body h3 { font-size: 18px; }
       .related-grid { grid-template-columns: 1fr; }
+      .wiki-grid { gap: 8px; }
     }
 
     @media (min-width: 769px) and (max-width: 1200px) {
@@ -441,38 +550,48 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER - Only Round Logo + Theme Toggle     -->
+  <!-- HEADER - EXACT SAME AS PRIVACY PAGE         -->
   <!-- ============================================ -->
   <nav class="nav">
-    <div class="nav-inner">
-      <a href="index.html" class="logo-link">
-        <span class="mark">
-          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="30" cy="28" r="22"/>
-            <circle cx="12" cy="10" r="7"/>
-            <circle cx="48" cy="10" r="7"/>
-            <circle cx="22" cy="25" r="4.5"/>
-            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <circle cx="38" cy="25" r="4.5"/>
-            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <path d="M27 33 L30 37 L33 33"/>
-            <path d="M26 38 Q30 43 34 38"/>
-            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-          </svg>
-        </span>
-        <span class="logo-text">Shoruto</span>
-      </a>
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
 
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:var(--text-dim);">Blog</span>
-      </div>
+        <!-- NAVIGATION LINKS (Hidden) -->
+        <div class="nav-links">
+          <a href="index.html#why"></a>
+          <a href="index.html#trending"></a>
+          <a href="index.html#subjects"></a>
+          <a href="blog.html"></a>
+          <a href="index.html#ai"></a>
+          <a href="index.html#faq"></a>
+        </div>
 
-      <div class="nav-cta">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <span class="sun-icon">☀️</span>
-          <span class="moon-icon">🌙</span>
-        </button>
+        <!-- RIGHT SIDE: THEME TOGGLE -->
+        <div class="nav-cta">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -501,7 +620,7 @@
         <span>12 min read</span>
         <span class="dot"></span>
         <span style="display:inline-flex;align-items:center;gap:4px;color:var(--mint);">
-          <span class="pulse-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mint);"></span>
+          <span class="live-dot"></span>
           Trending
         </span>
       </div>
@@ -559,27 +678,71 @@
         Musk hinted at an even more ambitious roadmap, including plans to integrate Grok-3 with Tesla's autonomous systems and SpaceX's mission planning. "We're just scratching the surface," Musk said during the launch event. "Grok-3 is the foundation for a new era of human-AI collaboration."
       </p>
 
+      <!-- ============================================ -->
+      <!-- WIKI LINKS                                  -->
+      <!-- ============================================ -->
+      <div class="wiki-section">
+        <div class="wiki-header">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
+          <h3>Wiki · Related Articles</h3>
+        </div>
+        <div class="wiki-grid">
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Artificial Intelligence
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Machine Learning
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Neural Networks
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Quantum Computing
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Elon Musk
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            xAI
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            Tesla
+          </a>
+          <a href="#" class="wiki-link">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            SpaceX
+          </a>
+        </div>
+      </div>
+
       <!-- Related Posts -->
       <div class="related-posts">
         <h3>Related Posts</h3>
         <div class="related-grid">
           <a href="#" class="related-card">
             <div class="thumb">
-              <img src="https://picsum.photos/seed/ai/400/200" alt="AI Future" loading="lazy" />
+              <img src="https://picsum.photos/seed/ai-future/400/200" alt="AI Future" loading="lazy" />
             </div>
             <h4>The Future of AI: Beyond GPT</h4>
             <p>Exploring the next generation of language models</p>
           </a>
           <a href="#" class="related-card">
             <div class="thumb">
-              <img src="https://picsum.photos/seed/tech/400/200" alt="Tech Trends" loading="lazy" />
+              <img src="https://picsum.photos/seed/tech-trends/400/200" alt="Tech Trends" loading="lazy" />
             </div>
             <h4>How AI is Reshaping Industries</h4>
             <p>From healthcare to finance, the AI revolution continues</p>
           </a>
           <a href="#" class="related-card">
             <div class="thumb">
-              <img src="https://picsum.photos/seed/space/400/200" alt="Space Tech" loading="lazy" />
+              <img src="https://picsum.photos/seed/space-tech/400/200" alt="Space Tech" loading="lazy" />
             </div>
             <h4>SpaceX and AI: A New Era of Exploration</h4>
             <p>How AI is powering the next frontier</p>
@@ -588,6 +751,16 @@
       </div>
 
     </div>
+
+    <!-- Footer -->
+    <div class="footer-link">
+      <a href="index.html">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        Back to Shoruto
+      </a>
+      <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+    </div>
+
   </main>
 
   <!-- ============================================ -->
