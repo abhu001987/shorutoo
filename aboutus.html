@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us · Shoruto</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared CSS & JS (theme) -->
+  <link rel="stylesheet" href="theme.css" />
+  <script src="theme.js"></script>
+
+  <style>
+    /* ============================================ */
+    /* HEADER STYLES — MATCHES BLOG / CONTACT PAGE   */
+    /* ============================================ */
+    .nav {
+      padding: 24px 0 20px 0;
+      border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+      margin-bottom: 22px;
+      background: transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text, #f5f6fa);
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .logo .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo .mark svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .logo .mark svg circle,
+    .logo .mark svg path {
+      stroke: var(--blue, #5B7FFF);
+      transition: stroke 0.3s ease;
+    }
+
+    .logo .mark svg [fill]:not([fill="none"]) {
+      fill: var(--blue, #5B7FFF);
+      transition: fill 0.3s ease;
+    }
+
+    .logo-text {
+      color: var(--text, #f5f6fa);
+      transition: color 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-dim, #b7bccb);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .nav-links a:hover {
+      color: var(--text, #f5f6fa);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .exit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px 10px 16px;
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-radius: 12px;
+      color: var(--text-dim, #b7bccb);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      transition: 0.2s var(--ease, cubic-bezier(.4,0,.2,1)), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+
+    .exit-btn .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s var(--ease, cubic-bezier(.4,0,.2,1));
+      flex-shrink: 0;
+    }
+
+    .exit-btn:hover {
+      background: var(--panel-strong, rgba(255,255,255,0.07));
+      border-color: var(--violet, #9F7AFF);
+      color: var(--violet, #9F7AFF);
+    }
+
+    .exit-btn:hover .ic {
+      transform: translateX(-3px);
+    }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      background: var(--panel, rgba(255,255,255,0.04));
+      color: var(--text, #f5f6fa);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--ease, cubic-bezier(.4,0,.2,1));
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel-strong, rgba(255,255,255,0.07));
+      border-color: var(--blue, #5B7FFF);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s var(--ease, cubic-bezier(.4,0,.2,1));
+      font-size: 18px;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
+
+    @media (max-width: 600px) {
+      .nav { padding: 16px 0 14px 0; margin-bottom: 14px; }
+      .wrap { padding: 0 16px; }
+      .logo { font-size: 18px; }
+      .logo .mark { width: 32px; height: 32px; }
+      .logo .mark svg { width: 30px; height: 30px; }
+      .nav-links { display: none; }
+      .exit-btn { padding: 6px 12px; font-size: 12px; }
+      .exit-btn span { display: none; }
+      .theme-toggle { width: 36px; height: 36px; font-size: 16px; }
+    }
+    /* ============================================ */
+
+    /* ===== PAGE BASE ===== */
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-0, #0b0d14);
+      background-image:
+        radial-gradient(circle at 15% 0%, var(--glow-1, rgba(91,127,255,0.18)), transparent 45%),
+        radial-gradient(circle at 85% 20%, var(--glow-2, rgba(159,122,255,0.15)), transparent 40%);
+      transition: background 0.3s ease, color 0.3s ease;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .ic {
+      width: 1em; height: 1em; fill: none; stroke: currentColor;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+      vertical-align: -0.14em; flex-shrink: 0;
+    }
+
+    .page-content {
+      flex: 1;
+      width: 100%;
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    @media (max-width: 768px) {
+      section { padding: 0 16px; }
+    }
+
+    /* reveal-on-scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================ */
+    /* HERO — 3D ORBIT SIGNATURE PIECE               */
+    /* ============================================ */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 40px;
+      padding-top: 30px;
+      padding-bottom: 70px;
+      min-height: 420px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--blue, #5B7FFF);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--blue, #5B7FFF);
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.08;
+      letter-spacing: -0.5px;
+      color: var(--text, #f5f6fa);
+      margin: 0 0 20px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--blue, #5B7FFF);
+    }
+
+    .hero p.lead {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--text-dim, #b7bccb);
+      max-width: 46ch;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary, .btn-ghost {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 40px;
+      padding: 13px 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.25s var(--ease, cubic-bezier(.4,0,.2,1));
+    }
+
+    .btn-primary {
+      background: var(--blue, #5B7FFF);
+      color: #fff;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: var(--violet, #9F7AFF);
+      transform: scale(1.02);
+      box-shadow: 0 8px 18px rgba(91, 127, 255, 0.25);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text, #f5f6fa);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+    }
+    .btn-ghost:hover {
+      border-color: var(--violet, #9F7AFF);
+      color: var(--violet, #9F7AFF);
+      background: var(--panel-strong, rgba(255,255,255,0.07));
+    }
+
+    /* --- the 3D subject cube --- */
+    .cube-stage {
+      position: relative;
+      height: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1400px;
+    }
+
+    /* ambient particles drifting behind the cube */
+    .particle {
+      position: absolute;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--blue, #5B7FFF);
+      opacity: 0.5;
+      filter: blur(0.3px);
+      animation: particle-float 6s ease-in-out infinite;
+    }
+    .particle:nth-child(1) { top: 18%; left: 20%; animation-delay: 0s; }
+    .particle:nth-child(2) { top: 70%; left: 15%; width: 4px; height: 4px; background: var(--violet, #9F7AFF); animation-delay: 1.2s; animation-duration: 7s; }
+    .particle:nth-child(3) { top: 25%; left: 82%; animation-delay: 2.1s; animation-duration: 5.5s; }
+    .particle:nth-child(4) { top: 78%; left: 80%; width: 6px; height: 6px; background: var(--violet, #9F7AFF); animation-delay: 0.6s; animation-duration: 8s; }
+    .particle:nth-child(5) { top: 8%; left: 55%; width: 3px; height: 3px; animation-delay: 3s; animation-duration: 6.5s; }
+    .particle:nth-child(6) { top: 55%; left: 8%; width: 3px; height: 3px; background: var(--violet, #9F7AFF); animation-delay: 1.8s; animation-duration: 7.5s; }
+
+    @keyframes particle-float {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.35; }
+      50% { transform: translateY(-18px) scale(1.3); opacity: 0.85; }
+    }
+
+    /* soft glow platform beneath the cube */
+    .cube-glow {
+      position: absolute;
+      bottom: 58px;
+      width: 230px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(91,127,255,0.35), rgba(159,122,255,0.12) 55%, transparent 75%);
+      filter: blur(6px);
+      animation: glow-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
+    }
+
+    .cube-wrapper {
+      position: relative;
+      width: 168px;
+      height: 168px;
+      transform-style: preserve-3d;
+      animation: cube-bob 4.5s ease-in-out infinite;
+    }
+
+    @keyframes cube-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-14px); }
+    }
+
+    .cube {
+      position: relative;
+      width: 168px;
+      height: 168px;
+      transform-style: preserve-3d;
+      animation: cube-spin 22s linear infinite;
+    }
+
+    @keyframes cube-spin {
+      from { transform: rotateX(-18deg) rotateY(0deg); }
+      to   { transform: rotateX(-18deg) rotateY(360deg); }
+    }
+
+    .cube-face {
+      position: absolute;
+      width: 168px;
+      height: 168px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 22px;
+      background: linear-gradient(160deg, var(--panel-strong, rgba(255,255,255,0.07)), var(--panel, rgba(255,255,255,0.04)));
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .cube-face .face-icon {
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--blue, #5B7FFF);
+    }
+    .cube-face .face-icon svg { width: 32px; height: 32px; }
+    .cube-face .face-icon.violet-ic { color: var(--violet, #9F7AFF); }
+
+    .cube-face .face-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--text-dim, #b7bccb);
+    }
+
+    .face-front  { transform: translateZ(84px); }
+    .face-back   { transform: rotateY(180deg) translateZ(84px); }
+    .face-right  { transform: rotateY(90deg) translateZ(84px); }
+    .face-left   { transform: rotateY(-90deg) translateZ(84px); }
+    .face-top    { transform: rotateX(90deg) translateZ(84px); }
+    .face-bottom { transform: rotateX(-90deg) translateZ(84px); }
+
+    .cube-stage:hover .cube { animation-play-state: paused; }
+    .cube-stage:hover .cube-wrapper { animation-play-state: paused; }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .cube-stage { order: -1; height: 340px; }
+    }
+
+    @media (max-width: 480px) {
+      .cube-stage { height: 300px; }
+      .cube-wrapper, .cube, .cube-face { width: 140px; height: 140px; }
+      .face-front  { transform: translateZ(70px); }
+      .face-back   { transform: rotateY(180deg) translateZ(70px); }
+      .face-right  { transform: rotateY(90deg) translateZ(70px); }
+      .face-left   { transform: rotateY(-90deg) translateZ(70px); }
+      .face-top    { transform: rotateX(90deg) translateZ(70px); }
+      .face-bottom { transform: rotateX(-90deg) translateZ(70px); }
+    }
+
+    /* ============================================ */
+    /* STORY / MISSION SECTION                       */
+    /* ============================================ */
+    .story {
+      padding: 60px 0 40px;
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 50px;
+      align-items: start;
+      border-top: 1px solid var(--border, rgba(255,255,255,0.08));
+    }
+
+    .story-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dimmer, #7a8096);
+      position: sticky;
+      top: 24px;
+    }
+
+    .story-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 600;
+      color: var(--text, #f5f6fa);
+      line-height: 1.35;
+      margin: 0 0 20px;
+    }
+
+    .story-body p {
+      color: var(--text-dim, #b7bccb);
+      font-size: 16px;
+      line-height: 1.85;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .story { grid-template-columns: 1fr; gap: 20px; }
+      .story-label { position: static; }
+    }
+
+    /* ============================================ */
+    /* STATS STRIP                                   */
+    /* ============================================ */
+    .stats {
+      padding: 40px 0;
+      border-top: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 42px);
+      color: var(--text, #f5f6fa);
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 2px;
+    }
+    .stat-num span.suffix { color: var(--blue, #5B7FFF); }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-dimmer, #7a8096);
+      margin-top: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    @media (max-width: 700px) {
+      .stats { grid-template-columns: repeat(2, 1fr); gap: 30px 16px; }
+    }
+
+    /* ============================================ */
+    /* VALUES — 3D TILT CARDS                        */
+    /* ============================================ */
+    .values {
+      padding: 70px 0;
+    }
+
+    .section-head {
+      max-width: 560px;
+      margin: 0 0 40px;
+    }
+
+    .section-head .story-label { position: static; margin-bottom: 14px; display: inline-block;}
+
+    .section-head h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 600;
+      color: var(--text, #f5f6fa);
+      margin: 0 0 12px;
+    }
+
+    .section-head p {
+      color: var(--text-dim, #b7bccb);
+      font-size: 15.5px;
+      line-height: 1.7;
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      perspective: 1200px;
+    }
+
+    .value-card {
+      background: var(--panel, rgba(255,255,255,0.04));
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-radius: 20px;
+      padding: 30px 26px;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+    }
+
+    .value-card:hover {
+      border-color: var(--blue, #5B7FFF);
+      box-shadow: 0 20px 40px -12px rgba(91,127,255,0.25);
+    }
+
+    .value-icon {
+      width: 48px; height: 48px;
+      border-radius: 13px;
+      background: var(--panel-strong, rgba(255,255,255,0.07));
+      display: flex; align-items: center; justify-content: center;
+      color: var(--blue, #5B7FFF);
+      margin-bottom: 20px;
+      transform: translateZ(30px);
+    }
+    .value-icon .ic { width: 24px; height: 24px; }
+
+    .value-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text, #f5f6fa);
+      margin: 0 0 10px;
+      transform: translateZ(20px);
+    }
+
+    .value-card p {
+      color: var(--text-dim, #b7bccb);
+      font-size: 14.5px;
+      line-height: 1.7;
+      margin: 0;
+      transform: translateZ(10px);
+    }
+
+    @media (max-width: 900px) {
+      .value-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================ */
+    /* CTA BAND                                      */
+    /* ============================================ */
+    .cta-band {
+      margin: 40px auto 80px;
+      max-width: 1200px;
+      padding: 0 24px;
+    }
+
+    .cta-inner {
+      background: var(--panel, rgba(255,255,255,0.04));
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      border-radius: 26px;
+      padding: 56px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% -20%, rgba(91,127,255,0.18), transparent 60%);
+      pointer-events: none;
+    }
+
+    .cta-inner h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(24px, 3.5vw, 34px);
+      color: var(--text, #f5f6fa);
+      margin: 0 0 14px;
+      position: relative;
+    }
+
+    .cta-inner p {
+      color: var(--text-dim, #b7bccb);
+      font-size: 16px;
+      margin: 0 0 28px;
+      position: relative;
+    }
+
+    .cta-inner .hero-actions { justify-content: center; position: relative; }
+
+    @media (max-width: 600px) {
+      .cta-inner { padding: 36px 22px; }
+    }
+
+    /* ============================================ */
+    /* FOOTER                                        */
+    /* ============================================ */
+    .site-footer {
+      border-top: 1px solid var(--border, rgba(255,255,255,0.08));
+      padding: 24px 0 30px;
+    }
+    .footer-link {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-link a {
+      color: var(--text-dim, #b7bccb);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+    .footer-link a:hover { color: var(--blue, #5B7FFF); }
+    .footer-link .ic { width: 14px; height: 14px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cube, .cube-wrapper, .particle, .cube-glow, .reveal {
+        animation: none !important;
+        transition: none !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- HEADER                                       -->
+  <!-- ============================================ -->
+  <nav class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="index.html#why">Why Shoruto</a>
+          <a href="index.html#trending">Trending</a>
+          <a href="index.html#subjects">Subjects</a>
+          <a href="blog.html">Blog</a>
+          <a href="index.html#ai">AI</a>
+          <a href="index.html#faq">FAQ</a>
+        </div>
+
+        <div class="nav-cta">
+          <button class="exit-btn" onclick="goBack()">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+            <span>Exit</span>
+          </button>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================ -->
+  <!-- ABOUT PAGE CONTENT                            -->
+  <!-- ============================================ -->
+  <main class="page-content">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-copy reveal">
+        <span class="hero-eyebrow">About Shoruto</span>
+        <h1>Every subject, <em>understood</em> — not just memorized.</h1>
+        <p class="lead">Shoruto exists because studying shouldn't mean drowning in scattered notes and 40-tab research. We connect trending topics, core subjects, and AI-powered summaries into one place built for how students actually think.</p>
+        <div class="hero-actions">
+          <a href="index.html#subjects" class="btn-primary">
+            Explore subjects
+            <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="contact.html" class="btn-ghost">Get in touch</a>
+        </div>
+      </div>
+
+      <div class="cube-stage">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <div class="cube-glow"></div>
+        <div class="cube-wrapper">
+          <div class="cube">
+
+            <div class="cube-face face-front">
+              <span class="face-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 5c2-1.5 5-1.5 7 0v13c-2-1.5-5-1.5-7 0V5z"/>
+                  <path d="M22 5c-2-1.5-5-1.5-7 0v13c2-1.5 5-1.5 7 0V5z"/>
+                </svg>
+              </span>
+              <span class="face-label">Literature</span>
+            </div>
+
+            <div class="cube-face face-back">
+              <span class="face-icon violet-ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>
+                  <ellipse cx="12" cy="12" rx="10" ry="4.2"/>
+                  <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/>
+                  <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/>
+                </svg>
+              </span>
+              <span class="face-label">Science</span>
+            </div>
+
+            <div class="cube-face face-right">
+              <span class="face-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M2 12h20"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </span>
+              <span class="face-label">Languages</span>
+            </div>
+
+            <div class="cube-face face-left">
+              <span class="face-icon violet-ic" style="font-family:'Space Grotesk',sans-serif; font-size:34px; font-weight:700; width:auto; height:auto;">&Sigma;</span>
+              <span class="face-label">Math</span>
+            </div>
+
+            <div class="cube-face face-top">
+              <span class="face-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 10L12 5 2 10l10 5 10-5z"/>
+                  <path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>
+                </svg>
+              </span>
+              <span class="face-label">Exams</span>
+            </div>
+
+            <div class="cube-face face-bottom">
+              <span class="face-icon violet-ic">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18h6"/>
+                  <path d="M10 22h4"/>
+                  <path d="M12 2a7 7 0 0 0-4 12.7c.5.4.9 1.1.9 1.8v.5h6.2v-.5c0-.7.4-1.4.9-1.8A7 7 0 0 0 12 2z"/>
+                </svg>
+              </span>
+              <span class="face-label">Ideas</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section class="story reveal">
+      <div class="story-label">Our story</div>
+      <div class="story-body">
+        <h2>Built by people who were tired of re-reading the same chapter three times.</h2>
+        <p>Shoruto started as a simple frustration: the best explanation of a topic was always scattered across ten different sources — a textbook paragraph here, a YouTube comment there, a half-remembered lecture slide somewhere else. Nobody had put it together in one place, in a way that actually made sense.</p>
+        <p>So we built the place. Shoruto pulls together trending topics, structured subjects, and AI-assisted breakdowns so you spend your time understanding — not hunting.</p>
+        <p>We're still small, still building, and still obsessing over every explanation we publish. If something on Shoruto ever confuses you more than it clarifies, we consider that a bug — and we want to hear about it.</p>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats reveal">
+      <div>
+        <div class="stat-num" data-count="120"><span class="value">0</span><span class="suffix">+</span></div>
+        <div class="stat-label">Subjects covered</div>
+      </div>
+      <div>
+        <div class="stat-num" data-count="24"><span class="value">0</span><span class="suffix">/7</span></div>
+        <div class="stat-label">AI assistance</div>
+      </div>
+      <div>
+        <div class="stat-num" data-count="1"><span class="value">0</span><span class="suffix">bd</span></div>
+        <div class="stat-label">Avg. reply time</div>
+      </div>
+      <div>
+        <div class="stat-num" data-count="2026"><span class="value">0</span><span class="suffix"></span></div>
+        <div class="stat-label">Founded</div>
+      </div>
+    </section>
+
+    <!-- VALUES -->
+    <section class="values reveal">
+      <div class="section-head">
+        <span class="story-label">What we believe</span>
+        <h2>Three ideas everything we build runs through.</h2>
+        <p>Move your mouse over a card — even our principles have a little depth to them.</p>
+      </div>
+
+      <div class="value-grid">
+        <div class="value-card" data-tilt>
+          <div class="value-icon">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></svg>
+          </div>
+          <h3>Clarity over clutter</h3>
+          <p>If an explanation needs a glossary to understand the glossary, we've failed. Every summary on Shoruto is written to be understood on the first read.</p>
+        </div>
+
+        <div class="value-card" data-tilt>
+          <div class="value-icon">
+            <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <h3>Respect your time</h3>
+          <p>Trending topics, subject breakdowns, and AI answers live in one place so you spend minutes finding what you need, not hours.</p>
+        </div>
+
+        <div class="value-card" data-tilt>
+          <div class="value-icon">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Built with students</h3>
+          <p>Every feature on Shoruto started as feedback from someone actually studying with it. This page's form goes straight to us — we read every message.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-band reveal">
+      <div class="cta-inner">
+        <h2>Have a question we didn't answer here?</h2>
+        <p>Our team usually replies within one business day.</p>
+        <div class="hero-actions">
+          <a href="contact.html" class="btn-primary">
+            Contact us
+            <svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-link">
+      <a href="index.html">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        Back to Shoruto
+      </a>
+      <span style="color:var(--text-dimmer, #7a8096);font-size:12px;">&copy; 2026 Shoruto</span>
+    </div>
+  </footer>
+
+  <!-- ============================================ -->
+  <!-- SCRIPTS                                       -->
+  <!-- ============================================ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // theme toggle
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          if (typeof toggleTheme === 'function') {
+            toggleTheme();
+          } else {
+            var html = document.documentElement;
+            var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+          }
+        });
+      }
+
+      // scroll reveal
+      const revealEls = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      revealEls.forEach(el => io.observe(el));
+
+      // count-up stats
+      const counters = document.querySelectorAll('.stat-num');
+      const countIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseInt(el.getAttribute('data-count'), 10);
+            const valueEl = el.querySelector('.value');
+            let current = 0;
+            const duration = 1200;
+            const start = performance.now();
+            function tick(now) {
+              const progress = Math.min((now - start) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              current = Math.round(target * eased);
+              valueEl.textContent = current;
+              if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+            countIO.unobserve(el);
+          }
+        });
+      }, { threshold: 0.4 });
+      counters.forEach(el => countIO.observe(el));
+
+      // 3D tilt on value cards
+      const tiltCards = document.querySelectorAll('[data-tilt]');
+      tiltCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const cx = rect.width / 2;
+          const cy = rect.height / 2;
+          const rotateX = ((y - cy) / cy) * -6;
+          const rotateY = ((x - cx) / cx) * 6;
+          card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+      });
+    });
+
+    function goBack() {
+      if (document.referrer && document.referrer.includes(window.location.host)) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+
+</body>
+</html>
