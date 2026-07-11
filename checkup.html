@@ -18,9 +18,9 @@
     /* HEADER STYLES — MATCHES BLOG PAGE            */
     /* ============================================ */
     .nav {
-      padding: 24px 0 20px 0;    /* ← top padding for space above header */
+      padding: 24px 0 20px 0;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 22px;       /* ← space below header */
+      margin-bottom: 22px;
       background: transparent;
       transition: border-color 0.3s ease;
     }
@@ -105,30 +105,95 @@
       gap: 12px;
     }
 
-    .theme-toggle {
-      background: var(--panel-strong);
+    /* ---- EXIT BUTTON (matches blog page) ---- */
+    .exit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px 10px 16px;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
+      color: var(--text-dim);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+
+    .exit-btn .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s var(--ease);
+      flex-shrink: 0;
+    }
+
+    .exit-btn:hover {
+      background: var(--panel-strong);
+      border-color: var(--violet);
+      color: var(--violet);
+    }
+
+    .exit-btn:hover .ic {
+      transform: translateX(-3px);
+    }
+
+    /* ---- THEME TOGGLE (circle, matches blog page) ---- */
+    .theme-toggle {
       width: 40px;
       height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      font-size: 18px;
-      transition: border-color 0.2s ease, background 0.2s ease;
-      color: var(--text-dim);
+      transition: all 0.3s var(--ease);
+      position: relative;
+      flex-shrink: 0;
     }
 
     .theme-toggle:hover {
+      background: var(--panel-strong);
       border-color: var(--blue);
-      color: var(--text);
+      transform: scale(1.06);
     }
 
-    .theme-toggle .sun-icon { display: block; }
-    .theme-toggle .moon-icon { display: none; }
-    [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
-    [data-theme="dark"] .theme-toggle .moon-icon { display: block; }
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s var(--ease);
+      font-size: 18px;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
 
     @media (max-width: 600px) {
       .nav {
@@ -150,6 +215,13 @@
         height: 30px;
       }
       .nav-links {
+        display: none;
+      }
+      .exit-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .exit-btn span {
         display: none;
       }
       .theme-toggle {
@@ -181,6 +253,7 @@
       --danger: var(--danger-color);
       --coral: #FF6B5B;
       --coral-dim: rgba(255, 107, 91, 0.16);
+      --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
     /* ---- Fallback only ---- */
@@ -201,7 +274,7 @@
 
     .page-content {
       flex: 1;
-      padding: 0 20px 60px;      /* removed top padding — header gap handles it */
+      padding: 0 20px 60px;
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
@@ -220,7 +293,7 @@
       flex-shrink: 0;
     }
 
-    /* ---- Card Style — EXACTLY like Terms card ---- */
+    /* ---- Card Style ---- */
     .terms-card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -741,7 +814,7 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER — same as blog page                    -->
+  <!-- HEADER — with Exit button + circle theme toggle -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -776,8 +849,12 @@
           <a href="index.html#faq"></a>
         </div>
 
-        <!-- RIGHT SIDE: THEME TOGGLE -->
+        <!-- RIGHT SIDE: EXIT BUTTON + THEME TOGGLE -->
         <div class="nav-cta">
+          <button class="exit-btn" onclick="goBack()">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+            <span>Exit</span>
+          </button>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <span class="sun-icon">☀️</span>
             <span class="moon-icon">🌙</span>
@@ -933,6 +1010,15 @@
         });
       }
     });
+
+    /* ---------------- Exit button ---------------- */
+    function goBack() {
+      if (document.referrer && document.referrer.includes(window.location.host)) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
 
     /* ---------------- Question bank ---------------- */
     const QUESTIONS = [
