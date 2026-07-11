@@ -13,28 +13,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Fallback tokens -->
-    <style id="theme-fallback">
-        :root {
-            --bg-0: #0b0d12;
-            --panel: rgba(255,255,255,0.045);
-            --panel-strong: rgba(255,255,255,0.075);
-            --border: rgba(255,255,255,0.10);
-            --text: #f4f5f7;
-            --text-dim: #b7bcc7;
-            --text-dimmer: #7d8494;
-            --blue: #5b9dff;
-            --blue-soft: rgba(91,157,255,0.16);
-            --violet: #9d7bff;
-            --mint: #34d399;
-            --amber: #f0b43c;
-            --input-bg: rgba(255,255,255,0.05);
-            --badge-bg: rgba(255,255,255,0.05);
-            --glow-1: rgba(91,157,255,0.20);
-            --glow-2: rgba(157,123,255,0.18);
-        }
-    </style>
-
     <!-- Shared CSS and JS -->
     <link rel="stylesheet" href="theme.css">
     <script src="theme.js"></script>
@@ -116,6 +94,8 @@
             padding: 0 0 20px 0;
             border-bottom: 1px solid var(--border);
             margin-bottom: 22px;
+            background: transparent;
+            transition: border-color 0.3s ease;
         }
 
         .wrap {
@@ -139,6 +119,7 @@
             font-size: 22px;
             color: var(--text);
             letter-spacing: 1px;
+            transition: color 0.3s ease;
         }
 
         .logo .mark {
@@ -158,14 +139,17 @@
         .logo .mark svg circle,
         .logo .mark svg path {
             stroke: var(--blue);
+            transition: stroke 0.3s ease;
         }
 
         .logo .mark svg [fill]:not([fill="none"]) {
             fill: var(--blue);
+            transition: fill 0.3s ease;
         }
 
         .logo-text {
             color: var(--text);
+            transition: color 0.3s ease;
         }
 
         .nav-cta {
@@ -187,7 +171,7 @@
             font-size: 13px;
             cursor: pointer;
             background: transparent;
-            transition: 0.2s var(--ease);
+            transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
         }
         .exit-btn .ic { transition: transform 0.2s var(--ease); }
         .exit-btn:hover { background: var(--panel-strong); border-color: var(--violet); color: var(--violet); }
@@ -207,6 +191,7 @@
             justify-content: center;
             transition: all 0.3s var(--ease);
             position: relative;
+            flex-shrink: 0;
         }
         .theme-toggle:hover {
             background: var(--panel-strong);
@@ -217,6 +202,7 @@
         .theme-toggle .moon-icon {
             position: absolute;
             transition: all 0.45s var(--ease);
+            font-size: 18px;
         }
         .theme-toggle .sun-icon {
             opacity: 0;
@@ -233,6 +219,32 @@
         [data-theme="light"] .theme-toggle .moon-icon {
             opacity: 0;
             transform: rotate(90deg) scale(0.4);
+        }
+
+        /* Light theme overrides for header */
+        [data-theme="light"] .nav {
+            border-bottom-color: var(--border);
+        }
+        [data-theme="light"] .logo-text {
+            color: var(--text);
+        }
+        [data-theme="light"] .exit-btn {
+            border-color: var(--border);
+            color: var(--text-dim);
+        }
+        [data-theme="light"] .exit-btn:hover {
+            background: var(--panel-strong);
+            border-color: var(--violet);
+            color: var(--violet);
+        }
+        [data-theme="light"] .theme-toggle {
+            border-color: var(--border);
+            background: var(--panel);
+            color: var(--text);
+        }
+        [data-theme="light"] .theme-toggle:hover {
+            background: var(--panel-strong);
+            border-color: var(--blue);
         }
 
         @media (max-width: 600px) {
@@ -872,7 +884,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    toggleTheme();
+                });
+            }
         });
     </script>
 
