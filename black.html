@@ -18,9 +18,9 @@
     /* HEADER STYLES                                */
     /* ============================================ */
     .nav {
-      padding: 0 0 20px 0;
+      padding: 24px 0 20px 0;    /* ADDED top padding — space above header */
       border-bottom: 1px solid var(--border);
-      margin-bottom: 22px;       /* KEPT — creates the space you like */
+      margin-bottom: 22px;
       background: transparent;
       transition: border-color 0.3s ease;
     }
@@ -176,7 +176,7 @@
 
     @media (max-width: 600px) {
       .nav {
-        padding: 0 0 14px 0;
+        padding: 16px 0 14px 0;   /* adjusted for mobile */
         margin-bottom: 14px;
       }
       .wrap {
@@ -224,7 +224,7 @@
 
     .blog-wrapper {
       flex: 1;
-      padding: 0 24px 80px;       /* REMOVED top padding — header gap handles it */
+      padding: 0 24px 80px;
       max-width: 100%;
       margin: 0;
       width: 100%;
