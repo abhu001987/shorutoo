@@ -155,12 +155,17 @@ img, svg { display: block; }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(62, 123, 250, 0.5); }
 
 .btn-ghost {
-  background: var(--panel);
-  border-color: var(--border);
-  color: var(--text);
+  background: transparent;
+  border: 2px solid var(--mint);
+  color: var(--mint);
+  transition: all 0.3s ease;
 }
-
-.btn-ghost:hover { background: var(--panel-strong); border-color: rgba(255, 255, 255, 0.18); }
+.btn-ghost:hover {
+  background: var(--mint);
+  color: #04101a;
+  box-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
+  transform: translateY(-2px);
+}
 .btn svg { width: 16px; height: 16px; }
 
 /* ===== MODERN ROUNDED NAV ===== */
