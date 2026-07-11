@@ -14,7 +14,225 @@
   <script src="theme.js"></script>
 
   <style>
-    /* --- Page specific styles (mirror terms page) --- */
+    /* ============================================ */
+    /* HEADER STYLES — MATCHES BLOG PAGE            */
+    /* ============================================ */
+    .nav {
+      padding: 24px 0 20px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 22px;
+      background: transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .logo .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo .mark svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .logo .mark svg circle,
+    .logo .mark svg path {
+      stroke: var(--blue);
+      transition: stroke 0.3s ease;
+    }
+
+    .logo .mark svg [fill]:not([fill="none"]) {
+      fill: var(--blue);
+      transition: fill 0.3s ease;
+    }
+
+    .logo-text {
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ---- EXIT BUTTON (matches blog page) ---- */
+    .exit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-dim);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+
+    .exit-btn .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s var(--ease);
+      flex-shrink: 0;
+    }
+
+    .exit-btn:hover {
+      background: var(--panel-strong);
+      border-color: var(--violet);
+      color: var(--violet);
+    }
+
+    .exit-btn:hover .ic {
+      transform: translateX(-3px);
+    }
+
+    /* ---- THEME TOGGLE (circle, matches blog page) ---- */
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel-strong);
+      border-color: var(--blue);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s var(--ease);
+      font-size: 18px;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        padding: 16px 0 14px 0;
+        margin-bottom: 14px;
+      }
+      .wrap {
+        padding: 0 16px;
+      }
+      .logo {
+        font-size: 18px;
+      }
+      .logo .mark {
+        width: 32px;
+        height: 32px;
+      }
+      .logo .mark svg {
+        width: 30px;
+        height: 30px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .exit-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .exit-btn span {
+        display: none;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+    /* ============================================ */
+
+    /* ===== PAGE SPECIFIC STYLES ===== */
     body {
       min-height: 100vh;
       display: flex;
@@ -24,17 +242,19 @@
         radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
         radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
       transition: background 0.3s ease, color 0.3s ease;
+      margin: 0;
+      padding: 0;
     }
 
     .page-content {
       flex: 1;
-      padding: 60px 20px;
+      padding: 0 20px 60px;
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
     }
 
-    /* Icon system (same as terms) */
+    /* Icon system */
     .ic {
       width: 1em;
       height: 1em;
@@ -47,7 +267,7 @@
       flex-shrink: 0;
     }
 
-    /* Card style (identical) */
+    /* Card style */
     .contact-card {
       background: var(--panel);
       border: 1px solid var(--border);
@@ -255,7 +475,7 @@
 
     @media (max-width: 768px) {
       .page-content {
-        padding: 40px 16px;
+        padding: 0 16px 40px;
       }
       .contact-card {
         padding: 24px 20px;
@@ -287,7 +507,7 @@
       }
     }
 
-    /* fade-in animation (same) */
+    /* fade-in animation */
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -306,7 +526,7 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER (exact copy from terms)               -->
+  <!-- HEADER — with Exit button + circle theme toggle -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -331,7 +551,7 @@
           <span class="logo-text">Shoruto</span>
         </a>
 
-        <!-- NAVIGATION LINKS (same as terms) -->
+        <!-- NAVIGATION LINKS -->
         <div class="nav-links">
           <a href="index.html#why"></a>
           <a href="index.html#trending"></a>
@@ -341,8 +561,12 @@
           <a href="index.html#faq"></a>
         </div>
 
-        <!-- RIGHT SIDE: THEME TOGGLE -->
+        <!-- RIGHT SIDE: EXIT BUTTON + THEME TOGGLE -->
         <div class="nav-cta">
+          <button class="exit-btn" onclick="goBack()">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+            <span>Exit</span>
+          </button>
           <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
             <span class="sun-icon">☀️</span>
             <span class="moon-icon">🌙</span>
@@ -360,7 +584,7 @@
     <div class="contact-card fade-in">
 
       <h1>Contact Us</h1>
-      <span class="subhead">We’d love to hear from you. Reach out anytime.</span>
+      <span class="subhead">We'd love to hear from you. Reach out anytime.</span>
 
       <!-- intro -->
       <p>Have a question, suggestion, or feedback about Shoruto? Fill out the form below or drop us an email directly. Our team typically replies within 24 hours.</p>
@@ -406,12 +630,12 @@
         <p><strong>📍 Office</strong> — Shoruto HQ · 42 Knowledge Lane, New Delhi 110001 (virtual visits welcome).</p>
       </div>
 
-      <!-- additional context (same style as terms) -->
+      <!-- additional context -->
       <p style="margin-top: 18px; color: var(--text-dimmer); font-size: 13px;">
         We value your feedback and are constantly improving Shoruto. Your voice matters.
       </p>
 
-      <!-- footer link (exactly as terms) -->
+      <!-- footer link -->
       <div class="footer-link">
         <a href="index.html">
           <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
@@ -424,17 +648,32 @@
   </main>
 
   <!-- ============================================ -->
-  <!-- THEME TOGGLE SCRIPT (identical)             -->
+  <!-- SCRIPTS                                     -->
   <!-- ============================================ -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const themeToggle = document.getElementById('themeToggle');
       if (themeToggle) {
-        themeToggle.addEventListener('click', toggleTheme);
+        themeToggle.addEventListener('click', function() {
+          if (typeof toggleTheme === 'function') {
+            toggleTheme();
+          } else {
+            var html = document.documentElement;
+            var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+          }
+        });
       }
     });
+
+    function goBack() {
+      if (document.referrer && document.referrer.includes(window.location.host)) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
   </script>
-  <!-- ============================================ -->
 
 </body>
 </html>
