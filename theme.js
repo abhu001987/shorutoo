@@ -2,18 +2,18 @@
 
 (function() {
     // ===== CONFIG =====
-    const STORAGE_KEY = 'shoruto-theme';  // Consistent key name
+    const STORAGE_KEY = 'theme';  // ← FIXED: Changed from 'shoruto-theme' to 'theme'
     const DEFAULT_THEME = 'dark';
 
     // ===== GET STORED THEME =====
     function getStoredTheme() {
         // Check both old and new keys for backward compatibility
-        const oldTheme = localStorage.getItem('theme');
+        const oldTheme = localStorage.getItem('shoruto-theme');
         const newTheme = localStorage.getItem(STORAGE_KEY);
         if (oldTheme && !newTheme) {
             // Migrate old theme to new key
             localStorage.setItem(STORAGE_KEY, oldTheme);
-            localStorage.removeItem('theme');
+            localStorage.removeItem('shoruto-theme');
             return oldTheme;
         }
         return newTheme || DEFAULT_THEME;
@@ -47,7 +47,6 @@
     function updateParticleColors(theme) {
         const canvas = document.getElementById('particleCanvas');
         if (!canvas) return;
-        const ctx = canvas.getContext('2d');
         // Trigger particle redraw if available
         if (window._particleTick) {
             window._particleTick(theme);
