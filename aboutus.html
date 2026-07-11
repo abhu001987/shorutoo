@@ -363,26 +363,34 @@
       perspective: 1400px;
     }
 
-    /* ambient particles drifting behind the cube */
+    /* ambient floating study-icons drifting behind the cube */
     .particle {
       position: absolute;
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--blue, #5B7FFF);
-      opacity: 0.5;
-      filter: blur(0.3px);
+      width: 22px; height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.9;
       animation: particle-float 6s ease-in-out infinite;
     }
-    .particle:nth-child(1) { top: 18%; left: 20%; background: #F2760E; animation-delay: 0s; }
-    .particle:nth-child(2) { top: 70%; left: 15%; width: 4px; height: 4px; background: #0C8F82; animation-delay: 1.2s; animation-duration: 7s; }
-    .particle:nth-child(3) { top: 25%; left: 82%; background: #059651; animation-delay: 2.1s; animation-duration: 5.5s; }
-    .particle:nth-child(4) { top: 78%; left: 80%; width: 6px; height: 6px; background: #E11D6B; animation-delay: 0.6s; animation-duration: 8s; }
-    .particle:nth-child(5) { top: 8%; left: 55%; width: 3px; height: 3px; background: #E0982A; animation-delay: 3s; animation-duration: 6.5s; }
-    .particle:nth-child(6) { top: 55%; left: 8%; width: 3px; height: 3px; background: #7C3AED; animation-delay: 1.8s; animation-duration: 7.5s; }
+    .particle svg {
+      width: 100%; height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .particle.p-1 { top: 14%; left: 16%; color: #FFB648; width: 24px; height: 24px; filter: drop-shadow(0 0 7px rgba(255,182,72,0.65)); animation-delay: 0s; }
+    .particle.p-2 { top: 68%; left: 12%; color: #4DD9CB; width: 19px; height: 19px; filter: drop-shadow(0 0 6px rgba(77,217,203,0.6)); animation-delay: 1.2s; animation-duration: 7s; }
+    .particle.p-3 { top: 20%; left: 84%; color: #6EE8A8; width: 20px; height: 20px; filter: drop-shadow(0 0 6px rgba(110,232,168,0.6)); animation-delay: 2.1s; animation-duration: 5.5s; }
+    .particle.p-4 { top: 76%; left: 82%; color: #FF7CAE; width: 23px; height: 23px; filter: drop-shadow(0 0 7px rgba(255,124,174,0.6)); animation-delay: 0.6s; animation-duration: 8s; }
+    .particle.p-5 { top: 4%; left: 52%; color: #FFDD7A; width: 18px; height: 18px; filter: drop-shadow(0 0 6px rgba(255,221,122,0.6)); animation-delay: 3s; animation-duration: 6.5s; }
+    .particle.p-6 { top: 58%; left: 4%; color: #C4A6FF; width: 18px; height: 18px; filter: drop-shadow(0 0 6px rgba(196,166,255,0.6)); animation-delay: 1.8s; animation-duration: 7.5s; }
 
     @keyframes particle-float {
-      0%, 100% { transform: translateY(0) scale(1); opacity: 0.35; }
-      50% { transform: translateY(-18px) scale(1.3); opacity: 0.85; }
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.55; }
+      50% { transform: translateY(-16px) rotate(8deg) scale(1.12); opacity: 1; }
     }
 
     /* soft glow platform beneath the cube */
@@ -813,12 +821,25 @@
       </div>
 
       <div class="cube-stage">
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
-        <span class="particle"></span>
+        <!-- floating study-object icons -->
+        <span class="particle p-1" title="Pencil">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </span>
+        <span class="particle p-2" title="Flask">
+          <svg viewBox="0 0 24 24"><path d="M9 2v6.5L4 18a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 18l-5-9.5V2"/><path d="M9 2h6"/><path d="M6.5 15h11"/></svg>
+        </span>
+        <span class="particle p-3" title="Ruler">
+          <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="1.5" transform="rotate(-8 12 12)"/><path d="M6 9.5l1 2M9.5 9l1 2M13 8.5l1 2M16.5 8l1 2"/></svg>
+        </span>
+        <span class="particle p-4" title="Calculator">
+          <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01"/></svg>
+        </span>
+        <span class="particle p-5" title="Star">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></svg>
+        </span>
+        <span class="particle p-6" title="Idea">
+          <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4.9 1.1.9 1.8v.5h6.2v-.5c0-.7.4-1.4.9-1.8A7 7 0 0 0 12 2z"/></svg>
+        </span>
         <div class="cube-glow"></div>
         <div class="cube-wrapper">
           <div class="cube">
