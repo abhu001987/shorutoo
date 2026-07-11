@@ -192,37 +192,17 @@ img, svg { display: block; }
   transform: translateY(-3px) rotateX(8deg) rotateY(-5deg);
 }
 
-.sword-icon {
-  width: 18px;
-  height: 18px;
-  transform-origin: 20% 20%;
-  transition: transform .3s ease;
+.btn-ghost {
+  background: transparent;
+  border: 2px solid var(--violet);
+  color: var(--violet);
+  transition: all 0.3s ease;
 }
-.btn-challenge:hover .sword-icon {
-  animation: swordSwing .5s ease;
-}
-@keyframes swordSwing {
-  0%   { transform: rotate(0deg); }
-  35%  { transform: rotate(-30deg) scale(1.12); }
-  65%  { transform: rotate(16deg) scale(1.05); }
-  100% { transform: rotate(0deg); }
-}
-
-.sword-glint {
-  opacity: 0;
-  transition: opacity .2s ease .25s;
-}
-.btn-challenge:hover .sword-glint {
-  opacity: 1;
-  animation: glintFlash .8s ease .25s;
-}
-@keyframes glintFlash {
-  0%, 100% { opacity: 0; }
-  30%, 60% { opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn-challenge, .sword-icon, .sword-glint { animation: none !important; transition: none !important; }
+.btn-ghost:hover {
+  background: var(--violet);
+  color: #fff;
+  box-shadow: 0 0 30px rgba(139, 124, 255, 0.4);
+  transform: translateY(-2px);
 }
 .btn svg { width: 16px; height: 16px; }
 
