@@ -9,11 +9,11 @@
     <link rel="icon" href="/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon-192.png">
 
-    <!-- Fonts (matches homepage) -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Fallback tokens: used only if theme.css fails to load -->
+    <!-- Fallback tokens -->
     <style id="theme-fallback">
         :root {
             --bg-0: #0b0d12;
@@ -35,15 +35,12 @@
         }
     </style>
 
-    <!-- ============================================ -->
-    <!-- SHARED CSS AND JS (MUST HAVE)                 -->
-    <!-- ============================================ -->
+    <!-- Shared CSS and JS -->
     <link rel="stylesheet" href="theme.css">
     <script src="theme.js"></script>
-    <!-- ============================================ -->
 
     <style>
-        /* Page-local tokens not covered by the shared theme */
+        /* Page-local tokens */
         :root {
             --danger: #F2545F;
             --danger-dim: rgba(242, 84, 95, 0.12);
@@ -95,8 +92,6 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes popIn { from { opacity: 0; transform: scale(.96) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes ringPulse { 0%,100% { box-shadow: 0 0 0 0 var(--danger-dim); } 50% { box-shadow: 0 0 0 8px transparent; } }
         @keyframes waveBar { 0%,100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(220%); } }
         @keyframes floatDot { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
@@ -115,158 +110,58 @@
         }
 
         /* ============================================ */
-        /* NAVIGATION HEADER (from terms page)          */
+        /* SIMPLE HEADER: Logo + Theme Toggle only      */
         /* ============================================ */
-        .nav {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: var(--bg-0);
-            border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(12px);
-            padding: 0 20px;
-            margin-bottom: 22px;
-        }
-        .wrap {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .nav-inner {
+        .simple-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 68px;
+            padding: 16px 0 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 22px;
         }
-        .logo {
+
+        .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 22px;
-            color: var(--text);
-            letter-spacing: 1px;
         }
-        .logo .mark {
+
+        .brand .logo-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
             background: var(--blue-soft);
         }
-        .logo .mark svg {
+        .brand .logo-icon svg {
             width: 26px;
             height: 26px;
             display: block;
-        }
-        .logo .mark svg circle,
-        .logo .mark svg path {
             stroke: var(--blue);
         }
-        .logo .mark svg [fill]:not([fill="none"]) {
+        .brand .logo-icon svg [fill]:not([fill="none"]) {
             fill: var(--blue);
         }
-        .logo-text {
+
+        .brand .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 26px;
             color: var(--text);
+            letter-spacing: 1px;
         }
-        .nav-cta {
+
+        .header-actions {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .theme-toggle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--panel);
-            color: var(--text);
-            cursor: pointer;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s var(--ease);
-            position: relative;
-        }
-        .theme-toggle:hover {
-            background: var(--panel-strong);
-            border-color: var(--blue);
-            transform: scale(1.06);
-        }
-        .theme-toggle .sun-icon,
-        .theme-toggle .moon-icon {
-            position: absolute;
-            transition: all 0.45s var(--ease);
-        }
-        .theme-toggle .sun-icon {
-            opacity: 0;
-            transform: rotate(-90deg) scale(0.4);
-        }
-        .theme-toggle .moon-icon {
-            opacity: 1;
-            transform: rotate(0) scale(1);
-        }
-        [data-theme="light"] .theme-toggle .sun-icon {
-            opacity: 1;
-            transform: rotate(0) scale(1);
-        }
-        [data-theme="light"] .theme-toggle .moon-icon {
-            opacity: 0;
-            transform: rotate(90deg) scale(0.4);
-        }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s var(--ease);
-            font-family: 'Inter', sans-serif;
-        }
-        .nav-links a:hover {
-            color: var(--blue);
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .nav-inner {
-                height: 60px;
-            }
-            .logo {
-                font-size: 18px;
-            }
-            .logo .mark {
-                width: 34px;
-                height: 34px;
-            }
-            .logo .mark svg {
-                width: 20px;
-                height: 20px;
-            }
-        }
-        /* ============================================ */
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .exit {
+        .exit-btn {
             display: inline-flex;
             align-items: center;
             gap: 7px;
@@ -281,11 +176,53 @@
             background: transparent;
             transition: 0.2s var(--ease);
         }
-        .exit .ic { transition: transform 0.2s var(--ease); }
-        .exit:hover { background: var(--panel-strong); border-color: var(--violet); color: var(--violet); }
-        .exit:hover .ic { transform: translateX(-3px); }
+        .exit-btn .ic { transition: transform 0.2s var(--ease); }
+        .exit-btn:hover { background: var(--panel-strong); border-color: var(--violet); color: var(--violet); }
+        .exit-btn:hover .ic { transform: translateX(-3px); }
 
-        .brand { display: flex; align-items: center; gap: 10px; }
+        .theme-toggle-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s var(--ease);
+            position: relative;
+            flex-shrink: 0;
+        }
+        .theme-toggle-btn:hover {
+            background: var(--panel-strong);
+            border-color: var(--blue);
+            transform: scale(1.06);
+        }
+        .theme-toggle-btn .sun-icon,
+        .theme-toggle-btn .moon-icon {
+            position: absolute;
+            transition: all 0.45s var(--ease);
+        }
+        .theme-toggle-btn .sun-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.4);
+        }
+        .theme-toggle-btn .moon-icon {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+        [data-theme="light"] .theme-toggle-btn .sun-icon {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+        [data-theme="light"] .theme-toggle-btn .moon-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.4);
+        }
+        /* ============================================ */
 
         .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .progress-title {
@@ -462,7 +399,7 @@
         li { margin: 11px 0; line-height: 1.55; color: var(--text-dim); font-size: 13.5px; padding-left: 20px; position: relative; }
         li .ic { position: absolute; left: 0; top: 2px; width: 13px; height: 13px; color: var(--blue); }
 
-        /* ---- Question roadmap (replaces "AI tips") ---- */
+        /* ---- Question roadmap ---- */
         .roadmap-list {
             display: flex;
             flex-direction: column;
@@ -641,15 +578,19 @@
         }
         @media (max-width: 600px) {
             body { padding: 14px 12px; }
+            .simple-header { padding: 12px 0 14px 0; margin-bottom: 14px; }
+            .brand .logo-text { font-size: 18px; }
+            .brand .logo-icon { width: 36px; height: 36px; }
+            .brand .logo-icon svg { width: 20px; height: 20px; }
+            .exit-btn { padding: 6px 12px; font-size: 12px; }
+            .exit-btn span { display: none; }
+            .theme-toggle-btn { width: 36px; height: 36px; font-size: 16px; }
             .question { padding: 20px 18px; }
             .question h1 { font-size: 22px; margin: 10px 0; }
             .answer { padding: 18px 16px; }
             .buttons { flex-direction: column; }
             .voice, .submit { width: 100%; padding: 13px; font-size: 14px; }
             .side-card { padding: 16px 16px; }
-            .logo { font-size: 18px; }
-            .exit { padding: 7px 14px; font-size: 12px; }
-            .header { margin-bottom: 14px; }
             .popup-box { padding: 22px 18px; }
             .popup-actions { flex-direction: column; }
             .popup-actions button { width: 100%; text-align: center; }
@@ -754,54 +695,6 @@
 </head>
 <body>
 
-    <!-- ============================================ -->
-    <!-- NAVIGATION HEADER (from terms page)          -->
-    <!-- ============================================ -->
-    <nav class="nav">
-        <div class="wrap">
-            <div class="nav-inner">
-                <!-- LOGO -->
-                <a href="index.html" class="logo">
-                    <span class="mark">
-                        <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="30" cy="28" r="22"/>
-                            <circle cx="12" cy="10" r="7"/>
-                            <circle cx="48" cy="10" r="7"/>
-                            <circle cx="22" cy="25" r="4.5"/>
-                            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                            <circle cx="38" cy="25" r="4.5"/>
-                            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-                            <path d="M27 33 L30 37 L33 33"/>
-                            <path d="M26 38 Q30 43 34 38"/>
-                            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-                            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-                        </svg>
-                    </span>
-                    <span class="logo-text">Shoruto</span>
-                </a>
-
-                <!-- NAVIGATION LINKS -->
-                <div class="nav-links">
-                    <a href="index.html#why">Why</a>
-                    <a href="index.html#trending">Trending</a>
-                    <a href="index.html#subjects">Subjects</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="index.html#ai">AI</a>
-                    <a href="index.html#faq">FAQ</a>
-                </div>
-
-                <!-- RIGHT SIDE: THEME TOGGLE -->
-                <div class="nav-cta">
-                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                        <span class="sun-icon">☀️</span>
-                        <span class="moon-icon">🌙</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- ============================================ -->
-
     <div class="popup-init" id="popupInit">
         <div class="popup-init-box">
             <h3><span class="ic-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>Before you start</h3>
@@ -816,12 +709,38 @@
 
     <div class="container">
 
-        <div class="header">
-            <button class="exit" onclick="goBack()">
-                <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Exit
-            </button>
-            <div style="width:76px"></div>
+        <!-- ============================================ -->
+        <!-- SIMPLE HEADER: Logo + Theme Toggle only      -->
+        <!-- ============================================ -->
+        <div class="simple-header">
+            <div class="brand">
+                <span class="logo-icon">
+                    <svg viewBox="0 0 60 60" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="30" cy="28" r="22"/>
+                        <circle cx="12" cy="10" r="7"/>
+                        <circle cx="48" cy="10" r="7"/>
+                        <circle cx="22" cy="25" r="4.5"/>
+                        <circle cx="22" cy="25" r="1.5" fill="currentColor" fill-opacity="0.6"/>
+                        <circle cx="38" cy="25" r="4.5"/>
+                        <circle cx="38" cy="25" r="1.5" fill="currentColor" fill-opacity="0.6"/>
+                        <path d="M27 33 L30 37 L33 33"/>
+                        <path d="M26 38 Q30 43 34 38"/>
+                    </svg>
+                </span>
+                <span class="logo-text">SHORUTO</span>
+            </div>
+            <div class="header-actions">
+                <button class="exit-btn" onclick="goBack()">
+                    <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+                    <span>Exit</span>
+                </button>
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle theme">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+            </div>
         </div>
+        <!-- ============================================ -->
 
         <div class="progress-row">
             <div class="progress-title">Question progress</div>
@@ -876,9 +795,7 @@
 
                 <div class="card side-card fade-in" style="animation-delay:.15s">
                     <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Up next</h2>
-                    <div class="roadmap-list" id="roadmapList">
-                        <!-- populated by JS: full list of this test's 10 questions -->
-                    </div>
+                    <div class="roadmap-list" id="roadmapList"></div>
                 </div>
 
                 <div class="card side-card fade-in" style="animation-delay:.2s">
@@ -928,23 +845,19 @@
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- THEME TOGGLE SCRIPT                          -->
-    <!-- ============================================ -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
         });
     </script>
-    <!-- ============================================ -->
 
     <script>
         /* ===== COMPLETE JS WITH WEIGHTED KEYWORD EVALUATION & AI FEEDBACK ===== */
 
         let questions = [];
-        let current = 0;       // position (0-based) within testOrder for the running test
-        let testOrder = [];    // the fixed sequence of 10 question indices for this test run
+        let current = 0;
+        let testOrder = [];
         let count = 1;
         let totalScore = 0;
         let maxScore = 0;
@@ -963,7 +876,6 @@
         const TIMER_R = 42;
         const TIMER_CIRC = 2 * Math.PI * TIMER_R;
 
-        // ===== LOAD QUESTIONS FROM questions.json ONLY =====
         function loadQuestions() {
             return fetch("questions.json")
                 .then(r => { if (!r.ok) throw new Error('Failed to load questions.json'); return r.json(); })
@@ -977,7 +889,6 @@
                 });
         }
 
-        // ===== LOAD AI FEEDBACK =====
         function loadAIFeedback() {
             return fetch("ai_feedback.json")
                 .then(r => { if (!r.ok) throw new Error('Failed to load ai_feedback.json'); return r.json(); })
@@ -985,7 +896,6 @@
                 .catch(err => { console.error('Error loading AI feedback:', err); feedbackData = null; });
         }
 
-        // ===== WEIGHTED KEYWORD EVALUATION =====
         function evaluateWeightedAnswer(userAnswer, keywords) {
             let totalPoints = 0, earnedPoints = 0;
             let matchedKeywords = [], missingKeywords = [];
@@ -1025,7 +935,6 @@
             };
         }
 
-        // ===== GET AI FEEDBACK BASED ON KEYWORD COUNT =====
         function getAIFeedback(matchedCount) {
             if (!feedbackData) return null;
             let category;
@@ -1054,7 +963,6 @@
             return selected;
         }
 
-        // ===== BUILD THE FIXED QUESTION ORDER FOR THIS TEST =====
         function buildTestOrder() {
             let pool = questions.map((_, i) => i);
             for (let i = pool.length - 1; i > 0; i--) {
@@ -1073,7 +981,6 @@
             return order;
         }
 
-        // ===== INTERVIEW FUNCTIONS =====
         function startInterview() {
             document.getElementById('popupInit').style.display = "none";
             if (questions.length === 0) { alert('No questions loaded. Please refresh.'); return; }
@@ -1449,7 +1356,7 @@
             }, 100);
         }
 
-        // ===== POPUP (Learn more / topic overview) =====
+        // ===== POPUP =====
         (function() {
             const popupOverlay = document.getElementById('popupOverlay');
             const popupCancel = document.getElementById('popupCancel');
