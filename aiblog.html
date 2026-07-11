@@ -13,9 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Fallback tokens: used only if theme.css fails to load (e.g. in a
-         preview without the rest of the site). theme.css below always wins
-         when it's actually present, since it's declared after this. -->
+    <!-- Fallback tokens: used only if theme.css fails to load -->
     <style id="theme-fallback">
         :root {
             --bg-0: #0b0d12;
@@ -116,6 +114,149 @@
             transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
         }
 
+        /* ============================================ */
+        /* NAVIGATION HEADER (from terms page)          */
+        /* ============================================ */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--bg-0);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+            padding: 0 20px;
+            margin-bottom: 22px;
+        }
+        .wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 68px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            color: var(--text);
+            letter-spacing: 1px;
+        }
+        .logo .mark {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--blue-soft);
+        }
+        .logo .mark svg {
+            width: 26px;
+            height: 26px;
+            display: block;
+        }
+        .logo .mark svg circle,
+        .logo .mark svg path {
+            stroke: var(--blue);
+        }
+        .logo .mark svg [fill]:not([fill="none"]) {
+            fill: var(--blue);
+        }
+        .logo-text {
+            color: var(--text);
+        }
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s var(--ease);
+            position: relative;
+        }
+        .theme-toggle:hover {
+            background: var(--panel-strong);
+            border-color: var(--blue);
+            transform: scale(1.06);
+        }
+        .theme-toggle .sun-icon,
+        .theme-toggle .moon-icon {
+            position: absolute;
+            transition: all 0.45s var(--ease);
+        }
+        .theme-toggle .sun-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.4);
+        }
+        .theme-toggle .moon-icon {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+        [data-theme="light"] .theme-toggle .sun-icon {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+        [data-theme="light"] .theme-toggle .moon-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s var(--ease);
+            font-family: 'Inter', sans-serif;
+        }
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-inner {
+                height: 60px;
+            }
+            .logo {
+                font-size: 18px;
+            }
+            .logo .mark {
+                width: 34px;
+                height: 34px;
+            }
+            .logo .mark svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        /* ============================================ */
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -145,23 +286,6 @@
         .exit:hover .ic { transform: translateX(-3px); }
 
         .brand { display: flex; align-items: center; gap: 10px; }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 26px;
-            color: var(--text);
-            letter-spacing: 1px;
-        }
-
-        .panda-logo {
-            display: flex; justify-content: center; align-items: center;
-            width: 44px; height: 44px;
-            border-radius: 12px;
-            background: var(--blue-soft);
-        }
-        .panda-logo svg { width: 26px; height: 26px; display: block; stroke: var(--blue); }
-        .panda-logo svg [fill]:not([fill="none"]) { fill: var(--blue); }
 
         .progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .progress-title {
@@ -626,31 +750,57 @@
         @media (min-width: 641px) and (max-width: 900px) {
             .result-stats { grid-template-columns: repeat(3, 1fr); }
         }
-
-        /* ---- Mini theme toggle ---- */
-        .mini-theme-toggle {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 46px; height: 46px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--panel);
-            color: var(--text);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 19px;
-            z-index: 999;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s var(--ease);
-        }
-        .mini-theme-toggle:hover { background: var(--panel-strong); border-color: var(--blue); transform: scale(1.06); }
-        .mini-theme-toggle .sun-icon, .mini-theme-toggle .moon-icon { position: absolute; color: var(--amber); transition: all 0.45s var(--ease); }
-        .mini-theme-toggle .moon-icon { color: var(--blue); }
-        .mini-theme-toggle .sun-icon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
-        .mini-theme-toggle .moon-icon { opacity: 1; transform: rotate(0) scale(1); }
-        [data-theme="light"] .mini-theme-toggle .sun-icon { opacity: 1; transform: rotate(0) scale(1); }
-        [data-theme="light"] .mini-theme-toggle .moon-icon { opacity: 0; transform: rotate(90deg) scale(0.4); }
     </style>
 </head>
 <body>
+
+    <!-- ============================================ -->
+    <!-- NAVIGATION HEADER (from terms page)          -->
+    <!-- ============================================ -->
+    <nav class="nav">
+        <div class="wrap">
+            <div class="nav-inner">
+                <!-- LOGO -->
+                <a href="index.html" class="logo">
+                    <span class="mark">
+                        <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="30" cy="28" r="22"/>
+                            <circle cx="12" cy="10" r="7"/>
+                            <circle cx="48" cy="10" r="7"/>
+                            <circle cx="22" cy="25" r="4.5"/>
+                            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+                            <circle cx="38" cy="25" r="4.5"/>
+                            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+                            <path d="M27 33 L30 37 L33 33"/>
+                            <path d="M26 38 Q30 43 34 38"/>
+                            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+                            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+                        </svg>
+                    </span>
+                    <span class="logo-text">Shoruto</span>
+                </a>
+
+                <!-- NAVIGATION LINKS -->
+                <div class="nav-links">
+                    <a href="index.html#why">Why</a>
+                    <a href="index.html#trending">Trending</a>
+                    <a href="index.html#subjects">Subjects</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="index.html#ai">AI</a>
+                    <a href="index.html#faq">FAQ</a>
+                </div>
+
+                <!-- RIGHT SIDE: THEME TOGGLE -->
+                <div class="nav-cta">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <span class="sun-icon">☀️</span>
+                        <span class="moon-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- ============================================ -->
 
     <div class="popup-init" id="popupInit">
         <div class="popup-init-box">
@@ -670,22 +820,6 @@
             <button class="exit" onclick="goBack()">
                 <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Exit
             </button>
-            <div class="brand">
-                <div class="panda-logo">
-                    <svg viewBox="0 0 60 60" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="30" cy="28" r="22"/>
-                        <circle cx="12" cy="10" r="7"/>
-                        <circle cx="48" cy="10" r="7"/>
-                        <circle cx="22" cy="25" r="4.5"/>
-                        <circle cx="22" cy="25" r="1.5" fill="currentColor" fill-opacity="0.6"/>
-                        <circle cx="38" cy="25" r="4.5"/>
-                        <circle cx="38" cy="25" r="1.5" fill="currentColor" fill-opacity="0.6"/>
-                        <path d="M27 33 L30 37 L33 33"/>
-                        <path d="M26 38 Q30 43 34 38"/>
-                    </svg>
-                </div>
-                <div class="logo">SHORUTO</div>
-            </div>
             <div style="width:76px"></div>
         </div>
 
@@ -795,12 +929,14 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- MINI THEME TOGGLE (Bottom Right Corner)      -->
+    <!-- THEME TOGGLE SCRIPT                          -->
     <!-- ============================================ -->
-    <button class="mini-theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <span class="sun-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
-        <span class="moon-icon"><svg class="ic" viewBox="0 0 24 24" style="width:19px;height:19px"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
-    </button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+        });
+    </script>
     <!-- ============================================ -->
 
     <script>
@@ -919,9 +1055,6 @@
         }
 
         // ===== BUILD THE FIXED QUESTION ORDER FOR THIS TEST =====
-        // Shuffles all available questions, then lays out 10 slots (repeating the
-        // shuffled pool if there are fewer than 10 questions available). Because
-        // this is decided upfront, the "Up next" roadmap can show what's coming.
         function buildTestOrder() {
             let pool = questions.map((_, i) => i);
             for (let i = pool.length - 1; i > 0; i--) {
@@ -956,7 +1089,6 @@
         }
 
         function goBack() {
-            // No confirmation - just go home
             window.location.href = "/";
         }
 
@@ -991,13 +1123,11 @@
             }, 1000);
         }
 
-        // ===== TRUNCATE HELPER FOR ROADMAP PREVIEW TEXT =====
         function truncateQ(text, len) {
             if (!text) return "";
             return text.length > len ? text.slice(0, len).trim() + "…" : text;
         }
 
-        // ===== RENDER "UP NEXT" QUESTION ROADMAP =====
         function renderRoadmap(pos) {
             const list = document.getElementById("roadmapList");
             if (!list || !testOrder.length) return;
@@ -1359,17 +1489,6 @@
 
         console.log('🚀 SHORUTO initialized. Ready for mock test!');
     </script>
-
-    <!-- ============================================ -->
-    <!-- THEME TOGGLE SCRIPT (MUST HAVE)              -->
-    <!-- ============================================ -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-        });
-    </script>
-    <!-- ============================================ -->
 
 </body>
 </html>
