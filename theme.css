@@ -156,14 +156,14 @@ img, svg { display: block; }
 
 .btn-ghost {
   background: transparent;
-  border: 2px solid var(--mint);
-  color: var(--mint);
+  border: 2px solid var(--blue);
+  color: var(--blue);
   transition: all 0.3s ease;
 }
 .btn-ghost:hover {
-  background: var(--mint);
-  color: #04101a;
-  box-shadow: 0 0 40px rgba(52, 211, 153, 0.3);
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(62, 123, 250, 0.35);
   transform: translateY(-2px);
 }
 .btn svg { width: 16px; height: 16px; }
