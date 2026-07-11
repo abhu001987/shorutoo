@@ -170,12 +170,16 @@
   .tc-sub{font-size:13px;color:var(--text-dimmer);margin:0 0 18px;transform:translateZ(30px);line-height:1.5;}
 
   /* ============================================ */
-  /* FREQUENCY INDICATOR — "the little-earths row" */
-  /* Each year is drawn as a small Earth — ocean    */
-  /* blue with green landmasses — sized to that     */
-  /* year's PYQ count. The peak year gets a golden   */
-  /* halo ring and keeps slowly spinning, standing   */
-  /* out from the plain, static globes around it.    */
+  /* FREQUENCY INDICATOR — civic icon row          */
+  /* Each year is drawn as a plain civic-service    */
+  /* icon (hospital, bank, municipal building,      */
+  /* streetlamp, school) — a different one per      */
+  /* slot so the row reads as a mix, not a repeat.  */
+  /* Off-peak years sit dim and desaturated; the    */
+  /* single peak year (first occurrence, so ties     */
+  /* don't produce multiple "peaks") lights up gold  */
+  /* and gently pulses brighter, like a lit sign     */
+  /* against the dark ones next to it.               */
   /* ============================================ */
   .freq{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;height:58px;margin-bottom:20px;padding:0 4px;transform:translateZ(24px);}
 
@@ -188,9 +192,18 @@
   }
   .topic-card.in-view .leaf-wrap,.topic-card.in-view .bloom-wrap{opacity:1;transform:scale(1) rotate(0deg);}
   .leaf-wrap svg,.bloom-wrap svg{display:block;width:100%;height:100%;}
-  .bloom-wrap svg{animation:orbitSpin 9s linear infinite;animation-play-state:paused;transform-origin:50% 50%;}
+
+  /* dim / unlit icons */
+  .leaf-wrap svg{color:var(--text-dimmer);filter:brightness(0.85) saturate(0.6);opacity:0.68;transition:filter .3s ease, opacity .3s ease, color .3s ease;}
+  .stalk:hover .leaf-wrap svg{opacity:0.9;filter:brightness(1) saturate(0.8);}
+
+  /* lit / peak icon — bright amber with a soft pulsing glow */
+  .bloom-wrap svg{color:var(--amber);filter:brightness(1.25) drop-shadow(0 0 5px var(--amber-alpha));animation:iconGlow 2.4s ease-in-out infinite;animation-play-state:paused;}
   .topic-card.in-view .bloom-wrap svg{animation-play-state:running;}
-  @keyframes orbitSpin{to{transform:rotate(360deg);}}
+  @keyframes iconGlow{
+    0%,100%{filter:brightness(1.2) drop-shadow(0 0 4px var(--amber-alpha));}
+    50%{filter:brightness(1.55) drop-shadow(0 0 11px var(--amber-alpha));}
+  }
 
   .freq .tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:7px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dimmer);opacity:0;transition:opacity .2s ease;white-space:nowrap;pointer-events:none;}
   .stalk:hover .tip{opacity:1;}
@@ -399,49 +412,31 @@
       });
     }
 
-    // ---- build the little-earths frequency indicator from data-freq ----
-    // Each year draws a small, gently 3D-shaded Earth — gradient ocean,
-    // gradient landmasses, a soft gloss highlight — sized to that year's
-    // count. Continents are rotated a little differently on each globe
-    // so a row of similar counts doesn't read as identical clones. The
-    // single tallest year (first occurrence, so ties don't produce
-    // multiple "peaks") gets a double golden halo and keeps slowly
-    // spinning; every other globe stays still.
-    var globeSeed = 0;
-    function earthSVG(isPeak) {
-      globeSeed++;
-      var oceanId = 'ocean' + globeSeed;
-      var landId = 'land' + globeSeed;
-      var rot = (globeSeed * 53) % 360;
-      var out = '<svg viewBox="0 0 24 24">';
-      out += '<defs>' +
-        '<radialGradient id="' + oceanId + '" cx="35%" cy="28%" r="75%">' +
-          '<stop offset="0%" stop-color="#7FC4F5"/>' +
-          '<stop offset="52%" stop-color="#2D7FC4"/>' +
-          '<stop offset="100%" stop-color="#123F6E"/>' +
-        '</radialGradient>' +
-        '<radialGradient id="' + landId + '" cx="30%" cy="22%" r="85%">' +
-          '<stop offset="0%" stop-color="#9BEB8E"/>' +
-          '<stop offset="100%" stop-color="#288A3E"/>' +
-        '</radialGradient>' +
-      '</defs>';
-      if (isPeak) {
-        out += '<circle cx="12" cy="12" r="10.9" fill="none" stroke="var(--amber)" stroke-width="1.2" opacity="0.75"/>';
-        out += '<circle cx="12" cy="12" r="9.7" fill="none" stroke="var(--amber)" stroke-width="0.6" opacity="0.4"/>';
-      } else {
-        out += '<circle cx="12" cy="12" r="9.3" fill="none" stroke="var(--blue)" stroke-width="0.5" opacity="0.25"/>';
-      }
-      out += '<circle cx="12" cy="12" r="8.6" fill="url(#' + oceanId + ')"/>';
-      out += '<g transform="rotate(' + rot + ' 12 12)">' +
-               '<path d="M6.4 9.2c1-1.3 2.7-1.4 3.6-.5.8.8 2 .3 2.8-.4.9-.8 2.1-.4 1.7.9-.4 1.2-1.8 1-2.7 1.7-.9.7-2.4.2-3.3.9-.9.7-2.9-.4-2.1-2.6z" fill="url(#' + landId + ')"/>' +
-               '<path d="M13.6 14.4c.9-.5 2-.1 2.1 1s-1 1.8-1.9 1.4-1.1-1.9-.2-2.4z" fill="url(#' + landId + ')"/>' +
-               '<path d="M6.8 14.8c.8-.5 1.9-.1 1.9.9s-1 1.5-1.8 1-.9-1.4-.1-1.9z" fill="url(#' + landId + ')"/>' +
-             '</g>';
-      // fixed gloss highlight — not rotated with the continents, so it always reads as a light source, not a landmass
-      out += '<ellipse cx="9.3" cy="8.4" rx="2.7" ry="1.7" fill="#ffffff" opacity="0.32"/>';
-      out += '<circle cx="12" cy="12" r="8.6" fill="none" stroke="rgba(0,0,0,0.28)" stroke-width="0.5"/>';
-      out += '</svg>';
-      return out;
+    // ---- build the civic-icon frequency indicator from data-freq ----
+    // Each year slot draws one of five plain civic-service icons —
+    // hospital, bank, municipal building, streetlamp, school — so the
+    // row reads as a mix rather than the same mark repeated. Icons are
+    // simple line art using currentColor, so brightness/glow is handled
+    // entirely in CSS: dim + desaturated for ordinary years, bright
+    // amber with a soft pulse for the single peak year (first
+    // occurrence, so ties don't produce multiple "peaks").
+    var CIVIC_ICONS = [
+      // hospital — building with a cross
+      '<path d="M2 10l10-6 10 6"/><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M12 12.5v6M9 15.5h6"/>',
+      // bank — columned facade
+      '<path d="M2 10l10-6 10 6"/><path d="M4 10h16"/><path d="M6 21v-9M10 21v-9M14 21v-9M18 21v-9"/><path d="M3 21h18"/>',
+      // municipal building — columns topped with a dome and flag
+      '<path d="M4 21h16"/><path d="M6 21v-7M10 21v-7M14 21v-7M18 21v-7"/><path d="M7.5 14a4.5 4.5 0 0 1 9 0"/><path d="M12 6V2"/><path d="M12 2l3.5 1.3L12 4.6"/>',
+      // streetlamp
+      '<path d="M12 22v-9.5"/><path d="M8.3 12.5h7.4l-1.5 3.5h-4.4z"/><path d="M9.3 22h5.4"/><path d="M12 5.5v1.5"/><path d="M9.3 6.8l1 1"/><path d="M14.7 6.8l-1 1"/>',
+      // school — mortarboard over a small building
+      '<path d="M12 3L2 8l10 5 10-5-10-5Z"/><path d="M6.5 10.3V16c0 1.1 2.5 2 5.5 2s5.5-.9 5.5-2v-5.7"/><path d="M21 8v6"/>'
+    ];
+    var iconCounter = 0;
+    function civicIconSVG() {
+      var markup = CIVIC_ICONS[iconCounter % CIVIC_ICONS.length];
+      iconCounter++;
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + markup + '</svg>';
     }
     document.querySelectorAll('.freq').forEach(function (el) {
       var card = el.closest('.topic-card');
@@ -452,14 +447,14 @@
       var peakIndex = vals.indexOf(max);
       vals.forEach(function (v, i) {
         var isPeak = i === peakIndex;
-        var size = 30; // every globe is the same size — peak is marked by halo + spin, not scale
+        var size = 30; // every icon is the same size — peak is marked by the glow, not scale
         var stalk = document.createElement('div');
         stalk.className = 'stalk' + (isPeak ? ' peak' : '');
         stalk.style.setProperty('--size', size + 'px');
         stalk.style.setProperty('--d', (0.3 + i * 0.08) + 's');
         var markPart = isPeak
-          ? '<span class="bloom-wrap">' + earthSVG(true) + '</span>'
-          : '<span class="leaf-wrap">' + earthSVG(false) + '</span>';
+          ? '<span class="bloom-wrap">' + civicIconSVG() + '</span>'
+          : '<span class="leaf-wrap">' + civicIconSVG() + '</span>';
         stalk.innerHTML = markPart + '<span class="tip">' + v + " '" + years[i] + '</span>';
         el.appendChild(stalk);
       });
