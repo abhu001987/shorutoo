@@ -193,17 +193,13 @@
   .topic-card.in-view .leaf-wrap,.topic-card.in-view .bloom-wrap{opacity:1;transform:scale(1) rotate(0deg);}
   .leaf-wrap svg,.bloom-wrap svg{display:block;width:100%;height:100%;}
 
-  /* dim / unlit icons */
-  .leaf-wrap svg{color:var(--text-dimmer);filter:brightness(0.85) saturate(0.6);opacity:0.68;transition:filter .3s ease, opacity .3s ease, color .3s ease;}
-  .stalk:hover .leaf-wrap svg{opacity:0.9;filter:brightness(1) saturate(0.8);}
+  /* every icon keeps its own colour (set inline per icon type in JS) — */
+  /* CSS only adjusts opacity/brightness, it never overrides the hue    */
+  .leaf-wrap svg{opacity:0.82;filter:saturate(0.9) brightness(0.95);transition:opacity .3s ease, filter .3s ease;}
+  .stalk:hover .leaf-wrap svg{opacity:1;filter:saturate(1) brightness(1.02);}
 
-  /* lit / peak icon — bright amber with a soft pulsing glow */
-  .bloom-wrap svg{color:var(--amber);filter:brightness(1.25) drop-shadow(0 0 5px var(--amber-alpha));animation:iconGlow 2.4s ease-in-out infinite;animation-play-state:paused;}
-  .topic-card.in-view .bloom-wrap svg{animation-play-state:running;}
-  @keyframes iconGlow{
-    0%,100%{filter:brightness(1.2) drop-shadow(0 0 4px var(--amber-alpha));}
-    50%{filter:brightness(1.55) drop-shadow(0 0 11px var(--amber-alpha));}
-  }
+  /* peak icon — same colour as its type, just a touch brighter with a small, steady highlight (no big glow, no pulsing) */
+  .bloom-wrap svg{opacity:1;filter:saturate(1.1) brightness(1.08) drop-shadow(0 0 3px currentColor);}
 
   .freq .tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:7px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dimmer);opacity:0;transition:opacity .2s ease;white-space:nowrap;pointer-events:none;}
   .stalk:hover .tip{opacity:1;}
@@ -413,30 +409,30 @@
     }
 
     // ---- build the civic-icon frequency indicator from data-freq ----
-    // Each year slot draws one of five plain civic-service icons —
-    // hospital, bank, municipal building, streetlamp, school — so the
-    // row reads as a mix rather than the same mark repeated. Icons are
-    // simple line art using currentColor, so brightness/glow is handled
-    // entirely in CSS: dim + desaturated for ordinary years, bright
-    // amber with a soft pulse for the single peak year (first
-    // occurrence, so ties don't produce multiple "peaks").
+    // Each year slot draws one of five civic-service icons — hospital,
+    // bank, municipal building, streetlamp, school — each with its own
+    // fixed colour, so the row reads as a genuinely colourful mix
+    // rather than one repeated grey/amber mark. The peak year (first
+    // occurrence, so ties don't produce multiple "peaks") is simply a
+    // touch brighter and slightly bolder than the rest — no colour
+    // override, no heavy glow.
     var CIVIC_ICONS = [
       // hospital — building with a cross
-      '<path d="M2 10l10-6 10 6"/><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M12 12.5v6M9 15.5h6"/>',
+      { color: '#FF6F6F', markup: '<path d="M2 10l10-6 10 6"/><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M12 12.5v6M9 15.5h6"/>' },
       // bank — columned facade
-      '<path d="M2 10l10-6 10 6"/><path d="M4 10h16"/><path d="M6 21v-9M10 21v-9M14 21v-9M18 21v-9"/><path d="M3 21h18"/>',
+      { color: '#5B7FFF', markup: '<path d="M2 10l10-6 10 6"/><path d="M4 10h16"/><path d="M6 21v-9M10 21v-9M14 21v-9M18 21v-9"/><path d="M3 21h18"/>' },
       // municipal building — columns topped with a dome and flag
-      '<path d="M4 21h16"/><path d="M6 21v-7M10 21v-7M14 21v-7M18 21v-7"/><path d="M7.5 14a4.5 4.5 0 0 1 9 0"/><path d="M12 6V2"/><path d="M12 2l3.5 1.3L12 4.6"/>',
+      { color: '#8B6BFF', markup: '<path d="M4 21h16"/><path d="M6 21v-7M10 21v-7M14 21v-7M18 21v-7"/><path d="M7.5 14a4.5 4.5 0 0 1 9 0"/><path d="M12 6V2"/><path d="M12 2l3.5 1.3L12 4.6"/>' },
       // streetlamp
-      '<path d="M12 22v-9.5"/><path d="M8.3 12.5h7.4l-1.5 3.5h-4.4z"/><path d="M9.3 22h5.4"/><path d="M12 5.5v1.5"/><path d="M9.3 6.8l1 1"/><path d="M14.7 6.8l-1 1"/>',
+      { color: '#F5B841', markup: '<path d="M12 22v-9.5"/><path d="M8.3 12.5h7.4l-1.5 3.5h-4.4z"/><path d="M9.3 22h5.4"/><path d="M12 5.5v1.5"/><path d="M9.3 6.8l1 1"/><path d="M14.7 6.8l-1 1"/>' },
       // school — mortarboard over a small building
-      '<path d="M12 3L2 8l10 5 10-5-10-5Z"/><path d="M6.5 10.3V16c0 1.1 2.5 2 5.5 2s5.5-.9 5.5-2v-5.7"/><path d="M21 8v6"/>'
+      { color: '#3FCB93', markup: '<path d="M12 3L2 8l10 5 10-5-10-5Z"/><path d="M6.5 10.3V16c0 1.1 2.5 2 5.5 2s5.5-.9 5.5-2v-5.7"/><path d="M21 8v6"/>' }
     ];
     var iconCounter = 0;
     function civicIconSVG() {
-      var markup = CIVIC_ICONS[iconCounter % CIVIC_ICONS.length];
+      var icon = CIVIC_ICONS[iconCounter % CIVIC_ICONS.length];
       iconCounter++;
-      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + markup + '</svg>';
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="color:' + icon.color + '">' + icon.markup + '</svg>';
     }
     document.querySelectorAll('.freq').forEach(function (el) {
       var card = el.closest('.topic-card');
