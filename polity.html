@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Polity · Shoruto</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Shared CSS & JS (theme) — same includes as the rest of the site -->
+<link rel="stylesheet" href="theme.css" />
+<script src="theme.js"></script>
+
+<style>
+  /* ============================================ */
+  /* FALLBACK THEME TOKENS                         */
+  /* Your theme.css already defines these — this   */
+  /* block only fills in gaps if a var is missing, */
+  /* so nothing breaks if theme.css is dropped in. */
+  /* ============================================ */
+  :root{
+    --bg-0:#060810;
+    --panel:rgba(255,255,255,0.035);
+    --panel-strong:rgba(255,255,255,0.07);
+    --border:rgba(255,255,255,0.09);
+    --text:#eef1fb;
+    --text-dim:#9aa3c4;
+    --text-dimmer:#666e91;
+    --blue:#5B7FFF;
+    --violet:#8B6BFF;
+    --glow-1:rgba(91,127,255,0.22);
+    --glow-2:rgba(139,107,255,0.16);
+    --ease:cubic-bezier(.4,0,.2,1);
+    /* signal colour for exam-frequency data — kept consistent with the rest of the site */
+    --amber:#F5B841;
+    --amber-alpha:rgba(245,184,65,0.16);
+  }
+  [data-theme="light"]{
+    --bg-0:#f6f7fb;
+    --panel:rgba(10,14,30,0.03);
+    --panel-strong:rgba(10,14,30,0.06);
+    --border:rgba(10,14,30,0.1);
+    --text:#12142a;
+    --text-dim:#4d5578;
+    --text-dimmer:#8890b0;
+    --glow-1:rgba(91,127,255,0.14);
+    --glow-2:rgba(139,107,255,0.12);
+    --amber-alpha:rgba(245,184,65,0.22);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;padding:0;
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    background:var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 85% 10%, var(--glow-2), transparent 40%);
+    color:var(--text);
+    transition:background 0.3s ease, color 0.3s ease;
+  }
+
+  /* ============================================ */
+  /* HEADER STYLES — MATCHES REST OF SITE          */
+  /* (copied as-is; do not restyle)                */
+  /* ============================================ */
+  .nav{padding:24px 0 20px 0;border-bottom:1px solid var(--border);margin-bottom:22px;background:transparent;transition:border-color 0.3s ease;}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 24px;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--text);letter-spacing:1px;transition:color 0.3s ease;}
+  .logo .mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;}
+  .logo .mark svg{width:38px;height:38px;display:block;}
+  .logo .mark svg circle,.logo .mark svg path{stroke:var(--blue);transition:stroke 0.3s ease;}
+  .logo .mark svg [fill]:not([fill="none"]){fill:var(--blue);transition:fill 0.3s ease;}
+  .logo-text{color:var(--text);transition:color 0.3s ease;}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s ease;font-family:'Inter',sans-serif;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{display:flex;align-items:center;gap:12px;}
+  .exit-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px 10px 16px;border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;background:transparent;transition:0.2s var(--ease),border-color 0.3s ease,color 0.3s ease,background 0.3s ease;}
+  .exit-btn .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s var(--ease);flex-shrink:0;}
+  .exit-btn:hover{background:var(--panel-strong);border-color:var(--violet);color:var(--violet);}
+  .exit-btn:hover .ic{transform:translateX(-3px);}
+  .theme-toggle{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--ease);position:relative;flex-shrink:0;}
+  .theme-toggle:hover{background:var(--panel-strong);border-color:var(--blue);transform:scale(1.06);}
+  .theme-toggle .sun-icon,.theme-toggle .moon-icon{position:absolute;transition:all 0.45s var(--ease);font-size:18px;}
+  .theme-toggle .sun-icon{opacity:0;transform:rotate(-90deg) scale(0.4);}
+  .theme-toggle .moon-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .sun-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .moon-icon{opacity:0;transform:rotate(90deg) scale(0.4);}
+  @media (max-width:600px){
+    .nav{padding:16px 0 14px 0;margin-bottom:14px;}
+    .wrap{padding:0 16px;}
+    .logo{font-size:18px;}
+    .logo .mark{width:32px;height:32px;}
+    .logo .mark svg{width:30px;height:30px;}
+    .nav-links{display:none;}
+    .exit-btn{padding:6px 12px;font-size:12px;}
+    .exit-btn span{display:none;}
+    .theme-toggle{width:36px;height:36px;font-size:16px;}
+  }
+  .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.14em;flex-shrink:0;}
+  /* ============================================ */
+  /* END HEADER STYLES                             */
+  /* ============================================ */
+
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  .page-content{flex:1;padding:0 24px 100px;max-width:1400px;margin:0 auto;width:100%;}
+
+  /* ---------- breadcrumb ---------- */
+  .crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dimmer);margin-bottom:28px;font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
+  .crumb a{color:var(--text-dimmer);text-decoration:none;transition:color .2s ease;}
+  .crumb a:hover{color:var(--blue);}
+  .crumb .sep{opacity:.5;}
+  .crumb .current{color:var(--text-dim);}
+
+  /* ---------- simple page head (no hero, no marketing copy) ---------- */
+  .page-head{margin-bottom:34px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 15px;border-radius:40px;background:var(--panel-strong);border:1px solid var(--border);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;font-weight:600;margin-bottom:16px;}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);}
+  .page-head h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.05;letter-spacing:-0.6px;margin:0 0 10px;}
+  .page-head p{font-size:15.5px;line-height:1.7;color:var(--text-dim);max-width:600px;margin:0;}
+
+  .page-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:24px;padding-top:18px;border-top:1px solid var(--border);}
+  .page-meta .stats{display:flex;gap:22px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dimmer);letter-spacing:.3px;}
+  .page-meta .stats b{color:var(--text-dim);font-weight:600;}
+  .legend{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dimmer);letter-spacing:.4px;}
+  .legend .sw{width:9px;height:9px;border-radius:2px;background:var(--amber);box-shadow:0 0 6px var(--amber-alpha);}
+
+  /* ---------- topic grid ---------- */
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
+
+  .topic-card{
+    position:relative;background:var(--panel);border:1px solid var(--border);border-radius:20px;
+    padding:26px 24px 22px;overflow:hidden;text-decoration:none;color:inherit;display:block;
+    transform-style:preserve-3d;perspective:800px;
+    opacity:0;transform:translateY(28px);
+    transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
+  }
+  .topic-card.in-view{animation:cardUp .6s var(--ease) forwards;}
+  .topic-grid .topic-card:nth-child(1){animation-delay:.02s;}
+  .topic-grid .topic-card:nth-child(2){animation-delay:.08s;}
+  .topic-grid .topic-card:nth-child(3){animation-delay:.14s;}
+  .topic-grid .topic-card:nth-child(4){animation-delay:.2s;}
+  .topic-grid .topic-card:nth-child(5){animation-delay:.26s;}
+  .topic-grid .topic-card:nth-child(6){animation-delay:.32s;}
+  .topic-grid .topic-card:nth-child(7){animation-delay:.38s;}
+  @keyframes cardUp{to{opacity:1;transform:translateY(0);}}
+
+  .topic-card::before{
+    content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;opacity:0;
+    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.08), transparent 60%);
+    transition:opacity .3s ease;
+  }
+  .topic-card:hover::before{opacity:1;}
+  .topic-card:hover{border-color:var(--blue);box-shadow:0 24px 50px rgba(0,0,0,0.32);}
+  [data-theme="light"] .topic-card:hover{box-shadow:0 24px 50px rgba(30,40,90,0.12);}
+
+  .tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;transform:translateZ(30px);}
+  .tc-icon{width:44px;height:44px;border-radius:13px;background:var(--panel-strong);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .tc-icon .ic{width:21px;height:21px;color:var(--blue);}
+  .tc-badge{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.6px;color:var(--text-dimmer);border:1px solid var(--border);border-radius:20px;padding:5px 10px;white-space:nowrap;}
+
+  .tc-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;margin:16px 0 3px;transform:translateZ(30px);}
+  .tc-sub{font-size:13px;color:var(--text-dimmer);margin:0 0 18px;transform:translateZ(30px);line-height:1.5;}
+
+  /* ============================================ */
+  /* FREQUENCY INDICATOR — "the chakra row"        */
+  /* Each year is a small Ashoka Chakra — the      */
+  /* 24-spoke wheel from the Constitution and the  */
+  /* national flag — sized to that year's PYQ      */
+  /* count. The peak year gets a fuller, gold      */
+  /* wheel that turns slowly, standing out from    */
+  /* the plain blue wheels around it.              */
+  /* ============================================ */
+  .freq{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;height:58px;margin-bottom:20px;padding:0 4px;transform:translateZ(24px);}
+
+  .stalk{flex:1;position:relative;height:100%;display:flex;align-items:center;justify-content:center;}
+
+  .leaf-wrap,.bloom-wrap{
+    width:var(--size);height:var(--size);
+    opacity:0;transform:scale(.3) rotate(-70deg);
+    transition:transform .6s var(--ease) var(--d), opacity .4s ease var(--d);
+  }
+  .topic-card.in-view .leaf-wrap,.topic-card.in-view .bloom-wrap{opacity:1;transform:scale(1) rotate(0deg);}
+  .leaf-wrap svg,.bloom-wrap svg{display:block;width:100%;height:100%;}
+  .bloom-wrap svg{animation:chakraSpin 9s linear infinite;animation-play-state:paused;transform-origin:50% 50%;}
+  .topic-card.in-view .bloom-wrap svg{animation-play-state:running;}
+  @keyframes chakraSpin{to{transform:rotate(360deg);}}
+
+  .freq .tip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:7px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-dimmer);opacity:0;transition:opacity .2s ease;white-space:nowrap;pointer-events:none;}
+  .stalk:hover .tip{opacity:1;}
+  /* ============================================ */
+  /* END FREQUENCY INDICATOR                       */
+  /* ============================================ */
+
+  .tc-meta{display:flex;align-items:center;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dimmer);border-top:1px solid var(--border);padding-top:14px;transform:translateZ(24px);}
+  .tc-meta b{color:var(--text-dim);font-weight:600;}
+  .tc-go{display:inline-flex;align-items:center;gap:5px;color:var(--blue);font-weight:600;}
+  .tc-go .ic{width:13px;height:13px;transition:transform .2s var(--ease);}
+  .topic-card:hover .tc-go .ic{transform:translateX(3px);}
+
+  /* ---------- footer ---------- */
+  .footer-link{margin-top:56px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-link a{color:var(--text-dim);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px;transition:color .2s ease;}
+  .footer-link a:hover{color:var(--blue);}
+  .footer-link .ic{width:14px;height:14px;}
+
+  @media (max-width:768px){
+    .page-content{padding:0 18px 70px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .topic-card,.leaf-wrap,.bloom-wrap,.leaf-wrap svg,.bloom-wrap svg{transition:none !important;animation:none !important;opacity:1 !important;transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- HEADER — unchanged from the rest of the site  -->
+<!-- ============================================ -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Shoruto</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#why"></a>
+        <a href="index.html#trending"></a>
+        <a href="index.html#subjects"></a>
+        <a href="blog.html"></a>
+        <a href="index.html#ai"></a>
+        <a href="index.html#faq"></a>
+      </div>
+      <div class="nav-cta">
+        <button class="exit-btn" onclick="goBack()">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          <span>Exit</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- ============================================ -->
+
+<main class="page-content">
+
+  <div class="crumb">
+    <a href="index.html">Subjects</a>
+    <span class="sep">/</span>
+    <span class="current">Polity</span>
+  </div>
+
+  <div class="page-head">
+    <span class="eyebrow"><span class="dot"></span>GS PAPER 2 · POLITY</span>
+    <h1>Polity</h1>
+    <p>Every polity theme the exam pulls from, ranked by how often it's actually asked.</p>
+
+    <div class="page-meta">
+      <div class="stats">
+        <span><b>7</b> topics</span>
+        <span><b>210</b> PYQs mapped</span>
+        <span><b>35</b>/yr average</span>
+      </div>
+      <div class="legend"><span class="sw"></span>PEAK YEAR</div>
+    </div>
+  </div>
+
+  <div class="topic-grid">
+
+    <a href="#" class="topic-card" data-freq="6,7,6,8,7,8">
+      <div class="tc-top">
+        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M6 4h9a3 3 0 0 1 3 3v13H9a3 3 0 0 1-3-3V4z"/><path d="M6 4v13a3 3 0 0 0 3 3"/><path d="M9 8h6"/><path d="M9 12h6"/></svg></div>
+        <span class="tc-badge">6 sub-topics</span>
+      </div>
+      <div class="tc-title">Constitution &amp; Constitutional Bodies</div>
+      <p class="tc-sub">Preamble, Fundamental Rights, DPSP, amendments, key constitutional bodies.</p>
+      <div class="freq"></div>
+      <div class="tc-meta"><span><b>42</b> PYQs · 6 yrs</span><span class="tc-go">Start<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+    </a>
+
+    <a href="#" class="topic-card" data-freq="5,5,6,5,6,5">
+      <div class="tc-top">
+        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M4 21h16"/><path d="M6 21V11"/><path d="M18 21V11"/><path d="M9 21v-6"/><path d="M15 21v-6"/><path d="M4 11c0-4.5 3.5-8 8-8s8 3.5 8 8"/></svg></div>
+        <span class="tc-badge">5 sub-topics</span>
+      </div>
+      <div class="tc-title">Parliament &amp; Legislature</div>
+      <p class="tc-sub">Lok Sabha, Rajya Sabha, law-making process, sessions, parliamentary committees.</p>
+      <div class="freq"></div>
+      <div class="tc-meta"><span><b>32</b> PYQs · 6 yrs</span><span class="tc-go">Start<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+    </a>
+
+    <a href="#" class="topic-card" data-freq="3,4,4,5,4,5">
+      <div class="tc-top">
+        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.2"/><path d="M6 21c0-4 2.5-6.5 6-6.5s6 2.5 6 6.5"/><path d="M9 13.5l3 3 3-3" opacity=".5"/></svg></div>
+        <span class="tc-badge">4 sub-topics</span>
+      </div>
+      <div class="tc-title">Executive</div>
+      <p class="tc-sub">President, Vice-President, Prime Minister, Council of Ministers, Governors.</p>
+      <div class="freq"></div>
+      <div class="tc-meta"><span><b>25</b> PYQs · 6 yrs</span><span class="tc-go">Start<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+    </a>
+
+    <a href="#" class="topic-card" data-freq="6,6,7,6,7,6">
+      <div class="tc-top">
+        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M9 13l6-6"/><path d="M11 5l4 4-2 2-4-4z"/><path d="M13 9l6 6"/><path d="M3 21l6-6"/><path d="M6 18l3 3"/></svg></div>
+        <span class="tc-badge">6 sub-topics</span>
+      </div>
+      <div class="tc-title">Judiciary</div>
+      <p class="tc-sub">Supreme Court, High Courts, judicial review, PIL, landmark judgments.</p>
+      <div class="freq"></div>
+      <div class="tc-meta"><span><b>38</b> PYQs · 6 yrs</span><span class="tc-go">Start<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+    </a>
+
+    <a href="#" class="topic-card" data-freq="3,3,3,4,3,4">
+      <div class="tc-top">
+        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M3 21V11l4-3 4 3v10"/><path d="M13 21V9l4-3 4 3v12"/><path d="M3 21h18"/></svg></div>
+        <span class="tc-badge">4 sub-topics</span>
+      </div>
+      <div class="tc-title">Local Governance</div>
+      <p class="tc-sub">Panchayati Raj, urban local bodies, 73rd &amp; 74th amendments.</p>
+      <div class="freq"></div>
+      <div class="tc-meta"><span><b>20</b> PYQs · 6 yrs</span><span class="tc-go">Start<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+    </a>
+
+    <a href="#" class="topic-card" data-freq="4,5,4,5,5,5">
+      <div class="tc-top">
+        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M4 10h16v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9z"/><path d="M4 10l3-6h10l3 6"/><path d="M12 13v4"/><path d="M9.5 14.5l2.5 2.5 2.5-2.5" opacity=".6"/></svg></div>
+        <span class="tc-badge">5 sub-topics</span>
+      </div>
+      <div class="tc-title">Elections &amp; Political Parties</div>
+      <p class="tc-sub">Election Commission, electoral reforms, anti-defection law, party system.</p>
+      <div class="freq"></div>
+      <div class="tc-meta"><span><b>28</b> PYQs · 6 yrs</span><span class="tc-go">Start<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+    </a>
+
+    <a href="#" class="topic-card" data-freq="3,4,4,5,4,5">
+      <div class="tc-top">
+        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M9 3l6 2 6-2v16l-6 2-6-2-6 2V5z"/><circle cx="9" cy="9" r="1.4"/><circle cx="15" cy="14" r="1.4"/><path d="M9 9l6 5" opacity=".5"/></svg></div>
+        <span class="tc-badge">5 sub-topics</span>
+      </div>
+      <div class="tc-title">Federalism &amp; Centre-State Relations</div>
+      <p class="tc-sub">Union, State and Concurrent Lists, inter-state councils, cooperative federalism.</p>
+      <div class="freq"></div>
+      <div class="tc-meta"><span><b>25</b> PYQs · 6 yrs</span><span class="tc-go">Start<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span></div>
+    </a>
+
+  </div>
+
+  <div class="footer-link">
+    <a href="index.html">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+      Back to all subjects
+    </a>
+    <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+  </div>
+
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // ---- theme toggle (same as rest of site) ----
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        if (typeof toggleTheme === 'function') {
+          toggleTheme();
+        } else {
+          var html = document.documentElement;
+          var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+          html.setAttribute('data-theme', next);
+        }
+      });
+    }
+
+    // ---- build the chakra-row frequency indicator from data-freq ----
+    // Each year draws a small Ashoka Chakra sized to that year's
+    // count. The single tallest year (first occurrence, so ties
+    // don't produce multiple "peaks") gets a fuller 24-spoke gold
+    // wheel that turns slowly instead of the plain blue wheel.
+    function chakraSVG(spokes, color) {
+      var lines = '';
+      for (var i = 0; i < spokes; i++) {
+        var angle = (360 / spokes) * i;
+        lines += '<line x1="12" y1="12" x2="12" y2="2.6" stroke="' + color + '" stroke-width="1" stroke-linecap="round" transform="rotate(' + angle + ' 12 12)"/>';
+      }
+      return '<svg viewBox="0 0 24 24">' +
+        '<circle cx="12" cy="12" r="10.6" fill="none" stroke="' + color + '" stroke-width="1.4"/>' +
+        lines +
+        '<circle cx="12" cy="12" r="1.8" fill="' + color + '"/>' +
+        '</svg>';
+    }
+    document.querySelectorAll('.freq').forEach(function (el) {
+      var card = el.closest('.topic-card');
+      var years = ['19','20','21','22','23','24'];
+      var vals = (card.dataset.freq || '').split(',').map(Number);
+      var max = Math.max.apply(null, vals) || 1;
+      var peakIndex = vals.indexOf(max);
+      vals.forEach(function (v, i) {
+        var isPeak = i === peakIndex;
+        var size = 16 + (v / max) * 20;
+        var stalk = document.createElement('div');
+        stalk.className = 'stalk' + (isPeak ? ' peak' : '');
+        stalk.style.setProperty('--size', size + 'px');
+        stalk.style.setProperty('--d', (0.3 + i * 0.08) + 's');
+        var markPart = isPeak
+          ? '<span class="bloom-wrap">' + chakraSVG(24, 'var(--amber)') + '</span>'
+          : '<span class="leaf-wrap">' + chakraSVG(12, 'var(--blue)') + '</span>';
+        stalk.innerHTML = markPart + '<span class="tip">' + v + " '" + years[i] + '</span>';
+        el.appendChild(stalk);
+      });
+    });
+
+    // ---- reveal cards (pillars rise once revealed) ----
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.topic-card').forEach(function (c) { io.observe(c); });
+
+    // ---- 3D tilt + cursor glow on topic cards ----
+    document.querySelectorAll('.topic-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = e.clientX - r.left, y = e.clientY - r.top;
+        var px = x / r.width, py = y / r.height;
+        var rotY = (px - 0.5) * 10;
+        var rotX = (0.5 - py) * 10;
+        card.style.transform = 'perspective(800px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-2px)';
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
+      });
+    });
+  });
+
+  function goBack() {
+    if (document.referrer && document.referrer.includes(window.location.host)) {
+      history.back();
+    } else {
+      window.location.href = 'index.html';
+    }
+  }
+</script>
+
+</body>
+</html>
