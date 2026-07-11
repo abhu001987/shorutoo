@@ -14,6 +14,201 @@
   <script src="theme.js"></script>
 
   <style>
+    /* ============================================ */
+    /* HEADER STYLES                                */
+    /* ============================================ */
+    .nav {
+      padding: 0 0 20px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 22px;       /* KEPT — creates the space you like */
+      background: transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .logo .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo .mark svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .logo .mark svg circle,
+    .logo .mark svg path {
+      stroke: var(--blue);
+      transition: stroke 0.3s ease;
+    }
+
+    .logo .mark svg [fill]:not([fill="none"]) {
+      fill: var(--blue);
+      transition: fill 0.3s ease;
+    }
+
+    .logo-text {
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .exit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-dim);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+
+    .exit-btn .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s var(--ease);
+      flex-shrink: 0;
+    }
+
+    .exit-btn:hover {
+      background: var(--panel-strong);
+      border-color: var(--violet);
+      color: var(--violet);
+    }
+
+    .exit-btn:hover .ic {
+      transform: translateX(-3px);
+    }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel-strong);
+      border-color: var(--blue);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s var(--ease);
+      font-size: 18px;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        padding: 0 0 14px 0;
+        margin-bottom: 14px;
+      }
+      .wrap {
+        padding: 0 16px;
+      }
+      .logo {
+        font-size: 18px;
+      }
+      .logo .mark {
+        width: 32px;
+        height: 32px;
+      }
+      .logo .mark svg {
+        width: 30px;
+        height: 30px;
+      }
+      .exit-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .exit-btn span {
+        display: none;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+    /* ============================================ */
+
+    /* ===== BLOG STYLES ===== */
     body {
       min-height: 100vh;
       display: flex;
@@ -27,22 +222,9 @@
       padding: 0;
     }
 
-    .ic {
-      width: 1em;
-      height: 1em;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      vertical-align: -0.14em;
-      flex-shrink: 0;
-    }
-
-    /* wrapper — minimal side spacing */
     .blog-wrapper {
       flex: 1;
-      padding: 40px 24px 80px;
+      padding: 0 24px 80px;       /* REMOVED top padding — header gap handles it */
       max-width: 100%;
       margin: 0;
       width: 100%;
@@ -126,12 +308,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-    }
-
-    .blog-body h2 .ic {
-      color: var(--violet);
-      width: 1.3em;
-      height: 1.3em;
     }
 
     .blog-body h3 {
@@ -299,12 +475,6 @@
       gap: 10px;
     }
 
-    .related-posts h3 .ic {
-      color: var(--blue);
-      width: 1.2em;
-      height: 1.2em;
-    }
-
     .related-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -406,11 +576,16 @@
     .blog-footer .ic {
       width: 14px;
       height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     @media (max-width: 768px) {
       .blog-wrapper {
-        padding: 20px 16px 60px;
+        padding: 0 16px 60px;
       }
       .blog-hero h1 {
         font-size: 30px;
@@ -465,12 +640,38 @@
     .fade-in {
       animation: fadeUp 0.6s cubic-bezier(.4, 0, .2, 1) both;
     }
+
+    /* ===== ICON STYLES (scoped to avoid header conflict) ===== */
+    .blog-body .ic,
+    .related-posts .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
+
+    .blog-body h2 .ic {
+      color: var(--violet);
+      width: 1.3em;
+      height: 1.3em;
+    }
+
+    .related-posts h3 .ic {
+      color: var(--blue);
+      width: 1.2em;
+      height: 1.2em;
+    }
   </style>
 </head>
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER (EXACT CODE AS REQUESTED)              -->
+  <!-- HEADER (EXACT CODE)                          -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
