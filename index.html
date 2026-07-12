@@ -121,6 +121,82 @@
         animation: none !important;
       }
     }
+
+    /* ===== Glassmorphism ticker strip with bouncing light orbs ===== */
+    .strip {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    [data-theme="light"] .strip {
+      background: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(11,26,51,0.06);
+      border-bottom: 1px solid rgba(11,26,51,0.06);
+      box-shadow: 0 8px 32px rgba(11,26,51,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+    .strip > span { position: relative; z-index: 2; }
+
+    .strip-light {
+      position: absolute;
+      z-index: 1;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(0.3px);
+      will-change: top, left;
+    }
+    .strip-light.l1 {
+      background: radial-gradient(circle, rgba(91,127,255,1), rgba(91,127,255,0) 70%);
+      box-shadow: 0 0 10px 3px rgba(91,127,255,0.65), 0 0 22px 8px rgba(91,127,255,0.25);
+      animation: bounceBall1 6.5s ease-in-out infinite;
+    }
+    .strip-light.l2 {
+      background: radial-gradient(circle, rgba(159,122,255,1), rgba(159,122,255,0) 70%);
+      box-shadow: 0 0 10px 3px rgba(159,122,255,0.65), 0 0 22px 8px rgba(159,122,255,0.25);
+      animation: bounceBall2 7.5s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
+    .strip-light.l3 {
+      background: radial-gradient(circle, rgba(52,211,153,1), rgba(52,211,153,0) 70%);
+      box-shadow: 0 0 10px 3px rgba(52,211,153,0.65), 0 0 22px 8px rgba(52,211,153,0.25);
+      animation: bounceBall3 5.8s ease-in-out infinite;
+      animation-delay: 1.6s;
+    }
+
+    @keyframes bounceBall1 {
+      0%   { top: 15%; left: 4%;  transform: scale(1); }
+      18%  { top: 78%; left: 16%; transform: scale(0.85); }
+      36%  { top: 20%; left: 34%; transform: scale(1.1); }
+      54%  { top: 72%; left: 52%; transform: scale(0.9); }
+      72%  { top: 18%; left: 70%; transform: scale(1); }
+      90%  { top: 68%; left: 88%; transform: scale(0.85); }
+      100% { top: 15%; left: 4%;  transform: scale(1); }
+    }
+    @keyframes bounceBall2 {
+      0%   { top: 65%; left: 92%; transform: scale(1); }
+      22%  { top: 12%; left: 76%; transform: scale(0.9); }
+      44%  { top: 70%; left: 58%; transform: scale(1.1); }
+      66%  { top: 15%; left: 38%; transform: scale(0.85); }
+      88%  { top: 68%; left: 20%; transform: scale(1); }
+      100% { top: 65%; left: 92%; transform: scale(1); }
+    }
+    @keyframes bounceBall3 {
+      0%   { top: 45%; left: 50%; transform: scale(1); }
+      25%  { top: 8%;  left: 28%; transform: scale(0.9); }
+      50%  { top: 75%; left: 8%;  transform: scale(1.05); }
+      75%  { top: 12%; left: 62%; transform: scale(0.85); }
+      100% { top: 45%; left: 50%; transform: scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .strip-light { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -213,6 +289,9 @@
 </header>
 
 <div class="strip">
+  <span class="strip-light l1"></span>
+  <span class="strip-light l2"></span>
+  <span class="strip-light l3"></span>
   <span>COVERING</span><span>·</span><span>DAILY CURRENT AFFAIRS</span><span>·</span>
   <span>POLITY</span><span>·</span><span>ECONOMICS</span><span>·</span><span>HISTORY</span><span>·</span>
   <span>ENVIRONMENT</span><span>·</span><span>GEOGRAPHY</span><span>·</span><span>SCIENCE</span><span>·</span>
