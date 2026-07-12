@@ -340,6 +340,16 @@
             gap: 16px;
         }
 
+        /* Stacking order used once the columns flatten on mobile (see media query below).
+           On desktop these numbers are only compared within their own column, so they
+           have no visible effect there. */
+        .question   { order: 1; }
+        .answer     { order: 2; }
+        .card-learn { order: 3; }
+        .card-upnext{ order: 4; }
+        .card-image { order: 5; }
+        .fact-line  { order: 6; }
+
         .question { padding: 28px 30px; }
         .question .q-top-row {
             display: flex;
@@ -663,10 +673,13 @@
         @media (max-width: 1100px) {
             .main {
                 flex-direction: column;
+                gap: 18px;
             }
+            /* Remove the wrapper divs from layout so their children become direct
+               flex items of .main and can be reordered with the `order` values above:
+               question -> answer -> learn -> up next -> image -> did you know */
             .main-left, .main-right {
-                flex: 1 1 auto;
-                width: 100%;
+                display: contents;
             }
             .side-image-wrap { height: 210px; }
             .question h1 { font-size: 26px; }
@@ -1161,18 +1174,18 @@
 
             <!-- RIGHT COLUMN: learn more, up next, image. Independent of left column height. -->
             <div class="main-right">
-                <div class="card side-card fade-in" style="animation-delay:.1s">
+                <div class="card side-card card-learn fade-in" style="animation-delay:.1s">
                     <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--mint)"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>Learn more</h2>
                     <p style="color:var(--text-dim);margin-bottom:14px;font-size:13.5px;">Want a quick overview of this topic before you answer?</p>
                     <button class="assistant-btn" id="explainBtn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Read topic overview</button>
                 </div>
 
-                <div class="card side-card fade-in" style="animation-delay:.15s">
+                <div class="card side-card card-upnext fade-in" style="animation-delay:.15s">
                     <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Up next</h2>
                     <div class="roadmap-list" id="roadmapList"></div>
                 </div>
 
-                <div class="card side-card side-card-image fade-in" style="animation-delay:.2s">
+                <div class="card side-card side-card-image card-image fade-in" style="animation-delay:.2s">
                     <div class="side-image-wrap">
                         <img class="side-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIkLCwqql12Su0n2yx4LxzEDCkguBeDQjz4P550Je6vG_yqTQbwy7fk7tF&s=10" alt="Stay motivated" loading="lazy">
                     </div>
