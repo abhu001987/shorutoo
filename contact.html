@@ -19,7 +19,7 @@
     /* ============================================ */
     .nav {
       padding: 24px 0 20px 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
       margin-bottom: 22px;
       background: transparent;
       transition: border-color 0.3s ease;
@@ -45,7 +45,7 @@
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
       font-size: 22px;
-      color: var(--text);
+      color: var(--text, #f5f6fa);
       letter-spacing: 1px;
       transition: color 0.3s ease;
     }
@@ -66,17 +66,17 @@
 
     .logo .mark svg circle,
     .logo .mark svg path {
-      stroke: var(--blue);
+      stroke: var(--blue, #5B7FFF);
       transition: stroke 0.3s ease;
     }
 
     .logo .mark svg [fill]:not([fill="none"]) {
-      fill: var(--blue);
+      fill: var(--blue, #5B7FFF);
       transition: fill 0.3s ease;
     }
 
     .logo-text {
-      color: var(--text);
+      color: var(--text, #f5f6fa);
       transition: color 0.3s ease;
     }
 
@@ -87,7 +87,7 @@
     }
 
     .nav-links a {
-      color: var(--text-dim);
+      color: var(--text-dim, #b7bccb);
       text-decoration: none;
       font-size: 14px;
       font-weight: 500;
@@ -96,7 +96,7 @@
     }
 
     .nav-links a:hover {
-      color: var(--text);
+      color: var(--text, #f5f6fa);
     }
 
     .nav-cta {
@@ -111,15 +111,15 @@
       align-items: center;
       gap: 7px;
       padding: 10px 20px 10px 16px;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
       border-radius: 12px;
-      color: var(--text-dim);
+      color: var(--text-dim, #b7bccb);
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
       font-size: 13px;
       cursor: pointer;
       background: transparent;
-      transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+      transition: 0.2s var(--ease, cubic-bezier(.4,0,.2,1)), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
     }
 
     .exit-btn .ic {
@@ -130,14 +130,14 @@
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      transition: transform 0.2s var(--ease);
+      transition: transform 0.2s var(--ease, cubic-bezier(.4,0,.2,1));
       flex-shrink: 0;
     }
 
     .exit-btn:hover {
-      background: var(--panel-strong);
-      border-color: var(--violet);
-      color: var(--violet);
+      background: var(--panel-strong, rgba(255,255,255,0.07));
+      border-color: var(--violet, #9F7AFF);
+      color: var(--violet, #9F7AFF);
     }
 
     .exit-btn:hover .ic {
@@ -149,29 +149,29 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
+      background: var(--panel, rgba(255,255,255,0.04));
+      color: var(--text, #f5f6fa);
       cursor: pointer;
       font-size: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s var(--ease);
+      transition: all 0.3s var(--ease, cubic-bezier(.4,0,.2,1));
       position: relative;
       flex-shrink: 0;
     }
 
     .theme-toggle:hover {
-      background: var(--panel-strong);
-      border-color: var(--blue);
+      background: var(--panel-strong, rgba(255,255,255,0.07));
+      border-color: var(--blue, #5B7FFF);
       transform: scale(1.06);
     }
 
     .theme-toggle .sun-icon,
     .theme-toggle .moon-icon {
       position: absolute;
-      transition: all 0.45s var(--ease);
+      transition: all 0.45s var(--ease, cubic-bezier(.4,0,.2,1));
       font-size: 18px;
     }
 
@@ -237,10 +237,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: var(--bg-0);
+      background: var(--bg-0, #0b0d14);
       background-image:
-        radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
-        radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+        radial-gradient(circle at 15% 0%, var(--glow-1, rgba(91,127,255,0.18)), transparent 45%),
+        radial-gradient(circle at 85% 20%, var(--glow-2, rgba(159,122,255,0.15)), transparent 40%);
       transition: background 0.3s ease, color 0.3s ease;
       margin: 0;
       padding: 0;
@@ -269,8 +269,8 @@
 
     /* Card style */
     .contact-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
+      background: var(--panel, rgba(255,255,255,0.04));
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
       border-radius: 22px;
       backdrop-filter: blur(10px);
       padding: 40px 48px;
@@ -281,17 +281,17 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: 38px;
       font-weight: 700;
-      color: var(--text);
+      color: var(--text, #f5f6fa);
       margin-bottom: 8px;
       letter-spacing: -0.3px;
     }
 
     .contact-card .subhead {
-      color: var(--text-dimmer);
+      color: var(--text-dimmer, #7a8096);
       font-size: 15px;
       margin-bottom: 32px;
       display: block;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
       padding-bottom: 18px;
     }
 
@@ -300,28 +300,28 @@
       font-weight: 600;
       font-size: 20px;
       margin: 32px 0 12px;
-      color: var(--text);
+      color: var(--text, #f5f6fa);
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .contact-card h2 .ic {
-      color: var(--blue);
+      color: var(--blue, #5B7FFF);
       width: 1.2em;
       height: 1.2em;
     }
 
     .contact-card p {
-      color: var(--text-dim);
+      color: var(--text-dim, #b7bccb);
       font-size: 16px;
       line-height: 1.8;
       margin-bottom: 14px;
     }
 
     .contact-card .highlight-box {
-      background: var(--panel-strong);
-      border-left: 4px solid var(--blue);
+      background: var(--panel-strong, rgba(255,255,255,0.07));
+      border-left: 4px solid var(--blue, #5B7FFF);
       padding: 18px 24px;
       border-radius: 14px;
       margin: 20px 0;
@@ -329,11 +329,11 @@
 
     .contact-card .highlight-box p {
       margin-bottom: 0;
-      color: var(--text-dim);
+      color: var(--text-dim, #b7bccb);
     }
 
     .contact-card .highlight-box.violet {
-      border-left-color: var(--violet);
+      border-left-color: var(--violet, #9F7AFF);
     }
 
     /* --- contact form style --- */
@@ -357,20 +357,20 @@
     .form-group label {
       font-size: 14px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--text, #f5f6fa);
       letter-spacing: 0.2px;
     }
 
     .form-group input,
     .form-group textarea,
     .form-group select {
-      background: var(--bg-0);
-      border: 1px solid var(--border);
+      background: var(--bg-0, #0b0d14);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
       border-radius: 14px;
       padding: 12px 16px;
       font-family: 'Inter', sans-serif;
       font-size: 15px;
-      color: var(--text);
+      color: var(--text, #f5f6fa);
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
       outline: none;
       resize: vertical;
@@ -379,7 +379,7 @@
     .form-group input:focus,
     .form-group textarea:focus,
     .form-group select:focus {
-      border-color: var(--blue);
+      border-color: var(--blue, #5B7FFF);
       box-shadow: 0 0 0 3px var(--blue-alpha, rgba(91, 127, 255, 0.15));
     }
 
@@ -389,12 +389,21 @@
 
     .form-group .hint {
       font-size: 13px;
-      color: var(--text-dimmer);
+      color: var(--text-dimmer, #7a8096);
       margin-top: 4px;
     }
 
+    /* honeypot field — hidden from real users, catches bots */
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
     .btn-submit {
-      background: var(--blue);
+      background: var(--blue, #5B7FFF);
       border: none;
       border-radius: 40px;
       padding: 14px 36px;
@@ -412,9 +421,15 @@
     }
 
     .btn-submit:hover {
-      background: var(--violet);
+      background: var(--violet, #9F7AFF);
       transform: scale(1.02);
       box-shadow: 0 8px 18px rgba(91, 127, 255, 0.25);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .btn-submit .ic {
@@ -423,10 +438,36 @@
       stroke: currentColor;
     }
 
+    /* form status message */
+    .form-status {
+      grid-column: 1 / -1;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 14.5px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .form-status.show { display: flex; }
+
+    .form-status.success {
+      background: rgba(110, 232, 168, 0.12);
+      border: 1px solid rgba(110, 232, 168, 0.35);
+      color: #59c98a;
+    }
+
+    .form-status.error {
+      background: rgba(255, 124, 174, 0.1);
+      border: 1px solid rgba(255, 124, 174, 0.35);
+      color: #e2588f;
+    }
+
     .footer-link {
       margin-top: 28px;
       padding-top: 18px;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--border, rgba(255,255,255,0.08));
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -435,7 +476,7 @@
     }
 
     .footer-link a {
-      color: var(--text-dim);
+      color: var(--text-dim, #b7bccb);
       text-decoration: none;
       font-size: 14px;
       display: flex;
@@ -445,7 +486,7 @@
     }
 
     .footer-link a:hover {
-      color: var(--blue);
+      color: var(--blue, #5B7FFF);
     }
 
     .footer-link .ic {
@@ -456,21 +497,21 @@
     /* email link in background (inline subtle) */
     .email-bg-link {
       display: inline-block;
-      background: var(--panel-strong);
+      background: var(--panel-strong, rgba(255,255,255,0.07));
       padding: 6px 14px;
       border-radius: 40px;
       font-size: 14px;
       font-weight: 500;
-      color: var(--blue);
-      border: 1px solid var(--border);
+      color: var(--blue, #5B7FFF);
+      border: 1px solid var(--border, rgba(255,255,255,0.08));
       transition: background 0.2s;
       text-decoration: none;
     }
 
     .email-bg-link:hover {
-      background: var(--blue);
+      background: var(--blue, #5B7FFF);
       color: #fff;
-      border-color: var(--blue);
+      border-color: var(--blue, #5B7FFF);
     }
 
     @media (max-width: 768px) {
@@ -589,31 +630,54 @@
       <!-- intro -->
       <p>Have a question, suggestion, or feedback about Shoruto? Fill out the form below or drop us an email directly. Our team typically replies within 24 hours.</p>
 
-      <!-- contact form -->
-      <form class="contact-form" action="#" method="POST">
+      <!--
+        FORM DELIVERY: powered by FormSubmit (https://formsubmit.co) — free,
+        no signup, no backend required. It POSTs the submission and emails
+        it straight to the address in the action URL below.
+
+        IMPORTANT ONE-TIME STEP: the very first time this form is submitted,
+        FormSubmit sends a confirmation email to that address. Someone must
+        open it and click "Confirm" once — after that, every future
+        submission is delivered automatically with no further action needed.
+
+        Swap "legal@shoruto.com" below for whichever inbox should receive
+        these messages.
+      -->
+      <form class="contact-form" id="contactForm" action="https://formsubmit.co/ajax/legal@shoruto.com" method="POST">
+
+        <!-- FormSubmit config fields -->
+        <input type="hidden" name="_subject" value="New message from Shoruto contact form" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <!-- honeypot: bots fill this in, real users never see it -->
+        <input type="text" name="_honey" class="hp-field" tabindex="-1" autocomplete="off" />
+
         <div class="form-group">
           <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" name="fullName" placeholder="e.g. Ananya Sharma" required />
+          <input type="text" id="fullName" name="Full Name" placeholder="e.g. Ananya Sharma" required />
         </div>
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          <input type="email" id="email" name="Email" placeholder="you@example.com" required />
         </div>
         <div class="form-group full-width">
           <label for="subject">Subject</label>
-          <input type="text" id="subject" name="subject" placeholder="What's this about?" />
+          <input type="text" id="subject" name="Subject" placeholder="What's this about?" />
         </div>
         <div class="form-group full-width">
           <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Write your message here..." required></textarea>
+          <textarea id="message" name="Message" placeholder="Write your message here..." required></textarea>
           <span class="hint">We take your privacy seriously. Your data is safe with us.</span>
         </div>
+
+        <div id="formStatus" class="form-status"></div>
+
         <div class="form-group full-width" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-          <button type="submit" class="btn-submit">
+          <button type="submit" class="btn-submit" id="submitBtn">
             <svg class="ic" viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-            Send message
+            <span id="submitBtnText">Send message</span>
           </button>
-          <span style="font-size: 14px; color: var(--text-dimmer);">or</span>
+          <span style="font-size: 14px; color: var(--text-dimmer, #7a8096);">or</span>
           <!-- email link in background (inline, visible) -->
           <a href="mailto:legal@shoruto.com" class="email-bg-link">
             ✉️ legal@shoruto.com
@@ -623,7 +687,7 @@
 
       <!-- extra contact info (mirror highlight boxes) -->
       <div class="highlight-box" style="margin-top: 20px;">
-        <p><strong>📬 Direct email</strong> — For general inquiries: <a href="mailto:legal@shoruto.com" style="color: var(--blue); text-decoration: none; font-weight: 500;">legal@shoruto.com</a> &nbsp;·&nbsp; We respond within 1 business day.</p>
+        <p><strong>📬 Direct email</strong> — For general inquiries: <a href="mailto:legal@shoruto.com" style="color: var(--blue, #5B7FFF); text-decoration: none; font-weight: 500;">legal@shoruto.com</a> &nbsp;·&nbsp; We respond within 1 business day.</p>
       </div>
 
       <div class="highlight-box violet">
@@ -631,7 +695,7 @@
       </div>
 
       <!-- additional context -->
-      <p style="margin-top: 18px; color: var(--text-dimmer); font-size: 13px;">
+      <p style="margin-top: 18px; color: var(--text-dimmer, #7a8096); font-size: 13px;">
         We value your feedback and are constantly improving Shoruto. Your voice matters.
       </p>
 
@@ -641,7 +705,7 @@
           <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
           Back to Shoruto
         </a>
-        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+        <span style="color:var(--text-dimmer, #7a8096);font-size:12px;">&copy; 2026 Shoruto</span>
       </div>
 
     </div>
@@ -664,6 +728,51 @@
           }
         });
       }
+
+      // ---- Contact form submission (AJAX to FormSubmit) ----
+      const form = document.getElementById('contactForm');
+      const statusBox = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('submitBtn');
+      const submitBtnText = document.getElementById('submitBtnText');
+
+      function showStatus(type, message) {
+        statusBox.className = 'form-status show ' + type;
+        statusBox.textContent = message;
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // simple honeypot check
+        if (form._honey.value) return;
+
+        submitBtn.disabled = true;
+        submitBtnText.textContent = 'Sending...';
+        statusBox.className = 'form-status';
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
+        })
+          .then(function(res) {
+            if (res.ok) {
+              showStatus('success', "Thanks — your message is on its way. We'll get back to you within a business day.");
+              form.reset();
+            } else {
+              throw new Error('Request failed');
+            }
+          })
+          .catch(function() {
+            showStatus('error', "Something went wrong sending that. Please try again, or email us directly at legal@shoruto.com.");
+          })
+          .finally(function() {
+            submitBtn.disabled = false;
+            submitBtnText.textContent = 'Send message';
+          });
+      });
     });
 
     function goBack() {
