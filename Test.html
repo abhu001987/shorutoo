@@ -525,6 +525,17 @@
         }
         .assistant-btn:hover { background: var(--panel-strong); border-color: var(--blue); }
 
+        /* ---- Small sidebar image card ---- */
+        .side-card-image { padding: 10px; }
+        .side-image-wrap {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: var(--input-bg);
+        }
+        .side-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+
         /* ---- Fact strip ---- */
         .fact-line {
             margin-top: 16px;
@@ -1106,14 +1117,6 @@
                         <button class="submit" id="submitBtn">Submit answer <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
                     </div>
                 </div>
-
-                <div class="fact-line fade-in" style="animation-delay:.25s">
-                    <span class="ic-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.75V17h8v-2.25A7 7 0 0012 2z"/></svg></span>
-                    <div class="fact-text">
-                        <span class="fact-eyebrow">Did you know?</span>
-                        Gandhi demanded fair treatment for the untouchables, India's lowest caste; he underwent several fasts to support the cause. He called the untouchables <strong>harijans</strong>, which means <strong>"children of God."</strong>
-                    </div>
-                </div>
             </div>
 
             <div class="side">
@@ -1127,8 +1130,22 @@
                     <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Up next</h2>
                     <div class="roadmap-list" id="roadmapList"></div>
                 </div>
+
+                <div class="card side-card side-card-image fade-in" style="animation-delay:.2s">
+                    <div class="side-image-wrap">
+                        <img class="side-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIkLCwqql12Su0n2yx4LxzEDCkguBeDQjz4P550Je6vG_yqTQbwy7fk7tF&s=10" alt="Stay motivated" loading="lazy">
+                    </div>
+                </div>
             </div>
 
+        </div>
+
+        <div class="fact-line fade-in" style="animation-delay:.25s">
+            <span class="ic-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.75V17h8v-2.25A7 7 0 0012 2z"/></svg></span>
+            <div class="fact-text">
+                <span class="fact-eyebrow">Did you know?</span>
+                Gandhi demanded fair treatment for the untouchables, India's lowest caste; he underwent several fasts to support the cause. He called the untouchables <strong>harijans</strong>, which means <strong>"children of God."</strong>
+            </div>
         </div>
 
     </div>
