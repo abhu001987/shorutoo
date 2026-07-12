@@ -9,15 +9,23 @@
     <link rel="icon" href="/icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon-192.png">
 
-    <!-- Fonts (matches homepage) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+   <!-- Theme: set instantly, before any CSS loads -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
 
-    <!-- ============================================ -->
-    <!-- SHARED CSS AND JS (MUST HAVE)                 -->
-    <!-- ============================================ -->
-    <link rel="stylesheet" href="theme.css">
-    <script src="theme.js"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="..." rel="stylesheet" />
+
+  <!-- Shared CSS & JS (theme) -->
+  <link rel="stylesheet" href="theme.css" />
+  <script src="theme.js"></script>
     <!-- ============================================ -->
 
     <style>
