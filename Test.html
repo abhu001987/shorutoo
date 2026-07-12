@@ -2025,27 +2025,11 @@
 
             function buildOverviewHtml(q) {
                 if (!q) {
-                    return `<p>Start the test to see a topic overview for each question here.</p>`;
+                    return `<p>Start the test to see the overview here.</p>`;
                 }
-                const modelAnswer = q.model && q.model.trim()
-                    ? `<p class="content" style="color:var(--text);">${escapeHtml(q.model)}</p>`
+                return q.model && q.model.trim()
+                    ? `<p style="color:var(--text);">${escapeHtml(q.model)}</p>`
                     : `<p style="color:var(--text-dimmer);">No overview available for this question yet.</p>`;
-
-                let keywordsHtml = "";
-                if (q.keywords && q.keywords.length) {
-                    const words = q.keywords.map(k => (typeof k === 'string' ? k : k.word)).filter(Boolean);
-                    if (words.length) {
-                        keywordsHtml = `
-                            <p style="margin-top:14px;"><strong style="color:var(--text);">Key points to cover:</strong></p>
-                            <ul>${words.map(w => `<li>${icoCheck()}${escapeHtml(w)}</li>`).join("")}</ul>`;
-                    }
-                }
-
-                return `
-                    <p><strong style="color:var(--text);">Question:</strong> ${escapeHtml(q.q)}</p>
-                    <p style="margin-top:10px;"><strong style="color:var(--text);">Overview / model answer:</strong></p>
-                    ${modelAnswer}
-                    ${keywordsHtml}`;
             }
 
             function openPopup() {
