@@ -1200,25 +1200,8 @@
 
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-box">
-            <h2><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Topic overview · PM E-DRIVE</h2>
-            <div class="popup-body">
-                <p><strong style="color:var(--text);">PM E-DRIVE</strong> (Electric Drive Revolution in Innovative Vehicle Enhancement) is a central sector scheme launched to accelerate EV adoption in India.</p>
-                <p><strong style="color:var(--text);">Key features:</strong></p>
-                <ul>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Upfront incentives for 2W, 3W, e-buses, and e-trucks</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Allocates funds for charging infrastructure</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Supports advanced cell chemistry battery manufacturing</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Promotes R&D in battery technology</li>
-                </ul>
-                <p><strong style="color:var(--text);">Significance:</strong></p>
-                <ul>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Reduces oil imports and fossil fuel dependence</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Lowers carbon emissions and urban pollution</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Fosters a domestic EV manufacturing hub</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Creates jobs in the EV ecosystem</li>
-                </ul>
-                <p style="color:var(--text-dimmer);font-size:12.5px;margin-top:10px;border-top:1px solid var(--border);padding-top:12px;">The scheme is a key part of India's transition to clean mobility and aligns with the country's climate commitments.</p>
-            </div>
+            <h2 id="popupTitle"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span id="popupTitleText">Topic overview</span></h2>
+            <div class="popup-body" id="popupBody"></div>
             <div class="popup-actions">
                 <button class="popup-cancel" id="popupCancel">Close</button>
                 <button class="popup-confirm" id="popupConfirm">Got it</button>
@@ -2023,8 +2006,55 @@
             const popupCancel = document.getElementById('popupCancel');
             const popupConfirm = document.getElementById('popupConfirm');
             const explainBtn = document.getElementById('explainBtn');
+            const popupTitleText = document.getElementById('popupTitleText');
+            const popupBody = document.getElementById('popupBody');
 
-            function openPopup() { popupOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+            function currentQuestionObj() {
+                if (testOrder && testOrder.length && questions.length) {
+                    return questions[testOrder[current]];
+                }
+                return null;
+            }
+
+            function escapeHtml(str) {
+                return String(str)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;");
+            }
+
+            function buildOverviewHtml(q) {
+                if (!q) {
+                    return `<p>Start the test to see a topic overview for each question here.</p>`;
+                }
+                const modelAnswer = q.model && q.model.trim()
+                    ? `<p class="content" style="color:var(--text);">${escapeHtml(q.model)}</p>`
+                    : `<p style="color:var(--text-dimmer);">No overview available for this question yet.</p>`;
+
+                let keywordsHtml = "";
+                if (q.keywords && q.keywords.length) {
+                    const words = q.keywords.map(k => (typeof k === 'string' ? k : k.word)).filter(Boolean);
+                    if (words.length) {
+                        keywordsHtml = `
+                            <p style="margin-top:14px;"><strong style="color:var(--text);">Key points to cover:</strong></p>
+                            <ul>${words.map(w => `<li>${icoCheck()}${escapeHtml(w)}</li>`).join("")}</ul>`;
+                    }
+                }
+
+                return `
+                    <p><strong style="color:var(--text);">Question:</strong> ${escapeHtml(q.q)}</p>
+                    <p style="margin-top:10px;"><strong style="color:var(--text);">Overview / model answer:</strong></p>
+                    ${modelAnswer}
+                    ${keywordsHtml}`;
+            }
+
+            function openPopup() {
+                const q = currentQuestionObj();
+                if (popupTitleText) popupTitleText.textContent = q ? "Topic overview" : "Topic overview";
+                if (popupBody) popupBody.innerHTML = buildOverviewHtml(q);
+                popupOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
             function closePopup() { popupOverlay.classList.remove('active'); document.body.style.overflow = ''; }
 
             explainBtn.addEventListener('click', openPopup);
