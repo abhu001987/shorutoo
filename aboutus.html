@@ -5,9 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About Us · Shoruto</title>
 
+  <!-- Theme: set instantly, before any CSS loads -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="..." rel="stylesheet" />
 
   <!-- Shared CSS & JS (theme) -->
   <link rel="stylesheet" href="theme.css" />
