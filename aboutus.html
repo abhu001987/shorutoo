@@ -223,7 +223,11 @@
     }
 
     @media (max-width: 768px) {
-      section { padding: 0 16px; }
+      section { padding: 0 20px; }
+    }
+
+    @media (max-width: 420px) {
+      section { padding: 0 18px; }
     }
 
     /* gentle reveal-on-scroll (kept subtle, no bounce/3D) */
@@ -339,6 +343,10 @@
       padding: 28px;
     }
 
+    @media (max-width: 420px) {
+      .subject-panel { padding: 20px; }
+    }
+
     .subject-panel-title {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 12px;
@@ -402,7 +410,8 @@
     /* STORY / MISSION SECTION                       */
     /* ============================================ */
     .story {
-      padding: 60px 0 40px;
+      padding-top: 60px;
+      padding-bottom: 40px;
       display: grid;
       grid-template-columns: 0.85fr 1.15fr;
       gap: 50px;
@@ -446,7 +455,8 @@
     /* STATS STRIP                                   */
     /* ============================================ */
     .stats {
-      padding: 40px 0;
+      padding-top: 40px;
+      padding-bottom: 40px;
       border-top: 1px solid var(--border, rgba(255,255,255,0.08));
       border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
       display: grid;
@@ -482,7 +492,8 @@
     /* VALUES — simple flat cards, no tilt           */
     /* ============================================ */
     .values {
-      padding: 70px 0;
+      padding-top: 70px;
+      padding-bottom: 70px;
     }
 
     .section-head {
@@ -518,6 +529,10 @@
       border-radius: 16px;
       padding: 30px 26px;
       transition: border-color 0.2s ease;
+    }
+
+    @media (max-width: 420px) {
+      .value-card { padding: 22px 20px; }
     }
 
     .value-card:hover {
@@ -560,6 +575,14 @@
       margin: 40px auto 80px;
       max-width: 1200px;
       padding: 0 24px;
+    }
+
+    @media (max-width: 768px) {
+      .cta-band { padding: 0 20px; margin: 32px auto 60px; }
+    }
+
+    @media (max-width: 420px) {
+      .cta-band { padding: 0 18px; }
     }
 
     .cta-inner {
@@ -606,6 +629,14 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .footer-link { padding: 0 20px; }
+    }
+
+    @media (max-width: 420px) {
+      .footer-link { padding: 0 18px; }
     }
     .footer-link a {
       color: var(--text-dim, #b7bccb);
