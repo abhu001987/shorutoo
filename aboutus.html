@@ -163,35 +163,20 @@
     .theme-toggle:hover {
       background: var(--panel-strong, rgba(255,255,255,0.07));
       border-color: var(--blue, #5B7FFF);
-      transform: scale(1.06);
     }
 
     .theme-toggle .sun-icon,
     .theme-toggle .moon-icon {
       position: absolute;
-      transition: all 0.45s var(--ease, cubic-bezier(.4,0,.2,1));
+      transition: opacity 0.3s ease;
       font-size: 18px;
     }
 
-    .theme-toggle .sun-icon {
-      opacity: 0;
-      transform: rotate(-90deg) scale(0.4);
-    }
+    .theme-toggle .sun-icon { opacity: 0; }
+    .theme-toggle .moon-icon { opacity: 1; }
 
-    .theme-toggle .moon-icon {
-      opacity: 1;
-      transform: rotate(0) scale(1);
-    }
-
-    [data-theme="light"] .theme-toggle .sun-icon {
-      opacity: 1;
-      transform: rotate(0) scale(1);
-    }
-
-    [data-theme="light"] .theme-toggle .moon-icon {
-      opacity: 0;
-      transform: rotate(90deg) scale(0.4);
-    }
+    [data-theme="light"] .theme-toggle .sun-icon { opacity: 1; }
+    [data-theme="light"] .theme-toggle .moon-icon { opacity: 0; }
 
     @media (max-width: 600px) {
       .nav { padding: 16px 0 14px 0; margin-bottom: 14px; }
@@ -214,9 +199,6 @@
       display: flex;
       flex-direction: column;
       background: var(--bg-0, #0b0d14);
-      background-image:
-        radial-gradient(circle at 15% 0%, var(--glow-1, rgba(91,127,255,0.18)), transparent 45%),
-        radial-gradient(circle at 85% 20%, var(--glow-2, rgba(159,122,255,0.15)), transparent 40%);
       transition: background 0.3s ease, color 0.3s ease;
       margin: 0;
       padding: 0;
@@ -244,11 +226,11 @@
       section { padding: 0 16px; }
     }
 
-    /* reveal-on-scroll */
+    /* gentle reveal-on-scroll (kept subtle, no bounce/3D) */
     .reveal {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+      transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .reveal.in-view {
       opacity: 1;
@@ -256,16 +238,15 @@
     }
 
     /* ============================================ */
-    /* HERO — 3D ORBIT SIGNATURE PIECE               */
+    /* HERO — simple, static, no animation           */
     /* ============================================ */
     .hero {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       align-items: center;
-      gap: 40px;
-      padding-top: 30px;
-      padding-bottom: 70px;
-      min-height: 420px;
+      gap: 48px;
+      padding-top: 44px;
+      padding-bottom: 64px;
     }
 
     .hero-eyebrow {
@@ -291,8 +272,8 @@
     .hero h1 {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: clamp(34px, 5vw, 56px);
-      line-height: 1.08;
+      font-size: clamp(32px, 4.6vw, 50px);
+      line-height: 1.12;
       letter-spacing: -0.5px;
       color: var(--text, #f5f6fa);
       margin: 0 0 20px;
@@ -321,14 +302,14 @@
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 600;
       font-size: 15px;
-      border-radius: 40px;
-      padding: 13px 28px;
+      border-radius: 10px;
+      padding: 13px 26px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       text-decoration: none;
       cursor: pointer;
-      transition: 0.25s var(--ease, cubic-bezier(.4,0,.2,1));
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
     .btn-primary {
@@ -338,8 +319,6 @@
     }
     .btn-primary:hover {
       background: var(--violet, #9F7AFF);
-      transform: scale(1.02);
-      box-shadow: 0 8px 18px rgba(91, 127, 255, 0.25);
     }
 
     .btn-ghost {
@@ -350,155 +329,73 @@
     .btn-ghost:hover {
       border-color: var(--violet, #9F7AFF);
       color: var(--violet, #9F7AFF);
-      background: var(--panel-strong, rgba(255,255,255,0.07));
     }
 
-    /* --- the 3D subject cube --- */
-    .cube-stage {
-      position: relative;
-      height: 440px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1400px;
-    }
-
-    /* ambient floating study-icons drifting behind the cube */
-    .particle {
-      position: absolute;
-      width: 22px; height: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.9;
-      animation: particle-float 6s ease-in-out infinite;
-    }
-    .particle svg {
-      width: 100%; height: 100%;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .particle.p-1 { top: 14%; left: 16%; color: #FFB648; width: 24px; height: 24px; filter: drop-shadow(0 0 7px rgba(255,182,72,0.65)); animation-delay: 0s; }
-    .particle.p-2 { top: 68%; left: 12%; color: #4DD9CB; width: 19px; height: 19px; filter: drop-shadow(0 0 6px rgba(77,217,203,0.6)); animation-delay: 1.2s; animation-duration: 7s; }
-    .particle.p-3 { top: 20%; left: 84%; color: #6EE8A8; width: 20px; height: 20px; filter: drop-shadow(0 0 6px rgba(110,232,168,0.6)); animation-delay: 2.1s; animation-duration: 5.5s; }
-    .particle.p-4 { top: 76%; left: 82%; color: #FF7CAE; width: 23px; height: 23px; filter: drop-shadow(0 0 7px rgba(255,124,174,0.6)); animation-delay: 0.6s; animation-duration: 8s; }
-    .particle.p-5 { top: 4%; left: 52%; color: #FFDD7A; width: 18px; height: 18px; filter: drop-shadow(0 0 6px rgba(255,221,122,0.6)); animation-delay: 3s; animation-duration: 6.5s; }
-    .particle.p-6 { top: 58%; left: 4%; color: #C4A6FF; width: 18px; height: 18px; filter: drop-shadow(0 0 6px rgba(196,166,255,0.6)); animation-delay: 1.8s; animation-duration: 7.5s; }
-
-    @keyframes particle-float {
-      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.55; }
-      50% { transform: translateY(-16px) rotate(8deg) scale(1.12); opacity: 1; }
-    }
-
-    /* soft glow platform beneath the cube */
-    .cube-glow {
-      position: absolute;
-      bottom: 58px;
-      width: 230px;
-      height: 44px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, rgba(91,127,255,0.35), rgba(159,122,255,0.12) 55%, transparent 75%);
-      filter: blur(6px);
-      animation: glow-pulse 4s ease-in-out infinite;
-    }
-
-    @keyframes glow-pulse {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.08); }
-    }
-
-    .cube-wrapper {
-      position: relative;
-      width: 168px;
-      height: 168px;
-      transform-style: preserve-3d;
-      animation: cube-bob 4.5s ease-in-out infinite;
-    }
-
-    @keyframes cube-bob {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-14px); }
-    }
-
-    .cube {
-      position: relative;
-      width: 168px;
-      height: 168px;
-      transform-style: preserve-3d;
-      animation: cube-spin 22s linear infinite;
-    }
-
-    @keyframes cube-spin {
-      from { transform: rotateX(-18deg) rotateY(0deg); }
-      to   { transform: rotateX(-18deg) rotateY(360deg); }
-    }
-
-    .cube-face {
-      position: absolute;
-      width: 168px;
-      height: 168px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      border-radius: 22px;
-      background: linear-gradient(160deg, var(--panel-strong, rgba(255,255,255,0.07)), var(--panel, rgba(255,255,255,0.04)));
+    /* --- simple static subject panel (replaces 3D cube) --- */
+    .subject-panel {
+      background: var(--panel, rgba(255,255,255,0.04));
       border: 1px solid var(--border, rgba(255,255,255,0.08));
-      backdrop-filter: blur(8px);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 10px 30px rgba(0,0,0,0.25);
+      border-radius: 20px;
+      padding: 28px;
     }
 
-    .cube-face .face-icon {
-      width: 56px; height: 56px;
-      border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 10px 22px -6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-    }
-    .cube-face .face-icon svg { width: 28px; height: 28px; stroke: #fff; }
-    .cube-face .face-icon.c-amber  { background: linear-gradient(140deg, #FFC069, #F2760E); }
-    .cube-face .face-icon.c-teal   { background: linear-gradient(140deg, #6EE7DA, #0C8F82); }
-    .cube-face .face-icon.c-green  { background: linear-gradient(140deg, #7EE8A8, #059651); }
-    .cube-face .face-icon.c-pink   { background: linear-gradient(140deg, #FF9FC0, #E11D6B); }
-    .cube-face .face-icon.c-gold   { background: linear-gradient(140deg, #FFE38A, #E0982A); }
-    .cube-face .face-icon.c-violet { background: linear-gradient(140deg, #C7B3FF, #7C3AED); }
-
-    .cube-face .face-label {
+    .subject-panel-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       letter-spacing: 1.6px;
       text-transform: uppercase;
-      color: var(--text-dim, #b7bccb);
+      color: var(--text-dimmer, #7a8096);
+      margin-bottom: 18px;
     }
 
-    .face-front  { transform: translateZ(84px); }
-    .face-back   { transform: rotateY(180deg) translateZ(84px); }
-    .face-right  { transform: rotateY(90deg) translateZ(84px); }
-    .face-left   { transform: rotateY(-90deg) translateZ(84px); }
-    .face-top    { transform: rotateX(90deg) translateZ(84px); }
-    .face-bottom { transform: rotateX(-90deg) translateZ(84px); }
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
 
-    .cube-stage:hover .cube { animation-play-state: paused; }
-    .cube-stage:hover .cube-wrapper { animation-play-state: paused; }
+    .subject-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--panel-strong, rgba(255,255,255,0.06));
+      border: 1px solid var(--border, rgba(255,255,255,0.06));
+      border-radius: 12px;
+      padding: 14px 14px;
+    }
+
+    .subject-item .s-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #fff;
+    }
+    .subject-item .s-icon svg { width: 17px; height: 17px; }
+    .subject-item .s-icon.c-amber  { background: #E0982A; }
+    .subject-item .s-icon.c-teal   { background: #0C8F82; }
+    .subject-item .s-icon.c-green  { background: #059651; }
+    .subject-item .s-icon.c-pink   { background: #C6386E; }
+    .subject-item .s-icon.c-gold   { background: #B9862C; }
+    .subject-item .s-icon.c-violet { background: #7C3AED; }
+
+    .subject-item span.label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text, #f5f6fa);
+    }
 
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
-      .cube-stage { order: -1; height: 340px; }
     }
 
     @media (max-width: 480px) {
-      .cube-stage { height: 300px; }
-      .cube-wrapper, .cube, .cube-face { width: 140px; height: 140px; }
-      .face-front  { transform: translateZ(70px); }
-      .face-back   { transform: rotateY(180deg) translateZ(70px); }
-      .face-right  { transform: rotateY(90deg) translateZ(70px); }
-      .face-left   { transform: rotateY(-90deg) translateZ(70px); }
-      .face-top    { transform: rotateX(90deg) translateZ(70px); }
-      .face-bottom { transform: rotateX(-90deg) translateZ(70px); }
+      .subject-grid { grid-template-columns: 1fr; }
     }
 
     /* ============================================ */
@@ -561,7 +458,7 @@
     .stat-num {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: clamp(28px, 4vw, 42px);
+      font-size: clamp(26px, 3.6vw, 38px);
       color: var(--text, #f5f6fa);
       display: flex;
       align-items: baseline;
@@ -582,7 +479,7 @@
     }
 
     /* ============================================ */
-    /* VALUES — 3D TILT CARDS                        */
+    /* VALUES — simple flat cards, no tilt           */
     /* ============================================ */
     .values {
       padding: 70px 0;
@@ -613,34 +510,29 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 22px;
-      perspective: 1200px;
     }
 
     .value-card {
       background: var(--panel, rgba(255,255,255,0.04));
       border: 1px solid var(--border, rgba(255,255,255,0.08));
-      border-radius: 20px;
+      border-radius: 16px;
       padding: 30px 26px;
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      will-change: transform;
+      transition: border-color 0.2s ease;
     }
 
     .value-card:hover {
       border-color: var(--blue, #5B7FFF);
-      box-shadow: 0 20px 40px -12px rgba(91,127,255,0.25);
     }
 
     .value-icon {
-      width: 48px; height: 48px;
-      border-radius: 13px;
+      width: 44px; height: 44px;
+      border-radius: 12px;
       background: var(--panel-strong, rgba(255,255,255,0.07));
       display: flex; align-items: center; justify-content: center;
       color: var(--blue, #5B7FFF);
       margin-bottom: 20px;
-      transform: translateZ(30px);
     }
-    .value-icon .ic { width: 24px; height: 24px; }
+    .value-icon .ic { width: 22px; height: 22px; }
 
     .value-card h3 {
       font-family: 'Space Grotesk', sans-serif;
@@ -648,7 +540,6 @@
       font-weight: 600;
       color: var(--text, #f5f6fa);
       margin: 0 0 10px;
-      transform: translateZ(20px);
     }
 
     .value-card p {
@@ -656,7 +547,6 @@
       font-size: 14.5px;
       line-height: 1.7;
       margin: 0;
-      transform: translateZ(10px);
     }
 
     @media (max-width: 900px) {
@@ -675,19 +565,9 @@
     .cta-inner {
       background: var(--panel, rgba(255,255,255,0.04));
       border: 1px solid var(--border, rgba(255,255,255,0.08));
-      border-radius: 26px;
+      border-radius: 20px;
       padding: 56px 48px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .cta-inner::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% -20%, rgba(91,127,255,0.18), transparent 60%);
-      pointer-events: none;
     }
 
     .cta-inner h2 {
@@ -696,17 +576,15 @@
       font-size: clamp(24px, 3.5vw, 34px);
       color: var(--text, #f5f6fa);
       margin: 0 0 14px;
-      position: relative;
     }
 
     .cta-inner p {
       color: var(--text-dim, #b7bccb);
       font-size: 16px;
       margin: 0 0 28px;
-      position: relative;
     }
 
-    .cta-inner .hero-actions { justify-content: center; position: relative; }
+    .cta-inner .hero-actions { justify-content: center; }
 
     @media (max-width: 600px) {
       .cta-inner { padding: 36px 22px; }
@@ -742,11 +620,11 @@
     .footer-link .ic { width: 14px; height: 14px; }
 
     @media (prefers-reduced-motion: reduce) {
-      .cube, .cube-wrapper, .particle, .cube-glow, .reveal {
-        animation: none !important;
+      .reveal {
         transition: none !important;
+        opacity: 1;
+        transform: none;
       }
-      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -820,96 +698,57 @@
         </div>
       </div>
 
-      <div class="cube-stage">
-        <!-- floating study-object icons -->
-        <span class="particle p-1" title="Pencil">
-          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        </span>
-        <span class="particle p-2" title="Flask">
-          <svg viewBox="0 0 24 24"><path d="M9 2v6.5L4 18a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 18l-5-9.5V2"/><path d="M9 2h6"/><path d="M6.5 15h11"/></svg>
-        </span>
-        <span class="particle p-3" title="Ruler">
-          <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="1.5" transform="rotate(-8 12 12)"/><path d="M6 9.5l1 2M9.5 9l1 2M13 8.5l1 2M16.5 8l1 2"/></svg>
-        </span>
-        <span class="particle p-4" title="Calculator">
-          <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01"/></svg>
-        </span>
-        <span class="particle p-5" title="Star">
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></svg>
-        </span>
-        <span class="particle p-6" title="Idea">
-          <svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4.9 1.1.9 1.8v.5h6.2v-.5c0-.7.4-1.4.9-1.8A7 7 0 0 0 12 2z"/></svg>
-        </span>
-        <div class="cube-glow"></div>
-        <div class="cube-wrapper">
-          <div class="cube">
-
-            <div class="cube-face face-front">
-              <span class="face-icon c-amber">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M2 5c2-1.5 5-1.5 7 0v13c-2-1.5-5-1.5-7 0V5z"/>
-                  <path d="M22 5c-2-1.5-5-1.5-7 0v13c2-1.5 5-1.5 7 0V5z"/>
-                </svg>
-              </span>
-              <span class="face-label">Literature</span>
-            </div>
-
-            <div class="cube-face face-back">
-              <span class="face-icon c-teal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>
-                  <ellipse cx="12" cy="12" rx="10" ry="4.2"/>
-                  <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/>
-                  <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/>
-                </svg>
-              </span>
-              <span class="face-label">Science</span>
-            </div>
-
-            <div class="cube-face face-right">
-              <span class="face-icon c-green">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M2 12h20"/>
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                </svg>
-              </span>
-              <span class="face-label">Languages</span>
-            </div>
-
-            <div class="cube-face face-left">
-              <span class="face-icon c-pink">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4h16"/>
-                  <path d="M4 20h16"/>
-                  <path d="M6 4c0 4 6 6 6 8s-6 4-6 8"/>
-                  <path d="M18 4c0 4-6 6-6 8s6 4 6 8"/>
-                </svg>
-              </span>
-              <span class="face-label">Math</span>
-            </div>
-
-            <div class="cube-face face-top">
-              <span class="face-icon c-gold">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 10L12 5 2 10l10 5 10-5z"/>
-                  <path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>
-                </svg>
-              </span>
-              <span class="face-label">Exams</span>
-            </div>
-
-            <div class="cube-face face-bottom">
-              <span class="face-icon c-violet">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M9 18h6"/>
-                  <path d="M10 22h4"/>
-                  <path d="M12 2a7 7 0 0 0-4 12.7c.5.4.9 1.1.9 1.8v.5h6.2v-.5c0-.7.4-1.4.9-1.8A7 7 0 0 0 12 2z"/>
-                </svg>
-              </span>
-              <span class="face-label">Ideas</span>
-            </div>
-
+      <div class="subject-panel reveal">
+        <div class="subject-panel-title">Subjects we cover</div>
+        <div class="subject-grid">
+          <div class="subject-item">
+            <span class="s-icon c-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 5c2-1.5 5-1.5 7 0v13c-2-1.5-5-1.5-7 0V5z"/>
+                <path d="M22 5c-2-1.5-5-1.5-7 0v13c2-1.5 5-1.5 7 0V5z"/>
+              </svg>
+            </span>
+            <span class="label">Literature</span>
+          </div>
+          <div class="subject-item">
+            <span class="s-icon c-teal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 2v6.5L4 18a2 2 0 0 0 1.8 3h12.4A2 2 0 0 0 20 18l-5-9.5V2"/><path d="M9 2h6"/><path d="M6.5 15h11"/>
+              </svg>
+            </span>
+            <span class="label">Science</span>
+          </div>
+          <div class="subject-item">
+            <span class="s-icon c-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </span>
+            <span class="label">Languages</span>
+          </div>
+          <div class="subject-item">
+            <span class="s-icon c-pink">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16"/><path d="M4 20h16"/><path d="M6 4c0 4 6 6 6 8s-6 4-6 8"/><path d="M18 4c0 4-6 6-6 8s6 4 6 8"/>
+              </svg>
+            </span>
+            <span class="label">Math</span>
+          </div>
+          <div class="subject-item">
+            <span class="s-icon c-gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>
+              </svg>
+            </span>
+            <span class="label">Exams</span>
+          </div>
+          <div class="subject-item">
+            <span class="s-icon c-violet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.5.4.9 1.1.9 1.8v.5h6.2v-.5c0-.7.4-1.4.9-1.8A7 7 0 0 0 12 2z"/>
+              </svg>
+            </span>
+            <span class="label">Ideas</span>
           </div>
         </div>
       </div>
@@ -951,11 +790,11 @@
       <div class="section-head">
         <span class="story-label">What we believe</span>
         <h2>Three ideas everything we build runs through.</h2>
-        <p>Move your mouse over a card — even our principles have a little depth to them.</p>
+        <p>The principles behind every feature we ship.</p>
       </div>
 
       <div class="value-grid">
-        <div class="value-card" data-tilt>
+        <div class="value-card">
           <div class="value-icon">
             <svg class="ic" viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4L12 2z"/></svg>
           </div>
@@ -963,7 +802,7 @@
           <p>If an explanation needs a glossary to understand the glossary, we've failed. Every summary on Shoruto is written to be understood on the first read.</p>
         </div>
 
-        <div class="value-card" data-tilt>
+        <div class="value-card">
           <div class="value-icon">
             <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
           </div>
@@ -971,7 +810,7 @@
           <p>Trending topics, subject breakdowns, and AI answers live in one place so you spend minutes finding what you need, not hours.</p>
         </div>
 
-        <div class="value-card" data-tilt>
+        <div class="value-card">
           <div class="value-icon">
             <svg class="ic" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
@@ -1027,7 +866,7 @@
         });
       }
 
-      // scroll reveal
+      // gentle scroll reveal
       const revealEls = document.querySelectorAll('.reveal');
       const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1039,7 +878,7 @@
       }, { threshold: 0.15 });
       revealEls.forEach(el => io.observe(el));
 
-      // count-up stats
+      // count-up stats (simple, no easing gimmicks)
       const counters = document.querySelectorAll('.stat-num');
       const countIO = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1047,13 +886,11 @@
             const el = entry.target;
             const target = parseInt(el.getAttribute('data-count'), 10);
             const valueEl = el.querySelector('.value');
-            let current = 0;
-            const duration = 1200;
+            const duration = 800;
             const start = performance.now();
             function tick(now) {
               const progress = Math.min((now - start) / duration, 1);
-              const eased = 1 - Math.pow(1 - progress, 3);
-              current = Math.round(target * eased);
+              const current = Math.round(target * progress);
               valueEl.textContent = current;
               if (progress < 1) requestAnimationFrame(tick);
             }
@@ -1063,24 +900,6 @@
         });
       }, { threshold: 0.4 });
       counters.forEach(el => countIO.observe(el));
-
-      // 3D tilt on value cards
-      const tiltCards = document.querySelectorAll('[data-tilt]');
-      tiltCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          const cx = rect.width / 2;
-          const cy = rect.height / 2;
-          const rotateX = ((y - cy) / cy) * -6;
-          const rotateY = ((x - cx) / cx) * 6;
-          card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
-        });
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-        });
-      });
     });
 
     function goBack() {
