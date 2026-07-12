@@ -313,22 +313,32 @@
             animation: shimmer 2.2s ease-in-out infinite;
         }
 
+        /* ============================================ */
+        /* MAIN LAYOUT — two independent columns so the  */
+        /* right column's card heights never depend on   */
+        /* the left column's row heights (fixes the gap  */
+        /* under "Up next" and keeps Image from hanging   */
+        /* below "Did you know?").                        */
+        /* ============================================ */
         .main {
-            display: grid;
-            grid-template-columns: 2.2fr 0.85fr;
-            grid-template-areas:
-                "question learn"
-                "answer   upnext"
-                "fact     image";
+            display: flex;
+            align-items: flex-start;
             gap: 18px;
-            align-items: start;
         }
-        .gc-question { grid-area: question; }
-        .gc-answer   { grid-area: answer; }
-        .gc-fact     { grid-area: fact; }
-        .gc-learn    { grid-area: learn; }
-        .gc-upnext   { grid-area: upnext; }
-        .gc-image    { grid-area: image; }
+        .main-left {
+            flex: 2.2;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .main-right {
+            flex: 0.85;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
 
         .question { padding: 28px 30px; }
         .question .q-top-row {
@@ -652,18 +662,13 @@
 
         @media (max-width: 1100px) {
             .main {
-                grid-template-columns: 1fr;
-                grid-template-areas:
-                    "question"
-                    "answer"
-                    "learn"
-                    "upnext"
-                    "image"
-                    "fact";
-                gap: 16px;
+                flex-direction: column;
+            }
+            .main-left, .main-right {
+                flex: 1 1 auto;
+                width: 100%;
             }
             .side-image-wrap { height: 210px; }
-            .gc-image { margin-top: -6px; }
             .question h1 { font-size: 26px; }
             .container { padding: 0; }
             textarea { height: 180px; }
@@ -1111,60 +1116,66 @@
 
         <div class="main">
 
-            <div class="card question fade-in gc-question">
-                <div class="q-top-row">
-                    <span class="q-eyebrow" id="qNum">Question 1 of 10</span>
-                    <span class="q-timer-chip" id="timerWrap">
-                        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                        <span id="timerDisplay">01:30</span>
-                    </span>
+            <!-- LEFT COLUMN: question, answer box, fact strip -->
+            <div class="main-left">
+                <div class="card question fade-in">
+                    <div class="q-top-row">
+                        <span class="q-eyebrow" id="qNum">Question 1 of 10</span>
+                        <span class="q-timer-chip" id="timerWrap">
+                            <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <span id="timerDisplay">01:30</span>
+                        </span>
+                    </div>
+                    <h1 id="questionText">Loading...</h1>
+                    <p><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;color:var(--blue)"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>Share your knowledge in detail. Structure, clarity and relevance matter.</p>
                 </div>
-                <h1 id="questionText">Loading...</h1>
-                <p><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;color:var(--blue)"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>Share your knowledge in detail. Structure, clarity and relevance matter.</p>
-            </div>
 
-            <div class="card answer fade-in gc-answer" style="animation-delay:.05s">
-                <h3><svg class="ic" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></svg>Your answer</h3>
-                <textarea id="answerInput" placeholder="Start typing your answer here...
+                <div class="card answer fade-in" style="animation-delay:.05s">
+                    <h3><svg class="ic" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></svg>Your answer</h3>
+                    <textarea id="answerInput" placeholder="Start typing your answer here...
 
 • Press Enter for a new paragraph
 • AI evaluation begins after submission"></textarea>
 
-                <div class="buttons">
-                    <button class="voice" id="voiceBtn">
-                        <span class="mic-static" style="display:flex;align-items:center;gap:9px;">
-                            <svg class="ic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v7a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
-                            Voice input
-                        </span>
-                        <span class="wave"><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span></span>
-                        <span class="wave-label" style="display:none">Listening</span>
-                    </button>
-                    <button class="submit" id="submitBtn">Submit answer <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+                    <div class="buttons">
+                        <button class="voice" id="voiceBtn">
+                            <span class="mic-static" style="display:flex;align-items:center;gap:9px;">
+                                <svg class="ic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v7a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+                                Voice input
+                            </span>
+                            <span class="wave"><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span></span>
+                            <span class="wave-label" style="display:none">Listening</span>
+                        </button>
+                        <button class="submit" id="submitBtn">Submit answer <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="fact-line fade-in" style="animation-delay:.25s">
+                    <span class="ic-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.75V17h8v-2.25A7 7 0 0012 2z"/></svg></span>
+                    <div class="fact-text">
+                        <span class="fact-eyebrow">Did you know?</span>
+                        Gandhi demanded fair treatment for the untouchables, India's lowest caste; he underwent several fasts to support the cause. He called the untouchables <strong>harijans</strong>, which means <strong>"children of God."</strong>
+                    </div>
                 </div>
             </div>
 
-            <div class="fact-line fade-in gc-fact" style="animation-delay:.25s">
-                <span class="ic-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.75V17h8v-2.25A7 7 0 0012 2z"/></svg></span>
-                <div class="fact-text">
-                    <span class="fact-eyebrow">Did you know?</span>
-                    Gandhi demanded fair treatment for the untouchables, India's lowest caste; he underwent several fasts to support the cause. He called the untouchables <strong>harijans</strong>, which means <strong>"children of God."</strong>
+            <!-- RIGHT COLUMN: learn more, up next, image. Independent of left column height. -->
+            <div class="main-right">
+                <div class="card side-card fade-in" style="animation-delay:.1s">
+                    <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--mint)"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>Learn more</h2>
+                    <p style="color:var(--text-dim);margin-bottom:14px;font-size:13.5px;">Want a quick overview of this topic before you answer?</p>
+                    <button class="assistant-btn" id="explainBtn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Read topic overview</button>
                 </div>
-            </div>
 
-            <div class="card side-card fade-in gc-learn" style="animation-delay:.1s">
-                <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--mint)"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>Learn more</h2>
-                <p style="color:var(--text-dim);margin-bottom:14px;font-size:13.5px;">Want a quick overview of this topic before you answer?</p>
-                <button class="assistant-btn" id="explainBtn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Read topic overview</button>
-            </div>
+                <div class="card side-card fade-in" style="animation-delay:.15s">
+                    <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Up next</h2>
+                    <div class="roadmap-list" id="roadmapList"></div>
+                </div>
 
-            <div class="card side-card fade-in gc-upnext" style="animation-delay:.15s">
-                <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Up next</h2>
-                <div class="roadmap-list" id="roadmapList"></div>
-            </div>
-
-            <div class="card side-card side-card-image fade-in gc-image" style="animation-delay:.2s">
-                <div class="side-image-wrap">
-                    <img class="side-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIkLCwqql12Su0n2yx4LxzEDCkguBeDQjz4P550Je6vG_yqTQbwy7fk7tF&s=10" alt="Stay motivated" loading="lazy">
+                <div class="card side-card side-card-image fade-in" style="animation-delay:.2s">
+                    <div class="side-image-wrap">
+                        <img class="side-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIkLCwqql12Su0n2yx4LxzEDCkguBeDQjz4P550Je6vG_yqTQbwy7fk7tF&s=10" alt="Stay motivated" loading="lazy">
+                    </div>
                 </div>
             </div>
 
