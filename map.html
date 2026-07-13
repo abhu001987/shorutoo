@@ -2,193 +2,198 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Strait Navigator — Chart the Waters</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
   :root{
     --void:#03050b;
-    --ocean-deep:#061a2c;
-    --ocean-mid:#0c3452;
-    --ocean-hi:#164a6e;
-    --land:#8a5a2e;
-    --land-hi:#d99a52;
-    --land-rim:#ffcf7a;
     --gold:#ffd166;
     --coral:#ff5d73;
     --teal:#5eead4;
-    --glass:rgba(10,20,35,0.55);
+    --glass:rgba(10,20,35,0.6);
     --glass-brd:rgba(255,214,102,0.25);
     --ink:#eaf2f7;
     --ink-dim:#9db3c4;
   }
-  *{box-sizing:border-box;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{
-    margin:0;padding:0;height:100%;overflow:hidden;
+    margin:0;padding:0;
+    height:100%;
+    height:100dvh;
+    overflow:hidden;
+    overscroll-behavior:none;
     background:var(--void);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     color:var(--ink);
   }
   body{
-    position:relative;
+    position:fixed;inset:0;
     background:radial-gradient(ellipse at 30% 20%, #0a1730 0%, var(--void) 55%);
   }
-  /* starfield */
-  #stars, #stars2{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-  }
-  .twinkle{animation:tw 4s ease-in-out infinite;}
-  @keyframes tw{0%,100%{opacity:.25}50%{opacity:1}}
 
-  #app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;}
+  #app{
+    position:relative;z-index:1;
+    height:100%;height:100dvh;
+    display:flex;flex-direction:column;
+    padding-top:env(safe-area-inset-top);
+    padding-bottom:env(safe-area-inset-bottom);
+    padding-left:env(safe-area-inset-left);
+    padding-right:env(safe-area-inset-right);
+  }
 
   /* ---------- HUD ---------- */
   #hud-top{
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    padding:10px 14px;
-    background:linear-gradient(to bottom, rgba(3,5,11,0.85), rgba(3,5,11,0));
-    z-index:5;
-    flex-wrap:wrap;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:8px 10px;
+    background:linear-gradient(to bottom, rgba(3,5,11,0.9), rgba(3,5,11,0));
+    z-index:500;
+    flex-wrap:nowrap;
   }
   .brand{
-    font-weight:800;letter-spacing:.14em;font-size:11px;color:var(--teal);
-    text-transform:uppercase;opacity:.85;
+    font-weight:800;letter-spacing:.14em;font-size:10px;color:var(--teal);
+    text-transform:uppercase;opacity:.85;flex-shrink:0;
+    writing-mode:horizontal-tb;
   }
   .strait-card{
     background:var(--glass);
     border:1px solid var(--glass-brd);
     backdrop-filter:blur(10px);
-    border-radius:14px;
-    padding:7px 16px;
+    border-radius:12px;
+    padding:6px 12px;
     text-align:center;
     box-shadow:0 0 30px rgba(255,209,102,0.08);
+    flex:1 1 auto;min-width:0;
   }
-  .strait-card .eyebrow{font-size:9.5px;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;}
-  .strait-card .title{font-size:clamp(14px,3vw,21px);font-weight:800;color:var(--gold);letter-spacing:.02em;margin-top:2px;text-shadow:0 0 18px rgba(255,209,102,0.35);}
-  #dots{display:flex;gap:5px;justify-content:center;margin-top:6px;flex-wrap:wrap;max-width:220px;}
-  .dot{width:6px;height:6px;border-radius:50%;background:#2a3d52;transition:.2s;}
+  .strait-card .eyebrow{font-size:9px;letter-spacing:.16em;color:var(--ink-dim);text-transform:uppercase;}
+  .strait-card .title{font-size:clamp(13px,3.4vw,20px);font-weight:800;color:var(--gold);letter-spacing:.02em;margin-top:2px;text-shadow:0 0 18px rgba(255,209,102,0.35);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #dots{display:flex;gap:4px;justify-content:center;margin-top:5px;flex-wrap:wrap;max-width:220px;}
+  .dot{width:5px;height:5px;border-radius:50%;background:#2a3d52;transition:.2s;flex-shrink:0;}
   .dot.done{background:var(--teal);box-shadow:0 0 6px var(--teal);}
   .dot.now{background:var(--gold);box-shadow:0 0 8px var(--gold);transform:scale(1.4);}
 
   .score-pill{
     background:var(--glass);border:1px solid var(--glass-brd);border-radius:100px;
-    padding:7px 14px;font-size:12px;font-weight:700;color:var(--ink-dim);white-space:nowrap;
+    padding:6px 11px;font-size:11px;font-weight:700;color:var(--ink-dim);white-space:nowrap;
+    flex-shrink:0;
   }
   .score-pill b{color:var(--teal);}
 
   /* ---------- MAP ---------- */
   #map-viewport{
-    flex:1;position:relative;overflow:hidden;
-    margin:0 8px;
+    flex:1 1 auto;position:relative;overflow:hidden;
+    margin:0 6px;
     min-height:0;
-    border-radius:16px;
+    border-radius:14px;
     border:1px solid rgba(94,234,212,0.15);
     box-shadow:0 0 60px rgba(6,26,44,0.6) inset, 0 0 40px rgba(0,0,0,0.4);
-    display:flex;align-items:center;justify-content:center;
   }
-  svg#worldmap{display:block;height:100%;width:100%;cursor:crosshair;}
-
-  .land{fill:url(#landGrad);stroke:var(--land-rim);stroke-width:1;filter:drop-shadow(0 0 5px rgba(255,207,122,0.35));}
-  .grat{stroke:rgba(94,234,212,0.09);stroke-width:.6;fill:none;}
-  .ocean-glow{animation:pulseGlow 6s ease-in-out infinite;}
-  @keyframes pulseGlow{0%,100%{opacity:.5}50%{opacity:.9}}
-
-  .continent-label{
-    fill:rgba(234,242,247,0.55);
-    font-size:9px;
-    font-weight:700;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    text-anchor:middle;
-    pointer-events:none;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  #map{
+    position:absolute;inset:0;
+    background:#04101d;
+    cursor:crosshair;
   }
-  .ocean-label{
-    fill:rgba(94,234,212,0.4);
-    font-size:8px;
-    font-weight:600;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    text-anchor:middle;
-    pointer-events:none;
-    font-style:italic;
+  /* dim + tint the tiles to fit the void aesthetic */
+  #map .leaflet-tile-pane{filter:brightness(0.85) saturate(1.15);}
+  #map .leaflet-control-attribution{
+    background:rgba(3,5,11,0.6)!important;color:var(--ink-dim)!important;font-size:9px!important;
+  }
+  #map .leaflet-control-attribution a{color:var(--teal)!important;}
+  #map .leaflet-control-zoom a{
+    background:var(--glass)!important;color:var(--ink)!important;border:1px solid var(--glass-brd)!important;
   }
 
-  .pin-guess circle.core{fill:var(--coral);}
-  .pin-guess circle.ring{fill:none;stroke:var(--coral);stroke-width:1.6;}
-  .pin-target circle.core{fill:var(--gold);}
-  .pin-target circle.ring{fill:none;stroke:var(--gold);stroke-width:1.6;}
-  .ping{fill:none;stroke:var(--coral);stroke-width:2;opacity:.9;animation:ping 1s ease-out forwards;}
-  @keyframes ping{from{r:2;opacity:.9;stroke-width:2.5;}to{r:26;opacity:0;stroke-width:.3;}}
-  .link-line{stroke:var(--ink-dim);stroke-width:1;stroke-dasharray:3 3;opacity:.6;}
+  .pin-wrap{position:relative;width:22px;height:22px;}
+  .pin-core{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:9px;height:9px;border-radius:50%;
+  }
+  .pin-ring{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:20px;height:20px;border-radius:50%;border:1.6px solid;
+  }
+  .pin-guess .pin-core{background:var(--coral);box-shadow:0 0 8px var(--coral);}
+  .pin-guess .pin-ring{border-color:var(--coral);}
+  .pin-target .pin-core{background:var(--gold);box-shadow:0 0 8px var(--gold);}
+  .pin-target .pin-ring{border-color:var(--gold);}
+  .pin-ping{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:6px;height:6px;border-radius:50%;
+    border:2px solid var(--coral);
+    animation:ping 1s ease-out forwards;
+  }
+  @keyframes ping{from{width:6px;height:6px;opacity:.9;}to{width:60px;height:60px;opacity:0;}}
 
   /* ---------- BOTTOM PANEL ---------- */
   #hud-bottom{
-    z-index:5;padding:10px 14px 14px;
-    display:flex;flex-direction:column;align-items:center;gap:8px;
+    z-index:500;padding:8px 10px 10px;
+    display:flex;flex-direction:column;align-items:center;gap:7px;
   }
   #feedback{
     width:100%;max-width:640px;
     background:var(--glass);border:1px solid var(--glass-brd);backdrop-filter:blur(10px);
-    border-radius:14px;padding:10px 16px;text-align:center;
+    border-radius:14px;padding:9px 14px;text-align:center;
     display:none;
   }
   #feedback.show{display:block;}
-  #feedback .verdict{font-weight:800;font-size:14px;}
+  #feedback .verdict{font-weight:800;font-size:13.5px;}
   #feedback .verdict.good{color:var(--teal);}
   #feedback .verdict.mid{color:var(--gold);}
   #feedback .verdict.bad{color:var(--coral);}
-  #feedback .fact{font-size:12px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
+  #feedback .fact{font-size:11.5px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
 
   .btn{
-    border:none;border-radius:100px;padding:12px 28px;font-size:13.5px;font-weight:800;
+    border:none;border-radius:100px;padding:11px 26px;font-size:13px;font-weight:800;
     letter-spacing:.04em;cursor:pointer;transition:transform .12s ease, box-shadow .2s;
     text-transform:uppercase;
   }
   .btn:active{transform:scale(.96);}
   .btn-primary{background:linear-gradient(135deg,var(--gold),#ff9f5a);color:#241200;box-shadow:0 0 24px rgba(255,209,102,0.35);}
   .btn-primary:hover{box-shadow:0 0 34px rgba(255,209,102,0.55);}
-  .btn-ghost{background:transparent;border:1px solid var(--glass-brd);color:var(--ink-dim);}
-  .hint-tap{font-size:11.5px;color:var(--ink-dim);letter-spacing:.05em;opacity:.8;}
+  .hint-tap{font-size:11px;color:var(--ink-dim);letter-spacing:.05em;opacity:.8;text-align:center;}
 
   /* ---------- OVERLAY SCREENS ---------- */
   .screen{
-    position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
+    position:absolute;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
     background:radial-gradient(ellipse at 50% 30%, #0a1c34 0%, var(--void) 70%);
     text-align:center;padding:24px;
+    overflow-y:auto;
   }
   .screen.hidden{display:none;}
   .panel{max-width:520px;}
   .kicker{font-size:11px;letter-spacing:.3em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
-  h1{font-size:clamp(30px,6vw,46px);margin:0 0 12px;color:var(--ink);letter-spacing:.01em;}
+  h1{font-size:clamp(28px,7vw,46px);margin:0 0 12px;color:var(--ink);letter-spacing:.01em;}
   h1 span{color:var(--gold);text-shadow:0 0 30px rgba(255,209,102,.4);}
-  .sub{color:var(--ink-dim);font-size:14.5px;line-height:1.6;margin-bottom:28px;}
+  .sub{color:var(--ink-dim);font-size:14px;line-height:1.6;margin-bottom:26px;}
   .radar{
-    width:170px;height:170px;margin:0 auto 26px;border-radius:50%;
+    width:150px;height:150px;margin:0 auto 22px;border-radius:50%;
     border:1px solid rgba(94,234,212,0.3);position:relative;overflow:hidden;
     background:radial-gradient(circle, rgba(94,234,212,0.06), transparent 70%);
   }
   .radar::before, .radar::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(94,234,212,0.15);}
-  .radar::before{inset:22px;}
-  .radar::after{inset:44px;}
+  .radar::before{inset:20px;}
+  .radar::after{inset:40px;}
   .sweep{
     position:absolute;inset:0;border-radius:50%;
     background:conic-gradient(from 0deg, rgba(94,234,212,0.45), transparent 35%);
     animation:spin 3s linear infinite;
   }
   @keyframes spin{to{transform:rotate(360deg);}}
-  .final-score{font-size:52px;font-weight:800;color:var(--gold);text-shadow:0 0 26px rgba(255,209,102,.4);}
-  .final-label{color:var(--ink-dim);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-top:-6px;margin-bottom:26px;}
+  .final-score{font-size:48px;font-weight:800;color:var(--gold);text-shadow:0 0 26px rgba(255,209,102,.4);}
+  .final-label{color:var(--ink-dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:-4px;margin-bottom:24px;}
 
   @media (max-height:640px){
-    .strait-card{padding:5px 12px;}
+    .strait-card{padding:4px 10px;}
     #dots{margin-top:3px;}
     .hint-tap{display:none;}
+    .radar{width:100px;height:100px;margin-bottom:14px;}
+  }
+  @media (max-width:420px){
+    .brand{display:none;}
   }
 </style>
 </head>
 <body>
-
-<canvas id="stars"></canvas>
 
 <div id="app">
 
@@ -198,7 +203,7 @@
       <div class="radar"><div class="sweep"></div></div>
       <div class="kicker">Satellite Geo Ops</div>
       <h1>Strait <span>Navigator</span></h1>
-      <p class="sub">Thirteen legendary straits. One world map. You'll be given a name — pin its approximate location on the globe. Close counts. Precision earns glory.</p>
+      <p class="sub">Thirteen legendary straits. One real world map. You'll be given a name — pin its approximate location on the globe. Close counts. Precision earns glory.</p>
       <button class="btn btn-primary" onclick="startGame()">Begin Mission</button>
     </div>
   </div>
@@ -226,30 +231,7 @@
   </div>
 
   <div id="map-viewport">
-    <svg id="worldmap" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#0c3452"/>
-          <stop offset="55%" stop-color="#071e33"/>
-          <stop offset="100%" stop-color="#04101d"/>
-        </linearGradient>
-        <linearGradient id="landGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#d99a52"/>
-          <stop offset="100%" stop-color="#7c4e26"/>
-        </linearGradient>
-        <radialGradient id="glow" cx="30%" cy="20%" r="80%">
-          <stop offset="0%" stop-color="rgba(94,234,212,0.14)"/>
-          <stop offset="100%" stop-color="rgba(94,234,212,0)"/>
-        </radialGradient>
-      </defs>
-      <rect x="0" y="0" width="1000" height="500" fill="url(#oceanGrad)"/>
-      <rect x="0" y="0" width="1000" height="500" fill="url(#glow)" class="ocean-glow"/>
-      <g id="graticule"></g>
-      <g id="landmasses"></g>
-      <g id="ocean-labels"></g>
-      <g id="labels"></g>
-      <g id="markers"></g>
-    </svg>
+    <div id="map"></div>
   </div>
 
   <div id="hud-bottom">
@@ -257,153 +239,14 @@
       <div class="verdict" id="verdict-text"></div>
       <div class="fact" id="fact-text"></div>
     </div>
-    <div class="hint-tap" id="tap-hint">Tap or click anywhere on the map to drop your pin</div>
+    <div class="hint-tap" id="tap-hint">Tap anywhere on the map to drop your pin</div>
     <button class="btn btn-primary" id="next-btn" style="display:none" onclick="nextRound()">Next Strait →</button>
   </div>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-/* ---------------- Starfield background ---------------- */
-(function(){
-  const c = document.getElementById('stars');
-  const ctx = c.getContext('2d');
-  function resize(){ c.width = innerWidth; c.height = innerHeight; }
-  resize(); addEventListener('resize', resize);
-  const stars = Array.from({length:220}, () => ({
-    x: Math.random()*innerWidth, y: Math.random()*innerHeight,
-    r: Math.random()*1.4+0.2, s: Math.random()*0.02+0.005, p: Math.random()*Math.PI*2
-  }));
-  function draw(t){
-    ctx.clearRect(0,0,c.width,c.height);
-    for(const st of stars){
-      const a = 0.35 + 0.65*Math.abs(Math.sin(t*st.s + st.p));
-      ctx.globalAlpha = a;
-      ctx.fillStyle = '#cfe9ff';
-      ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI*2); ctx.fill();
-    }
-    requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
-})();
-
-/* ---------------- Projection ---------------- */
-const W = 1000, H = 500;
-function project(lon, lat){
-  return { x: (lon + 180) * (W/360), y: (90 - lat) * (H/180) };
-}
-function toPath(coords){
-  return coords.map((c,i)=>{
-    const p = project(c[0], c[1]);
-    return (i===0?'M':'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1);
-  }).join(' ') + ' Z';
-}
-
-/* ---------------- Landmasses (simplified but geographically shaped) ---------------- */
-const NORTH_AMERICA = [
-  [-168,66],[-165,60],[-158,58],[-152,58],[-135,58],[-130,52],[-125,48],[-124,40],
-  [-120,34],[-117,33],[-113,28],[-109,23],[-105,20],[-97,16],[-92,15],[-88,13],
-  [-84,9],[-79,8],[-77,9],[-83,10],[-87,13],[-89,16],[-90,18],[-88,21],[-90,21],
-  [-94,19],[-97,22],[-97,26],[-93,29],[-89,30],[-84,30],[-81,25],[-80,27],[-77,34],
-  [-75,38],[-74,40],[-70,42],[-67,45],[-64,45],[-60,48],[-65,50],[-70,58],[-80,62],
-  [-90,68],[-100,70],[-120,70],[-140,70],[-155,71],[-168,66]
-];
-const SOUTH_AMERICA = [
-  [-77,8],[-79,2],[-81,-4],[-81,-15],[-75,-20],[-71,-30],[-71,-40],[-73,-50],
-  [-68,-55],[-65,-52],[-62,-45],[-57,-38],[-48,-28],[-40,-15],[-35,-8],[-44,-2],
-  [-50,0],[-51,4],[-57,8],[-62,10],[-67,11],[-72,11],[-77,8]
-];
-const AFRICA = [
-  [-17,21],[-16,15],[-11,7],[-8,5],[-3,5],[2,6],[3,6],[9,4],[9,-1],[12,-6],
-  [13,-9],[12,-18],[15,-27],[18,-34],[26,-33],[33,-27],[35,-22],[40,-15],[40,-5],
-  [43,0],[51,10],[43,11],[37,15],[35,22],[34,28],[32,31],[25,32],[11,37],[9,36],
-  [-1,35],[-6,33],[-9,30],[-17,21]
-];
-const EURASIA = [
-  [-9,37],[-9,43],[-2,43],[-4,48],[2,51],[8,54],[8,57],[11,57],[11,59],[18,60],
-  [24,65],[30,70],[40,68],[60,70],[70,72],[90,73],[110,73],[140,73],[160,70],
-  [170,66],[178,64],[177,60],[160,58],[145,55],[140,48],[132,43],[130,40],[127,38],
-  [122,38],[121,31],[120,24],[110,21],[107,10],[104,10],[100,13],[98,8],[95,4],
-  [100,2],[103,1],[104,6],[98,6],[95,16],[92,22],[88,22],[80,13],[79,9],[73,15],
-  [72,22],[68,24],[61,25],[56,25],[51,28],[48,30],[48,27],[50,24],[52,19],[54,17],
-  [50,13],[43,13],[40,16],[35,28],[36,34],[36,37],[28,37],[27,40],[30,46],[38,47],
-  [48,47],[52,45],[48,40],[45,37],[41,42],[35,42],[28,45],[24,44],[19,42],[18,40],
-  [16,40],[13,38],[12,42],[9,44],[3,43],[-2,43],[-9,37]
-];
-const GREENLAND = [[-45,60],[-42,60],[-22,70],[-20,75],[-30,82],[-45,82],[-55,70],[-55,65],[-45,60]];
-const ICELAND = [[-24,64],[-20,66],[-14,65],[-16,63],[-22,63],[-24,64]];
-const GREAT_BRITAIN = [[-5,58],[-3,58],[-1,55],[0,52],[1,51],[-1,51],[-3,50],[-5,50],[-6,52],[-8,55],[-5,58]];
-const JAPAN = [[130,32],[131,31],[132,33],[133,34],[135,34],[136,35],[137,35],[138,35],[139,36],[140,36],[141,39],[140,40],[141,41],[142,43],[145,43],[144,44],[142,45],[141,43],[139,41],[138,38],[137,37],[135,34],[132,34],[130,33],[129,33],[130,32]];
-const TAIWAN = [[121,25],[122,24],[121,22],[120,23],[120,24.5],[121,25]];
-const PHILIPPINES = [[121,19],[122,17],[124,13],[126,9],[125,7],[122,10],[120,15],[121,19]];
-const SUMATRA = [[95,5],[97,2],[100,-2],[104,-5],[106,-6],[103,-3],[99,1],[96,4],[95,5]];
-const JAVA = [[105,-6],[108,-6],[112,-7],[114,-8],[110,-7],[106,-6],[105,-6]];
-const BORNEO = [[109,4],[113,4],[117,3],[118,0],[117,-3],[114,-4],[110,-1],[109,1],[109,4]];
-const SULAWESI = [[120,1],[121,0],[123,-2],[122,-4],[120,-5],[119,-2],[120,1]];
-const NEW_GUINEA = [[131,-1],[135,-2],[141,-3],[145,-5],[150,-6],[150,-9],[144,-9],[138,-8],[132,-4],[131,-1]];
-const SRI_LANKA = [[80,9.5],[81.5,9],[81.8,7],[80,6],[79.7,8],[80,9.5]];
-const MADAGASCAR = [[43,-12],[47,-13],[50,-16],[47,-25],[44,-25],[43,-20],[43,-12]];
-const NEW_ZEALAND = [[173,-41],[175,-37],[178,-38],[175,-42],[168,-45],[173,-41]];
-const AUSTRALIA = [
-  [113,-22],[114,-26],[115,-33],[118,-35],[125,-33],[131,-32],[136,-35],[140,-38],
-  [145,-38],[147,-37],[150,-37],[153,-28],[153,-24],[146,-19],[142,-11],[137,-12],
-  [132,-12],[130,-13],[126,-14],[122,-17],[113,-22]
-];
-
-const LANDMASSES = [
-  NORTH_AMERICA, SOUTH_AMERICA, AFRICA, EURASIA, GREENLAND, ICELAND, GREAT_BRITAIN,
-  JAPAN, TAIWAN, PHILIPPINES, SUMATRA, JAVA, BORNEO, SULAWESI, NEW_GUINEA,
-  SRI_LANKA, MADAGASCAR, NEW_ZEALAND, AUSTRALIA
-];
-
-const CONTINENT_LABELS = [
-  {name:"NORTH AMERICA", lon:-100, lat:48},
-  {name:"SOUTH AMERICA", lon:-60, lat:-16},
-  {name:"EUROPE", lon:20, lat:53},
-  {name:"AFRICA", lon:20, lat:2},
-  {name:"ASIA", lon:92, lat:44},
-  {name:"AUSTRALIA", lon:134, lat:-26}
-];
-const OCEAN_LABELS = [
-  {name:"Pacific Ocean", lon:-150, lat:5},
-  {name:"Pacific Ocean", lon:170, lat:-10},
-  {name:"Atlantic Ocean", lon:-35, lat:5},
-  {name:"Indian Ocean", lon:70, lat:-25},
-  {name:"Arctic Ocean", lon:0, lat:82},
-  {name:"Southern Ocean", lon:0, lat:-64}
-];
-
-function drawLandmasses(){
-  const g = document.getElementById('landmasses');
-  g.innerHTML = LANDMASSES.map(c => `<path class="land" d="${toPath(c)}"/>`).join('');
-}
-function drawLabels(){
-  const g = document.getElementById('labels');
-  g.innerHTML = CONTINENT_LABELS.map(l=>{
-    const p = project(l.lon, l.lat);
-    return `<text class="continent-label" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}">${l.name}</text>`;
-  }).join('');
-  const og = document.getElementById('ocean-labels');
-  og.innerHTML = OCEAN_LABELS.map(l=>{
-    const p = project(l.lon, l.lat);
-    return `<text class="ocean-label" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}">${l.name}</text>`;
-  }).join('');
-}
-
-function drawGraticule(){
-  const g = document.getElementById('graticule');
-  let out = '';
-  for(let lon=-180; lon<=180; lon+=30){
-    const a = project(lon,90), b = project(lon,-90);
-    out += `<line class="grat" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;
-  }
-  for(let lat=-60; lat<=60; lat+=30){
-    const a = project(-180,lat), b = project(180,lat);
-    out += `<line class="grat" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;
-  }
-  g.innerHTML = out;
-}
-
 /* ---------------- Strait data ---------------- */
 const STRAITS = [
   {name:"Strait of Malacca", lat:2.8, lon:100.9, fact:"The busiest shipping corridor on Earth, threading between Malaysia, Sumatra and Singapore to link the Indian and Pacific Oceans."},
@@ -420,6 +263,40 @@ const STRAITS = [
   {name:"Mozambique Channel", lat:-17.5, lon:41.5, fact:"A wide channel between Madagascar and the African mainland, rich with coral reefs and marine life."},
   {name:"Palk Strait", lat:9.8, lon:79.6, fact:"The shallow stretch of water separating India from Sri Lanka."}
 ];
+
+/* ---------------- Map setup ---------------- */
+const map = L.map('map', {
+  worldCopyJump:true,
+  minZoom:2,
+  maxZoom:9,
+  zoomControl:true,
+  attributionControl:true
+}).setView([20,20], 2);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains:'abcd',
+  maxZoom:19
+}).addTo(map);
+
+let markerLayer = L.layerGroup().addTo(map);
+
+function pinIcon(cls){
+  return L.divIcon({
+    className:'',
+    html:`<div class="pin-wrap ${cls}"><div class="pin-ring"></div><div class="pin-core"></div></div>`,
+    iconSize:[22,22],
+    iconAnchor:[11,11]
+  });
+}
+function pingIcon(){
+  return L.divIcon({
+    className:'',
+    html:`<div class="pin-ping"></div>`,
+    iconSize:[6,6],
+    iconAnchor:[3,3]
+  });
+}
 
 /* ---------------- Game state ---------------- */
 let order = [];
@@ -463,17 +340,19 @@ function startGame(){
   document.getElementById('screen-end').classList.add('hidden');
   setupDots();
   loadRound();
+  setTimeout(()=>map.invalidateSize(), 50);
 }
 
 function loadRound(){
   guessed = false;
-  document.getElementById('markers').innerHTML = '';
+  markerLayer.clearLayers();
   document.getElementById('feedback').classList.remove('show');
   document.getElementById('next-btn').style.display = 'none';
   document.getElementById('tap-hint').style.display = 'block';
   document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${order.length}`;
   document.getElementById('strait-name').textContent = order[roundIdx].name;
   updateDots();
+  map.setView([20,20], 2);
 }
 
 function verdictFor(km){
@@ -488,40 +367,31 @@ function scoreFor(km){
   return Math.max(0, Math.round(100 - km/40));
 }
 
-const svg = document.getElementById('worldmap');
-svg.addEventListener('click', onMapClick);
+map.on('click', onMapClick);
 
 function onMapClick(evt){
   if(guessed) return;
   guessed = true;
 
-  const pt = svg.createSVGPoint();
-  pt.x = evt.clientX; pt.y = evt.clientY;
-  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
-  const gLon = (p.x / W) * 360 - 180;
-  const gLat = 90 - (p.y / H) * 180;
-
+  const gLat = evt.latlng.lat;
+  const gLon = evt.latlng.lng;
   const target = order[roundIdx];
   const km = haversine(gLat, gLon, target.lat, target.lon);
   const v = verdictFor(km);
   const pts = scoreFor(km);
   scores.push(pts);
 
-  const tp = project(target.lon, target.lat);
+  const guessLatLng = [gLat, gLon];
+  const targetLatLng = [target.lat, target.lon];
 
-  const markers = document.getElementById('markers');
-  markers.innerHTML = `
-    <circle class="ping" cx="${p.x}" cy="${p.y}" r="2"/>
-    <line class="link-line" x1="${p.x}" y1="${p.y}" x2="${tp.x}" y2="${tp.y}"/>
-    <g class="pin-guess">
-      <circle class="ring" cx="${p.x}" cy="${p.y}" r="9"/>
-      <circle class="core" cx="${p.x}" cy="${p.y}" r="3.5"/>
-    </g>
-    <g class="pin-target">
-      <circle class="ring" cx="${tp.x}" cy="${tp.y}" r="9"/>
-      <circle class="core" cx="${tp.x}" cy="${tp.y}" r="3.5"/>
-    </g>
-  `;
+  markerLayer.clearLayers();
+  L.marker(guessLatLng, {icon: pingIcon(), interactive:false}).addTo(markerLayer);
+  L.polyline([guessLatLng, targetLatLng], {color:'#9db3c4', weight:1, dashArray:'4 4', opacity:0.6, interactive:false}).addTo(markerLayer);
+  L.marker(guessLatLng, {icon: pinIcon('pin-guess'), interactive:false}).addTo(markerLayer);
+  L.marker(targetLatLng, {icon: pinIcon('pin-target'), interactive:false}).addTo(markerLayer);
+
+  const bounds = L.latLngBounds([guessLatLng, targetLatLng]);
+  map.flyToBounds(bounds, {padding:[70,70], maxZoom:7, duration:0.6});
 
   document.getElementById('verdict-text').textContent = `${v.label}  (${Math.round(km)} km away · +${pts} pts)`;
   document.getElementById('verdict-text').className = 'verdict ' + v.cls;
@@ -558,10 +428,10 @@ function endGame(){
   document.getElementById('screen-end').classList.remove('hidden');
 }
 
-/* ---------------- Init ---------------- */
-drawGraticule();
-drawLandmasses();
-drawLabels();
+/* keep the map sized correctly through viewport/orientation/keyboard changes on mobile */
+window.addEventListener('resize', ()=> map.invalidateSize());
+window.visualViewport && window.visualViewport.addEventListener('resize', ()=> map.invalidateSize());
+setTimeout(()=> map.invalidateSize(), 200);
 </script>
 </body>
 </html>
