@@ -105,8 +105,8 @@
   }
   .logo .mark{display:flex;align-items:center;justify-content:center;width:32px;height:32px;}
   .logo .mark svg{width:30px;height:30px;display:block;}
-  .logo .mark svg circle,.logo .mark svg path{stroke:var(--gold);transition:stroke .3s ease;}
-  .logo .mark svg [fill]:not([fill="none"]){fill:var(--gold);transition:fill .3s ease;}
+  .logo .mark svg circle,.logo .mark svg path{stroke:var(--blue,#5B7FFF);transition:stroke .3s ease;}
+  .logo .mark svg [fill]:not([fill="none"]){fill:var(--blue,#5B7FFF);transition:fill .3s ease;}
   .logo-text{color:var(--ink);transition:color .3s ease;}
   .nav-links{display:flex;gap:22px;align-items:center;}
   .nav-links a{color:var(--ink-dim);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s ease;font-family:'Inter',sans-serif;}
@@ -119,7 +119,7 @@
     cursor:pointer;background:transparent;transition:.2s ease,border-color .3s ease,color .3s ease,background .3s ease;
   }
   .exit-btn .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease;flex-shrink:0;}
-  .exit-btn:hover{background:var(--glass);border-color:var(--coral);color:var(--coral);}
+  .exit-btn:hover{background:var(--glass);border-color:var(--violet,#8B7CFF);color:var(--violet,#8B7CFF);}
   .exit-btn:hover .ic{transform:translateX(-3px);}
   .theme-toggle{
     width:34px;height:34px;border-radius:50%;border:1px solid var(--glass-brd);
@@ -127,7 +127,7 @@
     display:flex;align-items:center;justify-content:center;transition:all .3s ease;
     position:relative;flex-shrink:0;
   }
-  .theme-toggle:hover{background:var(--panel-strong,var(--glass));border-color:var(--teal);transform:scale(1.06);}
+  .theme-toggle:hover{background:var(--panel-strong,var(--glass));border-color:var(--blue,#5B7FFF);transform:scale(1.06);}
   .theme-toggle .sun-icon,.theme-toggle .moon-icon{position:absolute;transition:all .45s ease;font-size:15px;}
   .theme-toggle .sun-icon{opacity:0;transform:rotate(-90deg) scale(.4);}
   .theme-toggle .moon-icon{opacity:1;transform:rotate(0) scale(1);}
@@ -149,9 +149,10 @@
   #hud-top{
     display:flex;align-items:center;justify-content:space-between;gap:8px;
     padding:8px 10px;
-    background:linear-gradient(to bottom, rgba(3,5,11,0.9), rgba(3,5,11,0));
+    background:transparent;
     z-index:500;
     flex-wrap:nowrap;
+    position:relative;
   }
   .brand{
     font-weight:800;letter-spacing:.14em;font-size:10px;color:var(--teal);
@@ -201,7 +202,10 @@
     border-radius:14px;
     border:1px solid rgba(94,234,212,0.15);
     box-shadow:0 0 60px rgba(6,26,44,0.6) inset, 0 0 40px rgba(0,0,0,0.4);
+    isolation:isolate;
+    z-index:0;
   }
+  #map-viewport.screen-covered{visibility:hidden;}
   #map{
     position:absolute;inset:0;
     background:#0e1f30;
@@ -281,7 +285,7 @@
 
   /* ---------- OVERLAY SCREENS ---------- */
   .screen{
-    position:absolute;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+    position:absolute;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;
     background:radial-gradient(ellipse at 50% 30%, #0a1c34 0%, var(--void) 70%);
     text-align:center;padding:24px;
     overflow-y:auto;
@@ -734,6 +738,13 @@ function updateDots(){
   });
 }
 
+function setMapVisible(visible){
+  document.getElementById('map-viewport').classList.toggle('screen-covered', !visible);
+}
+// hidden until a round actually begins, so nothing from the map (including
+// its attribution text) can show behind the start screen
+setMapVisible(false);
+
 /* ---------------- Starting a run ---------------- */
 function startFreshGame(){
   mode = 'own';
@@ -747,6 +758,7 @@ function beginRound(){
   document.getElementById('screen-start').classList.add('hidden');
   document.getElementById('screen-end').classList.add('hidden');
   document.getElementById('challenge-flag').classList.toggle('show', mode === 'challenge');
+  setMapVisible(true);
   setupDots();
   loadRound();
   setTimeout(()=>map.invalidateSize(), 50);
@@ -869,6 +881,7 @@ function endGame(){
   buildAndShowChallengeLink(avg);
 
   document.getElementById('screen-end').classList.remove('hidden');
+  setMapVisible(false);
 }
 
 function renderBreakdown(myPts, theirPts){
