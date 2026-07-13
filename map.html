@@ -305,34 +305,43 @@ setTimeout(()=>{ if(!tilesLoaded) document.getElementById('map-loading').classLi
 
 /* ---------------- India boundary overlay ----------------
    The base map tiles render Kashmir with a split/dashed treatment
-   (OSM shows it as a disputed Line-of-Control area). To display India's
-   full official outline instead, we draw a dedicated boundary layer on
-   top of the tiles, sourced from a public dataset that reflects India's
-   official state boundaries (post-2019, including J&K and Ladakh as
-   part of India). This is India's official position on the boundary —
-   Pakistan and China depict the line differently on their own maps,
-   since the region is disputed between the countries. */
+   (OSM shows it as a disputed Line-of-Control area, which is why the
+   "head" of India looked cut off). To display India's full official
+   outline instead, we draw a dedicated boundary layer on top of the
+   tiles. The source is DataMeet's "india-land-simplified" dataset — a
+   single-feature outline of India "including disputed territories in
+   accordance with the Official boundary of India as per the Survey of
+   India" (compiled from LSIB/Survey-of-India/Natural Earth sources).
+   This is India's official position on the boundary — Pakistan and
+   China depict the line differently on their own maps, since the
+   region is disputed between the countries. */
 let indiaLayer = null;
+const INDIA_BOUNDARY_URLS = [
+  'https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson',
+  'https://cdn.jsdelivr.net/gh/datameet/maps@master/Country/india-land-simplified.geojson'
+];
 async function loadIndiaBoundary(){
-  try{
-    const res = await fetch('https://raw.githubusercontent.com/india-in-data/india-states-2019/master/india_states.geojson');
-    if(!res.ok) return;
-    const geo = await res.json();
-    indiaLayer = L.geoJSON(geo, {
-      interactive:false,
-      style:{
-        color:'#ffd166',
-        weight:1.6,
-        opacity:0.95,
-        fillColor:'#ffd166',
-        fillOpacity:0.05
-      }
-    }).addTo(map);
-  }catch(e){
-    // Non-critical — if the fetch fails (e.g. offline), the game still works fine
-    // with the base tiles alone.
-    console.warn('India boundary overlay failed to load:', e);
+  for(const url of INDIA_BOUNDARY_URLS){
+    try{
+      const res = await fetch(url);
+      if(!res.ok) continue;
+      const geo = await res.json();
+      indiaLayer = L.geoJSON(geo, {
+        interactive:false,
+        style:{
+          color:'#ffd166',
+          weight:2.2,
+          opacity:1,
+          fillColor:'#ffd166',
+          fillOpacity:0.06
+        }
+      }).addTo(map);
+      return; // success — stop trying further sources
+    }catch(e){
+      console.warn('India boundary overlay source failed, trying next:', url, e);
+    }
   }
+  console.warn('India boundary overlay: all sources failed — falling back to base tiles only.');
 }
 loadIndiaBoundary();
 
