@@ -287,7 +287,7 @@ const map = L.map('map', {
 }).setView([20,20], 2);
 
 const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
   subdomains:'abcd',
   maxZoom:19,
   keepBuffer:4,
@@ -302,6 +302,39 @@ tiles.on('load', ()=>{
 });
 // safety fallback in case 'load' never fires (e.g. cached instantly)
 setTimeout(()=>{ if(!tilesLoaded) document.getElementById('map-loading').classList.add('hidden'); }, 2500);
+
+/* ---------------- India boundary overlay ----------------
+   The base map tiles render Kashmir with a split/dashed treatment
+   (OSM shows it as a disputed Line-of-Control area). To display India's
+   full official outline instead, we draw a dedicated boundary layer on
+   top of the tiles, sourced from a public dataset that reflects India's
+   official state boundaries (post-2019, including J&K and Ladakh as
+   part of India). This is India's official position on the boundary —
+   Pakistan and China depict the line differently on their own maps,
+   since the region is disputed between the countries. */
+let indiaLayer = null;
+async function loadIndiaBoundary(){
+  try{
+    const res = await fetch('https://raw.githubusercontent.com/india-in-data/india-states-2019/master/india_states.geojson');
+    if(!res.ok) return;
+    const geo = await res.json();
+    indiaLayer = L.geoJSON(geo, {
+      interactive:false,
+      style:{
+        color:'#ffd166',
+        weight:1.6,
+        opacity:0.95,
+        fillColor:'#ffd166',
+        fillOpacity:0.05
+      }
+    }).addTo(map);
+  }catch(e){
+    // Non-critical — if the fetch fails (e.g. offline), the game still works fine
+    // with the base tiles alone.
+    console.warn('India boundary overlay failed to load:', e);
+  }
+}
+loadIndiaBoundary();
 
 let markerLayer = L.layerGroup().addTo(map);
 
