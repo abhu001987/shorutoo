@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Strait Navigator — Chart the Waters</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="preconnect" href="https://a.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://b.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://c.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://d.basemaps.cartocdn.com">
 <style>
   :root{
     --void:#03050b;
@@ -90,11 +94,18 @@
   }
   #map{
     position:absolute;inset:0;
-    background:#04101d;
+    background:#0e1f30;
     cursor:crosshair;
   }
-  /* dim + tint the tiles to fit the void aesthetic */
-  #map .leaflet-tile-pane{filter:brightness(0.85) saturate(1.15);}
+  /* light tiles, just a light tint so it still reads as "ops console" rather than plain daylight */
+  #map .leaflet-tile-pane{filter:saturate(1.1) contrast(1.02);}
+  #map .leaflet-container{background:#dfe6ea;}
+  #map-loading{
+    position:absolute;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;
+    background:#0e1f30;color:var(--ink-dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    pointer-events:none;transition:opacity .3s ease;
+  }
+  #map-loading.hidden{opacity:0;}
   #map .leaflet-control-attribution{
     background:rgba(3,5,11,0.6)!important;color:var(--ink-dim)!important;font-size:9px!important;
   }
@@ -111,10 +122,11 @@
   .pin-ring{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:20px;height:20px;border-radius:50%;border:1.6px solid;
+    box-shadow:0 0 0 1.5px rgba(255,255,255,0.85);
   }
-  .pin-guess .pin-core{background:var(--coral);box-shadow:0 0 8px var(--coral);}
+  .pin-guess .pin-core{background:var(--coral);box-shadow:0 0 0 2px rgba(255,255,255,0.9), 0 0 8px var(--coral);}
   .pin-guess .pin-ring{border-color:var(--coral);}
-  .pin-target .pin-core{background:var(--gold);box-shadow:0 0 8px var(--gold);}
+  .pin-target .pin-core{background:var(--gold);box-shadow:0 0 0 2px rgba(255,255,255,0.9), 0 0 8px var(--gold);}
   .pin-target .pin-ring{border-color:var(--gold);}
   .pin-ping{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
@@ -232,6 +244,7 @@
 
   <div id="map-viewport">
     <div id="map"></div>
+    <div id="map-loading">Loading chart…</div>
   </div>
 
   <div id="hud-bottom">
@@ -273,11 +286,22 @@ const map = L.map('map', {
   attributionControl:true
 }).setView([20,20], 2);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
   subdomains:'abcd',
-  maxZoom:19
+  maxZoom:19,
+  keepBuffer:4,
+  updateWhenZooming:false,
+  crossOrigin:true
 }).addTo(map);
+
+let tilesLoaded = false;
+tiles.on('load', ()=>{
+  tilesLoaded = true;
+  document.getElementById('map-loading').classList.add('hidden');
+});
+// safety fallback in case 'load' never fires (e.g. cached instantly)
+setTimeout(()=>{ if(!tilesLoaded) document.getElementById('map-loading').classList.add('hidden'); }, 2500);
 
 let markerLayer = L.layerGroup().addTo(map);
 
@@ -386,7 +410,7 @@ function onMapClick(evt){
 
   markerLayer.clearLayers();
   L.marker(guessLatLng, {icon: pingIcon(), interactive:false}).addTo(markerLayer);
-  L.polyline([guessLatLng, targetLatLng], {color:'#9db3c4', weight:1, dashArray:'4 4', opacity:0.6, interactive:false}).addTo(markerLayer);
+  L.polyline([guessLatLng, targetLatLng], {color:'#243447', weight:1.4, dashArray:'4 4', opacity:0.75, interactive:false}).addTo(markerLayer);
   L.marker(guessLatLng, {icon: pinIcon('pin-guess'), interactive:false}).addTo(markerLayer);
   L.marker(targetLatLng, {icon: pinIcon('pin-target'), interactive:false}).addTo(markerLayer);
 
