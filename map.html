@@ -43,13 +43,14 @@
 
   /* ---------- HUD ---------- */
   #hud-top{
-    display:flex;align-items:center;justify-content:space-between;gap:14px;
-    padding:14px 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:10px 14px;
     background:linear-gradient(to bottom, rgba(3,5,11,0.85), rgba(3,5,11,0));
     z-index:5;
+    flex-wrap:wrap;
   }
   .brand{
-    font-weight:800;letter-spacing:.14em;font-size:12px;color:var(--teal);
+    font-weight:800;letter-spacing:.14em;font-size:11px;color:var(--teal);
     text-transform:uppercase;opacity:.85;
   }
   .strait-card{
@@ -57,48 +58,60 @@
     border:1px solid var(--glass-brd);
     backdrop-filter:blur(10px);
     border-radius:14px;
-    padding:10px 18px;
+    padding:7px 16px;
     text-align:center;
     box-shadow:0 0 30px rgba(255,209,102,0.08);
   }
-  .strait-card .eyebrow{font-size:10px;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;}
-  .strait-card .title{font-size:clamp(16px,3.4vw,24px);font-weight:800;color:var(--gold);letter-spacing:.02em;margin-top:2px;text-shadow:0 0 18px rgba(255,209,102,0.35);}
-  #dots{display:flex;gap:5px;justify-content:center;margin-top:8px;}
+  .strait-card .eyebrow{font-size:9.5px;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;}
+  .strait-card .title{font-size:clamp(14px,3vw,21px);font-weight:800;color:var(--gold);letter-spacing:.02em;margin-top:2px;text-shadow:0 0 18px rgba(255,209,102,0.35);}
+  #dots{display:flex;gap:5px;justify-content:center;margin-top:6px;flex-wrap:wrap;max-width:220px;}
   .dot{width:6px;height:6px;border-radius:50%;background:#2a3d52;transition:.2s;}
   .dot.done{background:var(--teal);box-shadow:0 0 6px var(--teal);}
   .dot.now{background:var(--gold);box-shadow:0 0 8px var(--gold);transform:scale(1.4);}
 
   .score-pill{
     background:var(--glass);border:1px solid var(--glass-brd);border-radius:100px;
-    padding:8px 16px;font-size:13px;font-weight:700;color:var(--ink-dim);white-space:nowrap;
+    padding:7px 14px;font-size:12px;font-weight:700;color:var(--ink-dim);white-space:nowrap;
   }
   .score-pill b{color:var(--teal);}
 
   /* ---------- MAP ---------- */
   #map-viewport{
     flex:1;position:relative;overflow:hidden;
-    margin:0 10px;
-    border-radius:18px;
+    margin:0 8px;
+    min-height:0;
+    border-radius:16px;
     border:1px solid rgba(94,234,212,0.15);
     box-shadow:0 0 60px rgba(6,26,44,0.6) inset, 0 0 40px rgba(0,0,0,0.4);
+    display:flex;align-items:center;justify-content:center;
   }
-  #map-viewport.mobile{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
-  #map-viewport.mobile::-webkit-scrollbar{height:6px;}
-  #map-viewport.mobile::-webkit-scrollbar-thumb{background:rgba(94,234,212,.4);border-radius:4px;}
-  svg#worldmap{display:block;height:100%;width:100%;cursor:crosshair;touch-action:pan-x;}
-  #map-viewport.mobile svg#worldmap{width:1500px;max-width:none;height:100%;}
-  .swipe-hint{
-    position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-    font-size:11px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;
-    background:rgba(3,5,11,0.6);padding:6px 12px;border-radius:100px;pointer-events:none;
-    z-index:4;opacity:0;transition:opacity .3s;
-  }
-  #map-viewport.mobile .swipe-hint{opacity:1;}
+  svg#worldmap{display:block;height:100%;width:100%;cursor:crosshair;}
 
   .land{fill:url(#landGrad);stroke:var(--land-rim);stroke-width:1;filter:drop-shadow(0 0 5px rgba(255,207,122,0.35));}
   .grat{stroke:rgba(94,234,212,0.09);stroke-width:.6;fill:none;}
   .ocean-glow{animation:pulseGlow 6s ease-in-out infinite;}
   @keyframes pulseGlow{0%,100%{opacity:.5}50%{opacity:.9}}
+
+  .continent-label{
+    fill:rgba(234,242,247,0.55);
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    text-anchor:middle;
+    pointer-events:none;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  .ocean-label{
+    fill:rgba(94,234,212,0.4);
+    font-size:8px;
+    font-weight:600;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    text-anchor:middle;
+    pointer-events:none;
+    font-style:italic;
+  }
 
   .pin-guess circle.core{fill:var(--coral);}
   .pin-guess circle.ring{fill:none;stroke:var(--coral);stroke-width:1.6;}
@@ -110,24 +123,24 @@
 
   /* ---------- BOTTOM PANEL ---------- */
   #hud-bottom{
-    z-index:5;padding:14px 18px 18px;
-    display:flex;flex-direction:column;align-items:center;gap:10px;
+    z-index:5;padding:10px 14px 14px;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
   }
   #feedback{
     width:100%;max-width:640px;
     background:var(--glass);border:1px solid var(--glass-brd);backdrop-filter:blur(10px);
-    border-radius:14px;padding:12px 18px;text-align:center;
+    border-radius:14px;padding:10px 16px;text-align:center;
     display:none;
   }
   #feedback.show{display:block;}
-  #feedback .verdict{font-weight:800;font-size:15px;}
+  #feedback .verdict{font-weight:800;font-size:14px;}
   #feedback .verdict.good{color:var(--teal);}
   #feedback .verdict.mid{color:var(--gold);}
   #feedback .verdict.bad{color:var(--coral);}
-  #feedback .fact{font-size:12.5px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
+  #feedback .fact{font-size:12px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
 
   .btn{
-    border:none;border-radius:100px;padding:13px 30px;font-size:14px;font-weight:800;
+    border:none;border-radius:100px;padding:12px 28px;font-size:13.5px;font-weight:800;
     letter-spacing:.04em;cursor:pointer;transition:transform .12s ease, box-shadow .2s;
     text-transform:uppercase;
   }
@@ -135,7 +148,7 @@
   .btn-primary{background:linear-gradient(135deg,var(--gold),#ff9f5a);color:#241200;box-shadow:0 0 24px rgba(255,209,102,0.35);}
   .btn-primary:hover{box-shadow:0 0 34px rgba(255,209,102,0.55);}
   .btn-ghost{background:transparent;border:1px solid var(--glass-brd);color:var(--ink-dim);}
-  .hint-tap{font-size:12px;color:var(--ink-dim);letter-spacing:.05em;opacity:.8;}
+  .hint-tap{font-size:11.5px;color:var(--ink-dim);letter-spacing:.05em;opacity:.8;}
 
   /* ---------- OVERLAY SCREENS ---------- */
   .screen{
@@ -165,6 +178,12 @@
   @keyframes spin{to{transform:rotate(360deg);}}
   .final-score{font-size:52px;font-weight:800;color:var(--gold);text-shadow:0 0 26px rgba(255,209,102,.4);}
   .final-label{color:var(--ink-dim);font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-top:-6px;margin-bottom:26px;}
+
+  @media (max-height:640px){
+    .strait-card{padding:5px 12px;}
+    #dots{margin-top:3px;}
+    .hint-tap{display:none;}
+  }
 </style>
 </head>
 <body>
@@ -207,7 +226,7 @@
   </div>
 
   <div id="map-viewport">
-    <svg id="worldmap" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid slice">
+    <svg id="worldmap" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#0c3452"/>
@@ -227,9 +246,10 @@
       <rect x="0" y="0" width="1000" height="500" fill="url(#glow)" class="ocean-glow"/>
       <g id="graticule"></g>
       <g id="landmasses"></g>
+      <g id="ocean-labels"></g>
+      <g id="labels"></g>
       <g id="markers"></g>
     </svg>
-    <div class="swipe-hint">← slide to explore the map →</div>
   </div>
 
   <div id="hud-bottom">
@@ -279,29 +299,95 @@ function toPath(coords){
   }).join(' ') + ' Z';
 }
 
-/* ---------------- Landmasses (simplified) ---------------- */
+/* ---------------- Landmasses (simplified but geographically shaped) ---------------- */
+const NORTH_AMERICA = [
+  [-168,66],[-165,60],[-158,58],[-152,58],[-135,58],[-130,52],[-125,48],[-124,40],
+  [-120,34],[-117,33],[-113,28],[-109,23],[-105,20],[-97,16],[-92,15],[-88,13],
+  [-84,9],[-79,8],[-77,9],[-83,10],[-87,13],[-89,16],[-90,18],[-88,21],[-90,21],
+  [-94,19],[-97,22],[-97,26],[-93,29],[-89,30],[-84,30],[-81,25],[-80,27],[-77,34],
+  [-75,38],[-74,40],[-70,42],[-67,45],[-64,45],[-60,48],[-65,50],[-70,58],[-80,62],
+  [-90,68],[-100,70],[-120,70],[-140,70],[-155,71],[-168,66]
+];
+const SOUTH_AMERICA = [
+  [-77,8],[-79,2],[-81,-4],[-81,-15],[-75,-20],[-71,-30],[-71,-40],[-73,-50],
+  [-68,-55],[-65,-52],[-62,-45],[-57,-38],[-48,-28],[-40,-15],[-35,-8],[-44,-2],
+  [-50,0],[-51,4],[-57,8],[-62,10],[-67,11],[-72,11],[-77,8]
+];
+const AFRICA = [
+  [-17,21],[-16,15],[-11,7],[-8,5],[-3,5],[2,6],[3,6],[9,4],[9,-1],[12,-6],
+  [13,-9],[12,-18],[15,-27],[18,-34],[26,-33],[33,-27],[35,-22],[40,-15],[40,-5],
+  [43,0],[51,10],[43,11],[37,15],[35,22],[34,28],[32,31],[25,32],[11,37],[9,36],
+  [-1,35],[-6,33],[-9,30],[-17,21]
+];
+const EURASIA = [
+  [-9,37],[-9,43],[-2,43],[-4,48],[2,51],[8,54],[8,57],[11,57],[11,59],[18,60],
+  [24,65],[30,70],[40,68],[60,70],[70,72],[90,73],[110,73],[140,73],[160,70],
+  [170,66],[178,64],[177,60],[160,58],[145,55],[140,48],[132,43],[130,40],[127,38],
+  [122,38],[121,31],[120,24],[110,21],[107,10],[104,10],[100,13],[98,8],[95,4],
+  [100,2],[103,1],[104,6],[98,6],[95,16],[92,22],[88,22],[80,13],[79,9],[73,15],
+  [72,22],[68,24],[61,25],[56,25],[51,28],[48,30],[48,27],[50,24],[52,19],[54,17],
+  [50,13],[43,13],[40,16],[35,28],[36,34],[36,37],[28,37],[27,40],[30,46],[38,47],
+  [48,47],[52,45],[48,40],[45,37],[41,42],[35,42],[28,45],[24,44],[19,42],[18,40],
+  [16,40],[13,38],[12,42],[9,44],[3,43],[-2,43],[-9,37]
+];
+const GREENLAND = [[-45,60],[-42,60],[-22,70],[-20,75],[-30,82],[-45,82],[-55,70],[-55,65],[-45,60]];
+const ICELAND = [[-24,64],[-20,66],[-14,65],[-16,63],[-22,63],[-24,64]];
+const GREAT_BRITAIN = [[-5,58],[-3,58],[-1,55],[0,52],[1,51],[-1,51],[-3,50],[-5,50],[-6,52],[-8,55],[-5,58]];
+const JAPAN = [[130,32],[131,31],[132,33],[133,34],[135,34],[136,35],[137,35],[138,35],[139,36],[140,36],[141,39],[140,40],[141,41],[142,43],[145,43],[144,44],[142,45],[141,43],[139,41],[138,38],[137,37],[135,34],[132,34],[130,33],[129,33],[130,32]];
+const TAIWAN = [[121,25],[122,24],[121,22],[120,23],[120,24.5],[121,25]];
+const PHILIPPINES = [[121,19],[122,17],[124,13],[126,9],[125,7],[122,10],[120,15],[121,19]];
+const SUMATRA = [[95,5],[97,2],[100,-2],[104,-5],[106,-6],[103,-3],[99,1],[96,4],[95,5]];
+const JAVA = [[105,-6],[108,-6],[112,-7],[114,-8],[110,-7],[106,-6],[105,-6]];
+const BORNEO = [[109,4],[113,4],[117,3],[118,0],[117,-3],[114,-4],[110,-1],[109,1],[109,4]];
+const SULAWESI = [[120,1],[121,0],[123,-2],[122,-4],[120,-5],[119,-2],[120,1]];
+const NEW_GUINEA = [[131,-1],[135,-2],[141,-3],[145,-5],[150,-6],[150,-9],[144,-9],[138,-8],[132,-4],[131,-1]];
+const SRI_LANKA = [[80,9.5],[81.5,9],[81.8,7],[80,6],[79.7,8],[80,9.5]];
+const MADAGASCAR = [[43,-12],[47,-13],[50,-16],[47,-25],[44,-25],[43,-20],[43,-12]];
+const NEW_ZEALAND = [[173,-41],[175,-37],[178,-38],[175,-42],[168,-45],[173,-41]];
+const AUSTRALIA = [
+  [113,-22],[114,-26],[115,-33],[118,-35],[125,-33],[131,-32],[136,-35],[140,-38],
+  [145,-38],[147,-37],[150,-37],[153,-28],[153,-24],[146,-19],[142,-11],[137,-12],
+  [132,-12],[130,-13],[126,-14],[122,-17],[113,-22]
+];
+
 const LANDMASSES = [
-  [[-165,68],[-155,60],[-135,58],[-125,49],[-124,40],[-117,33],[-105,22],[-97,16],[-88,14],[-84,9],[-80,8],[-81,25],[-75,35],[-70,42],[-65,45],[-55,50],[-65,60],[-80,62],[-95,68],[-110,70],[-130,70],[-150,70],[-165,68]],
-  [[-77,8],[-80,5],[-81,0],[-80,-5],[-81,-15],[-75,-20],[-70,-25],[-70,-35],[-73,-45],[-68,-55],[-65,-52],[-58,-38],[-48,-25],[-35,-10],[-40,0],[-50,5],[-60,8],[-77,8]],
-  [[-17,21],[-16,15],[-11,7],[-8,5],[3,6],[9,4],[9,-1],[12,-6],[12,-18],[18,-34],[26,-33],[33,-27],[35,-22],[40,-15],[40,-5],[43,0],[42,5],[48,12],[43,13],[37,15],[33,22],[35,28],[32,31],[25,32],[10,37],[0,35],[-6,33],[-9,30],[-17,21]],
-  [[-10,36],[-9,43],[-2,43],[0,44],[3,43],[8,44],[10,45],[13,46],[14,45],[19,42],[23,40],[26,40],[29,41],[35,42],[28,45],[30,46],[38,47],[48,47],[52,45],[55,45],[52,42],[48,40],[45,37],[48,30],[56,27],[61,25],[68,24],[72,22],[78,9],[80,13],[85,20],[90,22],[95,20],[98,10],[100,7],[104,10],[107,20],[110,22],[115,23],[120,24],[122,30],[121,31],[122,37],[128,38],[130,42],[135,44],[140,45],[142,46],[145,48],[155,60],[160,65],[170,68],[178,68],[170,70],[150,72],[130,74],[110,73],[90,73],[70,70],[60,68],[55,66],[40,66],[33,68],[28,70],[20,69],[25,60],[30,60],[28,55],[24,54],[20,54],[14,54],[10,54],[5,51],[-2,49],[-5,48],[-4,44],[-10,43],[-10,36]],
-  [[113,-22],[114,-26],[115,-33],[118,-35],[125,-33],[131,-32],[136,-35],[140,-38],[145,-38],[150,-37],[153,-28],[153,-24],[146,-19],[142,-11],[137,-12],[132,-12],[130,-13],[126,-14],[122,-17],[113,-22]],
-  [[-45,60],[-42,60],[-22,70],[-20,75],[-30,82],[-45,82],[-55,70],[-55,65],[-45,60]],
-  [[43,-12],[47,-13],[50,-16],[47,-25],[44,-25],[43,-20],[43,-12]],
-  [[-5,58],[-3,58],[0,52],[1,51],[-5,50],[-6,52],[-8,55],[-5,58]],
-  [[130,32],[132,34],[136,35],[140,36],[141,40],[145,43],[142,45],[140,41],[138,37],[135,34],[130,32]],
-  [[95,5],[98,2],[104,-2],[105,-6],[99,3],[95,5]],
-  [[105,-6],[110,-7],[114,-8],[108,-6],[105,-6]],
-  [[109,4],[117,4],[119,-1],[114,-4],[109,1],[109,4]],
-  [[120,18],[122,14],[125,10],[121,16],[120,18]],
-  [[173,-41],[175,-37],[178,-38],[175,-42],[168,-45],[173,-41]],
-  [[121,25],[122,24],[121,22],[120,23],[120,24.5],[121,25]],
-  [[80,9.5],[81.5,9],[81.8,7],[80,6],[79.7,8],[80,9.5]]
+  NORTH_AMERICA, SOUTH_AMERICA, AFRICA, EURASIA, GREENLAND, ICELAND, GREAT_BRITAIN,
+  JAPAN, TAIWAN, PHILIPPINES, SUMATRA, JAVA, BORNEO, SULAWESI, NEW_GUINEA,
+  SRI_LANKA, MADAGASCAR, NEW_ZEALAND, AUSTRALIA
+];
+
+const CONTINENT_LABELS = [
+  {name:"NORTH AMERICA", lon:-100, lat:48},
+  {name:"SOUTH AMERICA", lon:-60, lat:-16},
+  {name:"EUROPE", lon:20, lat:53},
+  {name:"AFRICA", lon:20, lat:2},
+  {name:"ASIA", lon:92, lat:44},
+  {name:"AUSTRALIA", lon:134, lat:-26}
+];
+const OCEAN_LABELS = [
+  {name:"Pacific Ocean", lon:-150, lat:5},
+  {name:"Pacific Ocean", lon:170, lat:-10},
+  {name:"Atlantic Ocean", lon:-35, lat:5},
+  {name:"Indian Ocean", lon:70, lat:-25},
+  {name:"Arctic Ocean", lon:0, lat:82},
+  {name:"Southern Ocean", lon:0, lat:-64}
 ];
 
 function drawLandmasses(){
   const g = document.getElementById('landmasses');
   g.innerHTML = LANDMASSES.map(c => `<path class="land" d="${toPath(c)}"/>`).join('');
+}
+function drawLabels(){
+  const g = document.getElementById('labels');
+  g.innerHTML = CONTINENT_LABELS.map(l=>{
+    const p = project(l.lon, l.lat);
+    return `<text class="continent-label" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}">${l.name}</text>`;
+  }).join('');
+  const og = document.getElementById('ocean-labels');
+  og.innerHTML = OCEAN_LABELS.map(l=>{
+    const p = project(l.lon, l.lat);
+    return `<text class="ocean-label" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}">${l.name}</text>`;
+  }).join('');
 }
 
 function drawGraticule(){
@@ -472,17 +558,10 @@ function endGame(){
   document.getElementById('screen-end').classList.remove('hidden');
 }
 
-/* ---------------- Responsive map mode ---------------- */
-function applyMapMode(){
-  const mobile = window.innerWidth < 820;
-  document.getElementById('map-viewport').classList.toggle('mobile', mobile);
-}
-window.addEventListener('resize', applyMapMode);
-
 /* ---------------- Init ---------------- */
 drawGraticule();
 drawLandmasses();
-applyMapMode();
+drawLabels();
 </script>
 </body>
 </html>
