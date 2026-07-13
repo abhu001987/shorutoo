@@ -15,9 +15,9 @@
   })();
 </script>
 
-<!-- Fonts -->
+<!-- Fonts (same as Challenge page) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <!-- Shared CSS & JS (theme) -->
 <link rel="stylesheet" href="theme.css" />
@@ -28,31 +28,273 @@
 <link rel="preconnect" href="https://b.basemaps.cartocdn.com">
 <link rel="preconnect" href="https://c.basemaps.cartocdn.com">
 <link rel="preconnect" href="https://d.basemaps.cartocdn.com">
+
 <style>
-  /* Fallback tokens — used only if theme.css fails to load (this page can run
-     standalone). When theme.css IS present, its :root / [data-theme] custom
-     properties simply take over, since these are all set with html.theme-css-missing
-     scoping and the game palette below reads through var(--token, fallback). */
-  html.theme-css-missing{
-    --bg-0:#03050b; --panel:rgba(255,255,255,.045); --panel-strong:rgba(10,20,35,0.6);
-    --border:rgba(255,214,102,0.25); --blue:#3E7BFA; --blue-soft:rgba(62,123,250,.35);
-    --violet:#8B7CFF; --mint:#5eead4; --amber:#ffd166; --text:#eaf2f7; --text-dim:#9db3c4;
-    --text-dimmer:#5C6788; --nav-bg:rgba(5,6,12,.7); --input-bg:rgba(255,255,255,.04);
-    --glow-1:rgba(255,209,102,.10); --glow-2:rgba(94,234,212,.08); --danger-color:#ff5d73;
-  }
-  html.theme-css-missing[data-theme="light"]{
-    --bg-0:#E8EEF7; --panel:rgba(255,255,255,.55); --panel-strong:rgba(255,255,255,.75);
-    --border:rgba(60,90,200,.18); --blue:#5B7FFF; --blue-soft:rgba(91,127,255,.20);
-    --violet:#A78BFA; --mint:#0D9488; --amber:#B45309; --text:#0F172A; --text-dim:#334155;
-    --text-dimmer:#64748B; --nav-bg:rgba(255,255,255,.5); --input-bg:rgba(255,255,255,.30);
-    --glow-1:rgba(91,127,255,.12); --glow-2:rgba(167,139,250,.10); --danger-color:#dc2626;
+  /* ============================================ */
+  /* HEADER STYLES — EXACTLY MATCHES CHALLENGE PAGE */
+  /* ============================================ */
+  .nav {
+    padding: 24px 0 20px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 22px;
+    background: transparent;
+    transition: border-color 0.3s ease;
+    position: relative;
+    z-index: 5;
   }
 
-  :root{
-    /* Game palette, aliased onto the shared theme tokens so a real theme.css
-       (and the theme toggle) drive this page too — falls back to the original
-       satellite-ops look if a token isn't defined. */
-    --void: var(--bg-0, #03050b);
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--text);
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+  }
+
+  .logo .mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo .mark svg {
+    width: 38px;
+    height: 38px;
+    display: block;
+  }
+
+  .logo .mark svg circle,
+  .logo .mark svg path {
+    stroke: var(--blue);
+    transition: stroke 0.3s ease;
+  }
+
+  .logo .mark svg [fill]:not([fill="none"]) {
+    fill: var(--blue);
+    transition: fill 0.3s ease;
+  }
+
+  .logo-text {
+    color: var(--text);
+    transition: color 0.3s ease;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* ---- EXIT BUTTON (matches challenge page) ---- */
+  .exit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    background: transparent;
+    transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+  }
+
+  .exit-btn .ic {
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s var(--ease);
+    flex-shrink: 0;
+  }
+
+  .exit-btn:hover {
+    background: var(--panel-strong);
+    border-color: var(--violet);
+    color: var(--violet);
+  }
+
+  .exit-btn:hover .ic {
+    transform: translateX(-3px);
+  }
+
+  /* ---- THEME TOGGLE (circle, matches challenge page) ---- */
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s var(--ease);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover {
+    background: var(--panel-strong);
+    border-color: var(--blue);
+    transform: scale(1.06);
+  }
+
+  .theme-toggle .sun-icon,
+  .theme-toggle .moon-icon {
+    position: absolute;
+    transition: all 0.45s var(--ease);
+    font-size: 18px;
+  }
+
+  .theme-toggle .sun-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.4);
+  }
+
+  .theme-toggle .moon-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  [data-theme="light"] .theme-toggle .sun-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  [data-theme="light"] .theme-toggle .moon-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+  }
+
+  @media (max-width: 600px) {
+    .nav {
+      padding: 16px 0 14px 0;
+      margin-bottom: 14px;
+    }
+    .wrap {
+      padding: 0 16px;
+    }
+    .logo {
+      font-size: 18px;
+    }
+    .logo .mark {
+      width: 32px;
+      height: 32px;
+    }
+    .logo .mark svg {
+      width: 30px;
+      height: 30px;
+    }
+    .nav-links {
+      display: none;
+    }
+    .exit-btn {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .exit-btn span {
+      display: none;
+    }
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+    }
+  }
+
+  /* ============================================ */
+  /* REST OF PAGE STYLES (unchanged from original) */
+  /* ============================================ */
+
+  /* Fallback tokens — used only if theme.css fails to load */
+  html.theme-css-missing {
+    --bg-0: #03050b;
+    --panel: rgba(255,255,255,.045);
+    --panel-strong: rgba(10,20,35,0.6);
+    --border: rgba(255,214,102,0.25);
+    --blue: #3E7BFA;
+    --blue-soft: rgba(62,123,250,.35);
+    --violet: #8B7CFF;
+    --mint: #5eead4;
+    --amber: #ffd166;
+    --text: #eaf2f7;
+    --text-dim: #9db3c4;
+    --text-dimmer: #5C6788;
+    --nav-bg: rgba(5,6,12,.7);
+    --input-bg: rgba(255,255,255,.04);
+    --glow-1: rgba(255,209,102,.10);
+    --glow-2: rgba(94,234,212,.08);
+    --danger-color: #ff5d73;
+    --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  html.theme-css-missing[data-theme="light"] {
+    --bg-0: #E8EEF7;
+    --panel: rgba(255,255,255,.55);
+    --panel-strong: rgba(255,255,255,.75);
+    --border: rgba(60,90,200,.18);
+    --blue: #5B7FFF;
+    --blue-soft: rgba(91,127,255,.20);
+    --violet: #A78BFA;
+    --mint: #0D9488;
+    --amber: #B45309;
+    --text: #0F172A;
+    --text-dim: #334155;
+    --text-dimmer: #64748B;
+    --nav-bg: rgba(255,255,255,.5);
+    --input-bg: rgba(255,255,255,.30);
+    --glow-1: rgba(91,127,255,.12);
+    --glow-2: rgba(167,139,250,.10);
+    --danger-color: #dc2626;
+  }
+
+  :root {
     --gold: var(--amber, #ffd166);
     --coral: var(--danger-color, #ff5d73);
     --teal: var(--mint, #5eead4);
@@ -67,15 +309,15 @@
     height:100%;
     height:100dvh;
     overscroll-behavior:none;
-    background:var(--void);
+    background:var(--bg-0);
     font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    color:var(--ink);
+    color:var(--text);
     transition:background .3s ease, color .3s ease;
   }
   body{
     display:flex;flex-direction:column;
     overflow:hidden;
-    background:radial-gradient(ellipse at 30% 20%, var(--glow-1, #0a1730) 0%, var(--void) 55%);
+    background:radial-gradient(ellipse at 30% 20%, var(--glow-1, #0a1730) 0%, var(--bg-0) 55%);
   }
 
   #app{
@@ -85,64 +327,6 @@
     padding-bottom:env(safe-area-inset-bottom);
     padding-left:env(safe-area-inset-left);
     padding-right:env(safe-area-inset-right);
-  }
-
-  /* ---------- SHARED SITE HEADER ---------- */
-  .nav{
-    flex-shrink:0;
-    padding:14px 0 12px 0;
-    border-bottom:1px solid var(--glass-brd);
-    background:var(--nav-bg, transparent);
-    position:relative;z-index:900;
-    padding-top:calc(10px + env(safe-area-inset-top));
-  }
-  .wrap{max-width:1400px;margin:0 auto;padding:0 14px;}
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .logo{
-    display:flex;align-items:center;gap:9px;text-decoration:none;
-    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;
-    color:var(--ink);letter-spacing:.5px;transition:color .3s ease;
-  }
-  .logo .mark{display:flex;align-items:center;justify-content:center;width:32px;height:32px;}
-  .logo .mark svg{width:30px;height:30px;display:block;}
-  .logo .mark svg circle,.logo .mark svg path{stroke:var(--blue,#5B7FFF);transition:stroke .3s ease;}
-  .logo .mark svg [fill]:not([fill="none"]){fill:var(--blue,#5B7FFF);transition:fill .3s ease;}
-  .logo-text{color:var(--ink);transition:color .3s ease;}
-  .nav-links{display:flex;gap:22px;align-items:center;}
-  .nav-links a{color:var(--ink-dim);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s ease;font-family:'Inter',sans-serif;}
-  .nav-links a:hover{color:var(--ink);}
-  .nav-cta{display:flex;align-items:center;gap:10px;}
-  .exit-btn{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:8px 15px 8px 12px;border:1px solid var(--glass-brd);border-radius:100px;
-    color:var(--ink-dim);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:12px;
-    cursor:pointer;background:transparent;transition:.2s ease,border-color .3s ease,color .3s ease,background .3s ease;
-  }
-  .exit-btn .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s ease;flex-shrink:0;}
-  .exit-btn:hover{background:var(--glass);border-color:var(--violet,#8B7CFF);color:var(--violet,#8B7CFF);}
-  .exit-btn:hover .ic{transform:translateX(-3px);}
-  .theme-toggle{
-    width:34px;height:34px;border-radius:50%;border:1px solid var(--glass-brd);
-    background:var(--glass);color:var(--ink);cursor:pointer;font-size:15px;
-    display:flex;align-items:center;justify-content:center;transition:all .3s ease;
-    position:relative;flex-shrink:0;
-  }
-  .theme-toggle:hover{background:var(--panel-strong,var(--glass));border-color:var(--blue,#5B7FFF);transform:scale(1.06);}
-  .theme-toggle .sun-icon,.theme-toggle .moon-icon{position:absolute;transition:all .45s ease;font-size:15px;}
-  .theme-toggle .sun-icon{opacity:0;transform:rotate(-90deg) scale(.4);}
-  .theme-toggle .moon-icon{opacity:1;transform:rotate(0) scale(1);}
-  [data-theme="light"] .theme-toggle .sun-icon{opacity:1;transform:rotate(0) scale(1);}
-  [data-theme="light"] .theme-toggle .moon-icon{opacity:0;transform:rotate(90deg) scale(.4);}
-  @media (max-width:600px){
-    .nav{padding:10px 0 10px 0;}
-    .wrap{padding:0 10px;}
-    .logo{font-size:15px;}
-    .logo .mark{width:26px;height:26px;}
-    .logo .mark svg{width:24px;height:24px;}
-    .nav-links{display:none;}
-    .exit-btn{padding:6px 11px;font-size:11px;}
-    .exit-btn span{display:none;}
-    .theme-toggle{width:30px;height:30px;font-size:13px;}
   }
 
   /* ---------- HUD ---------- */
@@ -286,7 +470,7 @@
   /* ---------- OVERLAY SCREENS ---------- */
   .screen{
     position:absolute;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(ellipse at 50% 30%, #0a1c34 0%, var(--void) 70%);
+    background:radial-gradient(ellipse at 50% 30%, #0a1c34 0%, var(--bg-0) 70%);
     text-align:center;padding:24px;
     overflow-y:auto;
   }
@@ -381,7 +565,7 @@
   .vs-side.you .vs-score{color:var(--teal);}
   .vs-badge{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:38px;height:38px;border-radius:50%;background:var(--void);
+    width:38px;height:38px;border-radius:50%;background:var(--bg-0);
     border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
     font-size:11px;font-weight:800;color:var(--gold);z-index:2;box-shadow:0 0 16px rgba(255,209,102,.5);
   }
@@ -407,7 +591,7 @@
   /* ---- toast ---- */
   #toast{
     position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);
-    background:var(--ink);color:var(--void);font-weight:800;font-size:12.5px;
+    background:var(--text);color:var(--bg-0);font-weight:800;font-size:12.5px;
     padding:10px 18px;border-radius:30px;opacity:0;pointer-events:none;
     transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:2000;
   }
@@ -431,7 +615,7 @@
 <body>
 
 <!-- ============================================ -->
-<!-- SHARED SITE HEADER                            -->
+<!-- HEADER — EXACTLY MATCHES CHALLENGE PAGE      -->
 <!-- ============================================ -->
 <nav class="nav">
   <div class="wrap">
@@ -582,8 +766,6 @@
 <script>
 /* ---------------- Shared header: theme + navigation ---------------- */
 document.addEventListener('DOMContentLoaded', function() {
-  // If theme.css didn't actually load (e.g. this page running standalone),
-  // fall back to the built-in dark/light token set defined above.
   var bg0 = getComputedStyle(document.documentElement).getPropertyValue('--bg-0').trim();
   if (!bg0) document.documentElement.classList.add('theme-css-missing');
 
@@ -702,12 +884,12 @@ function pingIcon(){
 }
 
 /* ---------------- Game state ---------------- */
-let order = [];       // array of indices into STRAITS, fixed once a run starts
+let order = [];
 let roundIdx = 0;
-let scores = [];       // points earned per round, this playthrough
+let scores = [];
 let guessed = false;
-let mode = 'own';      // 'own' | 'challenge'
-let rival = null;      // {name, score, pts:[]} when mode === 'challenge'
+let mode = 'own';
+let rival = null;
 
 function shuffleIdx(n){
   const a = Array.from({length:n}, (_,i)=>i);
@@ -741,8 +923,6 @@ function updateDots(){
 function setMapVisible(visible){
   document.getElementById('map-viewport').classList.toggle('screen-covered', !visible);
 }
-// hidden until a round actually begins, so nothing from the map (including
-// its attribution text) can show behind the start screen
 setMapVisible(false);
 
 /* ---------------- Starting a run ---------------- */
@@ -889,7 +1069,6 @@ function renderBreakdown(myPts, theirPts){
   box.innerHTML = '';
   order.forEach((strIdx, i)=>{
     const mine = myPts[i], theirs = theirPts[i];
-    const mineWon = mine >= theirs;
     const row = document.createElement('div');
     row.className = 'b-row';
     row.innerHTML = `<span class="b-name">${STRAITS[strIdx].name}</span>
