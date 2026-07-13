@@ -297,9 +297,17 @@ const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/
 
 // Country / place-name labels — CARTO ships this as a separate transparent
 // tile layer meant to sit on top of the "nolabels" base, so we get names
-// (countries, oceans, major cities) without redrawing the whole basemap.
+// (countries, cities) without redrawing the whole basemap.
+// Note: at full world-zoom, continent/ocean labels in this free tile set
+// pull the raw map-data name (often the local language, or several
+// languages joined with a semicolon) rather than an English name — there's
+// no language switch available without a paid tile provider. Setting
+// minZoom skips that fully-zoomed-out level entirely, so labels only
+// appear once we're in close enough that country/city names show up
+// consistently in Latin script.
 const labelTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
   subdomains:'abcd',
+  minZoom:4,
   maxZoom:19,
   keepBuffer:4,
   updateWhenZooming:false,
