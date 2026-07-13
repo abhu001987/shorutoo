@@ -295,6 +295,17 @@ const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/
   crossOrigin:true
 }).addTo(map);
 
+// Country / place-name labels — CARTO ships this as a separate transparent
+// tile layer meant to sit on top of the "nolabels" base, so we get names
+// (countries, oceans, major cities) without redrawing the whole basemap.
+const labelTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+  subdomains:'abcd',
+  maxZoom:19,
+  keepBuffer:4,
+  updateWhenZooming:false,
+  crossOrigin:true
+}).addTo(map);
+
 let tilesLoaded = false;
 tiles.on('load', ()=>{
   tilesLoaded = true;
