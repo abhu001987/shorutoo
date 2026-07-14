@@ -31,247 +31,14 @@
 
 <style>
   /* ============================================ */
-  /* HEADER STYLES — matches the reference page:   */
-  /* fixed, transparent, no border-bottom          */
-  /* ============================================ */
-  .nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 24px 0 20px 0;
-    border-bottom: none;
-    background: transparent;
-    transition: border-color 0.3s ease;
-    margin-bottom: 0;
-  }
-
-  /* Hidden while the map/gameplay screen is active (player choosing/
-     dropping a pin). Shown on the start screen and results screen. */
+  /* HEADER — no local overrides. theme.css (already linked below) styles
+     .nav/.wrap/.logo/.nav-links/.nav-cta/.exit-btn/.theme-toggle the same
+     way it does on the contact page — that's the single source of truth,
+     so this page doesn't duplicate it. The only page-specific addition is
+     hiding the header while the map/gameplay screen is active. */
   .nav.header-hidden {
     display: none;
   }
-
-  /* Since the nav is now fixed and out of normal flow, #app needs its own
-     top padding to avoid content sitting under the header — but only while
-     the header is actually visible, so the map screen still gets the full
-     viewport. setHeaderVisible() toggles body.nav-visible to control this. */
-  #app {
-    padding-top: 0;
-    transition: padding-top 0.25s ease;
-  }
-  body.nav-visible #app {
-    padding-top: var(--nav-height, 92px);
-  }
-
-  .wrap {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  .nav-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    color: var(--text);
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
-  }
-
-  .logo .mark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-  }
-
-  .logo .mark svg {
-    width: 38px;
-    height: 38px;
-    display: block;
-  }
-
-  .logo .mark svg circle,
-  .logo .mark svg path {
-    stroke: var(--blue);
-    transition: stroke 0.3s ease;
-  }
-
-  .logo .mark svg [fill]:not([fill="none"]) {
-    fill: var(--blue);
-    transition: fill 0.3s ease;
-  }
-
-  .logo-text {
-    color: var(--text);
-    transition: color 0.3s ease;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 28px;
-    align-items: center;
-  }
-
-  .nav-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.2s ease;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .nav-links a:hover {
-    color: var(--text);
-  }
-
-  .nav-cta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* ---- EXIT BUTTON ---- */
-  .exit-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 10px 20px 10px 16px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    color: var(--text-dim);
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    background: transparent;
-    transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
-  }
-
-  .exit-btn .ic {
-    width: 1em;
-    height: 1em;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.2s var(--ease);
-    flex-shrink: 0;
-  }
-
-  .exit-btn:hover {
-    background: var(--panel-strong);
-    border-color: var(--violet);
-    color: var(--violet);
-  }
-
-  .exit-btn:hover .ic {
-    transform: translateX(-3px);
-  }
-
-  /* ---- THEME TOGGLE (circle, matches contact page) ---- */
-  .theme-toggle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--text);
-    cursor: pointer;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s var(--ease);
-    position: relative;
-    flex-shrink: 0;
-  }
-
-  .theme-toggle:hover {
-    background: var(--panel-strong);
-    border-color: var(--blue);
-    transform: scale(1.06);
-  }
-
-  .theme-toggle .sun-icon,
-  .theme-toggle .moon-icon {
-    position: absolute;
-    transition: all 0.45s var(--ease);
-    font-size: 18px;
-  }
-
-  .theme-toggle .sun-icon {
-    opacity: 0;
-    transform: rotate(-90deg) scale(0.4);
-  }
-
-  .theme-toggle .moon-icon {
-    opacity: 1;
-    transform: rotate(0) scale(1);
-  }
-
-  [data-theme="light"] .theme-toggle .sun-icon {
-    opacity: 1;
-    transform: rotate(0) scale(1);
-  }
-
-  [data-theme="light"] .theme-toggle .moon-icon {
-    opacity: 0;
-    transform: rotate(90deg) scale(0.4);
-  }
-
-  @media (max-width: 600px) {
-    .nav {
-      padding: 16px 0 14px 0;
-      margin-bottom: 14px;
-    }
-    .wrap {
-      padding: 0 16px;
-    }
-    .logo {
-      font-size: 18px;
-    }
-    .logo .mark {
-      width: 32px;
-      height: 32px;
-    }
-    .logo .mark svg {
-      width: 30px;
-      height: 30px;
-    }
-    .nav-links {
-      display: none;
-    }
-    .exit-btn {
-      padding: 6px 12px;
-      font-size: 12px;
-    }
-    .exit-btn span {
-      display: none;
-    }
-    .theme-toggle {
-      width: 36px;
-      height: 36px;
-      font-size: 16px;
-    }
-  }
-
   /* ============================================ */
   /* REST OF PAGE STYLES — RECOLORED TO MATCH      */
   /* CONTACT PAGE (blue/violet, no gold/amber glow) */
@@ -642,10 +409,10 @@
   }
 </style>
 </head>
-<body class="nav-visible">
+<body>
 
 <!-- ============================================ -->
-<!-- HEADER — matches the reference page's fixed, transparent header -->
+<!-- HEADER — EXACTLY MATCHES CONTACT PAGE        -->
 <!-- Hidden only while the map/gameplay screen is active (see setHeaderVisible) -->
 <!-- ============================================ -->
 <nav class="nav" id="siteNav">
@@ -795,18 +562,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-/* ---------------- Fixed header height sync ---------------- */
-function syncNavHeight() {
-  var nav = document.getElementById('siteNav');
-  // Skip while hidden — offsetHeight would read 0 and clobber the last
-  // good value that #app's padding-top depends on for the map screen.
-  if (!nav || nav.classList.contains('header-hidden')) return;
-  document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
-}
-document.addEventListener('DOMContentLoaded', syncNavHeight);
-window.addEventListener('load', syncNavHeight);
-window.addEventListener('resize', syncNavHeight);
-
 /* ---------------- Shared header: theme + navigation ---------------- */
 document.addEventListener('DOMContentLoaded', function() {
   var bg0 = getComputedStyle(document.documentElement).getPropertyValue('--bg-0').trim();
@@ -843,18 +598,11 @@ function goBack() {
 function setHeaderVisible(visible){
   var nav = document.getElementById('siteNav');
   if (!nav) return;
-  if (visible) {
-    // Un-hide first so offsetHeight reads real content, then sync the
-    // --nav-height var #app's padding-top depends on.
-    nav.classList.remove('header-hidden');
-    syncNavHeight();
-  } else {
-    nav.classList.add('header-hidden');
-  }
-  document.body.classList.toggle('nav-visible', visible);
-  // #app's padding-top (and the freed/reclaimed space) changes with this
-  // toggle — resize the map after the reflow settles.
-  setTimeout(function(){ try { map.invalidateSize(); } catch(e){} }, 260);
+  nav.classList.toggle('header-hidden', !visible);
+  // #app is flex:1 in the body's flex column, so hiding/showing the nav
+  // changes how much vertical space the map viewport gets — resize the map
+  // after the reflow settles.
+  setTimeout(function(){ try { map.invalidateSize(); } catch(e){} }, 50);
 }
 
 /* ---------------- Strait data ---------------- */
