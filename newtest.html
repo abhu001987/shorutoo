@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Challenge a Friend · Shoruto</title>
+
+ <!-- Theme: set instantly, before any CSS loads -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared CSS & JS (theme) -->
+  <link rel="stylesheet" href="theme.css" />
+  <script src="theme.js"></script>
+
+  <style>
+    /* ============================================ */
+    /* HEADER STYLES — MATCHES CONTACT PAGE          */
+    /* ============================================ */
+    .nav {
+      padding: 24px 0 20px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 22px;
+      background: transparent;
+      transition: border-color 0.3s ease;
+      position: relative;
+      z-index: 5;
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .logo .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo .mark svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .logo .mark svg circle,
+    .logo .mark svg path {
+      stroke: var(--blue);
+      transition: stroke 0.3s ease;
+    }
+
+    .logo .mark svg [fill]:not([fill="none"]) {
+      fill: var(--blue);
+      transition: fill 0.3s ease;
+    }
+
+    .logo-text {
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ---- EXIT BUTTON ---- */
+    .exit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-dim);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+
+    .exit-btn .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s var(--ease);
+      flex-shrink: 0;
+    }
+
+    .exit-btn:hover {
+      background: var(--panel-strong);
+      border-color: var(--violet);
+      color: var(--violet);
+    }
+
+    .exit-btn:hover .ic {
+      transform: translateX(-3px);
+    }
+
+    /* ---- THEME TOGGLE (circle, matches contact page) ---- */
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel-strong);
+      border-color: var(--blue);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s var(--ease);
+      font-size: 18px;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        padding: 16px 0 14px 0;
+        margin-bottom: 14px;
+      }
+      .wrap {
+        padding: 0 16px;
+      }
+      .logo {
+        font-size: 18px;
+      }
+      .logo .mark {
+        width: 32px;
+        height: 32px;
+      }
+      .logo .mark svg {
+        width: 30px;
+        height: 30px;
+      }
+      .nav-links {
+        display: none;
+      }
+      .exit-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .exit-btn span {
+        display: none;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+    /* ============================================ */
+
+    /* ================================================================ */
+    /* PAGE BODY — recolored + flattened to match contact page          */
+    /* ================================================================ */
+
+    * { box-sizing: border-box; }
+
+    html, body { overflow-x: hidden; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-0);
+      background-image:
+        radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+        radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+      transition: background 0.3s ease, color 0.3s ease;
+      padding-top: 0;
+      margin: 0;
+      position: relative;
+    }
+
+    /* ---- Fallback only ---- */
+    html.theme-css-missing {
+      --bg-0:#05060C; --panel:rgba(255,255,255,.045); --panel-strong:rgba(255,255,255,.08);
+      --border:rgba(91,127,255,.18); --blue:#5B7FFF; --blue-soft:rgba(91,127,255,.35);
+      --violet:#8B7CFF; --mint:#34D399; --amber:#5B7FFF; --text:#EAF0FF; --text-dim:#8993B8;
+      --text-dimmer:#5C6788; --nav-bg:rgba(5,6,12,.7); --input-bg:rgba(255,255,255,.04);
+      --glow-1:rgba(91,127,255,.15); --glow-2:rgba(139,124,255,.12); --danger-color:#FF4F6D;
+    }
+    html.theme-css-missing[data-theme="light"] {
+      --bg-0:#E8EEF7; --panel:rgba(255,255,255,.55); --panel-strong:rgba(255,255,255,.75);
+      --border:rgba(60,90,200,.18); --blue:#5B7FFF; --blue-soft:rgba(91,127,255,.20);
+      --violet:#A78BFA; --mint:#34D399; --amber:#5B7FFF; --text:#0F172A; --text-dim:#334155;
+      --text-dimmer:#64748B; --nav-bg:rgba(255,255,255,.5); --input-bg:rgba(255,255,255,.30);
+      --glow-1:rgba(91,127,255,.12); --glow-2:rgba(167,139,250,.10); --danger-color:#dc2626;
+    }
+
+    /* ---- Color aliases: everything maps to the blue/violet palette ---- */
+    :root {
+      --gold: var(--blue);
+      --teal: var(--mint);
+      --danger: var(--danger-color);
+      --coral: var(--danger-color);
+      --coral-dim: rgba(255, 93, 115, 0.12);
+      --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .page-content {
+      flex: 1;
+      padding: 60px 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---- Icon system ---- */
+    .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
+
+    /* ---- Card shell — same flat panel as contact-card, no 3D/box effects ---- */
+    .console-wrap {
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .terms-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+      padding: 40px 48px;
+      transition: border-color 0.25s ease;
+      max-width: 100%;
+      width: 100%;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .terms-card h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 38px;
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .terms-card p {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .terms-card strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ---- Quiz specific styles ---- */
+    .eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 11.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 16px;
+      height: 2px;
+      background: var(--blue);
+      display: inline-block;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; animation: rise .3s var(--ease); }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .btn {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      border: none;
+      border-radius: 40px;
+      padding: 14px 24px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+    }
+    .btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: none;
+    }
+    .btn-primary:hover { background: var(--violet); transform: scale(1.02); box-shadow: 0 8px 18px rgba(91, 127, 255, 0.25); }
+
+    .btn-teal {
+      background: var(--mint);
+      color: #062522;
+      box-shadow: none;
+    }
+    .btn-teal:hover { filter: brightness(1.05); transform: scale(1.02); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+    .btn-row .btn { width: auto; flex: 1; }
+
+    .qcount {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: var(--text-dimmer);
+    }
+
+    /* ---- progress bar ---- */
+    .progress {
+      height: 8px;
+      background: var(--panel-strong);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 12px 0 24px;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      transition: width .35s var(--ease);
+    }
+
+    /* ---- timer readout ---- */
+    .timer {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      color: var(--blue);
+      padding: 7px 14px;
+      border-radius: 9px;
+      font-size: 14px;
+      letter-spacing: .02em;
+      transition: color .2s ease, border-color .2s ease;
+    }
+    .timer.critical {
+      color: var(--danger);
+      border-color: var(--danger);
+    }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+
+    .qtext { font-size: 19px; font-weight: 700; line-height: 1.4; margin: 6px 0 20px; color: var(--text); }
+
+    /* ---- MCQ tiles ---- */
+    .opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: border-color .15s ease, background .15s ease;
+    }
+    .opt:hover { border-color: var(--blue); }
+    .opt:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+    .opt.selected { border-color: var(--blue); background: rgba(91, 127, 255, 0.08); }
+
+    .opt-letter {
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--text-dimmer);
+      flex: 0 0 auto;
+      transition: all .15s ease;
+    }
+    .opt:hover .opt-letter { border-color: var(--blue); color: var(--blue); }
+    .opt.selected .opt-letter { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+    .opt-label { font-size: 14.5px; color: var(--text); }
+
+    .banner {
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+    }
+    .banner .tag {
+      font-family: 'Inter', sans-serif;
+      background: var(--blue);
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      letter-spacing: .05em;
+      flex-shrink: 0;
+    }
+
+    .scoreboard { text-align: center; padding: 10px 0 6px; position: relative; }
+
+    .grade-pill {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      transition: color .3s ease, border-color .3s ease;
+    }
+    .grade-pill.tier-high { color: var(--mint); border-color: var(--mint); }
+    .grade-pill.tier-mid { color: var(--blue); border-color: var(--blue); }
+    .grade-pill.tier-low { color: var(--danger); border-color: var(--danger); }
+
+    .bignum {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 72px;
+      line-height: 0.9;
+      color: var(--blue);
+    }
+    .bignum.tier-high { color: var(--mint); }
+    .bignum.tier-low { color: var(--danger); }
+    .bignum sup { font-size: 26px; color: var(--blue); }
+
+    .stats-row { display: flex; gap: 10px; margin: 22px 0 8px; }
+    .stat {
+      flex: 1;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      transition: border-color .18s ease;
+    }
+    .stat:hover { border-color: var(--blue); }
+    .stat .v { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; color: var(--text); }
+    .stat .l { font-family: 'Inter', sans-serif; font-size: 10.5px; color: var(--text-dimmer); letter-spacing: .06em; text-transform: uppercase; margin-top: 2px; }
+
+    .divider { height: 1px; background: var(--border); margin: 24px 0; border: none; }
+
+    .share-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text); }
+    .share-sub { color: var(--text-dimmer); font-size: 13px; margin-bottom: 14px; }
+
+    .link-box {
+      display: flex;
+      gap: 8px;
+      background: var(--bg-0);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 9px 9px 9px 14px;
+      margin-bottom: 14px;
+      align-items: center;
+      transition: border-color .2s ease;
+    }
+    .link-box:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,127,255,.15); }
+    .link-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--blue);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+      outline: none;
+      min-width: 0;
+    }
+    .copy-btn {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 13px;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color .15s ease;
+    }
+    .copy-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .copy-btn.copied { border-color: var(--mint); color: var(--mint); }
+
+    .share-icons { display: flex; gap: 10px; margin-bottom: 6px; }
+    .share-icons a {
+      flex: 1;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      background: var(--panel-strong);
+      color: var(--text);
+      transition: border-color .15s ease, transform .15s ease;
+    }
+    .share-icons a:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+
+    .vs-wrap { position: relative; margin: 8px 0 18px; }
+    .vs-card {
+      display: flex;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .vs-side { flex: 1; padding: 22px 14px; text-align: center; position: relative; }
+    .vs-side.challenger {
+      background: linear-gradient(160deg, rgba(255,93,115,0.10), var(--panel));
+    }
+    .vs-side.friend {
+      background: linear-gradient(200deg, rgba(91,127,255,0.12), var(--panel));
+    }
+    .vs-name { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--text-dimmer); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+    .vs-score { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 40px; }
+    .vs-side.challenger .vs-score { color: var(--danger); }
+    .vs-side.friend .vs-score { color: var(--blue); }
+    .vs-badge {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-0);
+      border: 2px solid var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--blue);
+      z-index: 2;
+    }
+
+    .verdict {
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: .01em;
+      padding: 14px 10px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .verdict.win {
+      background: rgba(91, 127, 255, 0.1); color: var(--blue); border: 1px solid rgba(91, 127, 255, 0.35);
+    }
+    .verdict.lose {
+      background: rgba(255, 93, 115, 0.1); color: var(--danger); border: 1px solid rgba(255, 93, 115, 0.35);
+    }
+    .verdict.tie {
+      background: rgba(94, 234, 212, 0.1); color: var(--mint); border: 1px solid rgba(94, 234, 212, 0.35);
+    }
+
+    .qa-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: border-color .15s ease;
+    }
+    .qa-row:hover { border-color: var(--blue); }
+    .qa-row .qn { font-family: 'Inter', sans-serif; color: var(--text-dimmer); width: 26px; flex: 0 0 auto; }
+    .qa-row .marks { display: flex; gap: 6px; margin-left: auto; }
+    .mk { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+    .mk.ok { background: rgba(94, 234, 212, 0.16); color: var(--mint); }
+    .mk.no { background: rgba(255, 93, 115, 0.16); color: var(--danger); }
+
+    .paste-box { margin-top: 26px; }
+    .paste-box textarea {
+      width: 100%;
+      min-height: 64px;
+      resize: vertical;
+      background: var(--bg-0);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--blue);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px;
+      padding: 12px;
+      outline: none;
+      margin-bottom: 10px;
+      transition: border-color .2s ease;
+    }
+    .paste-box textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91,127,255,.15); }
+    .small-note { font-size: 11.5px; color: var(--text-dimmer); line-height: 1.5; margin-top: 10px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--text);
+      color: var(--bg-0);
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 18px;
+      border-radius: 30px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all .3s cubic-bezier(.34,1.56,.64,1);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .footer-link {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-link a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+    .footer-link a:hover { color: var(--blue); }
+    .footer-link .ic { width: 14px; height: 14px; }
+
+    /* ---- Confetti canvas ---- */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .page-content { padding: 40px 16px; }
+      .terms-card { padding: 24px 20px; border-radius: 16px; }
+      .terms-card h1 { font-size: 28px; }
+      .terms-card p { font-size: 15px; }
+      .footer-link { flex-direction: column; align-items: flex-start; }
+      .bignum { font-size: 54px; }
+      .vs-score { font-size: 30px; }
+      .share-icons { flex-wrap: wrap; }
+      .share-icons a { flex: 1 1 45%; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .terms-card { padding: 32px 36px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen.active { animation: none; }
+      .btn, .opt { transition: none; }
+      #confettiCanvas { display: none; }
+    }
+
+    /* ---- Animation ---- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both; }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- HEADER — matches contact page                -->
+  <!-- ============================================ -->
+  <nav class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
+
+        <!-- NAVIGATION LINKS -->
+        <div class="nav-links">
+          <a href="index.html#why"></a>
+          <a href="index.html#trending"></a>
+          <a href="index.html#subjects"></a>
+          <a href="blog.html"></a>
+          <a href="index.html#ai"></a>
+          <a href="index.html#faq"></a>
+        </div>
+
+        <!-- RIGHT SIDE: EXIT BUTTON + THEME TOGGLE -->
+        <div class="nav-cta">
+          <button class="exit-btn" onclick="goBack()">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+            <span>Exit</span>
+          </button>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- ============================================ -->
+
+  <!-- ============================================ -->
+  <!-- QUIZ CONTENT                                -->
+  <!-- ============================================ -->
+  <main class="page-content">
+    <div class="console-wrap">
+    <div class="terms-card fade-in">
+
+      <!-- HOME -->
+      <section id="screen-home" class="screen active">
+        <div class="eyebrow">Mock Test · Challenge Mode</div>
+        <h1>Take the test.<br>Beat your friend.</h1>
+        <p>10 questions. One score. Then send the exact same test to a friend and see who comes out on top — no sign-up, no backend, just a link.</p>
+        <div style="background: var(--panel-strong); border-radius: 14px; padding: 20px; margin-bottom: 18px; border: 1px solid var(--border);">
+          <div class="qcount" style="margin-bottom:10px;">WHAT YOU'LL GET</div>
+          <p style="margin-bottom:0; color: var(--text-dim);">Score, accuracy, grade and a question-by-question breakdown — plus a shareable challenge link the moment you finish.</p>
+        </div>
+        <button class="btn btn-primary" onclick="startTest('own')">Start Mock Test →</button>
+
+        <div class="paste-box">
+          <div class="share-title">Got a challenge link?</div>
+          <div class="share-sub">Paste the link a friend sent you to take their exact test.</div>
+          <textarea id="pasteInput" placeholder="https://shoruto.com/checkup?d=eyJzY29yZSI6NzAs..."></textarea>
+          <button class="btn btn-teal" onclick="openPastedChallenge()">Accept Challenge</button>
+          <div id="pasteError" class="small-note" style="color:var(--danger); display:none;"></div>
+        </div>
+      </section>
+
+      <!-- TEST -->
+      <section id="screen-test" class="screen">
+        <div id="challengeBanner" class="banner" style="display:none;">
+          <span class="tag">CHALLENGE</span>
+          <span id="bannerText">Your friend just finished. Can you beat them?</span>
+        </div>
+        <div class="topbar">
+          <div class="qcount">QUESTION <span id="qNow">1</span> / <span id="qTotal">10</span></div>
+          <div class="timer" id="timerDisplay">10:00</div>
+        </div>
+        <div class="progress"><div class="progress-fill" id="progressFill" style="width:10%;"></div></div>
+
+        <div class="qtext" id="qText">—</div>
+        <div id="optionsWrap"></div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="prevBtn" onclick="prevQ()">← Back</button>
+          <button class="btn btn-primary" id="nextBtn" onclick="nextQ()">Next →</button>
+        </div>
+      </section>
+
+      <!-- OWN RESULT -->
+      <section id="screen-result" class="screen">
+        <div class="eyebrow">Result</div>
+        <div class="scoreboard">
+          <div class="grade-pill" id="gradePill">GRADE A</div>
+          <div class="bignum"><span id="scoreValue">0</span><sup>%</sup></div>
+          <div class="qcount" style="margin-top:8px;">SCORE</div>
+          <div class="stats-row">
+            <div class="stat"><div class="v" id="statCorrect">7/10</div><div class="l">Correct</div></div>
+            <div class="stat"><div class="v" id="statAccuracy">70%</div><div class="l">Accuracy</div></div>
+            <div class="stat"><div class="v" id="statTime">4:12</div><div class="l">Time Taken</div></div>
+          </div>
+        </div>
+
+        <div id="qaBreakdownOwn" style="margin-top:18px;"></div>
+
+        <hr class="divider">
+
+        <div class="share-title">🎯 Challenge a Friend</div>
+        <div class="share-sub">Send them the exact same 10 questions. Your score stays hidden in the link until they finish.</div>
+        <div class="link-box">
+          <input id="challengeLink" readonly>
+          <button class="copy-btn" id="copyLinkBtn" onclick="copyLink()">Copy</button>
+        </div>
+        <div class="share-icons">
+          <a id="waShare" href="#" target="_blank" rel="noopener">WhatsApp</a>
+          <a id="tgShare" href="#" target="_blank" rel="noopener">Telegram</a>
+        </div>
+        <div class="small-note">Your score, the question set and a unique challenge code are packed into one opaque link token — nothing shows up as plain text in the URL bar. Note: this hides it from casual view, it isn't encryption — someone could still decode the token if they went looking for it.</div>
+
+        <button class="btn btn-ghost" style="margin-top:14px;" onclick="goHome()">Back to Home</button>
+      </section>
+
+      <!-- CHALLENGE RESULT -->
+      <section id="screen-challenge-result" class="screen">
+        <div class="eyebrow">Challenge Result</div>
+        <div class="vs-wrap">
+          <div class="vs-card">
+            <div class="vs-side challenger">
+              <div class="vs-name" id="challengerNameLbl">Challenger</div>
+              <div class="vs-score" id="challengerScoreLbl">0%</div>
+            </div>
+            <div class="vs-side friend">
+              <div class="vs-name">You</div>
+              <div class="vs-score" id="friendScoreLbl">0%</div>
+            </div>
+          </div>
+          <div class="vs-badge">VS</div>
+        </div>
+
+        <div class="verdict win" id="verdictBox">🎉 You won! You beat your friend!</div>
+
+        <div class="share-title" style="margin-bottom:10px;">Question-by-question</div>
+        <div id="qaBreakdownChallenge"></div>
+
+        <div class="btn-row" style="margin-top:18px;">
+          <button class="btn btn-primary" onclick="rematch()" style="background:var(--danger);">Rematch</button>
+          <button class="btn btn-teal" onclick="shareMyResult()">Share Result</button>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:10px;" onclick="goHome()">Home</button>
+      </section>
+
+      <!-- Footer link -->
+      <div class="footer-link">
+        <a href="index.html">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+          Back to Shoruto
+        </a>
+        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+      </div>
+
+    </div>
+    </div>
+  </main>
+
+  <!-- ============================================ -->
+  <!-- TOAST                                      -->
+  <!-- ============================================ -->
+  <div class="toast" id="toast">Copied to clipboard</div>
+
+  <!-- ============================================ -->
+  <!-- SCRIPTS                                     -->
+  <!-- ============================================ -->
+  <script>
+    /* ---------------- Theme toggle ---------------- */
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          if (typeof toggleTheme === 'function') {
+            toggleTheme();
+          } else {
+            var html = document.documentElement;
+            var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+          }
+        });
+      }
+    });
+
+    /* ---------------- Exit button ---------------- */
+    function goBack() {
+      if (document.referrer && document.referrer.includes(window.location.host)) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+
+    /* ---------------- Question bank ---------------- */
+    const QUESTIONS = [
+      { q:"What is the capital of Australia?", opts:["Sydney","Canberra","Melbourne","Perth"], a:1 },
+      { q:"Which is the largest planet in our solar system?", opts:["Earth","Mars","Jupiter","Saturn"], a:2 },
+      { q:"H2O is the chemical formula for:", opts:["Salt","Sugar","Water","Oxygen"], a:2 },
+      { q:"Choose the synonym of \"Abundant\":", opts:["Scarce","Plentiful","Rare","Limited"], a:1 },
+      { q:"What is 15% of 200?", opts:["20","25","30","35"], a:2 },
+      { q:"Who wrote \"Romeo and Juliet\"?", opts:["Charles Dickens","William Shakespeare","Mark Twain","Leo Tolstoy"], a:1 },
+      { q:"What is the smallest prime number?", opts:["0","1","2","3"], a:2 },
+      { q:"Choose the antonym of \"Ancient\":", opts:["Old","Modern","Historic","Vintage"], a:1 },
+      { q:"What is the currency of Japan?", opts:["Won","Yuan","Yen","Ringgit"], a:2 },
+      { q:"A train covers 60 km in 30 minutes. Its speed is:", opts:["60 km/h","90 km/h","120 km/h","150 km/h"], a:2 },
+    ];
+
+    /* ---------------- State ---------------- */
+    let state = {
+      mode: 'own',
+      order: [0,1,2,3,4,5,6,7,8,9],
+      current: 0,
+      answers: {},
+      startTs: null,
+      timerId: null,
+      remaining: 600,
+      challenger: null
+    };
+
+    const TEST_SECONDS = 600;
+    const BASE_URL = window.location.origin + window.location.pathname;
+    const OPT_LETTERS = ['A', 'B', 'C', 'D'];
+
+    function show(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function goHome() { stopTimer(); show('screen-home'); }
+
+    /* ---------------- Count-up animation ---------------- */
+    function countUp(el, end, opts) {
+      opts = opts || {};
+      const duration = opts.duration || 900;
+      const suffix = opts.suffix || '';
+      const start = 0;
+      const startTime = performance.now();
+      function tick(now) {
+        const p = Math.min(1, (now - startTime) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(start + (end - start) * eased);
+        el.textContent = val + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = end + suffix;
+      } else {
+        requestAnimationFrame(tick);
+      }
+    }
+
+    /* ---------------- Confetti ---------------- */
+    function fireConfetti() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const cs = getComputedStyle(document.documentElement);
+      const colors = [
+        cs.getPropertyValue('--blue').trim(),
+        cs.getPropertyValue('--violet').trim(),
+        cs.getPropertyValue('--mint').trim()
+      ].filter(Boolean);
+
+      const canvas = document.createElement('canvas');
+      canvas.id = 'confettiCanvas';
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+
+      const pieces = Array.from({ length: 90 }, () => ({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * canvas.height * 0.3,
+        w: 6 + Math.random() * 5,
+        h: 8 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 3,
+        vy: 2 + Math.random() * 3,
+        rot: Math.random() * Math.PI,
+        vrot: (Math.random() - 0.5) * 0.3
+      }));
+
+      let frame = 0;
+      const maxFrames = 220;
+      function loop() {
+        frame++;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.03;
+          p.rot += p.vrot;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        if (frame < maxFrames) {
+          requestAnimationFrame(loop);
+        } else {
+          canvas.remove();
+        }
+      }
+      requestAnimationFrame(loop);
+      window.addEventListener('resize', function onResize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }, { once: true });
+    }
+
+    /* ---------------- Test flow ---------------- */
+    function startTest(mode) {
+      state.mode = mode;
+      state.current = 0;
+      state.answers = {};
+      state.remaining = TEST_SECONDS;
+      state.startTs = Date.now();
+
+      document.getElementById('challengeBanner').style.display = (mode === 'challenge') ? 'flex' : 'none';
+      if (mode === 'challenge' && state.challenger) {
+        document.getElementById('bannerText').textContent =
+          state.challenger.name + ' sent you a challenge — their score stays hidden until you finish.';
+      }
+      document.getElementById('qTotal').textContent = state.order.length;
+      renderQuestion();
+      startTimer();
+      show('screen-test');
+    }
+
+    function startTimer() {
+      stopTimer();
+      updateTimerDisplay();
+      state.timerId = setInterval(function() {
+        state.remaining--;
+        updateTimerDisplay();
+        if (state.remaining <= 0) {
+          stopTimer();
+          finishTest();
+        }
+      }, 1000);
+    }
+
+    function stopTimer() { if (state.timerId) { clearInterval(state.timerId); state.timerId = null; } }
+
+    function updateTimerDisplay() {
+      var m = Math.floor(state.remaining / 60),
+          s = state.remaining % 60;
+      var el = document.getElementById('timerDisplay');
+      el.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      el.classList.toggle('critical', state.remaining <= 60);
+    }
+
+    function renderQuestion() {
+      var idx = state.order[state.current];
+      var item = QUESTIONS[idx];
+      document.getElementById('qNow').textContent = state.current + 1;
+      document.getElementById('qText').textContent = item.q;
+      document.getElementById('progressFill').style.width = ((state.current + 1) / state.order.length) * 100 + '%';
+
+      var wrap = document.getElementById('optionsWrap');
+      wrap.innerHTML = '';
+      item.opts.forEach(function(opt, i) {
+        var div = document.createElement('div');
+        div.className = 'opt' + (state.answers[idx] === i ? ' selected' : '');
+        div.tabIndex = 0;
+        div.setAttribute('role', 'radio');
+        div.setAttribute('aria-checked', state.answers[idx] === i ? 'true' : 'false');
+        function select() { state.answers[idx] = i; renderQuestion(); }
+        div.onclick = select;
+        div.onkeydown = function(e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
+        };
+        div.innerHTML = '<div class="opt-letter">' + OPT_LETTERS[i] + '</div><div class="opt-label">' + opt + '</div>';
+        wrap.appendChild(div);
+      });
+
+      document.getElementById('prevBtn').style.visibility = state.current === 0 ? 'hidden' : 'visible';
+      document.getElementById('nextBtn').textContent = (state.current === state.order.length - 1) ? 'Submit ✓' : 'Next →';
+    }
+
+    function prevQ() { if (state.current > 0) { state.current--; renderQuestion(); } }
+
+    function nextQ() {
+      if (state.current < state.order.length - 1) {
+        state.current++;
+        renderQuestion();
+      } else {
+        stopTimer();
+        finishTest();
+      }
+    }
+
+    /* ---------------- Scoring ---------------- */
+    function computeResult() {
+      var correct = 0;
+      var marks = '';
+      state.order.forEach(function(idx) {
+        var right = state.answers[idx] === QUESTIONS[idx].a;
+        marks += right ? '1' : '0';
+        if (right) correct++;
+      });
+      var score = Math.round((correct / state.order.length) * 100);
+      return { correct: correct, total: state.order.length, score: score, marks: marks };
+    }
+
+    function gradeFor(score) {
+      if (score >= 90) return 'A+';
+      if (score >= 75) return 'A';
+      if (score >= 60) return 'B+';
+      if (score >= 45) return 'B';
+      if (score >= 30) return 'C';
+      return 'D';
+    }
+
+    function tierFor(score) {
+      if (score >= 75) return 'tier-high';
+      if (score >= 45) return 'tier-mid';
+      return 'tier-low';
+    }
+
+    function fmtTime(sec) {
+      var m = Math.floor(sec / 60),
+          s = sec % 60;
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    function finishTest() {
+      var result = computeResult();
+      var timeTaken = TEST_SECONDS - state.remaining;
+
+      if (state.mode === 'own') {
+        renderOwnResult(result, timeTaken);
+        show('screen-result');
+      } else {
+        renderChallengeResult(result, timeTaken);
+        show('screen-challenge-result');
+        if (result.score > state.challenger.score) {
+          setTimeout(fireConfetti, 300);
+        }
+      }
+    }
+
+    /* ---------------- Own result + link generation ---------------- */
+    function randomCode() {
+      var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      var out = '';
+      for (var i = 0; i < 6; i++) out += chars[Math.floor(Math.random() * chars.length)];
+      return out;
+    }
+
+    function buildChallengeLink(result) {
+      var code = randomCode();
+      var qIds = state.order.join(',');
+      var payload = { score: result.score, q: qIds, code: code, marks: result.marks, name: 'Challenger' };
+      var b64 = btoa(JSON.stringify(payload));
+      return BASE_URL + '?d=' + encodeURIComponent(b64);
+    }
+
+    function renderOwnResult(result, timeTaken) {
+      var tier = tierFor(result.score);
+      var gradePill = document.getElementById('gradePill');
+      gradePill.textContent = 'GRADE ' + gradeFor(result.score);
+      gradePill.className = 'grade-pill ' + tier;
+
+      var bignum = document.querySelector('.bignum');
+      bignum.className = 'bignum ' + tier;
+      countUp(document.getElementById('scoreValue'), result.score);
+
+      document.getElementById('statCorrect').textContent = result.correct + '/' + result.total;
+      document.getElementById('statAccuracy').textContent = result.score + '%';
+      document.getElementById('statTime').textContent = fmtTime(timeTaken);
+
+      renderBreakdown('qaBreakdownOwn', state.order, result.marks, null);
+
+      var link = buildChallengeLink(result);
+      document.getElementById('challengeLink').value = link;
+      document.getElementById('copyLinkBtn').classList.remove('copied');
+      document.getElementById('copyLinkBtn').textContent = 'Copy';
+
+      var msg = '🎯 I just took a quiz on SHORUTO. Think you can beat me? Take the same test here: ' + link;
+      document.getElementById('waShare').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+      document.getElementById('tgShare').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent('🎯 Think you can beat my SHORUTO score?');
+    }
+
+    function copyLink() {
+      var input = document.getElementById('challengeLink');
+      input.select();
+      var btn = document.getElementById('copyLinkBtn');
+      function done() {
+        showToast();
+        btn.textContent = 'Copied ✓';
+        btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+      }
+      navigator.clipboard.writeText(input.value).then(done)['catch'](function() {
+        document.execCommand('copy');
+        done();
+      });
+    }
+
+    function showToast(msg) {
+      var t = document.getElementById('toast');
+      t.textContent = msg || 'Copied to clipboard';
+      t.classList.add('show');
+      setTimeout(function() { t.classList.remove('show'); }, 1800);
+    }
+
+    /* ---------------- Accepting a challenge ---------------- */
+    function parseChallengeString(raw) {
+      raw = raw.trim();
+      if (!raw) throw new Error('Paste a challenge link first.');
+      var d;
+      if (raw.includes('?')) {
+        var params = new URLSearchParams(raw.split('?')[1]);
+        d = params.get('d');
+      } else if (raw.includes('=')) {
+        var params2 = new URLSearchParams(raw);
+        d = params2.get('d');
+      } else {
+        d = raw;
+      }
+      if (!d) throw new Error('This link is missing its challenge data.');
+      var payload = JSON.parse(atob(decodeURIComponent(d)));
+      return payload;
+    }
+
+    function openPastedChallenge() {
+      var raw = document.getElementById('pasteInput').value;
+      var errBox = document.getElementById('pasteError');
+      errBox.style.display = 'none';
+      try {
+        var payload = parseChallengeString(raw);
+        loadChallenge(payload);
+      } catch (e) {
+        errBox.textContent = e.message || 'Could not read that challenge link.';
+        errBox.style.display = 'block';
+      }
+    }
+
+    function loadChallenge(payload) {
+      state.challenger = {
+        score: payload.score,
+        code: payload.code,
+        marks: payload.marks,
+        name: payload.name || 'Your friend'
+      };
+      state.order = payload.q.split(',').map(Number);
+      startTest('challenge');
+    }
+
+    (function autoDetect() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var d = params.get('d');
+        if (d) {
+          var payload = JSON.parse(atob(decodeURIComponent(d)));
+          loadChallenge(payload);
+        }
+      } catch (e) { /* ignore */ }
+    })();
+
+    /* ---------------- Challenge result ---------------- */
+    function renderChallengeResult(result, timeTaken) {
+      var ch = state.challenger;
+      document.getElementById('challengerNameLbl').textContent = ch.name;
+      countUp(document.getElementById('challengerScoreLbl'), ch.score, { suffix: '%', duration: 700 });
+      countUp(document.getElementById('friendScoreLbl'), result.score, { suffix: '%', duration: 700 });
+
+      var verdict = document.getElementById('verdictBox');
+      verdict.classList.remove('win', 'lose', 'tie');
+      if (result.score > ch.score) {
+        verdict.textContent = '🎉 You won! You beat your friend!';
+        verdict.classList.add('win');
+      } else if (result.score < ch.score) {
+        verdict.textContent = '😅 Your friend beat you! Try again!';
+        verdict.classList.add('lose');
+      } else {
+        verdict.textContent = "🤝 It's a tie!";
+        verdict.classList.add('tie');
+      }
+
+      renderBreakdown('qaBreakdownChallenge', state.order, result.marks, ch.marks);
+
+      state._lastResult = result;
+      state._lastTime = timeTaken;
+    }
+
+    function renderBreakdown(containerId, order, myMarks, otherMarks) {
+      var box = document.getElementById(containerId);
+      box.innerHTML = '';
+      order.forEach(function(qIdx, i) {
+        var row = document.createElement('div');
+        row.className = 'qa-row';
+        var mine = myMarks[i] === '1';
+        var marksHtml = '<span class="mk ' + (mine ? 'ok' : 'no') + '">' + (mine ? '✓' : '✕') + '</span>';
+        if (otherMarks) {
+          var theirs = otherMarks[i] === '1';
+          marksHtml = '<span class="mk ' + (theirs ? 'ok' : 'no') + '">' + (theirs ? '✓' : '✕') + '</span>' +
+            '<span class="mk ' + (mine ? 'ok' : 'no') + '">' + (mine ? '✓' : '✕') + '</span>';
+        }
+        row.innerHTML = '<span class="qn">Q' + (i + 1) + '</span><span>' + QUESTIONS[qIdx].q + '</span><span class="marks">' + marksHtml + '</span>';
+        box.appendChild(row);
+      });
+    }
+
+    function rematch() {
+      var result = state._lastResult;
+      var link = buildChallengeLink(result);
+      navigator.clipboard.writeText(link)['catch'](function() {});
+      showToast('New rematch link copied — send it to someone else!');
+    }
+
+    function shareMyResult() {
+      var result = state._lastResult;
+      if (!result) { showToast('Finish a test first'); return; }
+      var link = buildChallengeLink(result);
+      var msg = '🎯 I scored ' + result.score + '% on SHORUTO! Think you can beat me? Take the same test here: ' + link;
+
+      if (navigator.share) {
+        navigator.share({ title: 'SHORUTO Challenge', text: msg, url: link })['catch'](function() { /* user cancelled */ });
+      } else {
+        navigator.clipboard.writeText(msg).then(function() {
+          showToast('Result + link copied to share');
+        })['catch'](function() {
+          showToast('Could not copy — try the WhatsApp/Telegram buttons instead');
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>
