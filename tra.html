@@ -31,13 +31,179 @@
 
 <style>
   /* ============================================ */
-  /* HEADER — no local overrides. theme.css (already linked below) styles
-     .nav/.wrap/.logo/.nav-links/.nav-cta/.exit-btn/.theme-toggle the same
-     way it does on the contact page — that's the single source of truth,
-     so this page doesn't duplicate it. The only page-specific addition is
-     hiding the header while the map/gameplay screen is active. */
+  /* HEADER — matches the Challenge page's nav design (same markup:
+     .nav/.wrap/.logo/.nav-links/.nav-cta/.exit-btn/.theme-toggle).
+     Unlike the Challenge page this header sits in normal document flow
+     (not position:fixed) because #app is a flex column that already
+     reserves space for it — see setHeaderVisible(), which hides it
+     entirely while the map/gameplay screen is active. */
+  .nav {
+    width: 100%;
+    z-index: 1000;
+    padding: 18px 0 14px 0;
+    border-bottom: none;
+    background: transparent;
+    flex-shrink: 0;
+    transition: border-color 0.3s ease, padding 0.3s ease;
+  }
   .nav.header-hidden {
     display: none;
+  }
+  .nav .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .nav .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+  }
+  .nav .logo .mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+  .nav .logo .mark svg {
+    width: 38px;
+    height: 38px;
+    display: block;
+  }
+  .nav .logo .mark svg circle,
+  .nav .logo .mark svg path {
+    stroke: var(--blue);
+    transition: stroke 0.3s ease;
+  }
+  .nav .logo .mark svg [fill]:not([fill="none"]) {
+    fill: var(--blue);
+    transition: fill 0.3s ease;
+  }
+  .nav .logo-text {
+    color: var(--ink);
+    transition: color 0.3s ease;
+  }
+  .nav .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav .nav-links a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: color 0.2s ease;
+  }
+  .nav .nav-links a:hover {
+    color: var(--ink);
+  }
+  .nav .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav .exit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px 10px 16px;
+    border: 1px solid var(--glass-brd);
+    border-radius: 12px;
+    color: var(--ink-dim);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    background: transparent;
+    transition: 0.2s ease, border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+  }
+  .nav .exit-btn .ic {
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .nav .exit-btn:hover {
+    background: var(--glass);
+    border-color: var(--violet);
+    color: var(--violet);
+  }
+  .nav .exit-btn:hover .ic {
+    transform: translateX(-3px);
+  }
+  .nav .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-brd);
+    background: var(--glass);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .nav .theme-toggle:hover {
+    background: var(--panel-strong, var(--glass));
+    border-color: var(--blue);
+    transform: scale(1.06);
+  }
+  .nav .theme-toggle .sun-icon,
+  .nav .theme-toggle .moon-icon {
+    position: absolute;
+    transition: all 0.45s ease;
+    font-size: 18px;
+  }
+  .nav .theme-toggle .sun-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.4);
+  }
+  .nav .theme-toggle .moon-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+  [data-theme="light"] .nav .theme-toggle .sun-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+  [data-theme="light"] .nav .theme-toggle .moon-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+  }
+  @media (max-width: 600px) {
+    .nav { padding: 12px 0 10px 0; }
+    .nav .wrap { padding: 0 14px; }
+    .nav .logo { font-size: 18px; }
+    .nav .logo .mark { width: 32px; height: 32px; }
+    .nav .logo .mark svg { width: 30px; height: 30px; }
+    .nav .nav-links { display: none; }
+    .nav .exit-btn { padding: 6px 12px; font-size: 12px; }
+    .nav .exit-btn span { display: none; }
+    .nav .theme-toggle { width: 36px; height: 36px; font-size: 16px; }
   }
   /* ============================================ */
   /* REST OF PAGE STYLES — RECOLORED TO MATCH      */
@@ -136,6 +302,21 @@
     font-weight:800;letter-spacing:.14em;font-size:10px;color:var(--teal);
     text-transform:uppercase;opacity:.85;flex-shrink:0;
     writing-mode:horizontal-tb;
+  }
+  /* Always-visible way back to the menu while the main header is hidden
+     during gameplay — lets a player quit a run without finishing it. */
+  .hud-back-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:50%;flex-shrink:0;
+    background:var(--glass);border:1px solid var(--glass-brd);
+    color:var(--ink);cursor:pointer;padding:0;
+    transition:border-color .15s ease, color .15s ease, transform .12s ease;
+  }
+  .hud-back-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .hud-back-btn:active{transform:scale(.92);}
+  .hud-back-btn .ic{
+    width:16px;height:16px;fill:none;stroke:currentColor;
+    stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
   }
   .strait-card{
     background:var(--glass);
@@ -531,6 +712,9 @@
 
   <!-- GAME UI -->
   <div id="hud-top">
+    <button class="hud-back-btn" onclick="exitToMenu()" aria-label="Back to menu" title="Back to menu">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
     <div class="brand">◆ Strait Navigator</div>
     <div class="strait-card">
       <div class="eyebrow" id="round-label">Round 1 of 13</div>
@@ -736,6 +920,17 @@ function setMapVisible(visible){
   document.getElementById('map-viewport').classList.toggle('screen-covered', !visible);
 }
 setMapVisible(false);
+
+/* ---------------- Quitting mid-run ---------------- */
+function exitToMenu(){
+  if(!confirm('Leave this run and return to the menu? Your progress on this attempt will be lost.')) return;
+  markerLayer.clearLayers();
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('screen-start').classList.remove('hidden');
+  document.getElementById('challenge-flag').classList.remove('show');
+  setMapVisible(false);
+  setHeaderVisible(true);
+}
 
 /* ---------------- Starting a run ---------------- */
 function startFreshGame(){
