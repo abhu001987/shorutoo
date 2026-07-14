@@ -25,19 +25,16 @@
 
   <style>
     /* ============================================ */
-    /* HEADER STYLES — STATIC, STICKY */
+    /* HEADER STYLES — EXACTLY LIKE CONTACT PAGE   */
     /* ============================================ */
     .nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 18px 0 16px 0;
+      padding: 24px 0 20px 0;
       border-bottom: 1px solid var(--border);
-      background: var(--nav-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: border-color 0.3s ease, background 0.3s ease;
       margin-bottom: 0;
+      background: transparent;
+      transition: border-color 0.3s ease;
+      position: relative;
+      z-index: 5;
     }
 
     .wrap {
@@ -210,7 +207,8 @@
 
     @media (max-width: 600px) {
       .nav {
-        padding: 12px 0 10px 0;
+        padding: 16px 0 14px 0;
+        margin-bottom: 14px;
       }
       .wrap {
         padding: 0 16px;
@@ -265,7 +263,6 @@
 
     html, body { 
       overflow-x: hidden;
-      scroll-behavior: smooth;
     }
 
     body {
@@ -1054,7 +1051,7 @@
   <div class="arcade-floor" aria-hidden="true"></div>
 
   <!-- ============================================ -->
-  <!-- HEADER — STICKY, STATIC, with blur backdrop -->
+  <!-- HEADER — EXACTLY LIKE CONTACT PAGE          -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -1079,7 +1076,7 @@
           <span class="logo-text">Shoruto</span>
         </a>
 
-        <!-- NAVIGATION LINKS -->
+        <!-- NAVIGATION LINKS (same as contact page) -->
         <div class="nav-links">
           <a href="index.html#why"></a>
           <a href="index.html#trending"></a>
@@ -1089,7 +1086,7 @@
           <a href="index.html#faq"></a>
         </div>
 
-        <!-- RIGHT SIDE: EXIT BUTTON + THEME TOGGLE -->
+        <!-- RIGHT SIDE: EXIT BUTTON + THEME TOGGLE (same as contact) -->
         <div class="nav-cta">
           <button class="exit-btn" onclick="goBack()">
             <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
