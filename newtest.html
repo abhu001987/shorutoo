@@ -25,23 +25,20 @@
 
   <style>
     /* ============================================ */
-    /* HEADER — STICKY, ALWAYS VISIBLE, BLUR       */
+    /* HEADER — TRANSPARENT, STICKY, NO BORDER     */
     /* ============================================ */
     .nav {
-      position: sticky;
+      position: fixed;
       top: 0;
-      z-index: 100;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 1000;
       padding: 24px 0 20px 0;
       border-bottom: none;
-      background: rgba(var(--bg-0-rgb, 5, 6, 12), 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: background 0.3s ease;
+      background: transparent;
+      transition: border-color 0.3s ease;
       margin-bottom: 0;
-    }
-
-    [data-theme="light"] .nav {
-      background: rgba(var(--bg-0-rgb, 232, 238, 247), 0.7);
     }
 
     .wrap {
@@ -254,14 +251,10 @@
       --gold: var(--amber);
       --teal: var(--mint);
       --danger: var(--danger-color);
-      --coral: #FF6B5B;
-      --coral-dim: rgba(255, 107, 91, 0.16);
+      --coral: #FF6F5C;
+      --coral-shadow: #C24435;
+      --coral-dim: rgba(255, 111, 92, 0.16);
       --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-      --bg-0-rgb: 5, 6, 12;
-    }
-
-    [data-theme="light"] {
-      --bg-0-rgb: 232, 238, 247;
     }
 
     * { box-sizing: border-box; }
@@ -290,7 +283,6 @@
       --violet:#8B7CFF; --mint:#34D399; --amber:#FFB84D; --text:#EAF0FF; --text-dim:#8993B8;
       --text-dimmer:#5C6788; --nav-bg:rgba(5,6,12,.7); --input-bg:rgba(255,255,255,.04);
       --glow-1:rgba(62,123,250,.18); --glow-2:rgba(139,124,255,.14); --danger-color:#FF4F6D;
-      --bg-0-rgb: 5, 6, 12;
     }
     html.theme-css-missing[data-theme="light"] {
       --bg-0:#E8EEF7; --panel:rgba(255,255,255,.55); --panel-strong:rgba(255,255,255,.75);
@@ -298,12 +290,11 @@
       --violet:#A78BFA; --mint:#34D399; --amber:#FBBF24; --text:#0F172A; --text-dim:#334155;
       --text-dimmer:#64748B; --nav-bg:rgba(255,255,255,.25); --input-bg:rgba(255,255,255,.30);
       --glow-1:rgba(91,127,255,.15); --glow-2:rgba(167,139,250,.12); --danger-color:#dc2626;
-      --bg-0-rgb: 232, 238, 247;
     }
 
     .page-content {
       flex: 1;
-      padding: 40px 20px 60px;
+      padding: calc(var(--nav-height, 92px) + 40px) 20px 60px;
       max-width: 800px;
       margin: 0 auto;
       width: 100%;
@@ -971,7 +962,7 @@
 
     @media (max-width: 768px) {
       .page-content {
-        padding: 30px 16px 40px;
+        padding: calc(var(--nav-height, 72px) + 30px) 16px 40px;
       }
       .home-headline {
         font-size: 34px;
@@ -1026,7 +1017,7 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER — STICKY, ALWAYS VISIBLE, BLUR       -->
+  <!-- HEADER — TRANSPARENT, STICKY, NO BORDER     -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -1182,7 +1173,7 @@
         <div id="qaBreakdownChallenge"></div>
 
         <div class="btn-row" style="margin-top:18px; max-width:500px; margin-left:auto; margin-right:auto;">
-          <button class="btn btn-primary" onclick="rematch()" style="background:var(--coral); color:#221016; box-shadow: 0 5px 0 0 #B23F32, 0 12px 26px -10px rgba(255,107,91,.45);">Rematch</button>
+          <button class="btn btn-primary" onclick="rematch()" style="background:var(--coral); color:#221016; box-shadow: 0 5px 0 0 var(--coral-shadow), 0 12px 26px -10px rgba(255,111,92,.45);">Rematch</button>
           <button class="btn btn-teal" onclick="shareMyResult()">Share Result</button>
         </div>
         <button class="btn btn-ghost" style="margin-top:10px; max-width:340px; margin:10px auto 0;" onclick="goHome()">Home</button>
@@ -1209,6 +1200,16 @@
   <!-- SCRIPTS                                     -->
   <!-- ============================================ -->
   <script>
+    /* ---------------- Fixed header height sync ---------------- */
+    function syncNavHeight() {
+      var nav = document.querySelector('.nav');
+      if (!nav) return;
+      document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
+    }
+    document.addEventListener('DOMContentLoaded', syncNavHeight);
+    window.addEventListener('load', syncNavHeight);
+    window.addEventListener('resize', syncNavHeight);
+
     /* ---------------- Theme toggle ---------------- */
     document.addEventListener('DOMContentLoaded', function() {
       const themeToggle = document.getElementById('themeToggle');
@@ -1569,6 +1570,24 @@
     }
 
     /* ---------------- Accepting a challenge ---------------- */
+    function decodeChallengePayload(d) {
+      // A pasted 'd' value may or may not already be percent-decoded
+      // (it depends on where it came from), so try both forms rather
+      // than assuming — avoids silently failing on valid links.
+      var candidates = [d];
+      try {
+        var dec = decodeURIComponent(d);
+        if (dec !== d) candidates.push(dec);
+      } catch (e) { /* not percent-encoded, ignore */ }
+
+      for (var i = 0; i < candidates.length; i++) {
+        try {
+          return JSON.parse(atob(candidates[i]));
+        } catch (e) { /* try next candidate */ }
+      }
+      throw new Error('Could not read the challenge data in this link.');
+    }
+
     function parseChallengeString(raw) {
       raw = raw.trim();
       if (!raw) throw new Error('Paste a challenge link first.');
@@ -1576,15 +1595,17 @@
       if (raw.includes('?')) {
         var params = new URLSearchParams(raw.split('?')[1]);
         d = params.get('d');
-      } else if (raw.includes('=')) {
+      } else if (/(^|[&;])d=/.test(raw)) {
+        // Only treat as a "d=..." query fragment, not just any string
+        // containing "=" — base64 payloads legitimately end in "="
+        // padding and were previously misdetected as query strings.
         var params2 = new URLSearchParams(raw);
         d = params2.get('d');
       } else {
         d = raw;
       }
       if (!d) throw new Error('This link is missing its challenge data.');
-      var payload = JSON.parse(atob(decodeURIComponent(d)));
-      return payload;
+      return decodeChallengePayload(d);
     }
 
     function openPastedChallenge() {
@@ -1616,7 +1637,7 @@
         var params = new URLSearchParams(window.location.search);
         var d = params.get('d');
         if (d) {
-          var payload = JSON.parse(atob(decodeURIComponent(d)));
+          var payload = decodeChallengePayload(d);
           loadChallenge(payload);
         }
       } catch (e) { /* ignore */ }
