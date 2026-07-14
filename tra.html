@@ -31,18 +31,19 @@
 
   <style>
     /* ============================================ */
-    /* HEADER — EXACTLY MATCHES TERMS & CONTACT PAGES */
-    /* (same .nav, .wrap, .nav-inner, .logo, .nav-links, .nav-cta, .exit-btn, .theme-toggle) */
+    /* HEADER — EXACTLY MATCHES TERMS PAGE          */
+    /* transparent background, no extra border line  */
     /* ============================================ */
     .nav {
       padding: 24px 0 20px 0;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 22px;
-      background: transparent;
+      border-bottom: none;        /* ← removed the line */
+      margin-bottom: 0;           /* ← no extra space */
+      background: transparent;    /* ← fully transparent */
       transition: border-color 0.3s ease;
       flex-shrink: 0;
       width: 100%;
       z-index: 1000;
+      position: relative;
     }
     .nav.header-hidden {
       display: none;
@@ -219,7 +220,7 @@
     @media (max-width: 600px) {
       .nav {
         padding: 16px 0 14px 0;
-        margin-bottom: 14px;
+        margin-bottom: 0;
       }
       .wrap {
         padding: 0 16px;
@@ -254,7 +255,7 @@
     /* ============================================ */
 
     /* ============================================ */
-    /* REST OF PAGE STYLES (unchanged from original) */
+    /* REST OF PAGE STYLES (unchanged)              */
     /* ============================================ */
 
     /* Fallback tokens — used only if theme.css fails to load */
@@ -638,7 +639,7 @@
 <body>
 
 <!-- ============================================ -->
-<!-- HEADER — EXACTLY MATCHES TERMS PAGE          -->
+<!-- HEADER — TRANSPARENT, NO BORDER LINE         -->
 <!-- ============================================ -->
 <nav class="nav" id="siteNav">
   <div class="wrap">
