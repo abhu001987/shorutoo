@@ -25,16 +25,17 @@
 
   <style>
     /* ============================================ */
-    /* HEADER — EXACTLY LIKE CONTACT PAGE          */
+    /* HEADER — STICKY, LIKE CONTACT PAGE BUT FIXED */
     /* ============================================ */
     .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
       padding: 24px 0 20px 0;
       border-bottom: 1px solid var(--border);
+      background: var(--bg-0);
+      transition: border-color 0.3s ease, background 0.3s ease;
       margin-bottom: 0;
-      background: transparent;
-      transition: border-color 0.3s ease;
-      position: relative;
-      z-index: 5;
     }
 
     .wrap {
@@ -241,7 +242,7 @@
     }
 
     /* ============================================ */
-    /* BODY — EXACTLY LIKE CONTACT PAGE            */
+    /* BODY — CLEAN GRADIENT, NO BOX               */
     /* ============================================ */
     :root {
       --neon-cyan: #00E8FF;
@@ -291,10 +292,12 @@
 
     .page-content {
       flex: 1;
-      padding: 60px 20px;
-      max-width: 1400px;
+      padding: 40px 20px 60px;
+      max-width: 900px;
       margin: 0 auto;
       width: 100%;
+      position: relative;
+      z-index: 1;
     }
 
     .ic {
@@ -310,20 +313,14 @@
     }
 
     /* ============================================ */
-    /* CARD — EXACTLY LIKE CONTACT PAGE .contact-card */
+    /* NO CARD — just clean content on background   */
     /* ============================================ */
-    .challenge-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      backdrop-filter: blur(10px);
-      padding: 40px 48px;
-      transition: border-color 0.25s ease, transform 0.25s ease;
-      max-width: 900px;
+    .challenge-content {
+      max-width: 700px;
       margin: 0 auto;
     }
 
-    .challenge-card .eyebrow {
+    .eyebrow {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
       letter-spacing: .14em;
@@ -335,7 +332,7 @@
       margin-bottom: 10px;
       justify-content: center;
     }
-    .challenge-card .eyebrow::before {
+    .eyebrow::before {
       content: '';
       width: 16px;
       height: 2px;
@@ -343,78 +340,52 @@
       display: inline-block;
     }
 
-    .challenge-card .home-headline {
+    .home-headline {
       font-family: 'Anton', sans-serif;
       font-weight: 400;
       text-transform: uppercase;
-      font-size: 48px;
+      font-size: 52px;
       line-height: 1.05;
       letter-spacing: .01em;
       color: var(--text);
       margin-bottom: 12px;
       text-align: center;
-      text-shadow: 2px 2px 0 rgba(62, 123, 250, 0.25), -2px -2px 0 rgba(139, 124, 255, 0.2);
+      text-shadow: 2px 2px 0 rgba(62, 123, 250, 0.2), -2px -2px 0 rgba(139, 124, 255, 0.15);
     }
 
-    .challenge-card .home-desc {
+    .home-desc {
       color: var(--text-dim);
       font-size: 16px;
       line-height: 1.8;
       margin-bottom: 18px;
       text-align: center;
-      max-width: 640px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
-    .challenge-card .home-feature-box {
+    .home-feature-box {
       background: var(--panel-strong);
       border-radius: 14px;
       padding: 20px;
       margin-bottom: 18px;
       border: 1px solid var(--border);
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
     }
-    .challenge-card .home-feature-box .qcount {
+    .home-feature-box .qcount {
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       color: var(--text-dimmer);
       margin-bottom: 10px;
     }
-    .challenge-card .home-feature-box p {
+    .home-feature-box p {
       margin-bottom: 0;
       color: var(--text-dim);
     }
 
-    .challenge-card .home-btn-wrap {
+    .home-btn-wrap {
       max-width: 340px;
       margin: 0 auto;
     }
 
-    .challenge-card .home-paste-wrap {
-      margin-top: 26px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .challenge-card .home-paste-wrap .share-title {
-      font-weight: 800;
-      font-size: 15px;
-      margin-bottom: 4px;
-      color: var(--text);
-      text-align: center;
-    }
-    .challenge-card .home-paste-wrap .share-sub {
-      color: var(--text-dimmer);
-      font-size: 13px;
-      margin-bottom: 14px;
-      text-align: center;
-    }
-
     /* ============================================ */
-    /* BUTTONS — MATCH CONTACT PAGE STYLE          */
+    /* BUTTONS                                      */
     /* ============================================ */
     .btn {
       font-family: 'Manrope', sans-serif;
@@ -463,14 +434,14 @@
     .btn-row .btn { width: auto; flex: 1; }
 
     /* ============================================ */
-    /* SCREENS — MATCH CONTACT PAGE STYLE          */
+    /* SCREENS                                      */
     /* ============================================ */
     .screen { display: none; }
     .screen.active { display: block; animation: rise .38s cubic-bezier(.2,.8,.2,1); }
     @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ============================================ */
-    /* TEST SCREEN — CLEAN, MINIMAL                */
+    /* TEST SCREEN                                  */
     /* ============================================ */
     #screen-test {
       max-width: 700px;
@@ -607,7 +578,7 @@
     }
 
     /* ============================================ */
-    /* RESULT SCREENS — CLEAN, MINIMAL             */
+    /* RESULT SCREENS                               */
     /* ============================================ */
     #screen-result, #screen-challenge-result {
       text-align: center;
@@ -653,9 +624,6 @@
       display: flex;
       gap: 10px;
       margin: 22px 0 8px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
     }
     .stat {
       flex: 1;
@@ -891,13 +859,10 @@
     }
 
     /* ============================================ */
-    /* PASTE BOX — FIXED, CLEAN                    */
+    /* PASTE BOX                                    */
     /* ============================================ */
     .paste-box {
       margin-top: 26px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
     }
     .paste-box textarea {
       width: 100%;
@@ -941,7 +906,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      max-width: 900px;
+      max-width: 700px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -995,14 +960,10 @@
 
     @media (max-width: 768px) {
       .page-content {
-        padding: 40px 16px;
+        padding: 30px 16px 40px;
       }
-      .challenge-card {
-        padding: 24px 20px;
-        border-radius: 16px;
-      }
-      .challenge-card .home-headline {
-        font-size: 32px;
+      .home-headline {
+        font-size: 34px;
       }
       .bignum {
         font-size: 60px;
@@ -1034,18 +995,11 @@
       }
     }
 
-    @media (min-width: 769px) and (max-width: 1200px) {
-      .challenge-card {
-        padding: 32px 36px;
-      }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .screen.active { animation: none; }
       .btn, .opt { transition: none; }
       .stat, .qa-row, .vs-side, .vs-badge, .verdict { animation: none !important; opacity: 1; transform: none; }
       .timer.critical { animation: none; }
-      .challenge-card { transform: none !important; }
       #confettiCanvas { display: none; }
     }
 
@@ -1061,7 +1015,7 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER — EXACTLY LIKE CONTACT PAGE          -->
+  <!-- HEADER — STICKY, CLEAN BACKGROUND           -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -1113,10 +1067,10 @@
   <!-- ============================================ -->
 
   <!-- ============================================ -->
-  <!-- PAGE CONTENT                                -->
+  <!-- PAGE CONTENT — NO BOX, JUST CLEAN TEXT      -->
   <!-- ============================================ -->
   <main class="page-content">
-    <div class="challenge-card fade-in">
+    <div class="challenge-content fade-in">
 
       <!-- HOME SCREEN -->
       <section id="screen-home" class="screen active">
@@ -1131,7 +1085,6 @@
           <button class="btn btn-primary" onclick="startTest('own')">Start Mock Test →</button>
         </div>
 
-        <!-- PASTE BOX — FIXED -->
         <div class="paste-box">
           <div class="share-title">Got a challenge link?</div>
           <div class="share-sub">Paste the link a friend sent you to take their exact test.</div>
@@ -1272,19 +1225,19 @@
 
     /* ---------------- 3D tilt ---------------- */
     (function() {
-      var card = document.querySelector('.challenge-card');
-      if (!card) return;
+      var content = document.querySelector('.challenge-content');
+      if (!content) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (window.matchMedia('(pointer: coarse)').matches) return;
       var wrap = document.querySelector('.page-content');
       wrap.addEventListener('mousemove', function(e) {
-        var rect = card.getBoundingClientRect();
+        var rect = content.getBoundingClientRect();
         var px = (e.clientX - rect.left) / rect.width - 0.5;
         var py = (e.clientY - rect.top) / rect.height - 0.5;
-        card.style.transform = 'perspective(1400px) rotateY(' + (px * 3.5) + 'deg) rotateX(' + (-py * 3.5) + 'deg)';
+        content.style.transform = 'perspective(1400px) rotateY(' + (px * 3) + 'deg) rotateX(' + (-py * 3) + 'deg)';
       });
       wrap.addEventListener('mouseleave', function() {
-        card.style.transform = 'perspective(1400px) rotateY(0deg) rotateX(0deg)';
+        content.style.transform = 'perspective(1400px) rotateY(0deg) rotateX(0deg)';
       });
     })();
 
