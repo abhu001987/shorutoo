@@ -979,6 +979,151 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .fade-in { animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both; }
+
+    /* ---- New styles: cleaner home layout (like Navigator image) ---- */
+    .home-headline {
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: 42px;
+      line-height: 1.05;
+      letter-spacing: .01em;
+      color: var(--text);
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 0 rgba(0,232,255,.35), -2px -2px 0 rgba(255,62,201,.28);
+    }
+    .home-desc {
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 14px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .home-feature-box {
+      background: var(--panel-strong);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+      border: 1px solid var(--border);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .home-feature-box .qcount {
+      margin-bottom: 10px;
+    }
+    .home-feature-box p {
+      margin-bottom: 0;
+      color: var(--text-dim);
+    }
+    .home-btn-wrap {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .home-paste-wrap {
+      margin-top: 26px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .home-paste-wrap .share-title {
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .home-paste-wrap .share-sub {
+      color: var(--text-dimmer);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    /* remove extra box around text on home */
+    .terms-card .console-screen > section#screen-home {
+      text-align: center;
+    }
+    .terms-card .console-screen > section#screen-home .eyebrow {
+      justify-content: center;
+    }
+    .terms-card .console-screen > section#screen-home .eyebrow::before {
+      content: '';
+      width: 16px;
+      height: 2px;
+      background: var(--neon-cyan);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--neon-cyan);
+    }
+    /* result dashboard also centered */
+    #screen-result {
+      text-align: center;
+    }
+    #screen-result .eyebrow {
+      justify-content: center;
+    }
+    #screen-result .qa-breakdown-wrap {
+      text-align: left;
+      max-width: 700px;
+      margin: 18px auto 0;
+    }
+    #screen-result .share-title,
+    #screen-result .share-sub {
+      text-align: center;
+    }
+    #screen-result .link-box {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #screen-result .share-icons {
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #screen-result .small-note {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* challenge result also centered */
+    #screen-challenge-result {
+      text-align: center;
+    }
+    #screen-challenge-result .eyebrow {
+      justify-content: center;
+    }
+    #screen-challenge-result .vs-wrap {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #screen-challenge-result .verdict {
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #screen-challenge-result .share-title {
+      text-align: center;
+    }
+    #screen-challenge-result #qaBreakdownChallenge {
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #screen-challenge-result .btn-row {
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* keep quiz width same — test screen is already full width */
+    #screen-test {
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
   </style>
 </head>
 <body>
@@ -1050,15 +1195,17 @@
       <!-- HOME -->
       <section id="screen-home" class="screen active">
         <div class="eyebrow">Mock Test · Challenge Mode</div>
-        <h1>Take the test.<br>Beat your friend.</h1>
-        <p>10 questions. One score. Then send the exact same test to a friend and see who comes out on top — no sign-up, no backend, just a link.</p>
-        <div style="background: var(--panel-strong); border-radius: 14px; padding: 20px; margin-bottom: 18px; border: 1px solid var(--border);">
-          <div class="qcount" style="margin-bottom:10px;">WHAT YOU'LL GET</div>
-          <p style="margin-bottom:0; color: var(--text-dim);">Score, accuracy, grade and a question-by-question breakdown — plus a shareable challenge link the moment you finish.</p>
+        <div class="home-headline">Take the test.<br>Beat your friend.</div>
+        <p class="home-desc">10 questions. One score. Then send the exact same test to a friend and see who comes out on top — no sign-up, no backend, just a link.</p>
+        <div class="home-feature-box">
+          <div class="qcount">WHAT YOU'LL GET</div>
+          <p>Score, accuracy, grade and a question-by-question breakdown — plus a shareable challenge link the moment you finish.</p>
         </div>
-        <button class="btn btn-primary" onclick="startTest('own')">Start Mock Test →</button>
+        <div class="home-btn-wrap">
+          <button class="btn btn-primary" onclick="startTest('own')">Start Mock Test →</button>
+        </div>
 
-        <div class="paste-box">
+        <div class="home-paste-wrap">
           <div class="share-title">Got a challenge link?</div>
           <div class="share-sub">Paste the link a friend sent you to take their exact test.</div>
           <textarea id="pasteInput" placeholder="https://shoruto.com/checkup?d=eyJzY29yZSI6NzAs..."></textarea>
@@ -1102,7 +1249,7 @@
           </div>
         </div>
 
-        <div id="qaBreakdownOwn" style="margin-top:18px;"></div>
+        <div class="qa-breakdown-wrap" id="qaBreakdownOwn" style="margin-top:18px;"></div>
 
         <hr class="divider">
 
@@ -1118,7 +1265,7 @@
         </div>
         <div class="small-note">Your score, the question set and a unique challenge code are packed into one opaque link token — nothing shows up as plain text in the URL bar. Note: this hides it from casual view, it isn't encryption — someone could still decode the token if they went looking for it.</div>
 
-        <button class="btn btn-ghost" style="margin-top:14px;" onclick="goHome()">Back to Home</button>
+        <button class="btn btn-ghost" style="margin-top:14px; max-width:400px; margin-left:auto; margin-right:auto;" onclick="goHome()">Back to Home</button>
       </section>
 
       <!-- CHALLENGE RESULT -->
@@ -1147,7 +1294,7 @@
           <button class="btn btn-primary" onclick="rematch()" style="background:var(--coral); color:#221016; box-shadow: 0 5px 0 0 #B23F32, 0 12px 26px -10px rgba(255,107,91,.45);">Rematch</button>
           <button class="btn btn-teal" onclick="shareMyResult()">Share Result</button>
         </div>
-        <button class="btn btn-ghost" style="margin-top:10px;" onclick="goHome()">Home</button>
+        <button class="btn btn-ghost" style="margin-top:10px; max-width:400px; margin-left:auto; margin-right:auto;" onclick="goHome()">Home</button>
       </section>
 
       <!-- Footer link -->
