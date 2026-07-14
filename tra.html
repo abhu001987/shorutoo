@@ -513,6 +513,20 @@
   .screen.hidden{display:none;}
   .panel{max-width:520px;width:100%;}
   .kicker{font-size:11px;letter-spacing:.3em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
+  /* FIX: ensure "Satellite Geo Ops" stays visible on mobile */
+  .kicker { 
+    font-size:clamp(10px, 2.5vw, 13px); 
+    letter-spacing:0.25em; 
+    margin-bottom:12px; 
+    white-space:nowrap; 
+  }
+  @media (max-width:420px){ 
+    .kicker { 
+      font-size:9px; 
+      letter-spacing:0.2em; 
+      white-space:normal; 
+    } 
+  }
   h1{font-family:'Space Grotesk', sans-serif;font-weight:700;font-size:clamp(28px,7vw,46px);margin:0 0 12px;color:var(--ink);letter-spacing:-0.3px;}
   h1 span{color:var(--blue);text-shadow:none;}
   .sub{color:var(--ink-dim);font-size:14px;line-height:1.6;margin-bottom:26px;}
@@ -621,11 +635,109 @@
 
   #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:1999;}
 
+  /* ===== NEW: Menu footer (only visible on start screen) ===== */
+  .menu-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--glass-brd);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .menu-footer .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .menu-footer .back-link:hover { color: var(--violet); }
+  .menu-footer .back-link svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .menu-footer .copy {
+    color: var(--text-dimmer);
+    font-size: 10px;
+  }
+
+  /* ===== NEW: Custom exit dialog (Google-style) ===== */
+  #exit-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(3px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  #exit-dialog-overlay.show { display: flex; }
+  #exit-dialog {
+    background: var(--bg-0);
+    border: 1px solid var(--glass-brd);
+    border-radius: 28px;
+    padding: 32px 28px 24px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    text-align: center;
+  }
+  #exit-dialog h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  #exit-dialog p {
+    color: var(--ink-dim);
+    font-size: 14px;
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+  #exit-dialog .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 0;
+  }
+  #exit-dialog .btn-row .btn {
+    min-width: 100px;
+  }
+  #exit-dialog .btn-secondary {
+    background: var(--glass);
+    border: 1px solid var(--glass-brd);
+    color: var(--ink);
+  }
+  #exit-dialog .btn-secondary:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  @media (max-width:480px) {
+    #exit-dialog { padding: 24px 18px; }
+    #exit-dialog h3 { font-size: 18px; }
+  }
+
   @media (max-height:640px){
     .strait-card{padding:4px 10px;}
     #dots{margin-top:3px;}
     .hint-tap{display:none;}
     .feature-card{padding:11px 13px;margin-bottom:16px;}
+    .menu-footer { margin-top: 16px; padding-top: 12px; }
   }
   @media (max-width:420px){
     .brand{display:none;}
@@ -669,7 +781,7 @@
       </div>
 
       <div class="nav-cta">
-        <button class="exit-btn" onclick="goBack()">
+        <button class="exit-btn" onclick="showExitDialog()">
           <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
           <span>Exit</span>
         </button>
@@ -682,6 +794,18 @@
   </div>
 </nav>
 <!-- ============================================ -->
+
+<!-- ===== NEW: Custom Exit Dialog ===== -->
+<div id="exit-dialog-overlay">
+  <div id="exit-dialog">
+    <h3>Leave this run?</h3>
+    <p>Your progress on this attempt will be lost.</p>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="closeExitDialog()">Stay</button>
+      <button class="btn btn-primary" onclick="confirmExit()">Leave</button>
+    </div>
+  </div>
+</div>
 
 <div id="app">
 
@@ -705,6 +829,15 @@
         <textarea id="paste-input" placeholder="https://…/strait-navigator.html?d=eyJzIjo3...."></textarea>
         <button class="btn btn-teal" style="width:100%;" onclick="acceptPastedChallenge()">Accept Challenge</button>
         <div class="paste-err" id="paste-err"></div>
+      </div>
+
+      <!-- ===== NEW: Footer inside start screen ===== -->
+      <div class="menu-footer">
+        <a href="index.html" class="back-link">
+          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          Back to Shoruto
+        </a>
+        <span class="copy">© 2026 Shoruto</span>
       </div>
     </div>
   </div>
@@ -754,7 +887,7 @@
 
   <!-- GAME UI -->
   <div id="hud-top">
-    <button class="hud-back-btn" onclick="exitToMenu()" aria-label="Back to menu" title="Back to menu">
+    <button class="hud-back-btn" onclick="showExitDialog()" aria-label="Back to menu" title="Back to menu">
       <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
     </button>
     <div class="brand">◆ Strait Navigator</div>
@@ -818,6 +951,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+/* ===== NEW: Exit Dialog Functions ===== */
+function showExitDialog() {
+  document.getElementById('exit-dialog-overlay').classList.add('show');
+}
+function closeExitDialog() {
+  document.getElementById('exit-dialog-overlay').classList.remove('show');
+}
+function confirmExit() {
+  closeExitDialog();
+  // Same exit logic as original exitToMenu()
+  markerLayer.clearLayers();
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('screen-start').classList.remove('hidden');
+  document.getElementById('challenge-flag').classList.remove('show');
+  setMapVisible(false);
+  setHeaderVisible(true);
+  // Reset game state
+  roundIdx = 0;
+  scores = [];
+  guessed = false;
+}
 
 function goBack() {
   if (document.referrer && document.referrer.includes(window.location.host)) {
@@ -977,15 +1132,10 @@ function setMapVisible(visible){
 }
 setMapVisible(false);
 
-/* ---------------- Quitting mid-run ---------------- */
+/* ---------------- Quitting mid-run (legacy, kept for compatibility) ---------------- */
 function exitToMenu(){
-  if(!confirm('Leave this run and return to the menu? Your progress on this attempt will be lost.')) return;
-  markerLayer.clearLayers();
-  document.getElementById('screen-end').classList.add('hidden');
-  document.getElementById('screen-start').classList.remove('hidden');
-  document.getElementById('challenge-flag').classList.remove('show');
-  setMapVisible(false);
-  setHeaderVisible(true);
+  // Now using the custom dialog instead
+  showExitDialog();
 }
 
 /* ---------------- Starting a run ---------------- */
