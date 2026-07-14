@@ -511,7 +511,14 @@
     .screen{ padding:calc(var(--nav-height, 72px) + 20px) 20px 20px; }
   }
   .screen.hidden{display:none;}
-  .panel{max-width:520px;width:100%;}
+  .panel{
+    max-width:520px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    min-height:100%;
+    justify-content:center;
+  }
   .kicker{font-size:11px;letter-spacing:.3em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
   /* FIX: ensure "Satellite Geo Ops" stays visible on mobile */
   .kicker { 
@@ -649,17 +656,20 @@
     font-weight: 500;
     flex-wrap: wrap;
     gap: 8px;
+    flex-shrink: 0;
   }
   .menu-footer .back-link {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: var(--blue);
+    color: var(--text-dim);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
     transition: color 0.2s;
   }
-  .menu-footer .back-link:hover { color: var(--violet); }
+  .menu-footer .back-link:hover { 
+    color: var(--text); 
+  }
   .menu-footer .back-link svg {
     width: 14px;
     height: 14px;
