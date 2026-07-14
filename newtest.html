@@ -17,7 +17,7 @@
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Anton&family=Manrope:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
   <!-- Shared CSS & JS (theme) -->
   <link rel="stylesheet" href="theme.css" />
@@ -25,16 +25,19 @@
 
   <style>
     /* ============================================ */
-    /* HEADER STYLES — MATCHES BLOG PAGE (UNCHANGED) */
+    /* HEADER STYLES — STATIC, STICKY */
     /* ============================================ */
     .nav {
-      padding: 24px 0 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 18px 0 16px 0;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 22px;
-      background: transparent;
-      transition: border-color 0.3s ease;
-      position: relative;
-      z-index: 5;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: border-color 0.3s ease, background 0.3s ease;
+      margin-bottom: 0;
     }
 
     .wrap {
@@ -117,7 +120,6 @@
       gap: 12px;
     }
 
-    /* ---- EXIT BUTTON (matches blog page) ---- */
     .exit-btn {
       display: inline-flex;
       align-items: center;
@@ -156,7 +158,6 @@
       transform: translateX(-3px);
     }
 
-    /* ---- THEME TOGGLE (circle, matches blog page) ---- */
     .theme-toggle {
       width: 40px;
       height: 40px;
@@ -209,8 +210,7 @@
 
     @media (max-width: 600px) {
       .nav {
-        padding: 16px 0 14px 0;
-        margin-bottom: 14px;
+        padding: 12px 0 10px 0;
       }
       .wrap {
         padding: 0 16px;
@@ -242,16 +242,20 @@
         font-size: 16px;
       }
     }
+
     /* ============================================ */
-
-    /* ================================================================ */
-    /* ARCADE MODE — game-ified body. Header block above is untouched.  */
-    /* ================================================================ */
-
+    /* BODY STYLES */
+    /* ============================================ */
     :root {
       --neon-cyan: #00E8FF;
       --neon-magenta: #FF3EC9;
       --grid-line: rgba(0, 232, 255, 0.16);
+      --gold: var(--amber);
+      --teal: var(--mint);
+      --danger: var(--danger-color);
+      --coral: #FF6B5B;
+      --coral-dim: rgba(255, 107, 91, 0.16);
+      --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
     }
     [data-theme="light"] {
       --grid-line: rgba(60, 90, 200, 0.12);
@@ -259,7 +263,10 @@
 
     * { box-sizing: border-box; }
 
-    html, body { overflow-x: hidden; }
+    html, body { 
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
 
     body {
       min-height: 100vh;
@@ -275,7 +282,6 @@
       position: relative;
     }
 
-    /* faint starfield dust across the whole page */
     body::before {
       content: '';
       position: fixed;
@@ -288,7 +294,6 @@
     }
     [data-theme="light"] body::before { opacity: .06; }
 
-    /* perspective "game floor" grid pinned to the bottom of the viewport */
     .arcade-floor {
       position: fixed;
       left: 0; right: 0; bottom: 0;
@@ -311,17 +316,6 @@
       to   { background-position: 0 56px, 0 0; }
     }
 
-    /* ---- Color aliases ---- */
-    :root {
-      --gold: var(--amber);
-      --teal: var(--mint);
-      --danger: var(--danger-color);
-      --coral: #FF6B5B;
-      --coral-dim: rgba(255, 107, 91, 0.16);
-      --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-    }
-
-    /* ---- Fallback only ---- */
     html.theme-css-missing {
       --bg-0:#05060C; --panel:rgba(255,255,255,.045); --panel-strong:rgba(255,255,255,.08);
       --border:rgba(255,255,255,.09); --blue:#3E7BFA; --blue-soft:rgba(62,123,250,.35);
@@ -339,7 +333,7 @@
 
     .page-content {
       flex: 1;
-      padding: 6px 12px 70px;
+      padding: 30px 12px 70px;
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
@@ -347,7 +341,6 @@
       z-index: 1;
     }
 
-    /* ---- Icon system ---- */
     .ic {
       width: 1em;
       height: 1em;
@@ -360,7 +353,6 @@
       flex-shrink: 0;
     }
 
-    /* ---- Console / cabinet shell ---- */
     .console-wrap {
       max-width: 100%;
       width: 100%;
@@ -384,13 +376,9 @@
       box-shadow: none;
     }
 
-    /* REMOVED marquee strip — SHORUTO ARCADE line & color code gone */
-    /* REMOVED glass effect — no background, no border, no blur */
-
-    /* faint CRT scanlines — keeping it subtle, but no glass */
     .console-screen {
       position: relative;
-      padding: 36px 40px 40px;
+      padding: 20px 40px 40px;
     }
     .console-screen::after {
       content: '';
@@ -407,31 +395,6 @@
       opacity: .3;
     }
 
-    .terms-card h1 {
-      font-family: 'Anton', sans-serif;
-      font-weight: 400;
-      text-transform: uppercase;
-      font-size: 42px;
-      line-height: 1.05;
-      letter-spacing: .01em;
-      color: var(--text);
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 0 rgba(0,232,255,.35), -2px -2px 0 rgba(255,62,201,.28);
-    }
-
-    .terms-card p {
-      color: var(--text-dim);
-      font-size: 16px;
-      line-height: 1.8;
-      margin-bottom: 14px;
-    }
-
-    .terms-card strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    /* ---- Quiz specific styles ---- */
     .eyebrow {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
@@ -442,6 +405,8 @@
       align-items: center;
       gap: 8px;
       margin-bottom: 10px;
+      justify-content: center;
+      text-shadow: 0 0 20px rgba(0,232,255,.3);
     }
     .eyebrow::before {
       content: '';
@@ -474,7 +439,6 @@
     }
     .btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 
-    /* ---- 3D "keycap" buttons ---- */
     .btn-primary {
       background: linear-gradient(180deg, #FFCE72, var(--gold));
       color: #191A2E;
@@ -508,7 +472,6 @@
       color: var(--text-dimmer);
     }
 
-    /* ---- power bar ---- */
     .progress {
       height: 14px;
       background: repeating-linear-gradient(90deg, var(--panel-strong) 0 18px, rgba(0,0,0,.18) 18px 20px);
@@ -534,7 +497,6 @@
     }
     @keyframes shimmer { 0% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
 
-    /* ---- LED timer readout ---- */
     .timer {
       font-family: 'JetBrains Mono', monospace;
       background: #04060b;
@@ -559,9 +521,8 @@
     }
     .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
 
-    .qtext { font-size: 19px; font-weight: 700; line-height: 1.4; margin: 6px 0 20px; }
+    .qtext { font-size: 19px; font-weight: 700; line-height: 1.4; margin: 6px 0 20px; color: var(--text); }
 
-    /* ---- MCQ tiles ---- */
     .opt {
       display: flex;
       align-items: center;
@@ -606,7 +567,7 @@
     }
     @keyframes sweep { to { transform: translateX(120%); } }
 
-    .opt-label { font-size: 14.5px; }
+    .opt-label { font-size: 14.5px; color: var(--text); }
 
     .banner {
       background: linear-gradient(135deg, var(--coral-dim), rgba(245, 197, 24, 0.10));
@@ -701,7 +662,7 @@
 
     .divider { height: 1px; background: var(--border); margin: 24px 0; border: none; }
 
-    .share-title { font-weight: 800; font-size: 15px; margin-bottom: 4px; }
+    .share-title { font-weight: 800; font-size: 15px; margin-bottom: 4px; color: var(--text); }
     .share-sub { color: var(--text-dimmer); font-size: 13px; margin-bottom: 14px; }
 
     .link-box {
@@ -931,7 +892,6 @@
     .footer-link a:hover { color: var(--neon-cyan); }
     .footer-link .ic { width: 14px; height: 14px; }
 
-    /* ---- Confetti canvas ---- */
     #confettiCanvas {
       position: fixed;
       inset: 0;
@@ -939,62 +899,27 @@
       z-index: 999;
     }
 
-    /* ---- Responsive ---- */
-    @media (max-width: 768px) {
-      .page-content { padding: 4px 8px 40px; }
-      .console-screen { padding: 24px 18px; }
-      .terms-card h1 { font-size: 30px; }
-      .terms-card p { font-size: 15px; }
-      .footer-link { flex-direction: column; align-items: flex-start; }
-      .bignum { font-size: 60px; }
-      .vs-score { font-size: 32px; }
-      .share-icons { flex-wrap: wrap; }
-      .share-icons a { flex: 1 1 45%; }
-      .arcade-floor { height: 30vh; }
+    /* HOME PAGE STYLES — clean, centered, no glass */
+    #screen-home {
+      text-align: center;
     }
-
-    @media (min-width: 769px) and (max-width: 1200px) {
-      .console-screen { padding: 32px 30px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .screen.active { animation: none; }
-      .btn, .opt { transition: none; }
-      .stat, .qa-row, .vs-side, .vs-badge, .verdict { animation: none !important; opacity: 1; transform: none; }
-      .progress-fill::after { display: none; }
-      .timer.critical { animation: none; }
-      .arcade-floor { animation: none; }
-      .marquee-strip { animation: none; }
-      .scoreboard::before { animation: none; }
-      .terms-card { transform: none !important; }
-      #confettiCanvas { display: none; }
-    }
-
-    /* ---- Animation ---- */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in { animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both; }
-
-    /* ---- New styles: cleaner home layout (like Navigator image) ---- */
     .home-headline {
       font-family: 'Anton', sans-serif;
       font-weight: 400;
       text-transform: uppercase;
-      font-size: 42px;
+      font-size: 52px;
       line-height: 1.05;
       letter-spacing: .01em;
       color: var(--text);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       text-shadow: 2px 2px 0 rgba(0,232,255,.35), -2px -2px 0 rgba(255,62,201,.28);
     }
     .home-desc {
       color: var(--text-dim);
       font-size: 16px;
       line-height: 1.8;
-      margin-bottom: 14px;
-      max-width: 700px;
+      margin-bottom: 18px;
+      max-width: 640px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -1004,7 +929,7 @@
       padding: 20px;
       margin-bottom: 18px;
       border: 1px solid var(--border);
-      max-width: 700px;
+      max-width: 600px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -1016,12 +941,12 @@
       color: var(--text-dim);
     }
     .home-btn-wrap {
-      max-width: 400px;
+      max-width: 340px;
       margin: 0 auto;
     }
     .home-paste-wrap {
       margin-top: 26px;
-      max-width: 700px;
+      max-width: 600px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -1029,6 +954,7 @@
       font-weight: 800;
       font-size: 15px;
       margin-bottom: 4px;
+      color: var(--text);
     }
     .home-paste-wrap .share-sub {
       color: var(--text-dimmer);
@@ -1036,59 +962,27 @@
       margin-bottom: 14px;
     }
 
-    /* remove extra box around text on home */
-    .terms-card .console-screen > section#screen-home {
+    /* Result pages */
+    #screen-result, #screen-challenge-result {
       text-align: center;
     }
-    .terms-card .console-screen > section#screen-home .eyebrow {
+    #screen-result .eyebrow, #screen-challenge-result .eyebrow {
       justify-content: center;
     }
-    .terms-card .console-screen > section#screen-home .eyebrow::before {
-      content: '';
-      width: 16px;
-      height: 2px;
-      background: var(--neon-cyan);
-      display: inline-block;
-      box-shadow: 0 0 8px var(--neon-cyan);
-    }
-    /* result dashboard also centered */
-    #screen-result {
-      text-align: center;
-    }
-    #screen-result .eyebrow {
-      justify-content: center;
-    }
-    #screen-result .qa-breakdown-wrap {
+    .qa-breakdown-wrap {
       text-align: left;
       max-width: 700px;
       margin: 18px auto 0;
     }
-    #screen-result .share-title,
-    #screen-result .share-sub {
-      text-align: center;
-    }
-    #screen-result .link-box {
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #screen-result .share-icons {
-      max-width: 400px;
+    #screen-result .link-box, #screen-result .share-icons {
+      max-width: 600px;
       margin-left: auto;
       margin-right: auto;
     }
     #screen-result .small-note {
-      max-width: 700px;
+      max-width: 640px;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    /* challenge result also centered */
-    #screen-challenge-result {
-      text-align: center;
-    }
-    #screen-challenge-result .eyebrow {
-      justify-content: center;
     }
     #screen-challenge-result .vs-wrap {
       max-width: 700px;
@@ -1099,9 +993,6 @@
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
-    }
-    #screen-challenge-result .share-title {
-      text-align: center;
     }
     #screen-challenge-result #qaBreakdownChallenge {
       text-align: left;
@@ -1115,12 +1006,46 @@
       margin-right: auto;
     }
 
-    /* keep quiz width same — test screen is already full width */
     #screen-test {
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
     }
+
+    @media (max-width: 768px) {
+      .page-content { padding: 16px 8px 40px; }
+      .console-screen { padding: 16px 14px; }
+      .home-headline { font-size: 34px; }
+      .home-desc { font-size: 15px; }
+      .footer-link { flex-direction: column; align-items: flex-start; }
+      .bignum { font-size: 60px; }
+      .vs-score { font-size: 32px; }
+      .share-icons { flex-wrap: wrap; }
+      .share-icons a { flex: 1 1 45%; }
+      .arcade-floor { height: 30vh; }
+    }
+
+    @media (min-width: 769px) and (max-width: 1200px) {
+      .console-screen { padding: 24px 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .screen.active { animation: none; }
+      .btn, .opt { transition: none; }
+      .stat, .qa-row, .vs-side, .vs-badge, .verdict { animation: none !important; opacity: 1; transform: none; }
+      .progress-fill::after { display: none; }
+      .timer.critical { animation: none; }
+      .arcade-floor { animation: none; }
+      .scoreboard::before { animation: none; }
+      .terms-card { transform: none !important; }
+      #confettiCanvas { display: none; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeUp 0.5s cubic-bezier(.4, 0, .2, 1) both; }
   </style>
 </head>
 <body>
@@ -1129,7 +1054,7 @@
   <div class="arcade-floor" aria-hidden="true"></div>
 
   <!-- ============================================ -->
-  <!-- HEADER — with Exit button + circle theme toggle (unchanged) -->
+  <!-- HEADER — STICKY, STATIC, with blur backdrop -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
@@ -1186,8 +1111,6 @@
   <main class="page-content">
     <div class="console-wrap">
     <div class="terms-card fade-in">
-      <!-- MARQUEE REMOVED: SHORUTO ARCADE line & color code gone -->
-      <!-- GLASS REMOVED: no background, no border, no blur on the card -->
       <div class="console-screen">
 
       <!-- HOME -->
@@ -1263,7 +1186,7 @@
         </div>
         <div class="small-note">Your score, the question set and a unique challenge code are packed into one opaque link token — nothing shows up as plain text in the URL bar. Note: this hides it from casual view, it isn't encryption — someone could still decode the token if they went looking for it.</div>
 
-        <button class="btn btn-ghost" style="margin-top:14px; max-width:400px; margin-left:auto; margin-right:auto;" onclick="goHome()">Back to Home</button>
+        <button class="btn btn-ghost" style="margin-top:14px; max-width:340px; margin-left:auto; margin-right:auto;" onclick="goHome()">Back to Home</button>
       </section>
 
       <!-- CHALLENGE RESULT -->
@@ -1292,7 +1215,7 @@
           <button class="btn btn-primary" onclick="rematch()" style="background:var(--coral); color:#221016; box-shadow: 0 5px 0 0 #B23F32, 0 12px 26px -10px rgba(255,107,91,.45);">Rematch</button>
           <button class="btn btn-teal" onclick="shareMyResult()">Share Result</button>
         </div>
-        <button class="btn btn-ghost" style="margin-top:10px; max-width:400px; margin-left:auto; margin-right:auto;" onclick="goHome()">Home</button>
+        <button class="btn btn-ghost" style="margin-top:10px; max-width:340px; margin-left:auto; margin-right:auto;" onclick="goHome()">Home</button>
       </section>
 
       <!-- Footer link -->
@@ -1348,7 +1271,7 @@
       var card = document.querySelector('.terms-card');
       if (!card) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      if (window.matchMedia('(pointer: coarse)').matches) return; // skip on touch devices
+      if (window.matchMedia('(pointer: coarse)').matches) return;
       var wrap = document.querySelector('.console-wrap');
       wrap.addEventListener('mousemove', function(e) {
         var rect = card.getBoundingClientRect();
