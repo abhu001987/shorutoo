@@ -31,7 +31,7 @@
 
 <style>
   /* ============================================ */
-  /* HEADER STYLES — EXACTLY MATCHES CHALLENGE PAGE */
+  /* HEADER STYLES — EXACTLY MATCHES CONTACT PAGE  */
   /* ============================================ */
   .nav {
     padding: 24px 0 20px 0;
@@ -123,7 +123,7 @@
     gap: 12px;
   }
 
-  /* ---- EXIT BUTTON (matches challenge page) ---- */
+  /* ---- EXIT BUTTON ---- */
   .exit-btn {
     display: inline-flex;
     align-items: center;
@@ -162,7 +162,7 @@
     transform: translateX(-3px);
   }
 
-  /* ---- THEME TOGGLE (circle, matches challenge page) ---- */
+  /* ---- THEME TOGGLE (circle, matches contact page) ---- */
   .theme-toggle {
     width: 40px;
     height: 40px;
@@ -250,7 +250,8 @@
   }
 
   /* ============================================ */
-  /* REST OF PAGE STYLES (unchanged from original) */
+  /* REST OF PAGE STYLES — RECOLORED TO MATCH      */
+  /* CONTACT PAGE (blue/violet, no gold/amber glow) */
   /* ============================================ */
 
   /* Fallback tokens — used only if theme.css fails to load */
@@ -258,9 +259,9 @@
     --bg-0: #03050b;
     --panel: rgba(255,255,255,.045);
     --panel-strong: rgba(10,20,35,0.6);
-    --border: rgba(255,214,102,0.25);
-    --blue: #3E7BFA;
-    --blue-soft: rgba(62,123,250,.35);
+    --border: rgba(91,127,255,0.2);
+    --blue: #5B7FFF;
+    --blue-soft: rgba(91,127,255,.35);
     --violet: #8B7CFF;
     --mint: #5eead4;
     --amber: #ffd166;
@@ -269,8 +270,8 @@
     --text-dimmer: #5C6788;
     --nav-bg: rgba(5,6,12,.7);
     --input-bg: rgba(255,255,255,.04);
-    --glow-1: rgba(255,209,102,.10);
-    --glow-2: rgba(94,234,212,.08);
+    --glow-1: rgba(91,127,255,.10);
+    --glow-2: rgba(139,124,255,.08);
     --danger-color: #ff5d73;
     --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
@@ -295,11 +296,11 @@
   }
 
   :root {
-    --gold: var(--amber, #ffd166);
+    --gold: var(--blue, #5B7FFF);
     --coral: var(--danger-color, #ff5d73);
     --teal: var(--mint, #5eead4);
-    --glass: var(--panel-strong, rgba(10,20,35,0.6));
-    --glass-brd: var(--border, rgba(255,214,102,0.25));
+    --glass: var(--panel, rgba(10,20,35,0.6));
+    --glass-brd: var(--border, rgba(91,127,255,0.2));
     --ink: var(--text, #eaf2f7);
     --ink-dim: var(--text-dim, #9db3c4);
   }
@@ -317,7 +318,10 @@
   body{
     display:flex;flex-direction:column;
     overflow:hidden;
-    background:radial-gradient(ellipse at 30% 20%, var(--glow-1, #0a1730) 0%, var(--bg-0) 55%);
+    background: var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
   }
 
   #app{
@@ -350,15 +354,15 @@
     border-radius:12px;
     padding:6px 12px;
     text-align:center;
-    box-shadow:0 0 30px rgba(255,209,102,0.08);
+    box-shadow:none;
     flex:1 1 auto;min-width:0;
   }
   .strait-card .eyebrow{font-size:9px;letter-spacing:.16em;color:var(--ink-dim);text-transform:uppercase;}
-  .strait-card .title{font-size:clamp(13px,3.4vw,20px);font-weight:800;color:var(--gold);letter-spacing:.02em;margin-top:2px;text-shadow:0 0 18px rgba(255,209,102,0.35);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .strait-card .title{font-size:clamp(13px,3.4vw,20px);font-weight:800;color:var(--blue);letter-spacing:.02em;margin-top:2px;text-shadow:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   #dots{display:flex;gap:4px;justify-content:center;margin-top:5px;flex-wrap:wrap;max-width:220px;}
   .dot{width:5px;height:5px;border-radius:50%;background:#2a3d52;transition:.2s;flex-shrink:0;}
   .dot.done{background:var(--teal);box-shadow:0 0 6px var(--teal);}
-  .dot.now{background:var(--gold);box-shadow:0 0 8px var(--gold);transform:scale(1.4);}
+  .dot.now{background:var(--blue);box-shadow:0 0 8px var(--blue);transform:scale(1.4);}
 
   .score-pill{
     background:var(--glass);border:1px solid var(--glass-brd);border-radius:100px;
@@ -384,7 +388,7 @@
     margin:0 6px;
     min-height:0;
     border-radius:14px;
-    border:1px solid rgba(94,234,212,0.15);
+    border:1px solid var(--glass-brd);
     box-shadow:0 0 60px rgba(6,26,44,0.6) inset, 0 0 40px rgba(0,0,0,0.4);
     isolation:isolate;
     z-index:0;
@@ -423,8 +427,8 @@
   }
   .pin-guess .pin-core{background:var(--coral);box-shadow:0 0 0 2px rgba(255,255,255,0.9), 0 0 8px var(--coral);}
   .pin-guess .pin-ring{border-color:var(--coral);}
-  .pin-target .pin-core{background:var(--gold);box-shadow:0 0 0 2px rgba(255,255,255,0.9), 0 0 8px var(--gold);}
-  .pin-target .pin-ring{border-color:var(--gold);}
+  .pin-target .pin-core{background:var(--blue);box-shadow:0 0 0 2px rgba(255,255,255,0.9), 0 0 8px var(--blue);}
+  .pin-target .pin-ring{border-color:var(--blue);}
   .pin-ping{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:6px;height:6px;border-radius:50%;
@@ -447,19 +451,19 @@
   #feedback.show{display:block;}
   #feedback .verdict{font-weight:800;font-size:13.5px;}
   #feedback .verdict.good{color:var(--teal);}
-  #feedback .verdict.mid{color:var(--gold);}
+  #feedback .verdict.mid{color:var(--blue);}
   #feedback .verdict.bad{color:var(--coral);}
   #feedback .fact{font-size:11.5px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
   #feedback .rival-line{font-size:11px;color:var(--coral);margin-top:6px;font-weight:700;}
 
   .btn{
-    border:none;border-radius:100px;padding:11px 26px;font-size:13px;font-weight:800;
-    letter-spacing:.04em;cursor:pointer;transition:transform .12s ease, box-shadow .2s;
+    border:none;border-radius:40px;padding:11px 26px;font-size:13px;font-weight:800;
+    letter-spacing:.04em;cursor:pointer;transition:transform .12s ease, box-shadow .2s, background .25s ease;
     text-transform:uppercase;
   }
   .btn:active{transform:scale(.96);}
-  .btn-primary{background:linear-gradient(135deg,var(--gold),#ff9f5a);color:#241200;box-shadow:0 0 24px rgba(255,209,102,0.35);}
-  .btn-primary:hover{box-shadow:0 0 34px rgba(255,209,102,0.55);}
+  .btn-primary{background:var(--blue);color:#fff;box-shadow:none;}
+  .btn-primary:hover{background:var(--violet);transform:scale(1.02);box-shadow:0 8px 18px rgba(91,127,255,0.25);}
   .btn-ghost{background:transparent;border:1px solid var(--glass-brd);color:var(--ink);}
   .btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
   .btn-teal{background:linear-gradient(135deg,var(--teal),#2dd4bf);color:#062522;box-shadow:0 0 24px rgba(94,234,212,0.3);}
@@ -470,19 +474,22 @@
   /* ---------- OVERLAY SCREENS ---------- */
   .screen{
     position:absolute;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(ellipse at 50% 30%, #0a1c34 0%, var(--bg-0) 70%);
+    background:var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
     text-align:center;padding:24px;
     overflow-y:auto;
   }
   .screen.hidden{display:none;}
   .panel{max-width:520px;width:100%;}
   .kicker{font-size:11px;letter-spacing:.3em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
-  h1{font-size:clamp(28px,7vw,46px);margin:0 0 12px;color:var(--ink);letter-spacing:.01em;}
-  h1 span{color:var(--gold);text-shadow:0 0 30px rgba(255,209,102,.4);}
+  h1{font-family:'Space Grotesk', sans-serif;font-weight:700;font-size:clamp(28px,7vw,46px);margin:0 0 12px;color:var(--ink);letter-spacing:-0.3px;}
+  h1 span{color:var(--blue);text-shadow:none;}
   .sub{color:var(--ink-dim);font-size:14px;line-height:1.6;margin-bottom:26px;}
   .radar{
     width:150px;height:150px;margin:0 auto 22px;border-radius:50%;
-    border:1px solid rgba(94,234,212,0.3);position:relative;overflow:hidden;
+    border:1px solid var(--glass-brd);position:relative;overflow:hidden;
     background:radial-gradient(circle, rgba(94,234,212,0.06), transparent 70%);
   }
   .radar::before, .radar::after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(94,234,212,0.15);}
@@ -494,7 +501,7 @@
     animation:spin 3s linear infinite;
   }
   @keyframes spin{to{transform:rotate(360deg);}}
-  .final-score{font-size:48px;font-weight:800;color:var(--gold);text-shadow:0 0 26px rgba(255,209,102,.4);}
+  .final-score{font-family:'Space Grotesk', sans-serif;font-size:48px;font-weight:800;color:var(--blue);text-shadow:none;}
   .final-label{color:var(--ink-dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:-4px;margin-bottom:18px;}
 
   /* ---- feature list on start screen ---- */
@@ -510,15 +517,15 @@
     margin-top:22px;text-align:left;
     border-top:1px solid var(--glass-brd);padding-top:20px;
   }
-  .paste-title{font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;}
+  .paste-title{font-family:'Space Grotesk', sans-serif;font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;}
   .paste-sub{font-size:12px;color:var(--ink-dim);margin-bottom:10px;line-height:1.5;}
   .paste-box textarea{
     width:100%;min-height:56px;resize:vertical;
-    background:rgba(3,5,11,0.7);border:1px solid var(--glass-brd);border-radius:10px;
+    background:var(--bg-0);border:1px solid var(--glass-brd);border-radius:14px;
     color:var(--teal);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
     padding:10px 12px;outline:none;margin-bottom:10px;
   }
-  .paste-box textarea:focus{border-color:var(--teal);}
+  .paste-box textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(91,127,255,0.15);}
   .paste-err{font-size:11.5px;color:var(--coral);margin-top:8px;display:none;}
 
   /* ---- challenge share block (end screen) ---- */
@@ -526,11 +533,11 @@
     margin-top:22px;text-align:left;
     border-top:1px solid var(--glass-brd);padding-top:20px;
   }
-  .share-title{font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;}
+  .share-title{font-family:'Space Grotesk', sans-serif;font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;}
   .share-sub{font-size:12px;color:var(--ink-dim);margin-bottom:12px;line-height:1.5;}
   .link-box{
     display:flex;gap:8px;align-items:center;
-    background:rgba(3,5,11,0.7);border:1px solid var(--glass-brd);border-radius:10px;
+    background:var(--bg-0);border:1px solid var(--glass-brd);border-radius:14px;
     padding:9px 9px 9px 13px;margin-bottom:12px;
   }
   .link-box input{
@@ -542,7 +549,7 @@
     font-size:11px;font-weight:800;padding:8px 13px;border-radius:8px;cursor:pointer;
     white-space:nowrap;transition:.15s;text-transform:uppercase;letter-spacing:.03em;
   }
-  .copy-btn:hover{border-color:var(--teal);color:var(--teal);}
+  .copy-btn:hover{border-color:var(--blue);color:var(--blue);}
   .copy-btn.copied{border-color:var(--teal);color:var(--teal);}
   .share-icons{display:flex;gap:9px;}
   .share-icons a{
@@ -551,23 +558,23 @@
     border:1px solid var(--glass-brd);background:var(--glass);color:var(--ink);
     transition:.15s;text-transform:uppercase;letter-spacing:.02em;
   }
-  .share-icons a:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px);}
+  .share-icons a:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-1px);}
 
   /* ---- VS comparison block ---- */
   #vs-block{display:none;margin-bottom:6px;}
   .vs-card{display:flex;align-items:center;border-radius:16px;overflow:hidden;border:1px solid var(--glass-brd);position:relative;margin-bottom:14px;}
   .vs-side{flex:1;padding:18px 10px;text-align:center;}
   .vs-side.rival{background:linear-gradient(160deg, rgba(255,93,115,0.14), var(--glass));}
-  .vs-side.you{background:linear-gradient(200deg, rgba(94,234,212,0.14), var(--glass));}
+  .vs-side.you{background:linear-gradient(200deg, rgba(91,127,255,0.14), var(--glass));}
   .vs-name{font-size:10px;color:var(--ink-dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;font-weight:700;}
   .vs-score{font-size:32px;font-weight:800;}
   .vs-side.rival .vs-score{color:var(--coral);}
-  .vs-side.you .vs-score{color:var(--teal);}
+  .vs-side.you .vs-score{color:var(--blue);}
   .vs-badge{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     width:38px;height:38px;border-radius:50%;background:var(--bg-0);
-    border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
-    font-size:11px;font-weight:800;color:var(--gold);z-index:2;box-shadow:0 0 16px rgba(255,209,102,.5);
+    border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;color:var(--blue);z-index:2;box-shadow:0 0 16px rgba(91,127,255,.4);
   }
   .verdict-box{
     text-align:center;font-weight:800;font-size:16px;letter-spacing:.01em;
@@ -575,7 +582,7 @@
   }
   .verdict-box.win{background:rgba(94,234,212,0.1);color:var(--teal);border:1px solid rgba(94,234,212,0.35);}
   .verdict-box.lose{background:rgba(255,93,115,0.12);color:var(--coral);border:1px solid rgba(255,93,115,0.35);}
-  .verdict-box.tie{background:rgba(255,209,102,0.12);color:var(--gold);border:1px solid rgba(255,209,102,0.35);}
+  .verdict-box.tie{background:rgba(91,127,255,0.12);color:var(--blue);border:1px solid rgba(91,127,255,0.35);}
 
   .breakdown{max-height:180px;overflow-y:auto;margin-bottom:6px;}
   .b-row{
@@ -615,7 +622,7 @@
 <body>
 
 <!-- ============================================ -->
-<!-- HEADER — EXACTLY MATCHES CHALLENGE PAGE      -->
+<!-- HEADER — EXACTLY MATCHES CONTACT PAGE        -->
 <!-- ============================================ -->
 <nav class="nav">
   <div class="wrap">
@@ -858,7 +865,7 @@ async function loadIndiaBoundary(){
       const geo = await res.json();
       indiaLayer = L.geoJSON(geo, {
         interactive:false,
-        style:{ color:'#ffd166', weight:2.2, opacity:1, fillColor:'#ffd166', fillOpacity:0.06 }
+        style:{ color:'#5B7FFF', weight:2.2, opacity:1, fillColor:'#5B7FFF', fillOpacity:0.06 }
       }).addTo(map);
       return;
     }catch(e){
@@ -1186,7 +1193,7 @@ function acceptPastedChallenge(){
 /* ---------------- Confetti (challenge win only) ---------------- */
 function fireConfetti(){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const colors = ['#ffd166', '#5eead4', '#ff5d73', '#ff9f5a'];
+  const colors = ['#5B7FFF', '#8B7CFF', '#5eead4', '#ff5d73'];
   const canvas = document.createElement('canvas');
   canvas.id = 'confettiCanvas';
   canvas.width = window.innerWidth;
