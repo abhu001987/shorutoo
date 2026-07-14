@@ -25,7 +25,7 @@
 
   <style>
     /* ============================================ */
-    /* HEADER — TRANSPARENT, STICKY, NO BORDER     */
+    /* HEADER — STICKY, ALWAYS VISIBLE, BLUR       */
     /* ============================================ */
     .nav {
       position: sticky;
@@ -33,9 +33,15 @@
       z-index: 100;
       padding: 24px 0 20px 0;
       border-bottom: none;
-      background: transparent;
-      transition: border-color 0.3s ease;
+      background: rgba(var(--bg-0-rgb, 5, 6, 12), 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.3s ease;
       margin-bottom: 0;
+    }
+
+    [data-theme="light"] .nav {
+      background: rgba(var(--bg-0-rgb, 232, 238, 247), 0.7);
     }
 
     .wrap {
@@ -251,6 +257,11 @@
       --coral: #FF6B5B;
       --coral-dim: rgba(255, 107, 91, 0.16);
       --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+      --bg-0-rgb: 5, 6, 12;
+    }
+
+    [data-theme="light"] {
+      --bg-0-rgb: 232, 238, 247;
     }
 
     * { box-sizing: border-box; }
@@ -279,6 +290,7 @@
       --violet:#8B7CFF; --mint:#34D399; --amber:#FFB84D; --text:#EAF0FF; --text-dim:#8993B8;
       --text-dimmer:#5C6788; --nav-bg:rgba(5,6,12,.7); --input-bg:rgba(255,255,255,.04);
       --glow-1:rgba(62,123,250,.18); --glow-2:rgba(139,124,255,.14); --danger-color:#FF4F6D;
+      --bg-0-rgb: 5, 6, 12;
     }
     html.theme-css-missing[data-theme="light"] {
       --bg-0:#E8EEF7; --panel:rgba(255,255,255,.55); --panel-strong:rgba(255,255,255,.75);
@@ -286,6 +298,7 @@
       --violet:#A78BFA; --mint:#34D399; --amber:#FBBF24; --text:#0F172A; --text-dim:#334155;
       --text-dimmer:#64748B; --nav-bg:rgba(255,255,255,.25); --input-bg:rgba(255,255,255,.30);
       --glow-1:rgba(91,127,255,.15); --glow-2:rgba(167,139,250,.12); --danger-color:#dc2626;
+      --bg-0-rgb: 232, 238, 247;
     }
 
     .page-content {
@@ -1013,7 +1026,7 @@
 <body>
 
   <!-- ============================================ -->
-  <!-- HEADER — TRANSPARENT, STICKY, NO BORDER     -->
+  <!-- HEADER — STICKY, ALWAYS VISIBLE, BLUR       -->
   <!-- ============================================ -->
   <nav class="nav">
     <div class="wrap">
