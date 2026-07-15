@@ -498,8 +498,11 @@
 
   /* ---------- OVERLAY SCREENS ---------- */
   .screen{
-    position:absolute;
-    inset:0;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
     z-index:5000;
     display:flex;
     align-items:center;
@@ -509,30 +512,18 @@
       radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
       radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
     text-align:center;
-    padding-top:90px;
-    padding-right:24px;
-    padding-bottom:24px;
-    padding-left:24px;
+    padding:80px 24px 24px 24px;
     overflow-y:auto;
-    height:100vh;
-    height:100dvh;
-    min-height:100vh;
-    min-height:100dvh;
+    -webkit-overflow-scrolling:touch;
   }
   @media (max-width: 768px){
     .screen{
-      padding-top:80px;
-      padding-right:20px;
-      padding-bottom:20px;
-      padding-left:20px;
+      padding:72px 20px 20px 20px;
     }
   }
   @media (max-width: 480px){
     .screen{
-      padding-top:72px;
-      padding-right:16px;
-      padding-bottom:16px;
-      padding-left:16px;
+      padding:68px 16px 16px 16px;
     }
   }
   .screen.hidden{display:none;}
@@ -542,10 +533,8 @@
     display:flex;
     flex-direction:column;
     justify-content:center;
-    flex:1 0 auto;
-    min-height:auto;
-    padding-top:10px;
-    margin-top:0;
+    padding:10px 0;
+    margin:0 auto;
   }
   .kicker{font-size:11px;letter-spacing:.3em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
   /* FIX: ensure "Satellite Geo Ops" stays visible on mobile */
