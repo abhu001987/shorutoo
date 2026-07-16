@@ -1096,6 +1096,29 @@
         </div>
       </section>
 
+      <!-- CHALLENGE INVITE SCREEN (shown when someone opens/pastes a friend's challenge link,
+           instead of dropping them straight into the timed test with no context) -->
+      <section id="screen-invite" class="screen">
+        <div class="eyebrow">Incoming Challenge</div>
+        <div class="home-headline">You've been<br>challenged.</div>
+        <p class="home-desc">A friend already took this mock test and dared you to beat them. Same 10 questions, same order — their score stays hidden until you finish your own attempt.</p>
+
+        <div class="home-feature-box">
+          <div class="qcount">FROM</div>
+          <p id="inviteChallengerName">A friend</p>
+        </div>
+
+        <div class="home-feature-box">
+          <div class="qcount">HOW IT WORKS</div>
+          <p>You'll get the exact same 10 questions in the exact same order, with the same 10-minute timer. Finish to see a full score comparison and question-by-question breakdown.</p>
+        </div>
+
+        <div class="btn-row" style="max-width:420px; margin:0 auto;">
+          <button class="btn btn-primary" onclick="acceptChallengeInvite()">Accept Challenge</button>
+          <button class="btn btn-ghost" onclick="declineChallengeInvite()">Not Now</button>
+        </div>
+      </section>
+
       <!-- TEST SCREEN -->
       <section id="screen-test" class="screen">
         <div id="challengeBanner" class="banner" style="display:none;">
@@ -1608,13 +1631,47 @@
       return decodeChallengePayload(d);
     }
 
+    /* ---------------- Challenge invite screen ----------------
+       Landing straight in the timed test used to feel abrupt for someone
+       who just clicked a friend's link with no context (and could burn
+       timer seconds before they even understood what was happening).
+       Now any incoming challenge — whether from the URL or pasted in
+       manually — is held in pendingChallenge and shown on a dedicated
+       invite screen with Accept / Not Now, instead of calling
+       startTest() immediately. */
+    let pendingChallenge = null;
+
+    function showChallengeInvite(payload) {
+      pendingChallenge = payload;
+      document.getElementById('inviteChallengerName').textContent = payload.name || 'A friend';
+      show('screen-invite');
+    }
+
+    function acceptChallengeInvite() {
+      if (!pendingChallenge) return;
+      var payload = pendingChallenge;
+      pendingChallenge = null;
+      loadChallenge(payload);
+    }
+
+    function declineChallengeInvite() {
+      pendingChallenge = null;
+      show('screen-home');
+      // Clean the challenge param out of the URL so refreshing doesn't re-show the invite.
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.delete('d');
+        window.history.replaceState({}, '', url.toString());
+      } catch (e) {}
+    }
+
     function openPastedChallenge() {
       var raw = document.getElementById('pasteInput').value;
       var errBox = document.getElementById('pasteError');
       errBox.style.display = 'none';
       try {
         var payload = parseChallengeString(raw);
-        loadChallenge(payload);
+        showChallengeInvite(payload);
       } catch (e) {
         errBox.textContent = e.message || 'Could not read that challenge link.';
         errBox.style.display = 'block';
@@ -1638,7 +1695,7 @@
         var d = params.get('d');
         if (d) {
           var payload = decodeChallengePayload(d);
-          loadChallenge(payload);
+          showChallengeInvite(payload);
         }
       } catch (e) { /* ignore */ }
     })();
