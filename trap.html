@@ -648,7 +648,7 @@
 
   #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:1999;}
 
-  /* ===== NEW: Menu footer (only visible on start screen) ===== */
+  /* ===== Menu footer (only visible on start screen) ===== */
   .menu-footer {
     margin-top: 28px;
     padding-top: 18px;
@@ -690,7 +690,7 @@
     font-size: 10px;
   }
 
-  /* ===== NEW: Custom exit dialog (Google-style) ===== */
+  /* ===== Custom exit dialog (Google-style) ===== */
   #exit-dialog-overlay {
     position: fixed;
     inset: 0;
@@ -760,7 +760,7 @@
     #challenge-flag span.flag-text{display:none;}
   }
 
-  /* ===== NEW: round-feedback micro-effects ===== */
+  /* ===== round-feedback micro-effects ===== */
   @keyframes badShake{
     10%,90%{transform:translateX(-1px);}
     20%,80%{transform:translateX(2px);}
@@ -846,7 +846,7 @@
 </nav>
 <!-- ============================================ -->
 
-<!-- ===== NEW: Custom Exit Dialog ===== -->
+<!-- ===== Custom Exit Dialog ===== -->
 <div id="exit-dialog-overlay">
   <div id="exit-dialog">
     <h3>Leave this run?</h3>
@@ -882,7 +882,7 @@
         <div class="paste-err" id="paste-err"></div>
       </div>
 
-      <!-- ===== NEW: Footer inside start screen ===== -->
+      <!-- ===== Footer inside start screen ===== -->
       <div class="menu-footer">
         <a href="index.html" class="back-link">
           <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
@@ -1042,7 +1042,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-/* ===== NEW: Exit Dialog Functions ===== */
+/* ===== Exit Dialog Functions ===== */
 function showExitDialog() {
   document.getElementById('exit-dialog-overlay').classList.add('show');
 }
@@ -1275,7 +1275,7 @@ function scoreFor(km){
   return Math.max(0, Math.round(100 - km/40));
 }
 
-/* ===== NEW: per-round micro-effect on guess (distinct feel for good/mid/bad) ===== */
+/* ===== per-round micro-effect on guess (distinct feel for good/mid/bad) ===== */
 function triggerRoundEffect(cls){
   const feedback = document.getElementById('feedback');
   const scorePill = document.querySelector('.score-pill');
@@ -1381,7 +1381,27 @@ function endGame(){
   const vsBlock = document.getElementById('vs-block');
   const vsCard = document.getElementById('vs-card');
   vsCard.classList.remove('fx-winner');
-  document.getElementById('end-kicker').textContent = mode === 'challenge' ? 'Challenge Result' : 'Mission Complete';
+
+  const endKickerEl = document.getElementById('end-kicker');
+  const finalScoreEl = document.getElementById('final-score');
+  const finalLabelEl = document.querySelector('.final-label');
+  const finalMsgEl = document.getElementById('final-msg');
+  if(mode === 'challenge'){
+    // Don't show the "Challenge Result" kicker or the top score number —
+    // the VS card below already shows both scores side by side.
+    endKickerEl.style.display = 'none';
+    finalScoreEl.style.display = 'none';
+    if(finalLabelEl) finalLabelEl.style.display = 'none';
+    // With those hidden, final-msg would be the very first thing in the
+    // panel and sit right under the header — push it down a bit.
+    if(finalMsgEl) finalMsgEl.style.marginTop = '28px';
+  } else {
+    endKickerEl.style.display = '';
+    endKickerEl.textContent = 'Mission Complete';
+    finalScoreEl.style.display = '';
+    if(finalLabelEl) finalLabelEl.style.display = '';
+    if(finalMsgEl) finalMsgEl.style.marginTop = '';
+  }
 
   if(mode === 'challenge' && rival){
     vsBlock.style.display = 'block';
