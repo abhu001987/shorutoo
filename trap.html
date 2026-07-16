@@ -998,6 +998,13 @@
 function syncNavHeight() {
   var nav = document.getElementById('siteNav');
   if (!nav) return;
+  // FIX: while the nav is hidden (display:none during gameplay), its
+  // offsetHeight is 0. Writing that 0 into --nav-height used to stick
+  // around and leak into the start/end/invite screens once the header
+  // came back, pushing their content up behind the fixed header on
+  // mobile. Skip the write entirely while hidden so --nav-height always
+  // holds the last REAL measured height.
+  if (nav.classList.contains('header-hidden')) return;
   document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
 }
 document.addEventListener('DOMContentLoaded', syncNavHeight);
@@ -1076,6 +1083,8 @@ function setHeaderVisible(visible){
   // regardless — but .screen's top padding depends on --nav-height, which
   // is only accurate while the nav is actually rendered. Re-sync it here
   // after the reflow settles, same call the map resize already waits for.
+  // (syncNavHeight() itself now no-ops while header-hidden is set, so this
+  // only actually updates the variable when we just turned the nav back on.)
   setTimeout(function(){
     syncNavHeight();
     try { map.invalidateSize(); } catch(e){}
