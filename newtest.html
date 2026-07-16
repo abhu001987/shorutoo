@@ -899,37 +899,48 @@
       text-align: center;
     }
 
-    .footer-link {
+    .menu-footer {
       margin-top: 28px;
       padding-top: 18px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      font-weight: 500;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 8px;
       max-width: 700px;
       margin-left: auto;
       margin-right: auto;
+      flex-shrink: 0;
     }
-
-    .footer-link a {
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 14px;
-      display: flex;
+    .menu-footer .back-link {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: color 0.2s ease;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
     }
-
-    .footer-link a:hover {
-      color: var(--blue);
+    .menu-footer .back-link:hover {
+      color: var(--text);
     }
-
-    .footer-link .ic {
+    .menu-footer .back-link svg {
       width: 14px;
       height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .menu-footer .copy {
+      color: var(--text-dimmer);
+      font-size: 10px;
     }
 
     .toast {
@@ -1203,12 +1214,12 @@
       </section>
 
       <!-- FOOTER -->
-      <div class="footer-link">
-        <a href="index.html">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+      <div class="menu-footer">
+        <a href="index.html" class="back-link">
+          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
           Back to Shoruto
         </a>
-        <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+        <span class="copy">© 2026 Shoruto</span>
       </div>
 
     </div>
