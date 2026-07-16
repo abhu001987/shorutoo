@@ -1382,17 +1382,22 @@ function endGame(){
   const endKickerEl = document.getElementById('end-kicker');
   const finalScoreEl = document.getElementById('final-score');
   const finalLabelEl = document.querySelector('.final-label');
+  const finalMsgEl = document.getElementById('final-msg');
   if(mode === 'challenge'){
     // Don't show the "Challenge Result" kicker or the top score number —
     // the VS card below already shows both scores side by side.
     endKickerEl.style.display = 'none';
     finalScoreEl.style.display = 'none';
     if(finalLabelEl) finalLabelEl.style.display = 'none';
+    // With those hidden, final-msg would be the very first thing in the
+    // panel and sit right under the header — push it down a bit.
+    if(finalMsgEl) finalMsgEl.style.marginTop = '28px';
   } else {
     endKickerEl.style.display = '';
     endKickerEl.textContent = 'Mission Complete';
     finalScoreEl.style.display = '';
     if(finalLabelEl) finalLabelEl.style.display = '';
+    if(finalMsgEl) finalMsgEl.style.marginTop = '';
   }
 
   if(mode === 'challenge' && rival){
