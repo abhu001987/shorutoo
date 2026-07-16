@@ -506,6 +506,8 @@
     text-align:center;
     padding:calc(var(--nav-height, 92px) + 24px) 24px 24px;
     overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
   }
   @media (max-width: 768px){
     /* max() gives a hard floor: even if --nav-height was measured a bit
@@ -624,7 +626,7 @@
   .verdict-box.lose{background:rgba(255,93,115,0.12);color:var(--coral);border:1px solid rgba(255,93,115,0.35);}
   .verdict-box.tie{background:rgba(91,127,255,0.12);color:var(--blue);border:1px solid rgba(91,127,255,0.35);}
 
-  .breakdown{max-height:180px;overflow-y:auto;margin-bottom:6px;}
+  .breakdown{max-height:180px;overflow-y:auto;margin-bottom:6px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
   .b-row{
     display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;
     background:var(--glass);border:1px solid var(--glass-brd);margin-bottom:6px;font-size:12px;text-align:left;
@@ -1009,7 +1011,6 @@ function syncNavHeight() {
 }
 document.addEventListener('DOMContentLoaded', syncNavHeight);
 window.addEventListener('load', syncNavHeight);
-window.addEventListener('resize', syncNavHeight);
 /* Re-sync once web fonts finish swapping in — on mobile the nav's real
    height can change slightly after Space Grotesk/Inter load, which used
    to leave --nav-height a few px short and let the kicker/title text
@@ -1641,10 +1642,32 @@ function fireConfetti(opts){
   requestAnimationFrame(loop);
 }
 
-/* keep the map sized correctly through viewport/orientation/keyboard changes on mobile */
-window.addEventListener('resize', ()=> map.invalidateSize());
-window.visualViewport && window.visualViewport.addEventListener('resize', ()=> map.invalidateSize());
-setTimeout(()=> map.invalidateSize(), 200);
+/* ---------------- Responsive resize handling ----------------
+   FIX (mobile jank): window 'resize' and visualViewport 'resize' fire
+   constantly on phones purely because the browser's address bar/toolbar
+   hides and shows as you scroll — that is NOT a real layout change, just
+   a viewport height wobble. The old code ran syncNavHeight() (a DOM
+   read/write that forces layout) and map.invalidateSize() (a Leaflet
+   reflow + tile re-check) on every single one of those events, so
+   swiping the page caused a real, visible hitch mid-scroll.
+   Now: (1) both handlers are debounced so they run once movement settles
+   instead of on every frame, and (2) syncNavHeight only actually runs
+   when the viewport WIDTH changed (a real orientation change/resize),
+   not when only the height wobbled from the browser chrome. */
+let lastKnownWidth = window.innerWidth;
+let resizeSettleTimer = null;
+function handleViewportSettle(){
+  clearTimeout(resizeSettleTimer);
+  resizeSettleTimer = setTimeout(function(){
+    const widthChanged = window.innerWidth !== lastKnownWidth;
+    lastKnownWidth = window.innerWidth;
+    if (widthChanged) syncNavHeight(); // real orientation/resize — recheck nav height
+    try { map.invalidateSize(); } catch(e){}
+  }, 150);
+}
+window.addEventListener('resize', handleViewportSettle);
+window.visualViewport && window.visualViewport.addEventListener('resize', handleViewportSettle);
+setTimeout(()=> { try { map.invalidateSize(); } catch(e){} }, 200);
 </script>
 </body>
 </html>
