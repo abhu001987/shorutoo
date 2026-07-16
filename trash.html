@@ -1378,7 +1378,22 @@ function endGame(){
   const vsBlock = document.getElementById('vs-block');
   const vsCard = document.getElementById('vs-card');
   vsCard.classList.remove('fx-winner');
-  document.getElementById('end-kicker').textContent = mode === 'challenge' ? 'Challenge Result' : 'Mission Complete';
+
+  const endKickerEl = document.getElementById('end-kicker');
+  const finalScoreEl = document.getElementById('final-score');
+  const finalLabelEl = document.querySelector('.final-label');
+  if(mode === 'challenge'){
+    // Don't show the "Challenge Result" kicker or the top score number —
+    // the VS card below already shows both scores side by side.
+    endKickerEl.style.display = 'none';
+    finalScoreEl.style.display = 'none';
+    if(finalLabelEl) finalLabelEl.style.display = 'none';
+  } else {
+    endKickerEl.style.display = '';
+    endKickerEl.textContent = 'Mission Complete';
+    finalScoreEl.style.display = '';
+    if(finalLabelEl) finalLabelEl.style.display = '';
+  }
 
   if(mode === 'challenge' && rival){
     vsBlock.style.display = 'block';
