@@ -1375,7 +1375,7 @@ function endGame(){
   if(avg >= 85) msg = "Master navigator. You could chart these waters blind.";
   else if(avg >= 65) msg = "Sharp sense of the map — a seasoned navigator's eye.";
   else if(avg >= 40) msg = "Solid run. The world's straits are tricky — chart again to sharpen your eye.";
-  else msg = "The oceans are vast. Take another pass and lock in those coordinates.";
+  else msg = "";
   document.getElementById('final-msg').textContent = msg;
 
   const vsBlock = document.getElementById('vs-block');
