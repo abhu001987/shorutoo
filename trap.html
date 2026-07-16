@@ -508,7 +508,11 @@
     overflow-y:auto;
   }
   @media (max-width: 768px){
-    .screen{ padding:calc(var(--nav-height, 72px) + 20px) 20px 20px; }
+    /* max() gives a hard floor: even if --nav-height was measured a bit
+       short (font swap timing, short/portrait viewports, etc.) the panel
+       content can never start higher than 108px from the top, which is
+       safely below the real header on every mobile width. */
+    .screen{ padding: max(calc(var(--nav-height, 80px) + 28px), 108px) 20px 20px; }
   }
   .screen.hidden{display:none;}
   .panel{
