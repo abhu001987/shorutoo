@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Current Navigator — Chart the Seas</title>
+
+<!-- Theme: set instantly, before any CSS loads -->
+<script>
+  (function() {
+    try {
+      var theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+  })();
+</script>
+
+<!-- Fonts (same as Challenge page) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- Shared CSS & JS (theme) -->
+<link rel="stylesheet" href="theme.css" />
+<script src="theme.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="preconnect" href="https://a.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://b.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://c.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://d.basemaps.cartocdn.com">
+
+<style>
+  /* ============================================ */
+  /* HEADER — copied exactly from the Challenge-a-Friend page: fixed,
+     transparent, no border, sits on top of the page. Since it's taken
+     out of normal flow, .screen (the start/end overlays) gets top
+     padding equal to the nav's real height, synced by JS into
+     --nav-height (see syncNavHeight()) — same mechanism the Challenge
+     page uses for .page-content. The only Current-Navigator-specific
+     addition is .nav.header-hidden, which hides the header entirely
+     while the map/gameplay screen is active (see setHeaderVisible()) —
+     the map fills the full viewport with no header to dodge. */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 24px 0 20px 0;
+    border-bottom: none;
+    background: transparent;
+    transition: border-color 0.3s ease;
+    margin-bottom: 0;
+  }
+  .nav.header-hidden {
+    display: none;
+  }
+
+  .wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--text);
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+  }
+
+  .logo .mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo .mark svg {
+    width: 38px;
+    height: 38px;
+    display: block;
+  }
+
+  .logo .mark svg circle,
+  .logo .mark svg path {
+    stroke: var(--blue);
+    transition: stroke 0.3s ease;
+  }
+
+  .logo .mark svg [fill]:not([fill="none"]) {
+    fill: var(--blue);
+    transition: fill 0.3s ease;
+  }
+
+  .logo-text {
+    color: var(--text);
+    transition: color 0.3s ease;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .nav-links a:hover {
+    color: var(--text);
+  }
+
+  .nav-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .exit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 20px 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    background: transparent;
+    transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+  }
+
+  .exit-btn .ic {
+    width: 1em;
+    height: 1em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.2s var(--ease);
+    flex-shrink: 0;
+  }
+
+  .exit-btn:hover {
+    background: var(--panel-strong);
+    border-color: var(--violet);
+    color: var(--violet);
+  }
+
+  .exit-btn:hover .ic {
+    transform: translateX(-3px);
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s var(--ease);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover {
+    background: var(--panel-strong);
+    border-color: var(--blue);
+    transform: scale(1.06);
+  }
+
+  .theme-toggle .sun-icon,
+  .theme-toggle .moon-icon {
+    position: absolute;
+    transition: all 0.45s var(--ease);
+    font-size: 18px;
+  }
+
+  .theme-toggle .sun-icon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.4);
+  }
+
+  .theme-toggle .moon-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  [data-theme="light"] .theme-toggle .sun-icon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+
+  [data-theme="light"] .theme-toggle .moon-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+  }
+
+  @media (max-width: 600px) {
+    .nav {
+      padding: 16px 0 14px 0;
+    }
+    .wrap {
+      padding: 0 16px;
+    }
+    .logo {
+      font-size: 18px;
+    }
+    .logo .mark {
+      width: 32px;
+      height: 32px;
+    }
+    .logo .mark svg {
+      width: 30px;
+      height: 30px;
+    }
+    .nav-links {
+      display: none;
+    }
+    .exit-btn {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .exit-btn span {
+      display: none;
+    }
+    .theme-toggle {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+    }
+  }
+  /* ============================================ */
+  /* REST OF PAGE STYLES — RECOLORED TO MATCH      */
+  /* CONTACT PAGE (blue/violet, no gold/amber glow) */
+  /* ============================================ */
+
+  /* Fallback tokens — used only if theme.css fails to load */
+  html.theme-css-missing {
+    --bg-0: #03050b;
+    --panel: rgba(255,255,255,.045);
+    --panel-strong: rgba(10,20,35,0.6);
+    --border: rgba(91,127,255,0.2);
+    --blue: #5B7FFF;
+    --blue-soft: rgba(91,127,255,.35);
+    --violet: #8B7CFF;
+    --mint: #5eead4;
+    --amber: #ffd166;
+    --text: #eaf2f7;
+    --text-dim: #9db3c4;
+    --text-dimmer: #5C6788;
+    --nav-bg: rgba(5,6,12,.7);
+    --input-bg: rgba(255,255,255,.04);
+    --glow-1: rgba(91,127,255,.10);
+    --glow-2: rgba(139,124,255,.08);
+    --danger-color: #ff5d73;
+    --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  html.theme-css-missing[data-theme="light"] {
+    --bg-0: #E8EEF7;
+    --panel: rgba(255,255,255,.55);
+    --panel-strong: rgba(255,255,255,.75);
+    --border: rgba(60,90,200,.18);
+    --blue: #5B7FFF;
+    --blue-soft: rgba(91,127,255,.20);
+    --violet: #A78BFA;
+    --mint: #0D9488;
+    --amber: #B45309;
+    --text: #0F172A;
+    --text-dim: #334155;
+    --text-dimmer: #64748B;
+    --nav-bg: rgba(255,255,255,.5);
+    --input-bg: rgba(255,255,255,.30);
+    --glow-1: rgba(91,127,255,.12);
+    --glow-2: rgba(167,139,250,.10);
+    --danger-color: #dc2626;
+  }
+
+  :root {
+    --gold: var(--blue, #5B7FFF);
+    --coral: var(--danger-color, #ff5d73);
+    --teal: var(--mint, #5eead4);
+    --glass: var(--panel, rgba(10,20,35,0.6));
+    --glass-brd: var(--border, rgba(91,127,255,0.2));
+    --ink: var(--text, #eaf2f7);
+    --ink-dim: var(--text-dim, #9db3c4);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0;padding:0;
+    height:100%;
+    height:100dvh;
+    overscroll-behavior:none;
+    background:var(--bg-0);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--text);
+    transition:background .3s ease, color .3s ease;
+  }
+  body{
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    background: var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+  }
+
+  #app{
+    position:relative;z-index:1;
+    flex:1 1 auto;min-height:0;
+    display:flex;flex-direction:column;
+    padding-bottom:env(safe-area-inset-bottom);
+    padding-left:env(safe-area-inset-left);
+    padding-right:env(safe-area-inset-right);
+  }
+
+  /* ---------- HUD ---------- */
+  #hud-top{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:8px 10px;
+    background:transparent;
+    z-index:500;
+    flex-wrap:nowrap;
+    position:relative;
+  }
+  .brand{
+    font-weight:800;letter-spacing:.14em;font-size:10px;color:var(--teal);
+    text-transform:uppercase;opacity:.85;flex-shrink:0;
+    writing-mode:horizontal-tb;
+  }
+  /* Always-visible way back to the menu while the main header is hidden
+     during gameplay — lets a player quit a run without finishing it. */
+  .hud-back-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:50%;flex-shrink:0;
+    background:var(--glass);border:1px solid var(--glass-brd);
+    color:var(--ink);cursor:pointer;padding:0;
+    transition:border-color .15s ease, color .15s ease, transform .12s ease;
+  }
+  .hud-back-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .hud-back-btn:active{transform:scale(.92);}
+  .hud-back-btn .ic{
+    width:16px;height:16px;fill:none;stroke:currentColor;
+    stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+  }
+  .current-card{
+    background:var(--glass);
+    border:1px solid var(--glass-brd);
+    backdrop-filter:blur(10px);
+    border-radius:12px;
+    padding:6px 12px;
+    text-align:center;
+    box-shadow:none;
+    flex:1 1 auto;min-width:0;
+  }
+  .current-card .eyebrow{font-size:9px;letter-spacing:.16em;color:var(--ink-dim);text-transform:uppercase;}
+  .current-card .title{font-size:clamp(13px,3.4vw,20px);font-weight:800;color:var(--blue);letter-spacing:.02em;margin-top:2px;text-shadow:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #dots{display:flex;gap:4px;justify-content:center;margin-top:5px;flex-wrap:wrap;max-width:220px;}
+  .dot{width:5px;height:5px;border-radius:50%;background:#2a3d52;transition:.2s;flex-shrink:0;}
+  .dot.done{background:var(--teal);box-shadow:0 0 6px var(--teal);}
+  .dot.now{background:var(--blue);box-shadow:0 0 8px var(--blue);transform:scale(1.4);}
+
+  .score-pill{
+    background:var(--glass);border:1px solid var(--glass-brd);border-radius:100px;
+    padding:6px 11px;font-size:11px;font-weight:700;color:var(--ink-dim);white-space:nowrap;
+    flex-shrink:0;
+  }
+  .score-pill b{color:var(--teal);}
+
+  #challenge-flag{
+    display:none;
+    align-items:center;gap:6px;
+    background:rgba(255,93,115,0.12);border:1px solid rgba(255,93,115,0.4);
+    border-radius:100px;padding:5px 11px;font-size:10.5px;font-weight:700;color:var(--coral);
+    white-space:nowrap;flex-shrink:0;letter-spacing:.03em;
+  }
+  #challenge-flag.show{display:flex;}
+  #challenge-flag .dotpulse{width:6px;height:6px;border-radius:50%;background:var(--coral);animation:pulseDot 1.4s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.25;}}
+
+  /* ---------- MAP ---------- */
+  #map-viewport{
+    flex:1 1 auto;position:relative;overflow:hidden;
+    margin:0 6px;
+    min-height:0;
+    border-radius:14px;
+    border:1px solid var(--glass-brd);
+    box-shadow:0 0 60px rgba(6,26,44,0.6) inset, 0 0 40px rgba(0,0,0,0.4);
+    isolation:isolate;
+    z-index:0;
+  }
+  #map-viewport.screen-covered{visibility:hidden;}
+  #map{
+    position:absolute;inset:0;
+    background:#0e1f30;
+    cursor:crosshair;
+  }
+  #map .leaflet-tile-pane{filter:saturate(1.1) contrast(1.02);}
+  #map .leaflet-container{background:#dfe6ea;}
+  #map-loading{
+    position:absolute;inset:0;z-index:400;display:flex;align-items:center;justify-content:center;
+    background:#0e1f30;color:var(--ink-dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    pointer-events:none;transition:opacity .3s ease;
+  }
+  #map-loading.hidden{opacity:0;}
+  #map .leaflet-control-attribution{
+    background:rgba(3,5,11,0.6)!important;color:var(--ink-dim)!important;font-size:9px!important;
+  }
+  #map .leaflet-control-attribution a{color:var(--teal)!important;}
+  #map .leaflet-control-zoom a{
+    background:var(--glass)!important;color:var(--ink)!important;border:1px solid var(--glass-brd)!important;
+  }
+
+  .pin-wrap{position:relative;width:22px;height:22px;}
+  .pin-core{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:9px;height:9px;border-radius:50%;
+  }
+  .pin-ring{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:20px;height:20px;border-radius:50%;border:1.6px solid;
+    box-shadow:0 0 0 1.5px rgba(255,255,255,0.85);
+  }
+  .pin-guess .pin-core{background:var(--coral);box-shadow:0 0 0 2px rgba(255,255,255,0.9), 0 0 8px var(--coral);}
+  .pin-guess .pin-ring{border-color:var(--coral);}
+  .pin-target .pin-core{background:var(--blue);box-shadow:0 0 0 2px rgba(255,255,255,0.9), 0 0 8px var(--blue);}
+  .pin-target .pin-ring{border-color:var(--blue);}
+  .pin-ping{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:6px;height:6px;border-radius:50%;
+    border:2px solid var(--coral);
+    animation:ping 1s ease-out forwards;
+  }
+  @keyframes ping{from{width:6px;height:6px;opacity:.9;}to{width:60px;height:60px;opacity:0;}}
+
+  /* ---------- BOTTOM PANEL ---------- */
+  #hud-bottom{
+    z-index:500;padding:8px 10px 10px;
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+  }
+  #feedback{
+    width:100%;max-width:640px;
+    background:var(--glass);border:1px solid var(--glass-brd);backdrop-filter:blur(10px);
+    border-radius:14px;padding:9px 14px;text-align:center;
+    display:none;
+  }
+  #feedback.show{display:block;}
+  #feedback .verdict{font-weight:800;font-size:13.5px;}
+  #feedback .verdict.good{color:var(--teal);}
+  #feedback .verdict.mid{color:var(--blue);}
+  #feedback .verdict.bad{color:var(--coral);}
+  #feedback .fact{font-size:11.5px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
+  #feedback .rival-line{font-size:11px;color:var(--coral);margin-top:6px;font-weight:700;}
+
+  .btn{
+    border:none;border-radius:40px;padding:11px 26px;font-size:13px;font-weight:800;
+    letter-spacing:.04em;cursor:pointer;transition:transform .12s ease, box-shadow .2s, background .25s ease;
+    text-transform:uppercase;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:var(--blue);color:#fff;box-shadow:none;}
+  .btn-primary:hover{background:var(--violet);transform:scale(1.02);box-shadow:0 8px 18px rgba(91,127,255,0.25);}
+  .btn-ghost{background:transparent;border:1px solid var(--glass-brd);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--teal);color:var(--teal);}
+  .btn-teal{background:linear-gradient(135deg,var(--teal),#2dd4bf);color:#062522;box-shadow:0 0 24px rgba(94,234,212,0.3);}
+  .btn-teal:hover{box-shadow:0 0 34px rgba(94,234,212,0.5);}
+  .btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .hint-tap{font-size:11px;color:var(--ink-dim);letter-spacing:.05em;opacity:.8;text-align:center;}
+
+  /* ---------- OVERLAY SCREENS ---------- */
+  .screen{
+    position:absolute;inset:0;z-index:5000;display:flex;align-items:center;justify-content:center;
+    background:var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 85% 20%, var(--glow-2), transparent 40%);
+    text-align:center;
+    padding:calc(var(--nav-height, 92px) + 24px) 24px 24px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-y:contain;
+  }
+  @media (max-width: 768px){
+    /* max() gives a hard floor: even if --nav-height was measured a bit
+       short (font swap timing, short/portrait viewports, etc.) the panel
+       content can never start higher than 108px from the top, which is
+       safely below the real header on every mobile width. */
+    .screen{ padding: max(calc(var(--nav-height, 80px) + 28px), 108px) 20px 20px; }
+  }
+  .screen.hidden{display:none;}
+  .panel{
+    max-width:520px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    min-height:100%;
+    justify-content:center;
+  }
+  .kicker{font-size:11px;letter-spacing:.3em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
+  /* FIX: ensure "Satellite Geo Ops" stays visible on mobile */
+  .kicker { 
+    font-size:clamp(10px, 2.5vw, 13px); 
+    letter-spacing:0.25em; 
+    margin-bottom:12px; 
+    white-space:nowrap; 
+  }
+  @media (max-width:420px){ 
+    .kicker { 
+      font-size:9px; 
+      letter-spacing:0.2em; 
+      white-space:normal; 
+    } 
+  }
+  h1{font-family:'Space Grotesk', sans-serif;font-weight:700;font-size:clamp(28px,7vw,46px);margin:0 0 12px;color:var(--ink);letter-spacing:-0.3px;}
+  h1 span{color:var(--blue);text-shadow:none;}
+  .sub{color:var(--ink-dim);font-size:14px;line-height:1.6;margin-bottom:26px;}
+  .final-score{font-family:'Space Grotesk', sans-serif;font-size:48px;font-weight:800;color:var(--blue);text-shadow:none;}
+  .final-label{color:var(--ink-dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-top:-4px;margin-bottom:18px;}
+
+  /* ---- feature list on start screen ---- */
+  .feature-card{
+    background:var(--glass);border:1px solid var(--glass-brd);border-radius:14px;
+    padding:14px 16px;text-align:left;margin-bottom:22px;
+  }
+  .feature-card .eyebrow2{font-size:10px;letter-spacing:.16em;color:var(--teal);text-transform:uppercase;margin-bottom:8px;font-weight:800;}
+  .feature-card p{color:var(--ink-dim);font-size:13px;line-height:1.6;margin:0;}
+
+  /* ---- paste-a-challenge box ---- */
+  .paste-box{
+    margin-top:22px;text-align:left;
+    border-top:1px solid var(--glass-brd);padding-top:20px;
+  }
+  .paste-title{font-family:'Space Grotesk', sans-serif;font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;}
+  .paste-sub{font-size:12px;color:var(--ink-dim);margin-bottom:10px;line-height:1.5;}
+  .paste-box textarea{
+    width:100%;min-height:56px;resize:vertical;
+    background:var(--bg-0);border:1px solid var(--glass-brd);border-radius:14px;
+    color:var(--teal);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
+    padding:10px 12px;outline:none;margin-bottom:10px;
+  }
+  .paste-box textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(91,127,255,0.15);}
+  .paste-err{font-size:11.5px;color:var(--coral);margin-top:8px;display:none;}
+
+  /* ---- challenge share block (end screen) ---- */
+  .share-block{
+    margin-top:22px;text-align:left;
+    border-top:1px solid var(--glass-brd);padding-top:20px;
+  }
+  .share-title{font-family:'Space Grotesk', sans-serif;font-weight:800;font-size:14px;color:var(--ink);margin-bottom:4px;}
+  .share-sub{font-size:12px;color:var(--ink-dim);margin-bottom:12px;line-height:1.5;}
+  .link-box{
+    display:flex;gap:8px;align-items:center;
+    background:var(--bg-0);border:1px solid var(--glass-brd);border-radius:14px;
+    padding:9px 9px 9px 13px;margin-bottom:12px;
+  }
+  .link-box input{
+    flex:1;min-width:0;background:transparent;border:none;outline:none;
+    color:var(--teal);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;
+  }
+  .copy-btn{
+    background:var(--glass);border:1px solid var(--glass-brd);color:var(--ink);
+    font-size:11px;font-weight:800;padding:8px 13px;border-radius:8px;cursor:pointer;
+    white-space:nowrap;transition:.15s;text-transform:uppercase;letter-spacing:.03em;
+  }
+  .copy-btn:hover{border-color:var(--blue);color:var(--blue);}
+  .copy-btn.copied{border-color:var(--teal);color:var(--teal);}
+  .share-icons{display:flex;gap:9px;}
+  .share-icons a{
+    flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;
+    padding:11px;border-radius:10px;font-weight:800;font-size:12.5px;
+    border:1px solid var(--glass-brd);background:var(--glass);color:var(--ink);
+    transition:.15s;text-transform:uppercase;letter-spacing:.02em;
+  }
+  .share-icons a:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-1px);}
+
+  /* ---- VS comparison block ---- */
+  #vs-block{display:none;margin-bottom:6px;}
+  .vs-card{display:flex;align-items:center;border-radius:16px;overflow:hidden;border:1px solid var(--glass-brd);position:relative;margin-bottom:14px;}
+  .vs-side{flex:1;padding:18px 10px;text-align:center;}
+  .vs-side.rival{background:linear-gradient(160deg, rgba(255,93,115,0.14), var(--glass));}
+  .vs-side.you{background:linear-gradient(200deg, rgba(91,127,255,0.14), var(--glass));}
+  .vs-name{font-size:10px;color:var(--ink-dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;font-weight:700;}
+  .vs-score{font-size:32px;font-weight:800;}
+  .vs-side.rival .vs-score{color:var(--coral);}
+  .vs-side.you .vs-score{color:var(--blue);}
+  .vs-badge{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:38px;height:38px;border-radius:50%;background:var(--bg-0);
+    border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;color:var(--blue);z-index:2;box-shadow:0 0 16px rgba(91,127,255,.4);
+  }
+  .verdict-box{
+    text-align:center;font-weight:800;font-size:16px;letter-spacing:.01em;
+    padding:12px 10px;border-radius:12px;margin-bottom:16px;
+  }
+  .verdict-box.win{background:rgba(94,234,212,0.1);color:var(--teal);border:1px solid rgba(94,234,212,0.35);}
+  .verdict-box.lose{background:rgba(255,93,115,0.12);color:var(--coral);border:1px solid rgba(255,93,115,0.35);}
+  .verdict-box.tie{background:rgba(91,127,255,0.12);color:var(--blue);border:1px solid rgba(91,127,255,0.35);}
+
+  .breakdown{max-height:180px;overflow-y:auto;margin-bottom:6px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+  .b-row{
+    display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;
+    background:var(--glass);border:1px solid var(--glass-brd);margin-bottom:6px;font-size:12px;text-align:left;
+  }
+  .b-row .b-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-dim);}
+  .b-row .b-marks{display:flex;gap:5px;flex-shrink:0;}
+  .b-mk{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
+  .b-mk.ok{background:rgba(94,234,212,0.16);color:var(--teal);}
+  .b-mk.no{background:rgba(255,93,115,0.16);color:var(--coral);}
+
+  /* ---- toast ---- */
+  #toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);
+    background:var(--text);color:var(--bg-0);font-weight:800;font-size:12.5px;
+    padding:10px 18px;border-radius:30px;opacity:0;pointer-events:none;
+    transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:2000;
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:1999;}
+
+  /* ===== Menu footer (only visible on start screen) ===== */
+  .menu-footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--glass-brd);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .menu-footer .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .menu-footer .back-link:hover { 
+    color: var(--text); 
+  }
+  .menu-footer .back-link svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .menu-footer .copy {
+    color: var(--text-dimmer);
+    font-size: 10px;
+  }
+
+  /* ===== Custom exit dialog (Google-style) ===== */
+  #exit-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(3px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  #exit-dialog-overlay.show { display: flex; }
+  #exit-dialog {
+    background: var(--bg-0);
+    border: 1px solid var(--glass-brd);
+    border-radius: 28px;
+    padding: 32px 28px 24px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    text-align: center;
+  }
+  #exit-dialog h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  #exit-dialog p {
+    color: var(--ink-dim);
+    font-size: 14px;
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+  #exit-dialog .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 0;
+  }
+  #exit-dialog .btn-row .btn {
+    min-width: 100px;
+  }
+  #exit-dialog .btn-secondary {
+    background: var(--glass);
+    border: 1px solid var(--glass-brd);
+    color: var(--ink);
+  }
+  #exit-dialog .btn-secondary:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  @media (max-width:480px) {
+    #exit-dialog { padding: 24px 18px; }
+    #exit-dialog h3 { font-size: 18px; }
+  }
+
+  @media (max-height:640px){
+    .current-card{padding:4px 10px;}
+    #dots{margin-top:3px;}
+    .hint-tap{display:none;}
+    .feature-card{padding:11px 13px;margin-bottom:16px;}
+    .menu-footer { margin-top: 16px; padding-top: 12px; }
+  }
+  @media (max-width:420px){
+    .brand{display:none;}
+    #challenge-flag span.flag-text{display:none;}
+  }
+
+  /* ===== round-feedback micro-effects ===== */
+  @keyframes badShake{
+    10%,90%{transform:translateX(-1px);}
+    20%,80%{transform:translateX(2px);}
+    30%,50%,70%{transform:translateX(-5px);}
+    40%,60%{transform:translateX(5px);}
+  }
+  .fx-shake{animation:badShake .5s ease;}
+
+  @keyframes goodPulse{
+    0%{box-shadow:0 0 0 0 rgba(94,234,212,.55);}
+    70%{box-shadow:0 0 0 16px rgba(94,234,212,0);}
+    100%{box-shadow:0 0 0 0 rgba(94,234,212,0);}
+  }
+  .fx-pulse-good{animation:goodPulse .8s ease;}
+
+  @keyframes midGlow{
+    0%,100%{box-shadow:none;}
+    50%{box-shadow:0 0 16px rgba(91,127,255,.55);}
+  }
+  .fx-pulse-mid{animation:midGlow .6s ease;}
+
+  @keyframes badFlash{
+    0%{background:rgba(255,93,115,0);}
+    30%{background:rgba(255,93,115,.10);}
+    100%{background:rgba(255,93,115,0);}
+  }
+  .fx-flash-bad{animation:badFlash .5s ease;}
+
+  @keyframes winnerGlow{
+    0%,100%{box-shadow:0 0 0 rgba(94,234,212,0), 0 0 0 rgba(91,127,255,0);}
+    50%{box-shadow:0 0 30px rgba(94,234,212,.55), 0 0 50px rgba(91,127,255,.25);}
+  }
+  .vs-card.fx-winner{animation:winnerGlow 1s ease 3;}
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- HEADER — EXACTLY MATCHES CONTACT PAGE        -->
+<!-- Hidden only while the map/gameplay screen is active (see setHeaderVisible) -->
+<!-- ============================================ -->
+<nav class="nav" id="siteNav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Shoruto</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="index.html#why"></a>
+        <a href="index.html#trending"></a>
+        <a href="index.html#subjects"></a>
+        <a href="blog.html"></a>
+      </div>
+
+      <div class="nav-cta">
+        <button class="exit-btn" onclick="showExitDialog()">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          <span>Exit</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- ============================================ -->
+
+<!-- ===== Custom Exit Dialog ===== -->
+<div id="exit-dialog-overlay">
+  <div id="exit-dialog">
+    <h3>Leave this run?</h3>
+    <p>Your progress on this attempt will be lost.</p>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="closeExitDialog()">Stay</button>
+      <button class="btn btn-primary" onclick="confirmExit()">Leave</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- START SCREEN -->
+  <div class="screen" id="screen-start">
+    <div class="panel">
+      <h1>Current <span>Navigator</span></h1>
+      <div class="kicker">Satellite Sea Ops</div>
+      <p class="sub"></p>
+
+      <div class="feature-card">
+        <div class="eyebrow2">⚓ Challenge Mode</div>
+        <p>Finish a run and you'll get a link with the exact same 10 seas in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, sea by sea. No sign-up, just a link.</p>
+      </div>
+
+      <button class="btn btn-primary" onclick="startFreshGame()">Begin Mission</button>
+
+      <div class="paste-box">
+        <div class="paste-title">Got a challenge link?</div>
+        <div class="paste-sub">Paste the link a friend sent you to chart their exact course.</div>
+        <textarea id="paste-input" placeholder="https://…/current-navigator.html?d=eyJzIjo3...."></textarea>
+        <button class="btn btn-teal" style="width:100%;" onclick="acceptPastedChallenge()">Accept Challenge</button>
+        <div class="paste-err" id="paste-err"></div>
+      </div>
+
+      <!-- ===== Footer inside start screen ===== -->
+      <div class="menu-footer">
+        <a href="index.html" class="back-link">
+          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          Back to Shoruto
+        </a>
+        <span class="copy">© 2026 Shoruto</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHALLENGE INVITE SCREEN (shown when someone opens a friend's challenge link) -->
+  <div class="screen hidden" id="screen-invite">
+    <div class="panel">
+      <div class="kicker">Incoming Challenge</div>
+      <h1>You've Been <span>Challenged</span></h1>
+      <p class="sub">A friend already charted these waters and dared you to beat them. Same 10 seas, same order — their score stays hidden until you finish your own run.</p>
+
+      <div class="feature-card">
+        <div class="eyebrow2">⚓ From <span id="invite-rival-name">A navigator</span></div>
+        <p>They've locked in a score across all 10 seas. Accept to take the exact same course and find out who navigated closer, sea by sea.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="eyebrow2">How it works</div>
+        <p>You'll be shown the same 10 seas in the same order on the same world map. Drop a pin as close to each one as you can — closer guesses score higher. At the end you'll get a full head-to-head breakdown.</p>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="acceptChallengeInvite()">Accept Challenge</button>
+        <button class="btn btn-ghost" onclick="declineChallengeInvite()">Not Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div class="screen hidden" id="screen-end">
+    <div class="panel">
+      <div class="kicker" id="end-kicker">Mission Complete</div>
+      <div class="final-score" id="final-score">0%</div>
+      <div class="final-label">Average Navigation Accuracy</div>
+      <p class="sub" id="final-msg" style="margin-bottom:16px;"></p>
+
+      <div id="vs-block">
+        <div class="vs-card" id="vs-card">
+          <div class="vs-side rival">
+            <div class="vs-name" id="vs-rival-name">Rival</div>
+            <div class="vs-score" id="vs-rival-score">0%</div>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="vs-side you">
+            <div class="vs-name">You</div>
+            <div class="vs-score" id="vs-you-score">0%</div>
+          </div>
+        </div>
+        <div class="verdict-box" id="verdict-box"></div>
+        <div class="breakdown" id="breakdown-list"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="startFreshGame()">Chart Again</button>
+      </div>
+
+      <div class="share-block">
+        <div class="share-title">⚓ Challenge a Friend</div>
+        <div class="share-sub">Send them this exact run's 10 seas and see if they can out-navigate you.</div>
+        <div class="link-box">
+          <input id="challenge-link" readonly>
+          <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
+        </div>
+        <div class="share-icons">
+          <a id="wa-share" href="#" target="_blank" rel="noopener">WhatsApp</a>
+          <a id="tg-share" href="#" target="_blank" rel="noopener">Telegram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME UI -->
+  <div id="hud-top">
+    <button class="hud-back-btn" onclick="showExitDialog()" aria-label="Back to menu" title="Back to menu">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="brand">◆ Current Navigator</div>
+    <div class="current-card" id="current-card">
+      <div class="eyebrow" id="round-label">Round 1 of 10</div>
+      <div class="title" id="current-name">—</div>
+      <div id="dots"></div>
+    </div>
+    <div id="challenge-flag"><span class="dotpulse"></span><span class="flag-text">Challenge</span></div>
+    <div class="score-pill">Accuracy <b id="score-live">0%</b></div>
+  </div>
+
+  <div id="map-viewport">
+    <div id="map"></div>
+    <div id="map-loading">Loading chart…</div>
+  </div>
+
+  <div id="hud-bottom">
+    <div id="feedback">
+      <div class="verdict" id="verdict-text"></div>
+      <div class="fact" id="fact-text"></div>
+      <div class="rival-line" id="rival-line" style="display:none;"></div>
+    </div>
+    <div class="hint-tap" id="tap-hint">Tap anywhere on the map to drop your pin</div>
+    <button class="btn btn-primary" id="next-btn" style="display:none" onclick="nextRound()">Next Sea →</button>
+  </div>
+
+</div>
+
+<div id="toast">Copied to clipboard</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ---------------- Fixed header height sync (exact copy of the Challenge page's mechanism) ---------------- */
+function syncNavHeight() {
+  var nav = document.getElementById('siteNav');
+  if (!nav) return;
+  // FIX: while the nav is hidden (display:none during gameplay), its
+  // offsetHeight is 0. Writing that 0 into --nav-height used to stick
+  // around and leak into the start/end/invite screens once the header
+  // came back, pushing their content up behind the fixed header on
+  // mobile. Skip the write entirely while hidden so --nav-height always
+  // holds the last REAL measured height.
+  if (nav.classList.contains('header-hidden')) return;
+  document.documentElement.style.setProperty('--nav-height', nav.offsetHeight + 'px');
+}
+document.addEventListener('DOMContentLoaded', syncNavHeight);
+window.addEventListener('load', syncNavHeight);
+/* Re-sync once web fonts finish swapping in — on mobile the nav's real
+   height can change slightly after Space Grotesk/Inter load, which used
+   to leave --nav-height a few px short and let the kicker/title text
+   creep up under the fixed header. */
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function(){ syncNavHeight(); });
+}
+setTimeout(syncNavHeight, 300);
+setTimeout(syncNavHeight, 900);
+
+/* ---------------- Shared header: theme + navigation ---------------- */
+document.addEventListener('DOMContentLoaded', function() {
+  var bg0 = getComputedStyle(document.documentElement).getPropertyValue('--bg-0').trim();
+  if (!bg0) document.documentElement.classList.add('theme-css-missing');
+
+  var themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      if (typeof toggleTheme === 'function') {
+        toggleTheme();
+      } else {
+        var html = document.documentElement;
+        var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+      }
+      setTimeout(function(){ try { map.invalidateSize(); } catch(e){} }, 320);
+    });
+  }
+});
+
+/* ===== Exit Dialog Functions ===== */
+function showExitDialog() {
+  document.getElementById('exit-dialog-overlay').classList.add('show');
+}
+function closeExitDialog() {
+  document.getElementById('exit-dialog-overlay').classList.remove('show');
+}
+function confirmExit() {
+  closeExitDialog();
+  // Same exit logic as original exitToMenu()
+  markerLayer.clearLayers();
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('screen-start').classList.remove('hidden');
+  document.getElementById('challenge-flag').classList.remove('show');
+  setMapVisible(false);
+  setHeaderVisible(true);
+  // Reset game state
+  roundIdx = 0;
+  scores = [];
+  guessed = false;
+}
+
+function goBack() {
+  if (document.referrer && document.referrer.includes(window.location.host)) {
+    history.back();
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+/* ---------------- Header visibility ----------------
+   Shown on the start screen and the results screen.
+   Hidden only while the map/gameplay screen is active (i.e. while the
+   player is choosing/dropping a pin, from beginRound() through endGame()). */
+function setHeaderVisible(visible){
+  var nav = document.getElementById('siteNav');
+  if (!nav) return;
+  nav.classList.toggle('header-hidden', !visible);
+  // The header is fixed/out of flow, so #app fills the full viewport
+  // regardless — but .screen's top padding depends on --nav-height, which
+  // is only accurate while the nav is actually rendered. Re-sync it here
+  // after the reflow settles, same call the map resize already waits for.
+  // (syncNavHeight() itself now no-ops while header-hidden is set, so this
+  // only actually updates the variable when we just turned the nav back on.)
+  setTimeout(function(){
+    syncNavHeight();
+    try { map.invalidateSize(); } catch(e){}
+  }, 50);
+}
+
+/* ---------------- SEA DATA (replaced ocean currents) ---------------- */
+const SEAS = [
+  {name:"Beaufort Sea", lat:72.0, lon:-137.0, fact:"A marginal sea of the Arctic Ocean, north of Alaska and Canada. Known for its harsh ice conditions and rich marine life."},
+  {name:"Chukchi Sea", lat:70.0, lon:-170.0, fact:"Located between Russia and Alaska, it connects the Arctic Ocean with the Bering Sea. Shallow and biologically productive."},
+  {name:"Kara Sea", lat:75.0, lon:80.0, fact:"Part of the Arctic Ocean north of Siberia. It receives huge freshwater inflow from the Ob and Yenisei rivers."},
+  {name:"Laptev Sea", lat:77.0, lon:120.0, fact:"A shelf sea in the Arctic, between the Taymyr Peninsula and the New Siberian Islands. It is one of the most ice-covered seas."},
+  {name:"East Siberian Sea", lat:73.0, lon:160.0, fact:"A marginal sea of the Arctic Ocean, between the New Siberian Islands and Wrangel Island. Very shallow and ice-bound most of the year."},
+  {name:"White Sea", lat:65.0, lon:36.0, fact:"A southern inlet of the Barents Sea, located on the northwest coast of Russia. It is almost completely surrounded by land."},
+  {name:"Sea of Okhotsk", lat:55.0, lon:150.0, fact:"A marginal sea of the Pacific Ocean, between the Kamchatka Peninsula and the Kuril Islands. Famous for its sea ice and salmon."},
+  {name:"Arafura Sea", lat:-9.0, lon:136.0, fact:"A shallow sea between Australia and New Guinea. It supports diverse coral reefs and is a key fishing ground."},
+  {name:"Celebes Sea", lat:3.0, lon:122.0, fact:"A deep sea in the western Pacific, bordered by the Philippines and Indonesia. It is a biodiversity hotspot."},
+  {name:"Sargasso Sea", lat:28.0, lon:-60.0, fact:"A unique sea in the Atlantic Ocean, bounded not by land but by ocean currents. It is known for its floating Sargassum seaweed."}
+];
+
+/* ---------------- Map setup ---------------- */
+const map = L.map('map', {
+  worldCopyJump:true,
+  minZoom:2,
+  maxZoom:9,
+  zoomControl:true,
+  attributionControl:true
+}).setView([20,20], 2);
+
+const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
+  subdomains:'abcd',
+  maxZoom:19,
+  keepBuffer:4,
+  updateWhenZooming:false,
+  crossOrigin:true
+}).addTo(map);
+
+const labelTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+  subdomains:'abcd',
+  minZoom:4,
+  maxZoom:19,
+  keepBuffer:4,
+  updateWhenZooming:false,
+  crossOrigin:true
+}).addTo(map);
+
+let tilesLoaded = false;
+tiles.on('load', ()=>{
+  tilesLoaded = true;
+  document.getElementById('map-loading').classList.add('hidden');
+});
+setTimeout(()=>{ if(!tilesLoaded) document.getElementById('map-loading').classList.add('hidden'); }, 2500);
+
+/* ---------------- India boundary overlay ---------------- */
+let indiaLayer = null;
+const INDIA_BOUNDARY_URLS = [
+  'https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson',
+  'https://cdn.jsdelivr.net/gh/datameet/maps@master/Country/india-land-simplified.geojson'
+];
+async function loadIndiaBoundary(){
+  for(const url of INDIA_BOUNDARY_URLS){
+    try{
+      const res = await fetch(url);
+      if(!res.ok) continue;
+      const geo = await res.json();
+      indiaLayer = L.geoJSON(geo, {
+        interactive:false,
+        style:{ color:'#5B7FFF', weight:2.2, opacity:1, fillColor:'#5B7FFF', fillOpacity:0.06 }
+      }).addTo(map);
+      return;
+    }catch(e){
+      console.warn('India boundary overlay source failed, trying next:', url, e);
+    }
+  }
+  console.warn('India boundary overlay: all sources failed — falling back to base tiles only.');
+}
+loadIndiaBoundary();
+
+let markerLayer = L.layerGroup().addTo(map);
+
+function pinIcon(cls){
+  return L.divIcon({
+    className:'',
+    html:`<div class="pin-wrap ${cls}"><div class="pin-ring"></div><div class="pin-core"></div></div>`,
+    iconSize:[22,22],
+    iconAnchor:[11,11]
+  });
+}
+function pingIcon(){
+  return L.divIcon({ className:'', html:`<div class="pin-ping"></div>`, iconSize:[6,6], iconAnchor:[3,3] });
+}
+
+/* ---------------- Game state ---------------- */
+let order = [];
+let roundIdx = 0;
+let scores = [];
+let guessed = false;
+let mode = 'own';
+let rival = null;
+
+function shuffleIdx(n){
+  const a = Array.from({length:n}, (_,i)=>i);
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function haversine(lat1,lon1,lat2,lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function setupDots(){
+  const dots = document.getElementById('dots');
+  dots.innerHTML = order.map((_,i)=>`<div class="dot" id="dot-${i}"></div>`).join('');
+}
+function updateDots(){
+  order.forEach((_,i)=>{
+    const d = document.getElementById('dot-'+i);
+    d.classList.toggle('done', i < roundIdx);
+    d.classList.toggle('now', i === roundIdx);
+  });
+}
+
+function setMapVisible(visible){
+  document.getElementById('map-viewport').classList.toggle('screen-covered', !visible);
+}
+setMapVisible(false);
+
+/* ---------------- Quitting mid-run (legacy, kept for compatibility) ---------------- */
+function exitToMenu(){
+  // Now using the custom dialog instead
+  showExitDialog();
+}
+
+/* ---------------- Starting a run ---------------- */
+function startFreshGame(){
+  mode = 'own';
+  rival = null;
+  order = shuffleIdx(SEAS.length);
+  beginRound();
+}
+
+function beginRound(){
+  roundIdx = 0; scores = [];
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('challenge-flag').classList.toggle('show', mode === 'challenge');
+  setMapVisible(true);
+  setHeaderVisible(false); // hide header while the player is choosing/guessing on the map
+  setupDots();
+  loadRound();
+  setTimeout(()=>map.invalidateSize(), 50);
+}
+
+function loadRound(){
+  guessed = false;
+  markerLayer.clearLayers();
+  document.getElementById('feedback').classList.remove('show');
+  document.getElementById('rival-line').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('tap-hint').style.display = 'block';
+  document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${order.length}`;
+  document.getElementById('current-name').textContent = SEAS[order[roundIdx]].name;
+  updateDots();
+  map.setView([20,20], 2);
+}
+
+function verdictFor(km){
+  if(km < 250) return {label:'Bullseye — spot on!', cls:'good'};
+  if(km < 600) return {label:'Excellent placement!', cls:'good'};
+  if(km < 1200) return {label:'Nearby — solid instinct.', cls:'mid'};
+  if(km < 2500) return {label:'Right ocean, rough spot.', cls:'mid'};
+  return {label:'Way off course — but noted.', cls:'bad'};
+}
+
+function scoreFor(km){
+  return Math.max(0, Math.round(100 - km/40));
+}
+
+/* ===== per-round micro-effect on guess (distinct feel for good/mid/bad) ===== */
+function triggerRoundEffect(cls){
+  const feedback = document.getElementById('feedback');
+  const scorePill = document.querySelector('.score-pill');
+  const mapViewport = document.getElementById('map-viewport');
+
+  if(cls === 'good'){
+    fireConfetti({count:26, maxFrames:90, spread:0.35});
+    [feedback, scorePill].forEach(el=>{
+      if(!el) return;
+      el.classList.remove('fx-pulse-good'); void el.offsetWidth;
+      el.classList.add('fx-pulse-good');
+      setTimeout(()=> el.classList.remove('fx-pulse-good'), 900);
+    });
+  } else if(cls === 'bad'){
+    [mapViewport, feedback].forEach(el=>{
+      if(!el) return;
+      el.classList.remove('fx-shake'); void el.offsetWidth;
+      el.classList.add('fx-shake');
+      setTimeout(()=> el.classList.remove('fx-shake'), 550);
+    });
+    feedback.classList.remove('fx-flash-bad'); void feedback.offsetWidth;
+    feedback.classList.add('fx-flash-bad');
+    setTimeout(()=> feedback.classList.remove('fx-flash-bad'), 550);
+  } else {
+    if(feedback){
+      feedback.classList.remove('fx-pulse-mid'); void feedback.offsetWidth;
+      feedback.classList.add('fx-pulse-mid');
+      setTimeout(()=> feedback.classList.remove('fx-pulse-mid'), 700);
+    }
+  }
+}
+
+map.on('click', onMapClick);
+
+function onMapClick(evt){
+  if(guessed) return;
+  guessed = true;
+
+  const gLat = evt.latlng.lat;
+  const gLon = evt.latlng.lng;
+  const target = SEAS[order[roundIdx]];
+  const km = haversine(gLat, gLon, target.lat, target.lon);
+  const v = verdictFor(km);
+  const pts = scoreFor(km);
+  scores.push(pts);
+
+  const guessLatLng = [gLat, gLon];
+  const targetLatLng = [target.lat, target.lon];
+
+  markerLayer.clearLayers();
+  L.marker(guessLatLng, {icon: pingIcon(), interactive:false}).addTo(markerLayer);
+  L.polyline([guessLatLng, targetLatLng], {color:'#243447', weight:1.4, dashArray:'4 4', opacity:0.75, interactive:false}).addTo(markerLayer);
+  L.marker(guessLatLng, {icon: pinIcon('pin-guess'), interactive:false}).addTo(markerLayer);
+  L.marker(targetLatLng, {icon: pinIcon('pin-target'), interactive:false}).addTo(markerLayer);
+
+  const bounds = L.latLngBounds([guessLatLng, targetLatLng]);
+  map.flyToBounds(bounds, {padding:[70,70], maxZoom:7, duration:0.6});
+
+  document.getElementById('verdict-text').textContent = `${v.label}  (${Math.round(km)} km away · +${pts} pts)`;
+  document.getElementById('verdict-text').className = 'verdict ' + v.cls;
+  document.getElementById('fact-text').textContent = target.fact;
+
+  const rivalLine = document.getElementById('rival-line');
+  if(mode === 'challenge' && rival){
+    const theirPts = rival.pts[roundIdx];
+    if(pts > theirPts){ rivalLine.textContent = `You beat your rival on this one — they scored +${theirPts} pts here.`; }
+    else if(pts < theirPts){ rivalLine.textContent = `Your rival had the edge here — they scored +${theirPts} pts.`; }
+    else{ rivalLine.textContent = `Dead even with your rival on this sea — +${theirPts} pts each.`; }
+    rivalLine.style.display = 'block';
+  }
+
+  document.getElementById('feedback').classList.add('show');
+  document.getElementById('tap-hint').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.getElementById('next-btn').textContent = roundIdx === order.length-1 ? 'See Results →' : 'Next Sea →';
+
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+  document.getElementById('score-live').textContent = avg + '%';
+
+  updateDots();
+  triggerRoundEffect(v.cls);
+}
+
+function nextRound(){
+  roundIdx++;
+  if(roundIdx >= order.length){
+    endGame();
+    return;
+  }
+  loadRound();
+}
+
+function endGame(){
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+  document.getElementById('final-score').textContent = avg + '%';
+  let msg;
+  if(avg >= 85) msg = "Master navigator. You could chart these waters blind.";
+  else if(avg >= 65) msg = "Sharp sense of the map — a seasoned navigator's eye.";
+  else if(avg >= 40) msg = "Solid run. The world's seas are tricky — chart again to sharpen your eye.";
+  else msg = "The oceans are vast. Take another pass and lock in those coordinates.";
+  document.getElementById('final-msg').textContent = msg;
+
+  const vsBlock = document.getElementById('vs-block');
+  const vsCard = document.getElementById('vs-card');
+  vsCard.classList.remove('fx-winner');
+
+  const endKickerEl = document.getElementById('end-kicker');
+  const finalScoreEl = document.getElementById('final-score');
+  const finalLabelEl = document.querySelector('.final-label');
+  const finalMsgEl = document.getElementById('final-msg');
+  if(mode === 'challenge'){
+    // Don't show the "Challenge Result" kicker or the top score number —
+    // the VS card below already shows both scores side by side.
+    endKickerEl.style.display = 'none';
+    finalScoreEl.style.display = 'none';
+    if(finalLabelEl) finalLabelEl.style.display = 'none';
+    // With those hidden, final-msg would be the very first thing in the
+    // panel and sit right under the header — push it down a bit.
+    if(finalMsgEl) finalMsgEl.style.marginTop = '28px';
+  } else {
+    endKickerEl.style.display = '';
+    endKickerEl.textContent = 'Mission Complete';
+    finalScoreEl.style.display = '';
+    if(finalLabelEl) finalLabelEl.style.display = '';
+    if(finalMsgEl) finalMsgEl.style.marginTop = '';
+  }
+
+  if(mode === 'challenge' && rival){
+    vsBlock.style.display = 'block';
+    document.getElementById('vs-rival-name').textContent = rival.name;
+    document.getElementById('vs-rival-score').textContent = rival.score + '%';
+    document.getElementById('vs-you-score').textContent = avg + '%';
+
+    const vb = document.getElementById('verdict-box');
+    vb.classList.remove('win','lose','tie');
+    if(avg > rival.score){
+      vb.textContent = '🎉 You out-navigated your rival!';
+      vb.classList.add('win');
+      vsCard.classList.add('fx-winner');
+      fireConfetti({count:110, maxFrames:230, spread:1}); // bigger burst for a challenge win
+    }
+    else if(avg < rival.score){ vb.textContent = '😅 Your rival navigated closer. Chart again!'; vb.classList.add('lose'); }
+    else { vb.textContent = "🤝 Dead even — perfectly matched navigators."; vb.classList.add('tie'); }
+
+    renderBreakdown(scores, rival.pts);
+  } else {
+    vsBlock.style.display = 'none';
+    if(avg >= 85) fireConfetti({count:70, maxFrames:200, spread:1}); // solo mastery still gets a little celebration
+  }
+
+  buildAndShowChallengeLink(avg);
+
+  document.getElementById('screen-end').classList.remove('hidden');
+  setMapVisible(false);
+  setHeaderVisible(true); // show header again on the results screen
+}
+
+function renderBreakdown(myPts, theirPts){
+  const box = document.getElementById('breakdown-list');
+  box.innerHTML = '';
+  order.forEach((curIdx, i)=>{
+    const mine = myPts[i], theirs = theirPts[i];
+    const row = document.createElement('div');
+    row.className = 'b-row';
+    row.innerHTML = `<span class="b-name">${SEAS[curIdx].name}</span>
+      <span class="b-marks">
+        <span class="b-mk ${theirs > mine ? 'ok' : 'no'}" title="Rival">${theirs}</span>
+        <span class="b-mk ${mine >= theirs ? 'ok' : 'no'}" title="You">${mine}</span>
+      </span>`;
+    box.appendChild(row);
+  });
+}
+
+/* ---------------- Challenge link build / share ---------------- */
+function randomCode(){
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let out = '';
+  for(let i=0;i<6;i++) out += chars[Math.floor(Math.random()*chars.length)];
+  return out;
+}
+
+function buildChallengeLink(avgScore){
+  const payload = { s: avgScore, o: order, p: scores, code: randomCode(), name: 'A navigator' };
+  const b64 = btoa(JSON.stringify(payload));
+  const base = window.location.origin + window.location.pathname;
+  return base + '?d=' + encodeURIComponent(b64);
+}
+
+function buildAndShowChallengeLink(avgScore){
+  const link = buildChallengeLink(avgScore);
+  document.getElementById('challenge-link').value = link;
+  const copyBtn = document.getElementById('copy-link-btn');
+  copyBtn.textContent = 'Copy';
+  copyBtn.classList.remove('copied');
+
+  const msg = `⚓ I just charted the Current Navigator and scored ${avgScore}%. Think you can navigate closer? Take the same 10 seas: ${link}`;
+  document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  document.getElementById('tg-share').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(`⚓ Think you can beat my Current Navigator score of ${avgScore}%?`);
+}
+
+function copyChallengeLink(){
+  const input = document.getElementById('challenge-link');
+  input.select();
+  const btn = document.getElementById('copy-link-btn');
+  function done(){
+    showToast('Challenge link copied');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  }
+  navigator.clipboard.writeText(input.value).then(done).catch(()=>{
+    document.execCommand('copy');
+    done();
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg || 'Copied to clipboard';
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+/* ---------------- Accepting a challenge ---------------- */
+
+/* Shared, defensive base64 decoder used by BOTH the paste-a-link flow and
+   the auto-load-from-URL flow, so they behave identically.
+   Handles: URL-encoded payloads, raw (already-decoded) base64 payloads,
+   and base64's own '=' padding without misfiring. */
+function safeDecodeBase64(str){
+  let candidate = str;
+  try{
+    // Only re-decode if it actually looks URI-encoded; forcing this on a
+    // plain base64 string can corrupt characters like '+' by luck-of-draw.
+    if(/%[0-9A-Fa-f]{2}/.test(str)){
+      candidate = decodeURIComponent(str);
+    }
+  }catch(e){
+    candidate = str; // wasn't valid URI-encoding, fall back to raw
+  }
+  try{
+    return atob(candidate);
+  }catch(e){
+    // last resort: try the untouched original string
+    try{ return atob(str); }
+    catch(e2){ throw new Error('This challenge link looks corrupted.'); }
+  }
+}
+
+function parseChallengeString(raw){
+  raw = (raw || '').trim();
+  if(!raw) throw new Error('Paste a challenge link first.');
+  let d;
+  if(raw.includes('?')){
+    // Full URL pasted — pull the query string after the first '?'.
+    const qs = raw.split('?').slice(1).join('?');
+    const params = new URLSearchParams(qs);
+    d = params.get('d');
+  } else if(/(^|[&?])d=/.test(raw)){
+    // Bare "d=..." query fragment pasted (no full URL/no leading '?').
+    const params2 = new URLSearchParams(raw);
+    d = params2.get('d');
+  } else {
+    // Just the raw base64 payload itself — note this deliberately does NOT
+    // check for a bare '=' character, since base64 payloads routinely end
+    // in '=' padding and that used to be misread as a key=value pair.
+    d = raw;
+  }
+  if(!d) throw new Error('This link is missing its challenge data.');
+  const payload = JSON.parse(safeDecodeBase64(d));
+  if(!Array.isArray(payload.o) || !Array.isArray(payload.p)) throw new Error('This challenge link looks corrupted.');
+  return payload;
+}
+
+function loadChallengeGame(payload){
+  mode = 'challenge';
+  rival = { name: payload.name || 'A navigator', score: payload.s, pts: payload.p };
+  order = payload.o;
+  beginRound();
+}
+
+/* ---------------- Challenge invite screen ----------------
+   Landing straight in the map used to feel abrupt for someone who just
+   clicked a friend's link with no context. Now any incoming challenge —
+   whether from the URL or pasted in manually — is held in pendingChallenge
+   and shown on a dedicated invite screen with Accept / Not Now, instead of
+   dropping the player straight onto the map. */
+let pendingChallenge = null;
+
+function showChallengeInvite(payload){
+  pendingChallenge = payload;
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('invite-rival-name').textContent = payload.name || 'A navigator';
+  document.getElementById('screen-invite').classList.remove('hidden');
+  setMapVisible(false);
+  setHeaderVisible(true);
+}
+
+function acceptChallengeInvite(){
+  if(!pendingChallenge) return;
+  const payload = pendingChallenge;
+  pendingChallenge = null;
+  document.getElementById('screen-invite').classList.add('hidden');
+  loadChallengeGame(payload);
+}
+
+function declineChallengeInvite(){
+  pendingChallenge = null;
+  document.getElementById('screen-invite').classList.add('hidden');
+  document.getElementById('screen-start').classList.remove('hidden');
+  setHeaderVisible(true);
+  // Clean the challenge param out of the URL so refreshing doesn't re-show the invite.
+  try{
+    const url = new URL(window.location.href);
+    url.searchParams.delete('d');
+    window.history.replaceState({}, '', url.toString());
+  }catch(e){}
+}
+
+function acceptPastedChallenge(){
+  const raw = document.getElementById('paste-input').value;
+  const errBox = document.getElementById('paste-err');
+  errBox.style.display = 'none';
+  try{
+    const payload = parseChallengeString(raw);
+    showChallengeInvite(payload);
+  }catch(e){
+    errBox.textContent = e.message || 'Could not read that challenge link.';
+    errBox.style.display = 'block';
+  }
+}
+
+(function autoDetectChallenge(){
+  try{
+    const params = new URLSearchParams(window.location.search);
+    const d = params.get('d');
+    if(d){
+      const payload = JSON.parse(safeDecodeBase64(d));
+      if(Array.isArray(payload.o) && Array.isArray(payload.p)){
+        showChallengeInvite(payload);
+      }
+    }
+  }catch(e){ /* ignore malformed links, fall back to start screen */ }
+})();
+
+/* ---------------- Confetti (good marks / challenge win) ---------------- */
+function fireConfetti(opts){
+  opts = opts || {};
+  const count = opts.count || 70;
+  const maxFrames = opts.maxFrames || 200;
+  const spread = opts.spread || 1; // 1 = full width, <1 = narrower burst centered on screen
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const colors = ['#5B7FFF', '#8B7CFF', '#5eead4', '#ff5d73'];
+  const canvas = document.createElement('canvas');
+  canvas.id = 'confettiCanvas';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const midX = canvas.width/2;
+  const halfSpread = (canvas.width*spread)/2;
+  const pieces = Array.from({length:count}, ()=>({
+    x: midX + (Math.random()*2-1)*halfSpread,
+    y: -20 - Math.random()*canvas.height*0.3,
+    w: 5+Math.random()*4, h: 7+Math.random()*5,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    vx: (Math.random()-0.5)*3, vy: 2+Math.random()*3,
+    rot: Math.random()*Math.PI, vrot: (Math.random()-0.5)*0.3
+  }));
+  let frame = 0;
+  function loop(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x += p.vx; p.y += p.vy; p.vy += 0.03; p.rot += p.vrot;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    if(frame < maxFrames) requestAnimationFrame(loop);
+    else canvas.remove();
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ---------------- Responsive resize handling ----------------
+   FIX (mobile jank): window 'resize' and visualViewport 'resize' fire
+   constantly on phones purely because the browser's address bar/toolbar
+   hides and shows as you scroll — that is NOT a real layout change, just
+   a viewport height wobble. The old code ran syncNavHeight() (a DOM
+   read/write that forces layout) and map.invalidateSize() (a Leaflet
+   reflow + tile re-check) on every single one of those events, so
+   swiping the page caused a real, visible hitch mid-scroll.
+   Now: (1) both handlers are debounced so they run once movement settles
+   instead of on every frame, and (2) syncNavHeight only actually runs
+   when the viewport WIDTH changed (a real orientation change/resize),
+   not when only the height wobbled from the browser chrome. */
+let lastKnownWidth = window.innerWidth;
+let resizeSettleTimer = null;
+function handleViewportSettle(){
+  clearTimeout(resizeSettleTimer);
+  resizeSettleTimer = setTimeout(function(){
+    const widthChanged = window.innerWidth !== lastKnownWidth;
+    lastKnownWidth = window.innerWidth;
+    if (widthChanged) syncNavHeight(); // real orientation/resize — recheck nav height
+    try { map.invalidateSize(); } catch(e){}
+  }, 150);
+}
+window.addEventListener('resize', handleViewportSettle);
+window.visualViewport && window.visualViewport.addEventListener('resize', handleViewportSettle);
+setTimeout(()=> { try { map.invalidateSize(); } catch(e){} }, 200);
+</script>
+</body>
+</html>
