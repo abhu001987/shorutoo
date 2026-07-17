@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Challenge Friends · Shoruto</title>
+
+<!-- Theme: set instantly, before any CSS loads -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared CSS & JS (theme) -->
+  <link rel="stylesheet" href="theme.css" />
+  <script src="theme.js"></script>
+
+<style>
+  /* ============================================ */
+  /* FALLBACK THEME TOKENS                         */
+  /* Your theme.css already defines these — this   */
+  /* block only fills in gaps if a var is missing, */
+  /* so nothing breaks if theme.css is dropped in. */
+  /* ============================================ */
+  :root{
+    --bg-0:#060810;
+    --panel:rgba(255,255,255,0.035);
+    --panel-strong:rgba(255,255,255,0.07);
+    --border:rgba(255,255,255,0.09);
+    --text:#eef1fb;
+    --text-dim:#9aa3c4;
+    --text-dimmer:#666e91;
+    --blue:#5B7FFF;
+    --violet:#8B6BFF;
+    --glow-1:rgba(91,127,255,0.22);
+    --glow-2:rgba(139,107,255,0.16);
+    --ease:cubic-bezier(.4,0,.2,1);
+    --amber:#F5B841;
+    --amber-alpha:rgba(245,184,65,0.16);
+    /* extra subject accents for this page — kept in the same family as the rest of the site */
+    --slate:#8C97BE;
+    --slate-alpha:rgba(140,151,190,0.18);
+    --sand:#D9A15B;
+    --sand-alpha:rgba(217,161,91,0.18);
+    --green:#59C08A;
+    --green-alpha:rgba(89,192,138,0.18);
+    --ice:#7FE3F0;
+    --ice-alpha:rgba(127,227,240,0.18);
+    --teal:#3FC7B4;
+    --teal-alpha:rgba(63,199,180,0.18);
+  }
+  [data-theme="light"]{
+    --bg-0:#f6f7fb;
+    --panel:rgba(10,14,30,0.03);
+    --panel-strong:rgba(10,14,30,0.06);
+    --border:rgba(10,14,30,0.1);
+    --text:#12142a;
+    --text-dim:#4d5578;
+    --text-dimmer:#8890b0;
+    --glow-1:rgba(91,127,255,0.14);
+    --glow-2:rgba(139,107,255,0.12);
+    --amber-alpha:rgba(245,184,65,0.22);
+    --slate-alpha:rgba(140,151,190,0.24);
+    --sand-alpha:rgba(217,161,91,0.24);
+    --green-alpha:rgba(89,192,138,0.22);
+    --ice-alpha:rgba(127,227,240,0.28);
+    --teal-alpha:rgba(63,199,180,0.24);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;padding:0;
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    background:var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 85% 10%, var(--glow-2), transparent 40%);
+    color:var(--text);
+    transition:background 0.3s ease, color 0.3s ease;
+  }
+
+  /* ============================================ */
+  /* HEADER STYLES — MATCHES REST OF SITE          */
+  /* (copied as-is; do not restyle)                */
+  /* ============================================ */
+  .nav{
+    width:calc(100% - 48px);max-width:1360px;margin:18px auto 26px;padding:12px 22px;
+    border:1px solid var(--border);border-radius:999px;
+    background:var(--panel-strong);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    box-shadow:0 14px 34px rgba(0,0,0,0.28);
+    transition:border-color 0.3s ease,background 0.3s ease,box-shadow 0.3s ease;
+  }
+  [data-theme="light"] .nav{box-shadow:0 14px 34px rgba(30,40,90,0.1);}
+  .nav .wrap{padding:0;max-width:none;}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 24px;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--text);letter-spacing:1px;transition:color 0.3s ease;}
+  .logo .mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;}
+  .logo .mark svg{width:38px;height:38px;display:block;}
+  .logo .mark svg circle,.logo .mark svg path{stroke:var(--blue);transition:stroke 0.3s ease;}
+  .logo .mark svg [fill]:not([fill="none"]){fill:var(--blue);transition:fill 0.3s ease;}
+  .logo-text{color:var(--text);transition:color 0.3s ease;}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s ease;font-family:'Inter',sans-serif;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{display:flex;align-items:center;gap:12px;}
+  .exit-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px 10px 16px;border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;background:transparent;transition:0.2s var(--ease),border-color 0.3s ease,color 0.3s ease,background 0.3s ease;}
+  .exit-btn .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s var(--ease);flex-shrink:0;}
+  .exit-btn:hover{background:var(--panel-strong);border-color:var(--violet);color:var(--violet);}
+  .exit-btn:hover .ic{transform:translateX(-3px);}
+  .theme-toggle{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--ease);position:relative;flex-shrink:0;}
+  .theme-toggle:hover{background:var(--panel-strong);border-color:var(--blue);transform:scale(1.06);}
+  .theme-toggle .sun-icon,.theme-toggle .moon-icon{position:absolute;transition:all 0.45s var(--ease);font-size:18px;}
+  .theme-toggle .sun-icon{opacity:0;transform:rotate(-90deg) scale(0.4);}
+  .theme-toggle .moon-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .sun-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .moon-icon{opacity:0;transform:rotate(90deg) scale(0.4);}
+  @media (max-width:600px){
+    .nav{width:calc(100% - 24px);padding:10px 14px;margin:12px auto 16px;border-radius:28px;}
+    .wrap{padding:0 16px;}
+    .logo{font-size:18px;}
+    .logo .mark{width:32px;height:32px;}
+    .logo .mark svg{width:30px;height:30px;}
+    .nav-links{display:none;}
+    .exit-btn{padding:6px 12px;font-size:12px;}
+    .exit-btn span{display:none;}
+    .theme-toggle{width:36px;height:36px;font-size:16px;}
+  }
+  .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.14em;flex-shrink:0;}
+  /* ============================================ */
+  /* END HEADER STYLES                             */
+  /* ============================================ */
+
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  .page-content{flex:1;padding:0 24px 100px;max-width:1400px;margin:0 auto;width:100%;}
+
+  /* ---------- breadcrumb ---------- */
+  .crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dimmer);margin-bottom:28px;font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
+  .crumb a{color:var(--text-dimmer);text-decoration:none;transition:color .2s ease;}
+  .crumb a:hover{color:var(--blue);}
+  .crumb .sep{opacity:.5;}
+  .crumb .current{color:var(--text-dim);}
+
+  /* ---------- page head ---------- */
+  .page-head{margin-bottom:30px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 15px;border-radius:40px;background:var(--panel-strong);border:1px solid var(--border);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;font-weight:600;margin-bottom:16px;}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulseDot 1.8s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .page-head h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.05;letter-spacing:-0.6px;margin:0 0 10px;}
+  .page-head p{font-size:15.5px;line-height:1.7;color:var(--text-dim);max-width:620px;margin:0;}
+
+  .page-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:24px;padding-top:18px;border-top:1px solid var(--border);}
+  .page-meta .stats{display:flex;gap:22px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dimmer);letter-spacing:.3px;}
+  .page-meta .stats b{color:var(--text-dim);font-weight:600;}
+  .legend{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dimmer);letter-spacing:.4px;}
+  .legend .sw{width:9px;height:9px;border-radius:2px;background:var(--green);box-shadow:0 0 6px var(--green-alpha);}
+
+  /* ---------- topic grid ---------- */
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
+
+  .topic-card{
+    position:relative;background:var(--panel);border:1px solid var(--border);border-radius:20px;
+    padding:26px 24px 22px;overflow:hidden;text-decoration:none;color:inherit;display:block;
+    transform-style:preserve-3d;perspective:800px;
+    opacity:0;transform:translateY(28px);
+    transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
+  }
+  .topic-card.in-view{animation:cardUp .6s var(--ease) forwards;}
+  .topic-grid .topic-card:nth-child(1){animation-delay:.02s;}
+  .topic-grid .topic-card:nth-child(2){animation-delay:.05s;}
+  .topic-grid .topic-card:nth-child(3){animation-delay:.08s;}
+  .topic-grid .topic-card:nth-child(4){animation-delay:.11s;}
+  .topic-grid .topic-card:nth-child(5){animation-delay:.14s;}
+  .topic-grid .topic-card:nth-child(6){animation-delay:.17s;}
+  .topic-grid .topic-card:nth-child(7){animation-delay:.2s;}
+  .topic-grid .topic-card:nth-child(8){animation-delay:.23s;}
+  .topic-grid .topic-card:nth-child(9){animation-delay:.26s;}
+  .topic-grid .topic-card:nth-child(10){animation-delay:.29s;}
+  .topic-grid .topic-card:nth-child(11){animation-delay:.32s;}
+  .topic-grid .topic-card:nth-child(12){animation-delay:.35s;}
+  .topic-grid .topic-card:nth-child(13){animation-delay:.38s;}
+  .topic-grid .topic-card:nth-child(14){animation-delay:.41s;}
+  .topic-grid .topic-card:nth-child(15){animation-delay:.44s;}
+  .topic-grid .topic-card:nth-child(16){animation-delay:.47s;}
+  .topic-grid .topic-card:nth-child(17){animation-delay:.5s;}
+  .topic-grid .topic-card:nth-child(18){animation-delay:.53s;}
+  @keyframes cardUp{to{opacity:1;transform:translateY(0);}}
+
+  .topic-card::before{
+    content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;opacity:0;
+    background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.08), transparent 60%);
+    transition:opacity .3s ease;
+  }
+  .topic-card:hover::before{opacity:1;}
+  .topic-card:hover{border-color:var(--accent, var(--blue));box-shadow:0 24px 50px rgba(0,0,0,0.32), 0 0 30px var(--accent-alpha, var(--glow-1));}
+  [data-theme="light"] .topic-card:hover{box-shadow:0 24px 50px rgba(30,40,90,0.12), 0 0 30px var(--accent-alpha, var(--glow-1));}
+
+  /* per-subject accent tokens */
+  .topic-card[data-accent="blue"]{--accent:var(--blue);--accent-alpha:var(--glow-1);}
+  .topic-card[data-accent="violet"]{--accent:var(--violet);--accent-alpha:var(--glow-2);}
+  .topic-card[data-accent="amber"]{--accent:var(--amber);--accent-alpha:var(--amber-alpha);}
+  .topic-card[data-accent="slate"]{--accent:var(--slate);--accent-alpha:var(--slate-alpha);}
+  .topic-card[data-accent="sand"]{--accent:var(--sand);--accent-alpha:var(--sand-alpha);}
+  .topic-card[data-accent="green"]{--accent:var(--green);--accent-alpha:var(--green-alpha);}
+  .topic-card[data-accent="ice"]{--accent:var(--ice);--accent-alpha:var(--ice-alpha);}
+  .topic-card[data-accent="teal"]{--accent:var(--teal);--accent-alpha:var(--teal-alpha);}
+
+  /* ============================================ */
+  /* SUBJECT GAME-EFFECTS                          */
+  /* A field of small particles sits behind each   */
+  /* card's content, themed to that subject:       */
+  /* bubbles rising for water, embers for volcano, */
+  /* snow for glaciers, leaves for forest, ripples  */
+  /* for lakes, sparkle for peaks, drifting streaks */
+  /* for wind/cloud/sand. Purely decorative CSS —   */
+  /* no canvas, no JS animation loop.               */
+  /* ============================================ */
+  .card-fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:20px;z-index:0;}
+  .card-fx span{position:absolute;left:var(--l);opacity:0;background:var(--accent);}
+
+  .fx-rise span{bottom:-10px;width:var(--s);height:var(--s);border-radius:50%;animation:fxRise var(--dur) linear infinite;animation-delay:var(--t);}
+  @keyframes fxRise{0%{transform:translateY(0) translateX(0);opacity:0;}12%{opacity:.55;}88%{opacity:.22;}100%{transform:translateY(-170px) translateX(10px);opacity:0;}}
+
+  .fx-fall span{top:-10px;width:var(--s);height:var(--s);border-radius:50%;animation:fxFall var(--dur) linear infinite;animation-delay:var(--t);}
+  @keyframes fxFall{0%{transform:translateY(0) translateX(0) rotate(0deg);opacity:0;}12%{opacity:.6;}88%{opacity:.28;}100%{transform:translateY(190px) translateX(-16px) rotate(60deg);opacity:0;}}
+
+  .fx-drift span{top:var(--tp);width:calc(var(--s) * 2.6);height:2px;border-radius:2px;animation:fxDrift var(--dur) linear infinite;animation-delay:var(--t);}
+  @keyframes fxDrift{0%{transform:translateX(-40px);opacity:0;}10%{opacity:.5;}90%{opacity:.22;}100%{transform:translateX(360px);opacity:0;}}
+
+  .fx-pulse span{left:50%;top:var(--tp);width:var(--s);height:var(--s);margin-left:calc(var(--s) * -0.5);border-radius:50%;border:1.5px solid var(--accent);background:transparent;animation:fxPulse var(--dur) ease-out infinite;animation-delay:var(--t);}
+  @keyframes fxPulse{0%{transform:scale(.2);opacity:.5;}100%{transform:scale(2.6);opacity:0;}}
+
+  .fx-twinkle span{top:var(--tp);width:var(--s);height:var(--s);border-radius:50%;animation:fxTwinkle var(--dur) ease-in-out infinite;animation-delay:var(--t);}
+  @keyframes fxTwinkle{0%,100%{opacity:0;transform:scale(.4);}50%{opacity:.9;transform:scale(1);}}
+
+  .topic-card.in-view .card-fx span{animation-play-state:running;}
+  .card-fx span{animation-play-state:paused;}
+  /* ============================================ */
+  /* END SUBJECT GAME-EFFECTS                      */
+  /* ============================================ */
+
+  .tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;transform:translateZ(30px);position:relative;z-index:1;}
+
+  .tc-icon-wrap{
+    width:52px;height:52px;border-radius:15px;background:var(--panel-strong);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);
+    transition:box-shadow .3s ease,border-color .3s ease;perspective:200px;
+  }
+  .topic-card:hover .tc-icon-wrap{border-color:var(--accent);box-shadow:0 0 24px var(--accent-alpha);}
+
+  /* ============================================ */
+  /* 3D SUBJECT ICONS                              */
+  /* Each icon idles with its own subtle 3D motion */
+  /* (float / sway / spin / flicker / shimmer) so  */
+  /* the grid reads as "alive" per-subject rather  */
+  /* than one repeated effect. Motion pauses until  */
+  /* the card scrolls into view, and is disabled     */
+  /* entirely under reduced-motion.                */
+  /* ============================================ */
+  .icon3d{width:26px;height:26px;transform-style:preserve-3d;display:block;animation-play-state:paused;}
+  .topic-card.in-view .icon3d{animation-play-state:running;}
+  .icon3d svg{width:100%;height:100%;display:block;}
+
+  .m-float{animation:iconFloat 4.2s ease-in-out infinite;}
+  .m-sway{animation:iconSway 5s ease-in-out infinite;transform-origin:50% 85%;}
+  .m-spin{animation:iconSpin 8s linear infinite;}
+  .m-flicker{animation:iconFlicker 2.3s ease-in-out infinite;}
+  .m-shimmer{animation:iconShimmer 3.4s ease-in-out infinite;}
+
+  @keyframes iconFloat{0%,100%{transform:translateY(0) rotateX(10deg) rotateY(0deg);}50%{transform:translateY(-5px) rotateX(-6deg) rotateY(8deg);}}
+  @keyframes iconSway{0%,100%{transform:rotateZ(-7deg) rotateY(14deg);}50%{transform:rotateZ(7deg) rotateY(-14deg);}}
+  @keyframes iconSpin{to{transform:rotateY(360deg);}}
+  @keyframes iconFlicker{0%,100%{transform:scale(1) rotateX(8deg);filter:brightness(1);}50%{transform:scale(1.1) rotateX(-6deg);filter:brightness(1.35);}}
+  @keyframes iconShimmer{0%,100%{opacity:.7;transform:translateY(0) rotateZ(0deg);}50%{opacity:1;transform:translateY(-4px) rotateZ(5deg);}}
+  /* ============================================ */
+  /* END 3D SUBJECT ICONS                          */
+  /* ============================================ */
+
+  .tc-done{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--green);background:var(--green-alpha);border:1px solid var(--green-alpha);border-radius:20px;padding:5px 10px;white-space:nowrap;font-weight:600;}
+  .tc-diff{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.6px;color:var(--text-dimmer);border:1px solid var(--border);border-radius:20px;padding:5px 10px;white-space:nowrap;}
+  .tc-diff.diff-hard{color:var(--violet);}
+  .tc-diff.diff-medium{color:var(--amber);}
+  .tc-diff.diff-easy{color:var(--green);}
+
+  .tc-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;margin:16px 0 3px;transform:translateZ(30px);position:relative;z-index:1;}
+  .tc-sub{font-size:13px;color:var(--text-dimmer);margin:0 0 20px;transform:translateZ(30px);line-height:1.5;position:relative;z-index:1;}
+
+  .tc-meta{display:flex;align-items:center;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dimmer);border-top:1px solid var(--border);padding-top:14px;transform:translateZ(24px);position:relative;z-index:1;background:var(--panel);}
+  .tc-meta b{color:var(--text-dim);font-weight:600;}
+  .tc-go{display:inline-flex;align-items:center;gap:5px;color:var(--accent, var(--blue));font-weight:600;}
+  .tc-go .ic{width:13px;height:13px;transition:transform .2s var(--ease);}
+  .topic-card:hover .tc-go .ic{transform:translateX(3px);}
+
+  /* ---------- footer ---------- */
+  .footer-link{margin-top:56px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .footer-link a{color:var(--text-dim);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px;transition:color .2s ease;}
+  .footer-link a:hover{color:var(--blue);}
+  .footer-link .ic{width:14px;height:14px;}
+
+  @media (max-width:768px){
+    .page-content{padding:0 18px 70px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .topic-card,.icon3d,.icon3d svg,.eyebrow .dot,.card-fx span{transition:none !important;animation:none !important;opacity:0 !important;transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- HEADER — unchanged from the rest of the site  -->
+<!-- ============================================ -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Shoruto</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#why"></a>
+        <a href="index.html#trending"></a>
+        <a href="index.html#subjects"></a>
+        <a href="blog.html"></a>
+        <a href="index.html#ai"></a>
+        <a href="index.html#faq"></a>
+      </div>
+      <div class="nav-cta">
+        <button class="exit-btn" onclick="goBack()">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          <span>Exit</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- ============================================ -->
+
+<main class="page-content">
+
+  <div class="crumb">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
+    <span class="current">Challenge Friends</span>
+  </div>
+
+  <div class="page-head">
+    <span class="eyebrow"><span class="dot"></span>MULTIPLAYER · DAILY QUIZ</span>
+    <h1>Challenge Friends</h1>
+    <p>Pick a battlefield below, then challenge a friend to it — same questions, same clock, for both of you.</p>
+
+    <div class="page-meta">
+      <div class="stats">
+        <span><b id="statTopics">18</b> topics</span>
+        <span><b id="statQs">254</b> Qs mapped</span>
+        <span><b id="statDone">3</b> completed</span>
+      </div>
+      <div class="legend"><span class="sw"></span>COMPLETED</div>
+    </div>
+  </div>
+
+  <div class="topic-grid" id="topicGrid"></div>
+
+  <div class="footer-link">
+    <a href="index.html">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+      Back to home
+    </a>
+    <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+  </div>
+
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // ---- theme toggle (same as rest of site) ----
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        if (typeof toggleTheme === 'function') {
+          toggleTheme();
+        } else {
+          var html = document.documentElement;
+          var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+          html.setAttribute('data-theme', next);
+        }
+      });
+    }
+
+    // ============================================
+    // TOPIC DATA
+    // One entry per wiki backlink. Add a new object
+    // here and a new card + route appears automatically.
+    // ============================================
+    var TOPICS = [
+      { slug:'oceans',          title:'Oceans',                 sub:'The five great oceans and what makes each one distinct.',                icon:'ocean',       motion:'float',   accent:'blue',   effect:'rise',    qs:18, diff:'Medium' },
+      { slug:'seas',            title:'Seas',                   sub:'Marginal and enclosed seas, and how they differ from oceans.',            icon:'sea',         motion:'float',   accent:'blue',   effect:'rise',    qs:16, diff:'Easy',   done:true },
+      { slug:'straits',         title:'Straits',                sub:'Narrow passages that link two larger bodies of water.',                   icon:'strait',      motion:'float',   accent:'blue',   effect:'rise',    qs:14, diff:'Hard',   done:true },
+      { slug:'gulfs',           title:'Gulfs',                  sub:'Large inlets where the sea cuts deep into the coastline.',                icon:'gulf',        motion:'float',   accent:'blue',   effect:'rise',    qs:12, diff:'Medium' },
+      { slug:'bays',            title:'Bays',                   sub:'Coastal recesses, smaller and gentler than a gulf.',                      icon:'bay',         motion:'float',   accent:'blue',   effect:'rise',    qs:12, diff:'Easy' },
+      { slug:'rivers',          title:'Rivers',                 sub:'Major river systems, basins, and the cities built on them.',              icon:'river',       motion:'float',   accent:'blue',   effect:'drift',   qs:20, diff:'Medium' },
+      { slug:'lakes',           title:'Lakes',                  sub:'Freshwater, saline, and crater lakes around the world.',                  icon:'lake',        motion:'float',   accent:'blue',   effect:'pulse',   qs:15, diff:'Easy' },
+      { slug:'mountain-ranges', title:'Mountain Ranges',        sub:'The great ranges that shape continents and climates.',                    icon:'range',       motion:'sway',    accent:'slate',  effect:'drift',   qs:17, diff:'Medium' },
+      { slug:'peaks',           title:'Peaks',                  sub:'The highest summit on every continent, and how they were measured.',      icon:'peak',        motion:'sway',    accent:'slate',  effect:'twinkle', qs:13, diff:'Hard' },
+      { slug:'volcanoes',       title:'Volcanoes',              sub:'Active, dormant, and extinct volcanic systems worldwide.',                icon:'volcano',     motion:'flicker', accent:'amber',  effect:'rise',    qs:15, diff:'Hard',   done:true },
+      { slug:'deserts',         title:'Deserts',                sub:'Hot and cold deserts, and the life that survives in them.',               icon:'desert',      motion:'sway',    accent:'sand',   effect:'drift',   qs:14, diff:'Medium' },
+      { slug:'forests',         title:'Forests & Rainforests',  sub:'The biomes that hold most of the planet\u2019s biodiversity.',            icon:'forest',      motion:'sway',    accent:'green',  effect:'fall',    qs:16, diff:'Medium' },
+      { slug:'glaciers',        title:'Glaciers',               sub:'Ice sheets, fjords, and the slow rivers of ice that carved them.',        icon:'glacier',     motion:'shimmer', accent:'ice',    effect:'fall',    qs:11, diff:'Hard' },
+      { slug:'islands',         title:'Islands',                sub:'Volcanic, coral, and continental islands, and how each forms.',           icon:'island',      motion:'float',   accent:'teal',   effect:'pulse',   qs:14, diff:'Easy' },
+      { slug:'archipelagos',    title:'Archipelagos',           sub:'Island chains, and the nations built across them.',                       icon:'archipelago', motion:'spin',    accent:'teal',   effect:'drift',   qs:12, diff:'Medium' },
+      { slug:'waterfalls',      title:'Waterfalls',             sub:'The tallest and most powerful falls on Earth.',                           icon:'waterfall',   motion:'float',   accent:'blue',   effect:'fall',    qs:13, diff:'Easy' },
+      { slug:'canals',          title:'Canals',                 sub:'Man-made waterways that rewrote global trade routes.',                    icon:'canal',       motion:'sway',    accent:'violet', effect:'drift',   qs:10, diff:'Medium' },
+      { slug:'wind-belts',      title:'Major Wind Belts',       sub:'Global wind systems and the pressure belts that drive them.',             icon:'wind',        motion:'spin',    accent:'violet', effect:'drift',   qs:12, diff:'Hard' }
+    ];
+
+    // ---- per-subject line icons, 24x24, stroke-based to match the site's icon style ----
+    var ICONS = {
+      ocean:       '<path d="M2 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0"/><path d="M2 13c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".6"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".35"/>',
+      sea:         '<circle cx="18" cy="5" r="2.2"/><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".5"/>',
+      strait:      '<path d="M2 18l4.5-9 4.5 9z"/><path d="M13 18l4.5-9 4.5 9z"/><path d="M10.3 12.6l1.6 1.4-1.6 1.4" opacity=".7"/>',
+      gulf:        '<path d="M4 4c8 1 8 15 0 16"/><path d="M8 9c2 .3 3 1.3 3 3.5S10 15.7 8 16" opacity=".5"/>',
+      bay:         '<path d="M5 3c9 1 9 17 0 18"/><path d="M8.5 9c1.3.2 2 1 2 3.5s-.7 3.3-2 3.5" opacity=".5"/>',
+      river:       '<path d="M8 2c5 3-4 5 1 8s-4 5 1 8-4 3 1 4"/>',
+      lake:        '<ellipse cx="12" cy="13" rx="8" ry="5"/><path d="M8 13c1.3-1 2.7-1 4 0s2.7 1 4 0" opacity=".6"/>',
+      range:       '<path d="M2 18l4.5-8 3.5 5 2.5-4 3 4 2.5-6 4 9z"/>',
+      peak:        '<path d="M12 3l8.5 15h-17z"/><path d="M9 10.5l3-3 3 3-1.2 1.1-1.8-1.6-1.8 1.6z" fill="currentColor" stroke="none" opacity=".9"/>',
+      volcano:     '<path d="M4 19l6-12.5 2 4 2-4 6 12.5z"/><path d="M12 6.2c-1-.9-1-1.9-.1-2.9" opacity=".65"/><path d="M14.2 5.2c1-.9 1-1.9.2-2.9" opacity=".4"/>',
+      desert:      '<circle cx="18" cy="5" r="2"/><path d="M2 16.5c3-3.5 5-1.5 7-3.5s4-1 6 1 4 1 7-2"/><path d="M2 20c3-3 5-1 7-3s4-1 6 1 4 1 7-2" opacity=".5"/>',
+      forest:      '<path d="M7 3.5l3 4.5H4z"/><path d="M7 7.5l3 4.5H4z"/><path d="M6.4 12v4.5"/><path d="M16.5 2l3 4.5h-6z"/><path d="M16.5 6l3 4.5h-6z"/><path d="M16 10.5v6"/>',
+      glacier:     '<path d="M12 2v20"/><path d="M4 7.5l16 9"/><path d="M4 16.5l16-9"/>',
+      island:      '<ellipse cx="12" cy="18.5" rx="8" ry="2.2"/><path d="M12 17c0-6 1-9.5 4-12"/><path d="M16 5c-2.2-.3-3.4.6-3.4.6s2.1.4 3.4-.6z" fill="currentColor" stroke="none" opacity=".8"/>',
+      archipelago: '<ellipse cx="5.5" cy="16" rx="3" ry="1.3"/><ellipse cx="13" cy="18" rx="4" ry="1.6"/><ellipse cx="19.5" cy="13.5" rx="2.3" ry="1"/>',
+      waterfall:   '<path d="M3.5 6h17"/><path d="M7 6v13"/><path d="M12 6v13" opacity=".6"/><path d="M17 6v13" opacity=".35"/>',
+      canal:       '<path d="M3.5 9h17"/><path d="M3.5 15h17" opacity=".5"/><path d="M9 9c0-3 6-3 6 0" opacity=".8"/>',
+      wind:        '<path d="M3 8.5c4.5-4 10-2 10 1.8S9 14 7 11"/><path d="M3 14.5c6.5-3 15-1 15 4.2S11 24 8 19.5" opacity=".6"/>'
+    };
+
+    function svgIcon(type) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONS[type] + '</svg>';
+    }
+
+    // particle counts + size/duration ranges per effect, tuned so each
+    // reads like the thing it represents rather than generic confetti
+    var FX_TUNING = {
+      rise:    { count:6, size:[3,6],  dur:[3.5,6]   },
+      fall:    { count:6, size:[3,6],  dur:[4,7]     },
+      drift:   { count:5, size:[2,4],  dur:[3,5.5]   },
+      pulse:   { count:3, size:[10,18],dur:[2.2,3.6] },
+      twinkle: { count:7, size:[2,3.5],dur:[1.6,2.8] }
+    };
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    function fxHTML(effect) {
+      var tune = FX_TUNING[effect];
+      var out = '';
+      for (var i = 0; i < tune.count; i++) {
+        var l = rand(4, 90).toFixed(1) + '%';
+        var tp = rand(8, 85).toFixed(1) + '%';
+        var s = rand(tune.size[0], tune.size[1]).toFixed(1) + 'px';
+        var dur = rand(tune.dur[0], tune.dur[1]).toFixed(1) + 's';
+        var delay = (-rand(0, tune.dur[1])).toFixed(1) + 's';
+        out += '<span style="--l:' + l + ';--tp:' + tp + ';--s:' + s + ';--dur:' + dur + ';--t:' + delay + '"></span>';
+      }
+      return out;
+    }
+
+    var grid = document.getElementById('topicGrid');
+    var html = '';
+    TOPICS.forEach(function (t) {
+      var badge = t.done
+        ? '<span class="tc-done">\u2713 Done</span>'
+        : '<span class="tc-diff diff-' + t.diff.toLowerCase() + '">' + t.diff + '</span>';
+      html += ''
+        + '<a href="wiki/' + t.slug + '.html" class="topic-card" data-accent="' + t.accent + '">'
+        +   '<div class="card-fx fx-' + t.effect + '">' + fxHTML(t.effect) + '</div>'
+        +   '<div class="tc-top">'
+        +     '<div class="tc-icon-wrap"><span class="icon3d m-' + t.motion + '">' + svgIcon(t.icon) + '</span></div>'
+        +     badge
+        +   '</div>'
+        +   '<div class="tc-title">' + t.title + '</div>'
+        +   '<p class="tc-sub">' + t.sub + '</p>'
+        +   '<div class="tc-meta">'
+        +     '<span><b>' + t.qs + '</b> Qs \u00b7 ~' + Math.ceil(t.qs * 0.6) + ' min</span>'
+        +     '<span class="tc-go">Challenge<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>'
+        +   '</div>'
+        + '</a>';
+    });
+    grid.innerHTML = html;
+
+    // ---- reveal cards on scroll ----
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.topic-card').forEach(function (c) { io.observe(c); });
+
+    // ---- 3D tilt + cursor glow on topic cards ----
+    document.querySelectorAll('.topic-card').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = e.clientX - r.left, y = e.clientY - r.top;
+        var px = x / r.width, py = y / r.height;
+        var rotY = (px - 0.5) * 10;
+        var rotX = (0.5 - py) * 10;
+        card.style.transform = 'perspective(800px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-2px)';
+        card.style.setProperty('--mx', (px * 100) + '%');
+        card.style.setProperty('--my', (py * 100) + '%');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
+      });
+    });
+  });
+
+  function goBack() {
+    if (document.referrer && document.referrer.includes(window.location.host)) {
+      history.back();
+    } else {
+      window.location.href = 'index.html';
+    }
+  }
+</script>
+
+</body>
+</html>
