@@ -91,8 +91,8 @@
   }
 
   /* ============================================ */
-  /* HEADER STYLES — MATCHES REST OF SITE          */
-  /* Fixed to match Environment page style         */
+  /* HEADER STYLES — MATCHES ENVIRONMENT PAGE      */
+  /* Fixed to be flat with bottom border           */
   /* ============================================ */
   .nav{
     padding:24px 0 20px 0;
@@ -152,7 +152,46 @@
   .crumb .current{color:var(--text-dim);}
 
   /* ---------- page head ---------- */
-  .page-head{margin-bottom:30px;}
+  .page-head{margin-bottom:30px;position:relative;}
+
+  /* ---------- sailing boat accent (top right of page head) ---------- */
+  .head-boat{position:absolute;top:-18px;right:0;width:200px;height:120px;pointer-events:none;overflow:hidden;opacity:.85;}
+  .head-boat svg{width:100%;height:100%;display:block;overflow:visible;}
+  .head-boat .wave{fill:none;stroke:var(--blue);stroke-width:2;opacity:.3;}
+  .head-boat .wave.w2{stroke:var(--violet);opacity:.18;}
+  .head-boat .wave.w1{animation:boatWaveDrift 5s linear infinite;}
+  .head-boat .wave.w2{animation:boatWaveDrift 7.5s linear infinite reverse;}
+  @keyframes boatWaveDrift{0%{transform:translateX(0);}100%{transform:translateX(-40px);}}
+  .head-boat .boat-group{animation:boatBob 3.6s ease-in-out infinite;transform-origin:100px 100px;}
+  @keyframes boatBob{0%,100%{transform:translateY(0) rotate(-2.5deg);}50%{transform:translateY(-5px) rotate(2.5deg);}}
+  .head-boat .hull{fill:var(--panel-strong);stroke:var(--blue);stroke-width:2;stroke-linejoin:round;}
+  .head-boat .mast,.head-boat .sail,.head-boat .flag{stroke:var(--blue);}
+  .head-boat .sail{fill:var(--blue);fill-opacity:.14;stroke-width:2;stroke-linejoin:round;}
+  .head-boat .mast{stroke-width:2;stroke-linecap:round;}
+  .head-boat .flag{fill:var(--violet);stroke:none;}
+  .head-boat .ripple{fill:none;stroke:var(--blue);stroke-width:1.5;transform-origin:100px 108px;animation:boatRipple 3.6s ease-out infinite;}
+  .head-boat .ripple.r2{animation-delay:1.2s;}
+  .head-boat .ripple.r3{animation-delay:2.4s;}
+  @keyframes boatRipple{0%{opacity:.5;transform:scale(0.3);}100%{opacity:0;transform:scale(1.6);}}
+  @media (max-width:900px){
+    .page-head{display:flex;flex-direction:column;}
+    .eyebrow{order:1;}
+    .page-head h1{order:2;}
+    .page-head p{order:3;}
+    .head-boat{
+      order:4;
+      position:static;
+      width:100%;
+      max-width:280px;
+      height:110px;
+      margin:18px auto 0;
+      opacity:1;
+    }
+    .page-meta{order:5;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .head-boat .wave,.head-boat .boat-group,.head-boat .ripple{animation:none !important;}
+  }
   .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 15px;border-radius:40px;background:var(--panel-strong);border:1px solid var(--border);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;font-weight:600;margin-bottom:16px;}
   .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulseDot 1.8s ease-in-out infinite;}
   @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.35;}}
@@ -374,6 +413,26 @@
   </div>
 
   <div class="page-head">
+    <div class="head-boat" aria-hidden="true">
+      <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- ripples trailing behind the hull -->
+        <ellipse class="ripple r1" cx="100" cy="108" rx="14" ry="4"/>
+        <ellipse class="ripple r2" cx="100" cy="108" rx="14" ry="4"/>
+        <ellipse class="ripple r3" cx="100" cy="108" rx="14" ry="4"/>
+
+        <!-- boat: mast, sail, flag, hull -->
+        <g class="boat-group">
+          <line class="mast" x1="100" y1="100" x2="100" y2="58"/>
+          <path class="sail" d="M100 61 L100 92 L131 92 Z"/>
+          <path class="flag" d="M100 58 L114 61.5 L100 65 Z"/>
+          <path class="hull" d="M68 100 Q100 116 132 100 L124 92 L76 92 Z"/>
+        </g>
+
+        <!-- drifting wave lines, period 40, looped -->
+        <path class="wave w1" d="M-40 100 Q-20 90 0 100 T 40 100 T 80 100 T 120 100 T 160 100 T 200 100 T 240 100"/>
+        <path class="wave w2" d="M-40 108 Q-20 100 0 108 T 40 108 T 80 108 T 120 108 T 160 108 T 200 108 T 240 108"/>
+      </svg>
+    </div>
     <span class="eyebrow"><span class="dot"></span>MULTIPLAYER · DAILY QUIZ</span>
     <h1>Challenge Friends</h1>
     <p>Pick a battlefield below, then challenge a friend to it — same questions, same clock, for both of you.</p>
