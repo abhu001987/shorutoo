@@ -92,18 +92,15 @@
 
   /* ============================================ */
   /* HEADER STYLES — MATCHES REST OF SITE          */
-  /* (copied as-is; do not restyle)                */
+  /* Fixed to match Environment page style         */
   /* ============================================ */
   .nav{
-    width:calc(100% - 48px);max-width:1360px;margin:18px auto 26px;padding:12px 22px;
-    border:1px solid var(--border);border-radius:999px;
-    background:var(--panel-strong);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-    box-shadow:0 14px 34px rgba(0,0,0,0.28);
-    overflow:hidden;
-    transition:border-color 0.3s ease,background 0.3s ease,box-shadow 0.3s ease;
+    padding:24px 0 20px 0;
+    border-bottom:1px solid var(--border);
+    margin-bottom:22px;
+    background:transparent;
+    transition:border-color 0.3s ease;
   }
-  [data-theme="light"] .nav{box-shadow:0 14px 34px rgba(30,40,90,0.1);}
-  .nav .wrap{padding:0;max-width:none;}
   .wrap{max-width:1400px;margin:0 auto;padding:0 24px;}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;}
   .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--text);letter-spacing:1px;transition:color 0.3s ease;}
@@ -128,7 +125,7 @@
   [data-theme="light"] .theme-toggle .sun-icon{opacity:1;transform:rotate(0) scale(1);}
   [data-theme="light"] .theme-toggle .moon-icon{opacity:0;transform:rotate(90deg) scale(0.4);}
   @media (max-width:600px){
-    .nav{width:calc(100% - 24px);padding:10px 14px;margin:12px auto 16px;border-radius:28px;}
+    .nav{padding:16px 0 14px 0;margin-bottom:14px;}
     .wrap{padding:0 16px;}
     .logo{font-size:18px;}
     .logo .mark{width:32px;height:32px;}
@@ -322,7 +319,7 @@
 <body>
 
 <!-- ============================================ -->
-<!-- HEADER — unchanged from the rest of the site  -->
+<!-- HEADER — Fixed to match Environment page      -->
 <!-- ============================================ -->
 <nav class="nav">
   <div class="wrap">
