@@ -301,26 +301,33 @@
 
     .games-hero {
       display: grid;
-      grid-template-columns: 1.05fr 1fr;
-      gap: 48px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
       align-items: center;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
-    .games-hero-copy h2 { margin-bottom: 14px; }
+    .games-hero-copy h2 {
+      font-size: clamp(1.7rem, 2.4vw, 2.15rem);
+      line-height: 1.18;
+      margin-bottom: 14px;
+    }
     .games-hero-copy p { max-width: 480px; }
 
     .games-map-card {
       position: relative;
-      border-radius: 22px;
+      border-radius: 20px;
       overflow: hidden;
-      aspect-ratio: 16/10;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4/3;
+      margin-left: auto;
       background:
         radial-gradient(circle at 20% 20%, rgba(56,189,248,0.16), transparent 55%),
         radial-gradient(circle at 80% 15%, rgba(159,122,255,0.14), transparent 50%),
         radial-gradient(circle at 70% 80%, rgba(52,211,153,0.12), transparent 55%),
         linear-gradient(160deg, #0c1730, #081022 60%, #0a1428);
       border: 1px solid var(--border, rgba(255,255,255,0.08));
-      box-shadow: 0 24px 60px rgba(5,10,25,0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+      box-shadow: 0 16px 40px rgba(5,10,25,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
     }
     [data-theme="light"] .games-map-card {
       background:
@@ -328,7 +335,7 @@
         radial-gradient(circle at 80% 15%, rgba(159,122,255,0.12), transparent 50%),
         radial-gradient(circle at 70% 80%, rgba(52,211,153,0.10), transparent 55%),
         linear-gradient(160deg, #eef3ff, #e4ecfb 60%, #e9f1fb);
-      box-shadow: 0 24px 60px rgba(11,26,51,0.12), inset 0 1px 0 rgba(255,255,255,0.6);
+      box-shadow: 0 16px 40px rgba(11,26,51,0.10), inset 0 1px 0 rgba(255,255,255,0.6);
     }
     .games-map-card svg { width: 100%; height: 100%; display: block; }
 
@@ -403,10 +410,11 @@
       transition: transform 0.55s cubic-bezier(.2,.7,.2,1), opacity 0.55s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
     [data-theme="light"] .game-card { background: rgba(255,255,255,0.55); }
+    .game-card { --accent: #7C9BFF; }
     .game-card.visible { opacity: 1; transform: translateY(0) scale(1); }
     .game-card:hover {
       transform: translateY(-6px) scale(1.015);
-      border-color: rgba(91,127,255,0.4);
+      border-color: var(--accent);
       box-shadow: 0 18px 40px rgba(20,20,45,0.22);
     }
     .game-icon {
@@ -436,9 +444,9 @@
       align-items: center;
       gap: 6px;
       font: 600 13px 'Inter', sans-serif;
-      color: var(--text);
+      color: var(--accent);
     }
-    .game-card .game-play svg { width: 14px; height: 14px; transition: transform 0.25s ease; }
+    .game-card .game-play svg { width: 14px; height: 14px; transition: transform 0.25s ease; stroke: var(--accent); }
     .game-card:hover .game-play svg { transform: translateX(4px); }
 
     /* per-game animated glyphs, sharing one visual family (route / link motion) */
@@ -488,7 +496,7 @@
 
     @media (max-width: 860px) {
       .games-hero { grid-template-columns: 1fr; gap: 28px; }
-      .games-map-card { aspect-ratio: 16/9; }
+      .games-map-card { max-width: 420px; aspect-ratio: 16/10; margin: 0 auto; }
     }
   </style>
 </head>
@@ -735,7 +743,7 @@
       <div class="games-track" id="gamesTrack">
 
         <!-- Backlink target: /games/match-the-strait -->
-        <a href="/games/match-the-strait" class="game-card">
+        <a href="/games/match-the-strait" class="game-card" style="--accent:#38BDF8;">
           <div class="game-icon box-geography">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 12c3-4 6 4 9 0s6-4 9 0" class="icon-strait-path"/>
@@ -752,7 +760,7 @@
         </a>
 
         <!-- Backlink target: /games/seas -->
-        <a href="/games/seas" class="game-card">
+        <a href="/games/seas" class="game-card" style="--accent:#2DD4BF;">
           <div class="game-icon box-geography">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 15c2-2 4 2 6 0s4-2 6 0 4-2 6 0" class="icon-sea-wave w1"/>
@@ -769,7 +777,7 @@
         </a>
 
         <!-- Backlink target: /games/volcano -->
-        <a href="/games/volcano" class="game-card">
+        <a href="/games/volcano" class="game-card" style="--accent:#FB923C;">
           <div class="game-icon box-history">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 20l6-13 2 4 2-4 6 13z"/>
@@ -786,7 +794,7 @@
         </a>
 
         <!-- Backlink target: /games/currents -->
-        <a href="/games/currents" class="game-card">
+        <a href="/games/currents" class="game-card" style="--accent:#9F7AFF;">
           <div class="game-icon box-environment">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
               <circle class="icon-current-ring" cx="12" cy="12" r="8" stroke-dasharray="6 5"/>
