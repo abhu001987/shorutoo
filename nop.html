@@ -291,11 +291,18 @@
 
     /* =========================================================
        PLAY & LEARN — study-game hero + slider (Match the Strait /
-       Seas / Volcano / Currents). Redesigned to lead with a proper
-       two-column hero (headline+copy left, illustrated route map
-       right) instead of dropping straight into cards, matching the
-       reference layout: an adventure-map graphic with connected
-       waypoints for each game.
+       Seas / Volcano / Currents / History). Redesigned to lead with
+       a proper two-column hero (headline+copy left, illustrated
+       route map right) instead of dropping straight into cards,
+       matching the reference layout: an adventure-map graphic with
+       connected waypoints for each game.
+
+       UPDATE: the boxed/bordered card that used to sit around the
+       route map has been removed — the animation now sits directly
+       on the page background so it blends with the surrounding UI
+       instead of looking like a separate panel. Height reduced, and
+       a History node/game-card has been added alongside the
+       existing four.
        ========================================================= */
     .games-section { position: relative; }
 
@@ -313,28 +320,20 @@
     }
     .games-hero-copy p { max-width: 480px; }
 
-    /* Boxed route-map panel — rounded card with a soft border and glow,
-       a faint dotted "world map" backdrop, and one dashed path
-       connecting four floating, labeled game nodes. */
+    /* Route-map area — no card box, no border, no background panel.
+       Just the dotted backdrop + path + floating nodes sitting on
+       the page. Height reduced vs. the old boxed version. */
     .games-map-card {
       position: relative;
       width: 100%;
-      max-width: 520px;
-      aspect-ratio: 16/10;
+      max-width: 560px;
+      aspect-ratio: 16/7.5;
       margin-left: auto;
-      border-radius: 24px;
-      border: 1px solid var(--border, rgba(255,255,255,0.1));
-      background:
-        radial-gradient(120% 120% at 12% 10%, rgba(91,127,255,0.14), transparent 55%),
-        radial-gradient(120% 120% at 90% 90%, rgba(45,212,191,0.10), transparent 55%),
-        var(--card, rgba(10,12,22,0.7));
-      box-shadow: 0 24px 60px rgba(5,8,20,0.35);
-      padding: 30px 26px;
+      padding: 10px 10px;
     }
     .route-panel-bg {
       position: absolute;
       inset: 0;
-      border-radius: 24px;
       overflow: hidden;
       pointer-events: none;
     }
@@ -367,10 +366,11 @@
       transform: translate(-50%,-50%);
       animation: nodeBob 5s ease-in-out infinite;
     }
-    .route-node.rn1 { left: 14%; top: 44%; animation-duration: 4.6s; }
-    .route-node.rn2 { left: 39%; top: 68%; animation-duration: 5.4s; animation-delay: 0.4s; }
-    .route-node.rn3 { left: 65%; top: 38%; animation-duration: 5s;   animation-delay: 0.9s; }
-    .route-node.rn4 { left: 88%; top: 14%; animation-duration: 5.8s; animation-delay: 1.3s; }
+    .route-node.rn1 { left: 8%;  top: 46%; animation-duration: 4.6s; }
+    .route-node.rn2 { left: 28%; top: 72%; animation-duration: 5.2s; animation-delay: 0.3s; }
+    .route-node.rn3 { left: 50%; top: 40%; animation-duration: 5s;   animation-delay: 0.6s; }
+    .route-node.rn4 { left: 72%; top: 68%; animation-duration: 5.6s; animation-delay: 0.9s; }
+    .route-node.rn5 { left: 92%; top: 30%; animation-duration: 5.8s; animation-delay: 1.2s; }
     @keyframes nodeBob {
       0%, 100% { margin-top: 0; }
       50%      { margin-top: -9px; }
@@ -392,34 +392,35 @@
 
     .route-icon {
       position: relative;
-      width: 50px;
-      height: 50px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: color-mix(in srgb, var(--nc) 16%, var(--card, #0d1220));
+      background: color-mix(in srgb, var(--nc) 16%, var(--bg, #0d1220));
       border: 1.5px solid var(--nc);
       color: var(--nc);
       box-shadow: 0 0 18px color-mix(in srgb, var(--nc) 35%, transparent);
     }
-    .route-icon svg { width: 22px; height: 22px; }
+    .route-icon svg { width: 20px; height: 20px; }
     .route-label {
-      font: 600 12.5px/1.3 'Inter', sans-serif;
+      font: 600 12px/1.3 'Inter', sans-serif;
       text-align: center;
       color: var(--text, #eef1fb);
       white-space: nowrap;
     }
 
     @media (max-width: 860px) {
-      .games-map-card { padding: 24px 18px; }
-      .route-node.rn1 { left: 12%; top: 42%; }
-      .route-node.rn2 { left: 40%; top: 70%; }
-      .route-node.rn3 { left: 66%; top: 36%; }
-      .route-node.rn4 { left: 90%; top: 12%; }
+      .games-map-card { padding: 8px; aspect-ratio: 4/3.1; max-width: 420px; margin: 0 auto; }
+      .route-node.rn1 { left: 10%; top: 42%; }
+      .route-node.rn2 { left: 30%; top: 74%; }
+      .route-node.rn3 { left: 52%; top: 36%; }
+      .route-node.rn4 { left: 74%; top: 70%; }
+      .route-node.rn5 { left: 92%; top: 26%; }
       .route-label { font-size: 11px; }
-      .route-icon { width: 40px; height: 40px; }
-      .route-icon svg { width: 18px; height: 18px; }
+      .route-icon { width: 38px; height: 38px; }
+      .route-icon svg { width: 17px; height: 17px; }
     }
 
     .games-slider-wrap {
@@ -543,7 +544,6 @@
 
     @media (max-width: 860px) {
       .games-hero { grid-template-columns: 1fr; gap: 28px; }
-      .games-map-card { max-width: 420px; aspect-ratio: 4/3.4; margin: 0 auto; }
     }
   </style>
 </head>
@@ -712,42 +712,43 @@
       <div class="games-hero-copy">
         <span class="eyebrow"><span class="dot"></span>Play &amp; Learn</span>
         <h2>Challenge a friend — with a map, not a mic.</h2>
-        <p>Quick study drills you play solo or against a friend: match straits to the seas they connect, place volcanoes, trace currents. Same syllabus, five minutes, a leaderboard at the end.</p>
+        <p>Quick study drills you play solo or against a friend: match straits to the seas they connect, place volcanoes, trace currents, walk a history timeline. Same syllabus, five minutes, a leaderboard at the end.</p>
       </div>
 
       <div class="games-map-card">
-        <!-- Clipped backdrop layer: faint dotted world-map texture, kept
-             inside the rounded card border. -->
+        <!-- Faint dotted world-map texture, sitting straight on the
+             page background — no card box around it. -->
         <div class="route-panel-bg">
-          <svg class="route-bg" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <svg class="route-bg" viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
               <pattern id="routeDots" width="15" height="15" patternUnits="userSpaceOnUse">
                 <circle cx="1.3" cy="1.3" r="1.1" fill="currentColor"/>
               </pattern>
               <radialGradient id="routeDotFade" cx="50%" cy="55%" r="65%">
-                <stop offset="0%" stop-color="#fff" stop-opacity="0.5"/>
+                <stop offset="0%" stop-color="#fff" stop-opacity="0.4"/>
                 <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
               </radialGradient>
               <mask id="routeDotMask">
-                <rect x="0" y="0" width="500" height="300" fill="url(#routeDotFade)"/>
+                <rect x="0" y="0" width="560" height="260" fill="url(#routeDotFade)"/>
               </mask>
             </defs>
-            <rect x="0" y="0" width="500" height="300" fill="url(#routeDots)" mask="url(#routeDotMask)"/>
+            <rect x="0" y="0" width="560" height="260" fill="url(#routeDots)" mask="url(#routeDotMask)"/>
           </svg>
         </div>
 
-        <!-- Single dashed route running through all four games, animated
+        <!-- Single dashed route running through all five games, animated
              so the dashes flow along it. -->
-        <svg class="route-bg" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="route-bg" viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="routeStroke" x1="0" y1="1" x2="1" y2="0">
               <stop offset="0%" stop-color="#38BDF8"/>
-              <stop offset="35%" stop-color="#2DD4BF"/>
-              <stop offset="70%" stop-color="#FB923C"/>
-              <stop offset="100%" stop-color="#34D399"/>
+              <stop offset="25%" stop-color="#2DD4BF"/>
+              <stop offset="50%" stop-color="#FB923C"/>
+              <stop offset="75%" stop-color="#34D399"/>
+              <stop offset="100%" stop-color="#E8C468"/>
             </linearGradient>
           </defs>
-          <path class="route-path" d="M70,138 C120,168 155,200 195,198 C245,196 260,148 320,120 C365,100 395,80 440,48"
+          <path class="route-path" d="M46,120 C90,150 130,182 158,187 C195,192 210,145 260,120 C300,100 330,150 360,168 C400,190 430,150 462,110 C485,80 500,95 515,78"
                 fill="none" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 11"/>
         </svg>
 
@@ -800,6 +801,21 @@
             </svg>
           </span>
           <span class="route-label">Trace<br>Currents</span>
+        </a>
+
+        <!-- Node 5: History Timeline -->
+        <a href="/games/history-timeline" class="route-node rn5" style="--nc:#E8C468;">
+          <span class="route-ring"></span>
+          <span class="route-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.5c-1.6 2-1.6 4.2 0 5.8 1.6-1.6 1.6-3.8 0-5.8z" fill="currentColor" opacity="0.55" stroke="none"/>
+              <rect x="10.4" y="8" width="3.2" height="3.5" fill="currentColor" opacity="0.35" stroke="none"/>
+              <path d="M4.5 20.5V12l1.7-2 1.7 2v8.5M16.1 20.5V12l1.7-2 1.7 2v8.5"/>
+              <rect x="7.5" y="11.5" width="9" height="9" rx="1"/>
+              <path d="M2 20.5h20"/>
+            </svg>
+          </span>
+          <span class="route-label">History<br>Timeline</span>
         </a>
       </div>
     </div>
@@ -869,6 +885,25 @@
           <span class="game-tag">Geography</span>
           <h5>Trace the Currents</h5>
           <p>Follow ocean currents from origin to influence — warm, cold, and why they matter for climate.</p>
+          <span class="game-play">Play now
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+
+        <!-- Backlink target: /games/history-timeline -->
+        <a href="/games/history-timeline" class="game-card" style="--accent:#E8C468;">
+          <div class="game-icon box-history">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.5c-1.6 2-1.6 4.2 0 5.8 1.6-1.6 1.6-3.8 0-5.8z" fill="currentColor" opacity="0.55" stroke="none"/>
+              <rect x="10.4" y="8" width="3.2" height="3.5" fill="currentColor" opacity="0.35" stroke="none"/>
+              <path d="M4.5 20.5V12l1.7-2 1.7 2v8.5M16.1 20.5V12l1.7-2 1.7 2v8.5"/>
+              <rect x="7.5" y="11.5" width="9" height="9" rx="1"/>
+              <path d="M2 20.5h20"/>
+            </svg>
+          </div>
+          <span class="game-tag">History</span>
+          <h5>History Timeline</h5>
+          <p>Drag key events onto the timeline in the right order — from ancient dynasties to independence.</p>
           <span class="game-play">Play now
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </span>
