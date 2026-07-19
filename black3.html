@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>India's Tourism Revolution · Shoruto</title>
+
+  <!-- Theme: set instantly, before any CSS loads -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared CSS & JS (theme) -->
+  <link rel="stylesheet" href="theme.css" />
+  <script src="theme.js"></script>
+
+  <style>
+    /* ============================================ */
+    /* HEADER STYLES                                */
+    /* ============================================ */
+    .nav {
+      padding: 24px 0 20px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 22px;
+      background: transparent;
+      transition: border-color 0.3s ease;
+    }
+
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--text);
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+    }
+
+    .logo .mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo .mark svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .logo .mark svg circle,
+    .logo .mark svg path {
+      stroke: var(--blue);
+      transition: stroke 0.3s ease;
+    }
+
+    .logo .mark svg [fill]:not([fill="none"]) {
+      fill: var(--blue);
+      transition: fill 0.3s ease;
+    }
+
+    .logo-text {
+      color: var(--text);
+      transition: color 0.3s ease;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .exit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-dim);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      background: transparent;
+      transition: 0.2s var(--ease), border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+
+    .exit-btn .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s var(--ease);
+      flex-shrink: 0;
+    }
+
+    .exit-btn:hover {
+      background: var(--panel-strong);
+      border-color: var(--violet);
+      color: var(--violet);
+    }
+
+    .exit-btn:hover .ic {
+      transform: translateX(-3px);
+    }
+
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--panel-strong);
+      border-color: var(--blue);
+      transform: scale(1.06);
+    }
+
+    .theme-toggle .sun-icon,
+    .theme-toggle .moon-icon {
+      position: absolute;
+      transition: all 0.45s var(--ease);
+      font-size: 18px;
+    }
+
+    .theme-toggle .sun-icon {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.4);
+    }
+
+    .theme-toggle .moon-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .sun-icon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .theme-toggle .moon-icon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.4);
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        padding: 16px 0 14px 0;
+        margin-bottom: 14px;
+      }
+      .wrap {
+        padding: 0 16px;
+      }
+      .logo {
+        font-size: 18px;
+      }
+      .logo .mark {
+        width: 32px;
+        height: 32px;
+      }
+      .logo .mark svg {
+        width: 30px;
+        height: 30px;
+      }
+      .exit-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+      .exit-btn span {
+        display: none;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+    /* ============================================ */
+
+    /* ===== BLOG STYLES ===== */
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-0);
+      background-image:
+        radial-gradient(circle at 20% 10%, var(--glow-1), transparent 50%),
+        radial-gradient(circle at 80% 30%, var(--glow-2), transparent 45%);
+      transition: background 0.3s ease, color 0.3s ease;
+      margin: 0;
+      padding: 0;
+    }
+
+    .blog-wrapper {
+      flex: 1;
+      padding: 0 24px 80px;
+      max-width: 100%;
+      margin: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .blog-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: var(--text-dimmer);
+      font-size: 13px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .blog-meta .tag {
+      background: var(--panel-strong);
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-weight: 600;
+      color: var(--blue);
+      border: 1px solid var(--border);
+      font-size: 11px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .blog-hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 44px;
+      letter-spacing: -0.4px;
+      color: var(--text);
+      margin: 0 0 10px;
+      line-height: 1.15;
+    }
+
+    .blog-hero .subhead {
+      font-size: 19px;
+      color: var(--text-dim);
+      font-weight: 400;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+
+    .blog-hero .byline {
+      color: var(--text-dimmer);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .blog-featured {
+      margin: 28px 0 36px;
+      height: 240px;
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background-color: var(--panel-strong);
+      border-radius: 12px;
+    }
+
+    .blog-featured img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .blog-body h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 26px;
+      margin: 44px 0 16px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .blog-body h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 34px 0 12px;
+      color: var(--text);
+    }
+
+    .blog-body p {
+      color: var(--text-dim);
+      font-size: 17px;
+      line-height: 1.9;
+      margin-bottom: 22px;
+    }
+
+    .blog-body ul, .blog-body ol {
+      padding-left: 28px;
+      margin: 12px 0 24px;
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .blog-body ul li, .blog-body ol li {
+      margin-bottom: 8px;
+    }
+
+    .blog-body blockquote {
+      background: var(--panel-strong);
+      border-left: 6px solid var(--blue);
+      padding: 20px 30px;
+      border-radius: 14px;
+      margin: 30px 0;
+      font-style: italic;
+      color: var(--text);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .blog-body blockquote cite {
+      display: block;
+      margin-top: 10px;
+      font-style: normal;
+      color: var(--text-dimmer);
+      font-size: 14px;
+    }
+
+    .blog-body .highlight-box {
+      background: var(--panel-strong);
+      border-left: 4px solid var(--violet);
+      padding: 18px 24px;
+      border-radius: 14px;
+      margin: 28px 0;
+    }
+
+    .blog-body .highlight-box p {
+      margin-bottom: 0;
+      color: var(--text-dim);
+    }
+
+    .blog-body .highlight-box.blue {
+      border-left-color: var(--blue);
+    }
+
+    /* ===== FACT BOXES ===== */
+    .fact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin: 24px 0 30px;
+    }
+
+    .fact-box {
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    .fact-box:hover {
+      border-color: var(--blue);
+    }
+
+    .fact-box .fact-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--blue);
+      line-height: 1.1;
+      letter-spacing: -0.3px;
+    }
+
+    .fact-box .fact-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dimmer);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .fact-box .fact-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+
+    .fact-box.accent {
+      border-left: 3px solid var(--violet);
+    }
+
+    .fact-box.accent .fact-number {
+      color: var(--violet);
+    }
+
+    .blog-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0 30px;
+      font-size: 15px;
+      color: var(--text-dim);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .blog-body table th {
+      background: var(--panel-strong);
+      color: var(--text);
+      font-weight: 600;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .blog-body table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+    }
+
+    .blog-body table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ===== RELATED POSTS ===== */
+    .related-posts {
+      margin: 48px 0 32px;
+      padding-top: 32px;
+      border-top: 2px solid var(--border);
+    }
+
+    .related-posts h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .related-card {
+      background: var(--panel-strong);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px 20px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .related-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+    }
+
+    .related-card .thumb {
+      width: 100%;
+      height: 110px;
+      background: var(--panel);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      background-image: radial-gradient(circle at 30% 30%, var(--glow-1), transparent 60%),
+                        radial-gradient(circle at 70% 70%, var(--glow-2), transparent 55%);
+      font-size: 28px;
+    }
+
+    .related-card .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .related-card h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text);
+      margin: 0 0 4px;
+      line-height: 1.3;
+    }
+
+    .related-card p {
+      font-size: 13px;
+      color: var(--text-dimmer);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .related-card .wiki-link {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .related-card .wiki-link:hover {
+      text-decoration: underline;
+    }
+
+    .blog-footer {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .blog-footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .blog-footer a:hover {
+      color: var(--blue);
+    }
+
+    .blog-footer .ic {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 768px) {
+      .blog-wrapper {
+        padding: 0 16px 60px;
+      }
+      .blog-hero h1 {
+        font-size: 30px;
+      }
+      .blog-hero .subhead {
+        font-size: 16px;
+      }
+      .blog-body h2 {
+        font-size: 21px;
+      }
+      .blog-body h3 {
+        font-size: 18px;
+      }
+      .blog-body p {
+        font-size: 15px;
+      }
+      .blog-featured {
+        height: 160px;
+        margin: 18px 0 24px;
+      }
+      .blog-meta {
+        font-size: 12px;
+        gap: 12px;
+      }
+      .fact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .fact-box .fact-number {
+        font-size: 22px;
+      }
+      .blog-body table {
+        font-size: 13px;
+      }
+      .blog-body table th, .blog-body table td {
+        padding: 8px 10px;
+      }
+      .related-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .fact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeUp 0.6s cubic-bezier(.4, 0, .2, 1) both;
+    }
+
+    /* ===== ICON STYLES (scoped to avoid header conflict) ===== */
+    .blog-body .ic,
+    .related-posts .ic {
+      width: 1em;
+      height: 1em;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.14em;
+      flex-shrink: 0;
+    }
+
+    .blog-body h2 .ic {
+      color: var(--violet);
+      width: 1.3em;
+      height: 1.3em;
+    }
+
+    .related-posts h3 .ic {
+      color: var(--blue);
+      width: 1.2em;
+      height: 1.2em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- HEADER (EXACT CODE)                          -->
+  <!-- ============================================ -->
+  <nav class="nav">
+    <div class="wrap">
+      <div class="nav-inner">
+        <!-- LOGO -->
+        <a href="index.html" class="logo">
+          <span class="mark">
+            <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="30" cy="28" r="22"/>
+              <circle cx="12" cy="10" r="7"/>
+              <circle cx="48" cy="10" r="7"/>
+              <circle cx="22" cy="25" r="4.5"/>
+              <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <circle cx="38" cy="25" r="4.5"/>
+              <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+              <path d="M27 33 L30 37 L33 33"/>
+              <path d="M26 38 Q30 43 34 38"/>
+              <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+              <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="logo-text">Shoruto</span>
+        </a>
+
+        <!-- RIGHT SIDE: BUTTONS -->
+        <div class="nav-cta">
+          <button class="exit-btn" onclick="goBack()">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+            <span>Exit</span>
+          </button>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="sun-icon">☀️</span>
+            <span class="moon-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- ============================================ -->
+
+  <!-- ===== BLOG ===== -->
+  <main class="blog-wrapper fade-in">
+
+    <!-- meta -->
+    <div class="blog-meta">
+      <span class="tag">🏛️ tourism · economic growth</span>
+      <span>August 20, 2026</span>
+      <span>15 min read</span>
+      <span>Shoruto policy desk</span>
+    </div>
+
+    <!-- hero -->
+    <div class="blog-hero">
+      <h1>India's Tourism Horizon: From Potential to Global Scale</h1>
+      <p class="subhead">How infrastructure transformation, digital public infrastructure, and sustainable frameworks are positioning India as a premier global tourism economy by 2047</p>
+      <p class="byline">By Shoruto economic affairs team</p>
+    </div>
+
+    <!-- featured image -->
+    <div class="blog-featured">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3zL5nQ8wX9Y4Z1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V&s=10" alt="India Tourism and Hospitality" />
+    </div>
+
+    <!-- body -->
+    <div class="blog-body">
+
+      <p><strong>India's tourism and hospitality sector is a vital macroeconomic engine, contributing 5.22% to GDP and supporting 13.34% of employment.</strong> Targeting 100 million inbound arrivals by 2047 through infrastructure and digital transformation, it must overcome regulatory, tax, and civic bottlenecks via structural reforms and sustainable frameworks to unlock full global competitiveness.</p>
+
+      <!-- ===== FACT BOXES: The Numbers ===== -->
+      <div class="fact-grid">
+        <div class="fact-box accent">
+          <div class="fact-number">5.22%</div>
+          <div class="fact-label">GDP Contribution</div>
+          <div class="fact-desc">Tourism's share of India's economic output</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">13.34%</div>
+          <div class="fact-label">Employment</div>
+          <div class="fact-desc">Direct and indirect jobs supported by the sector</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">100M</div>
+          <div class="fact-label">Inbound Target</div>
+          <div class="fact-desc">Projected international arrivals by 2047</div>
+        </div>
+        <div class="fact-box accent">
+          <div class="fact-number">$523B</div>
+          <div class="fact-label">GDP Projection</div>
+          <div class="fact-desc">Travel and tourism contribution by 2034 (WTTC)</div>
+        </div>
+      </div>
+
+      <h2>What is the Current Status and Potential of Tourism in India?</h2>
+
+      <h3>Robust Rise in Inbound and Domestic Mobility</h3>
+      <p>International Tourist Arrivals (ITAs) in India reached 20.57 million in 2024, marking a significant increase over the pre-pandemic figure of 17.91 million in 2019. The growth in 2024 reflects a 14.82% increase compared to 2019 levels. Domestic tourism has witnessed threefold structural growth, with the number of visits rising to 18.6 billion (2014–2024) compared to 6.8 billion (2004–2013).</p>
+      <p>Backed by the government's Vision@2047 roadmap, India is targeting 100 million inbound arrivals by 2047. The World Travel &amp; Tourism Council (WTTC) projects that India's travel and tourism GDP contribution will surge to $523 billion USD by 2034, elevating India to the 4th largest tourism economy globally.</p>
+
+      <!-- ===== FACT BOXES: Infrastructure ===== -->
+      <div class="fact-grid">
+        <div class="fact-box">
+          <div class="fact-number">76</div>
+          <div class="fact-label">Swadesh Darshan Projects</div>
+          <div class="fact-desc">Sanctioned with an approved cost of ₹5,290 crore</div>
+        </div>
+        <div class="fact-box accent">
+          <div class="fact-number">40</div>
+          <div class="fact-label">SASCI Projects</div>
+          <div class="fact-desc">Across 23 States for iconic tourist centres</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">4,000</div>
+          <div class="fact-label">Electric Buses</div>
+          <div class="fact-desc">Deployed for green tourist circuits in Purvodaya States</div>
+        </div>
+      </div>
+
+      <h3>Infrastructure Transformation via Swadesh Darshan &amp; PRASHAD</h3>
+      <p>The Ministry of Tourism has focused heavily on connectivity-led tourism infrastructure. Under the Swadesh Darshan Scheme, the government has sanctioned 76 massive thematic projects with an approved cost of ₹5,290 crore (with 75 already physically completed). Further reinforcing its infrastructure-led tourism strategy, the Government operationalised the Special Assistance to States for Capital Investment (SASCI) – Development of Iconic Tourist Centres to Global Scale. Under this initiative, 40 projects across 23 States have already been sanctioned.</p>
+      <p>The Union Budget 2026–27 has prioritized connectivity for emerging regions like the Purvodaya States (Eastern India) by deploying 4,000 electric buses to establish seamless, green tourist circuits.</p>
+
+      <h3>Spiritual and Heritage Tourism Boom</h3>
+      <p>Spiritual tourism continues to command the largest share of domestic travel. Major destinations like Ayodhya (Ram Mandir), Puri (Jagannath Temple), and Kedarnath are driving unprecedented local economic growth. For instance, Odisha welcomed over 56 lakh visitors in just the first five months of 2026, driven heavily by spiritual landmarks like the Jagannath Temple in Puri. The development of the Kashi Vishwanath Corridor in Varanasi and the Mahakal Lok Corridor in Ujjain have completely revitalized spiritual tourism, resulting in a multi-fold increase in daily footfalls and boosting local hospitality micro-economies.</p>
+
+      <!-- ===== FACT BOXES: Medical & Wellness ===== -->
+      <div class="fact-grid">
+        <div class="fact-box accent">
+          <div class="fact-number">$8.7B</div>
+          <div class="fact-label">Medical Tourism Market (2025)</div>
+          <div class="fact-desc">India's cost-effective hub for high-end surgeries</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">$16B</div>
+          <div class="fact-label">Projected by 2030</div>
+          <div class="fact-desc">Medical tourism market expected to nearly double</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">5</div>
+          <div class="fact-label">Regional Medical Hubs</div>
+          <div class="fact-desc">Dedicated scheme to institutionalize medical value travel</div>
+        </div>
+      </div>
+
+      <h3>Exponential Rise of Medical and Wellness Tourism</h3>
+      <p>India has established itself as a world-class, cost-effective hub for high-end surgeries and holistic wellness. India's Medical Tourism Market was valued at about USD 8.7 billion in 2025. High-specialty hospital chains in cities like Chennai, Mumbai, and Delhi draw thousands of patients annually from Bangladesh, Iraq, Yemen, and Africa due to accredited facilities and competitive pricing. The government has introduced a dedicated scheme to support states in establishing five Regional Medical Hubs to institutionalize and promote medical value travel. The medical tourism market is projected to nearly double, reaching $16 billion USD by 2030.</p>
+
+      <h3>Transition Toward Sustainable and Eco-Tourism</h3>
+      <p>Modern travelers are demanding low-impact, ecologically responsible travel. The India Sustainable Tourism Market is growing rapidly and was valued at $44.3 million USD in 2025. Initiatives like Tons Trails in Uttarakhand (expanding to 37 villages to promote community-based tourism) and rural homestay networks in Kerala demonstrate the shift toward localized, green travel. Driven by a strong 19.3% CAGR, the sustainable tourism market in India is projected to reach $258 million USD by 2035. On a macro-scale, India is leveraging eco-tourism diplomacy. The country is hosting the 1st International Big Cat Alliance (IBCA) Summit 2026 in New Delhi, inviting leaders from 95 range nations to foster conservation-led wildlife tourism.</p>
+
+      <!-- ===== FACT BOXES: Digital ===== -->
+      <div class="fact-grid">
+        <div class="fact-box">
+          <div class="fact-number">60%</div>
+          <div class="fact-label">Online Bookings</div>
+          <div class="fact-desc">Share of all tourism booking channel revenue</div>
+        </div>
+        <div class="fact-box accent">
+          <div class="fact-number">DigiYatra</div>
+          <div class="fact-label">Biometric Airport Entry</div>
+          <div class="fact-desc">Active across Delhi, Bengaluru, Mumbai airports</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">UPI</div>
+          <div class="fact-label">Unified Payments</div>
+          <div class="fact-desc">Friction-mapped the entire travel cycle</div>
+        </div>
+      </div>
+
+      <h3>Digital Public Infrastructure (DPI) and Travel Tech Integration</h3>
+      <p>India's robust Digital Public Infrastructure (DPI)—anchored by the Unified Payments Interface (UPI) and the DigiYatra biometric airport entry system—has friction-mapped the entire travel cycle. Online bookings now account for 60% of all tourism booking channel revenue. DigiYatra is active across major Indian airports (including Delhi, Bengaluru, and Mumbai), reducing processing times at checkpoints from minutes to mere seconds using facial recognition technology. Future expansion focuses on unified multi-modal booking platforms, AI-driven itinerary planners, and the further scaling of e-Visa facilities to streamline entry for global travelers.</p>
+
+      <h3>Hospitality Capacity Expansion and Rate-Led Growth</h3>
+      <p>Nationwide occupancies across premium hotels are expected to touch 72–74% in FY2026. India has become the 2nd-largest hotel investment market in the Asia-Pacific region, attracting $340 million in hotel transactions in a single year. Major global and domestic brands (like Taj, Marriott, and Radisson) are expanding aggressively into Tier-2 and Tier-3 cities (e.g., Ayodhya, Varanasi, and Siliguri) to capture the emerging luxury travel market. The focus is shifting from budget scaling to rate-led luxury growth, bolstered by government schemes providing MUDRA loans for local homestays to expand accommodation capacity at the grassroots level.</p>
+
+      <!-- ===== FACT BOXES: Human Capital ===== -->
+      <div class="fact-grid">
+        <div class="fact-box accent">
+          <div class="fact-number">5.54L</div>
+          <div class="fact-label">Trained Persons</div>
+          <div class="fact-desc">Government upskilling initiatives for tourism workforce</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">59,210</div>
+          <div class="fact-label">Placed</div>
+          <div class="fact-desc">Successfully employed in the hospitality sector</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">10,000</div>
+          <div class="fact-label">Tourist Guides</div>
+          <div class="fact-desc">Upskilling pilot at iconic national heritage sites</div>
+        </div>
+      </div>
+
+      <h3>Focus on Human Capital and Grassroots Upskilling</h3>
+      <p>Recognizing that service quality defines destination competitiveness, the government has trained over 5.54 lakh persons, and 59,210 have been placed. To address the rapid growth of the hospitality sector, the Union Budget 2026-27 has proposed the establishment of a National Institute of Hospitality. Additionally, a key pilot program has been launched to upskill 10,000 tourist guides at iconic national heritage sites through partnerships with premier educational institutions, ensuring that the local workforce directly reaps the economic benefits of tourism.</p>
+
+      <!-- ===== FACT BOXES: Challenges ===== -->
+      <div class="fact-grid">
+        <div class="fact-box accent">
+          <div class="fact-number">60+</div>
+          <div class="fact-label">Licences Required</div>
+          <div class="fact-desc">Hotel operators face regulatory bottlenecks</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">18%</div>
+          <div class="fact-label">GST on Premium Hotels</div>
+          <div class="fact-desc">One of the highest tourism tax rates in Asia</div>
+        </div>
+        <div class="fact-box accent">
+          <div class="fact-number">€50</div>
+          <div class="fact-label">Tourist Exploitation</div>
+          <div class="fact-desc">French tourists overcharged for a ₹500 ride</div>
+        </div>
+      </div>
+
+      <h2>What Challenges are Hindering the Growth of India's Travel and Tourism Sector?</h2>
+
+      <h3>Poor Civic Sense and Public Harassment by Locals</h3>
+      <p>A critical lack of basic civic sense and public decency among some locals—including street vendors, and bystanders—frequently manifests as verbal abuse, aggressive staring, physical crowding, and harassment of foreign tourists. Such interactions, captured on video and widely shared on social media, project a highly unsafe and unwelcoming image of India's public spaces to the world. This hostile public environment severely damages India's Atithi Devo Bhava (Guest is God) ethos.</p>
+
+      <h3>Exploitation &amp; Language Barriers at the Grassroots</h3>
+      <p>International tourists face financial exploitation due to language barriers and a lack of standardized, strictly regulated local transport and guiding rates. In a widely reported incident in Agra, two French women tourists fell victim to this exact vulnerability. Due to a communication gap, a local cab driver took advantage of them by demanding and pocketing 50 Euros (approx. ₹5,000) for a ₹500 fare under the guise of an "airport waiting charge."</p>
+
+      <h3>High Entry Friction and Complicated Visa Process</h3>
+      <p>While regional competitors like Thailand, Vietnam, and Malaysia offer seamless, cost-effective visa-free entry or hassle-free visa-on-arrival, India's e-visa system remains structurally rigid and expensive for several major Western source markets, hurting booking conversion rates.</p>
+
+      <h3>Regulatory Bottlenecks &amp; Lack of Uniform "Industry Status"</h3>
+      <p>Currently, hotel operators are required to obtain at least 60 licences from local, state, and central government authorities. Non-commercial units such as homestays are also subject to restrictions such as caps on room offerings and minimum conditions. It increases compliance costs, delays the commencement or continuation of operations, and creates administrative uncertainty for operators. The long-standing demand for uniform "Industry Status" remains unfulfilled, making it incredibly difficult for hospitality players to secure low-cost, long-term capital.</p>
+
+      <!-- ===== FACT BOXES: Tax & Environment ===== -->
+      <div class="fact-grid">
+        <div class="fact-box">
+          <div class="fact-number">18%</div>
+          <div class="fact-label">GST Rate</div>
+          <div class="fact-desc">Premium hotel rooms above ₹7,500/night</div>
+        </div>
+        <div class="fact-box accent">
+          <div class="fact-number">ATF</div>
+          <div class="fact-label">Aviation Tax</div>
+          <div class="fact-desc">State taxes compound tourism costs</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">Shimla</div>
+          <div class="fact-label">Overtourism</div>
+          <div class="fact-desc">Ecologically fragile zones face environmental degradation</div>
+        </div>
+      </div>
+
+      <h3>Highly Compounded Taxation Structures</h3>
+      <p>India remains one of the highest-taxed tourism destinations in Asia, making it highly uncompetitive for price-sensitive international travelers. Premium hotel rooms (priced above ₹7,500/night) attract a steep 18% GST bracket. When compounded with high state taxes on interstate tourist transport and Aviation Turbine Fuel (ATF), holidaying in India frequently ends up costing more than equivalent premium trips to Southeast Asian destinations.</p>
+
+      <h3>Ecological Vulnerability &amp; Unplanned Overtourism</h3>
+      <p>Unregulated construction and a failure to enforce carrying-capacity limits have pushed ecologically fragile tourist zones to the brink of collapse. High-altitude destinations in Uttarakhand and Himachal Pradesh (such as Shimla and Joshimath) experience severe environmental degradation, chronic water shortages, and landslide risks during peak seasons due to a complete lack of sustainable load management.</p>
+
+      <h3>Fragmented Infrastructure &amp; Poor Last-Mile Connectivity</h3>
+      <p>While main metro hubs are highly developed, infrastructure standards drop sharply as tourists travel toward Tier-2, Tier-3, or rural heritage locations. The lack of clean public sanitation facilities, poor road conditions, and inadequate tourist-centric signage at secondary archaeological sites severely deter high-spending international travelers from exploring beyond the standard "Golden Triangle" circuit (Delhi-Agra-Jaipur).</p>
+
+      <h3>Acute Shortage of Professionally Trained Manpower</h3>
+      <p>Despite supporting over 8.4 crore direct and indirect jobs, there is a severe skill deficit across the frontline tourism workforce (local guides, small-scale transport operators, and homestay hosts). The current output of certified graduates from government-run Institutes of Hotel Management (IHMs) is vastly inadequate to meet the massive upskilling demand needed to transition India into a world-class service-oriented tourism market.</p>
+
+      <!-- ===== FACT BOXES: Solutions ===== -->
+      <div class="fact-grid">
+        <div class="fact-box accent">
+          <div class="fact-number">SBT</div>
+          <div class="fact-label">Soulbound Tokens</div>
+          <div class="fact-desc">Blockchain-based heritage quests to gamify exploration</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">Dak</div>
+          <div class="fact-label">Nomad Network</div>
+          <div class="fact-desc">Revitalizing colonial bungalows for digital nomads</div>
+        </div>
+        <div class="fact-box accent">
+          <div class="fact-number">VoA</div>
+          <div class="fact-label">Visa-on-Arrival</div>
+          <div class="fact-desc">Reciprocal visa-free entry for high-spending markets</div>
+        </div>
+      </div>
+
+      <h2>How can India Boost its Tourism Industry?</h2>
+
+      <h3>Crowd-Funded "Destination Micro-Impact Bonds"</h3>
+      <p>Launch a state-backed micro-investment platform where travelers can buy "Destination Bonds" starting at just ₹1,000 while booking their trip. The capital raised is channeled directly into highly localized projects at that destination—such as restoring a specific historic stepwell, funding a local coral reef restoration project in Lakshadweep, or building a solar-powered waste treatment plant in a Himalayan village. Investors receive real-time, blockchain-verified updates on the project's progress and enjoy lifelong free entry and micro-dividends from the site's ticket revenue.</p>
+
+      <h3>Gamifying Exploration via Soulbound Token (SBT) "National Heritage Quests"</h3>
+      <p>The Ministry of Tourism can launch a digital travel passport app where visiting specific historical sites unlocks unique, non-transferable Soulbound Tokens (SBTs). Collecting these cryptographic digital badges acts as a real-world quest. Accumulating a set of tokens from offbeat locations (e.g., visiting five lesser-known stepwells in Rajasthan) unlocks tangible "Bharat Perks," such as priority VIP darshan entries at major temples, free upgrades on the Vande Bharat express trains, or tax-free discounts at state-run handicraft emporiums.</p>
+
+      <h3>Revitalizing Colonial "Dak Bungalows" into a Digital Nomad Sanctuary Network</h3>
+      <p>Across India's hills and forests sit thousands of historic Dak Bungalows and Forest Rest Houses, currently underutilized and reserved almost exclusively for visiting government officials. The government can convert these properties into a unified "Dak Nomad" Network. Equipping them with high-speed satellite internet (like Starlink/OneWeb) and solar power grids, these heritage properties can be leased to international digital nomads. This would be paired with a dedicated 365-day "Digital Nomad Visa" that requires remote workers to spend at least 30% of their stay in offbeat, rural districts.</p>
+
+      <!-- ===== FACT BOXES: Safety & Infrastructure ===== -->
+      <div class="fact-grid">
+        <div class="fact-box">
+          <div class="fact-number">Tourist</div>
+          <div class="fact-label">Police Standardization</div>
+          <div class="fact-desc">Specialized units with foreign language training</div>
+        </div>
+        <div class="fact-box accent">
+          <div class="fact-number">Green</div>
+          <div class="fact-label">Key Certifications</div>
+          <div class="fact-desc">Tax rebates for sustainable hospitality units</div>
+        </div>
+        <div class="fact-box">
+          <div class="fact-number">Single</div>
+          <div class="fact-label">Window Clearance</div>
+          <div class="fact-desc">Bypassing 60+ municipal approvals</div>
+        </div>
+      </div>
+
+      <h3>Zero-Tolerance Safety Framework &amp; "Tourist Police" Standardization</h3>
+      <p>To dismantle the "perception gap" regarding safety, India must standardize and legally empower dedicated Tourist Police across all 28 states and 8 UTs. Moving beyond simple monitoring, these units should undergo specialized training in behavioral ethics and foreign languages. Establish high-visibility assistance booths at major landmarks (like the Taj Mahal or Jaipur City Palace) linked directly to a multilingual emergency helpline. Fast-tracking judicial proceedings for crimes against tourists through designated Special Fast-Track Tourist Courts will send a strong global signal that visitor safety is paramount.</p>
+
+      <h3>Systematic Civic Awareness Campaigns &amp; Public Hygiene Upgrades</h3>
+      <p>The government must launch nationwide civic decorum campaigns. This involves shifting the civic mindset from mere cleanliness (Swachh Bharat) to cultural hospitality (Atithi Devo Bhava). Deploy grassroots sensitization modules under programs like Paryatan Mitra (Friends of Tourism) to train local street vendors, auto drivers etc at heritage spots. Simultaneously, implement strict penalty-driven anti-littering and anti-vandalism laws at ASI protected monuments to preserve aesthetic and structural integrity.</p>
+
+      <h3>Streamlining Visas &amp; Creating Hassle-Free Entry Corridors</h3>
+      <p>Introduce reciprocal visa-free entry or instant visa-on-arrival (VoA) for high-spending source markets, including the US, Western Europe, and Japan. Furthermore, offering multi-entry, long-duration tourist visas at discounted fees during the traditional "lean season" (April to September) will help flatten the seasonality curve of inbound travel.</p>
+
+      <!-- ===== TABLE: Key Initiatives ===== -->
+      <table>
+        <thead>
+          <tr><th>Initiative</th><th>Scope</th><th>Impact</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Swadesh Darshan</td><td>76 projects, ₹5,290 crore</td><td>Thematic tourism circuit development</td></tr>
+          <tr><td>SASCI</td><td>40 projects across 23 States</td><td>Iconic tourist centres to global scale</td></tr>
+          <tr><td>DigiYatra</td><td>Major airports (Delhi, Bengaluru, Mumbai)</td><td>Biometric entry reduces processing time</td></tr>
+          <tr><td>PRASHAD</td><td>Pilgrimage destinations</td><td>Spiritual tourism infrastructure</td></tr>
+          <tr><td>National Institute of Hospitality</td><td>Proposed in Budget 2026-27</td><td>Human capital development</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Granting "Industry Status" to Unlock Hospitality Capital</h3>
+      <p>Granting uniform, nationwide "Industry Status" to the tourism and hospitality sector will allow developers to access long-term, low-cost institutional loans and enjoy subsidized industrial utility tariffs. Incorporate hotel projects under the central Harmonized Master List (HML) of Infrastructure. This would bypass the bureaucratic nightmare of obtaining 60+ individual municipal approvals, instead transitioning to a Single-Window Clearance Portal overseen by state tourism boards.</p>
+
+      <h3>Enforcing Carrying-Capacity Limits &amp; Sustainable Eco-Tourism</h3>
+      <p>Implement dynamic visitor capping at ecologically vulnerable destinations through real-time booking portals. Incentivize the private sector by offering tax rebates to hospitality units that secure "Green Key" certifications (promoting greywater recycling, solar power, and zero-single-use-plastic policies), ensuring that future tourism growth does not compromise India's natural assets.</p>
+
+      <div class="highlight-box blue">
+        <p><strong>🌏 Conclusion:</strong> India's tourism sector holds an invaluable economic multiplier effect, capable of driving decentralized growth across rural and urban landscapes. By systematically dismantling regulatory friction, prioritizing ecological sustainability, and standardizing safety, India can seamlessly transition from potential to global scale—firmly establishing its status as a premier, resilient macroeconomic powerhouse by 2047.</p>
+      </div>
+
+    </div>
+
+    <!-- ===== RELATED POSTS ===== -->
+    <div class="related-posts">
+      <h3>
+        <svg class="ic" viewBox="0 0 24 24"><path d="M4 4v16h16V4H4z"/><path d="M8 8h8v2H8z"/><path d="M8 12h6v2H8z"/></svg>
+        Related Posts
+      </h3>
+
+      <div class="related-grid">
+
+        <!-- Related Post 1 -->
+        <a href="#" class="related-card">
+          <div class="thumb">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3zL5nQ8wX9Y4Z1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V&s=10" alt="Sustainable Tourism" />
+          </div>
+          <h4>Sustainable Tourism in India</h4>
+          <p>How eco-tourism and green certifications are reshaping travel.</p>
+          <span class="wiki-link"></span>
+        </a>
+
+        <!-- Related Post 2 -->
+        <a href="#" class="related-card">
+          <div class="thumb">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3zL5nQ8wX9Y4Z1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V&s=10" alt="Medical Tourism" />
+          </div>
+          <h4>India's Medical Tourism Revolution</h4>
+          <p>How India became a global hub for affordable healthcare.</p>
+          <span class="wiki-link"></span>
+        </a>
+
+        <!-- Related Post 3 -->
+        <a href="#" class="related-card">
+          <div class="thumb">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3zL5nQ8wX9Y4Z1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V&s=10" alt="Spiritual Tourism" />
+          </div>
+          <h4>Spiritual Tourism Boom</h4>
+          <p>Ayodhya, Puri, and Kedarnath driving local economic growth.</p>
+          <span class="wiki-link"></span>
+        </a>
+
+        <!-- Related Post 4 -->
+        <a href="#" class="related-card">
+          <div class="thumb">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3zL5nQ8wX9Y4Z1A2B3C4D5E6F7G8H9I0J1K2L3M4N5O6P7Q8R9S0T1U2V&s=10" alt="Digital Tourism" />
+          </div>
+          <h4>Digital Public Infrastructure in Tourism</h4>
+          <p>UPI, DigiYatra, and AI-driven travel planning.</p>
+          <span class="wiki-link"></span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div class="blog-footer">
+      <a href="index.html">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+        Back to Shoruto
+      </a>
+      <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto · tourism</span>
+    </div>
+
+  </main>
+
+  <!-- ===== THEME TOGGLE & EXIT ===== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('themeToggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          toggleTheme();
+        });
+      }
+    });
+
+    function goBack() {
+      if (document.referrer && document.referrer.includes(window.location.host)) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+
+</body>
+</html>
