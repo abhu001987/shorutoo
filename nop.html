@@ -313,105 +313,113 @@
     }
     .games-hero-copy p { max-width: 480px; }
 
+    /* Boxed route-map panel — rounded card with a soft border and glow,
+       a faint dotted "world map" backdrop, and one dashed path
+       connecting four floating, labeled game nodes. */
     .games-map-card {
       position: relative;
       width: 100%;
-      max-width: 460px;
-      aspect-ratio: 4/3;
+      max-width: 520px;
+      aspect-ratio: 16/10;
       margin-left: auto;
+      border-radius: 24px;
+      border: 1px solid var(--border, rgba(255,255,255,0.1));
+      background:
+        radial-gradient(120% 120% at 12% 10%, rgba(91,127,255,0.14), transparent 55%),
+        radial-gradient(120% 120% at 90% 90%, rgba(45,212,191,0.10), transparent 55%),
+        var(--card, rgba(10,12,22,0.7));
+      box-shadow: 0 24px 60px rgba(5,8,20,0.35);
+      padding: 30px 26px;
+    }
+    .route-panel-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .route-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
       overflow: visible;
+      color: var(--text-dim, #7a8096);
     }
-    .games-map-card svg { width: 100%; height: 100%; display: block; overflow: visible; }
-
-    .boat-float {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: boatBob 4.5s ease-in-out infinite;
+    .route-path {
+      stroke: url(#routeStroke);
+      animation: routeFlow 2.4s linear infinite;
     }
-    @keyframes boatBob {
-      0%, 100% { transform: translate(0,0) rotate(-3deg); }
-      50%      { transform: translate(4px,-8px) rotate(3deg); }
-    }
-    .wave-layer {
-      transform-box: fill-box;
-      transform-origin: center;
-    }
-    .wave-layer.w1 { animation: waveDrift 5s linear infinite; }
-    .wave-layer.w2 { animation: waveDrift 8s linear infinite reverse; }
-    .wave-layer.w3 { animation: waveDrift 11s linear infinite; }
-    @keyframes waveDrift {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-120px); }
+    @keyframes routeFlow {
+      0%   { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -22; }
     }
 
-    /* Icons genuinely drift around their spot instead of just bobbing in place */
-    .float-badge-svg {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
+    .route-node {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+      transform: translate(-50%,-50%);
+      animation: nodeBob 5s ease-in-out infinite;
     }
-    .float-badge-svg.fa { animation-name: floatA; animation-duration: 11s; }
-    .float-badge-svg.fb { animation-name: floatB; animation-duration: 13s; animation-delay: 0.6s; }
-    .float-badge-svg.fc { animation-name: floatC; animation-duration: 12s; animation-delay: 1.1s; animation-direction: reverse; }
-    .float-badge-svg.fd { animation-name: floatD; animation-duration: 14s; animation-delay: 0.3s; animation-direction: reverse; }
-    /* Each badge now loops smoothly around its anchor point on a wide,
-       roughly-circular path (8 evenly-spaced keyframes) instead of a
-       tiny back-and-forth jitter — this reads as "floating around"
-       the boat rather than vibrating in place. */
-    @keyframes floatA {
-      0%   { transform: translate(0,0); }
-      12.5%{ transform: translate(22px,-18px); }
-      25%  { transform: translate(34px,2px); }
-      37.5%{ transform: translate(26px,22px); }
-      50%  { transform: translate(2px,30px); }
-      62.5%{ transform: translate(-24px,20px); }
-      75%  { transform: translate(-32px,0px); }
-      87.5%{ transform: translate(-20px,-20px); }
-      100% { transform: translate(0,0); }
+    .route-node.rn1 { left: 14%; top: 44%; animation-duration: 4.6s; }
+    .route-node.rn2 { left: 39%; top: 68%; animation-duration: 5.4s; animation-delay: 0.4s; }
+    .route-node.rn3 { left: 65%; top: 38%; animation-duration: 5s;   animation-delay: 0.9s; }
+    .route-node.rn4 { left: 88%; top: 14%; animation-duration: 5.8s; animation-delay: 1.3s; }
+    @keyframes nodeBob {
+      0%, 100% { margin-top: 0; }
+      50%      { margin-top: -9px; }
     }
-    @keyframes floatB {
-      0%   { transform: translate(0,0); }
-      12.5%{ transform: translate(-20px,16px); }
-      25%  { transform: translate(-30px,-4px); }
-      37.5%{ transform: translate(-18px,-24px); }
-      50%  { transform: translate(4px,-30px); }
-      62.5%{ transform: translate(24px,-18px); }
-      75%  { transform: translate(30px,4px); }
-      87.5%{ transform: translate(16px,22px); }
-      100% { transform: translate(0,0); }
+
+    .route-ring {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1.5px solid var(--nc);
+      opacity: 0;
+      animation: routeRingPulse 2.6s ease-out infinite;
     }
-    @keyframes floatC {
-      0%   { transform: translate(0,0); }
-      12.5%{ transform: translate(18px,-14px); }
-      25%  { transform: translate(28px,4px); }
-      37.5%{ transform: translate(20px,20px); }
-      50%  { transform: translate(-2px,26px); }
-      62.5%{ transform: translate(-22px,16px); }
-      75%  { transform: translate(-28px,-4px); }
-      87.5%{ transform: translate(-16px,-18px); }
-      100% { transform: translate(0,0); }
+    @keyframes routeRingPulse {
+      0%   { transform: scale(0.85); opacity: 0.7; }
+      75%  { transform: scale(1.45); opacity: 0; }
+      100% { transform: scale(1.45); opacity: 0; }
     }
-    @keyframes floatD {
-      0%   { transform: translate(0,0); }
-      12.5%{ transform: translate(-16px,-18px); }
-      25%  { transform: translate(-4px,-30px); }
-      37.5%{ transform: translate(18px,-24px); }
-      50%  { transform: translate(28px,-2px); }
-      62.5%{ transform: translate(20px,20px); }
-      75%  { transform: translate(-2px,30px); }
-      87.5%{ transform: translate(-20px,16px); }
-      100% { transform: translate(0,0); }
+
+    .route-icon {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: color-mix(in srgb, var(--nc) 16%, var(--card, #0d1220));
+      border: 1.5px solid var(--nc);
+      color: var(--nc);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--nc) 35%, transparent);
     }
-    .map-node-ring {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: nodeRingPulse 2.4s ease-out infinite;
+    .route-icon svg { width: 22px; height: 22px; }
+    .route-label {
+      font: 600 12.5px/1.3 'Inter', sans-serif;
+      text-align: center;
+      color: var(--text, #eef1fb);
+      white-space: nowrap;
     }
-    @keyframes nodeRingPulse {
-      0%   { transform: scale(0.9); opacity: 0.7; }
-      80%  { transform: scale(1.5); opacity: 0; }
-      100% { transform: scale(1.5); opacity: 0; }
+
+    @media (max-width: 860px) {
+      .games-map-card { padding: 24px 18px; }
+      .route-node.rn1 { left: 12%; top: 42%; }
+      .route-node.rn2 { left: 40%; top: 70%; }
+      .route-node.rn3 { left: 66%; top: 36%; }
+      .route-node.rn4 { left: 90%; top: 12%; }
+      .route-label { font-size: 11px; }
+      .route-icon { width: 40px; height: 40px; }
+      .route-icon svg { width: 18px; height: 18px; }
     }
 
     .games-slider-wrap {
@@ -517,7 +525,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .icon-strait-path, .icon-sea-wave, .icon-volcano-puff, .icon-current-ring, .game-card,
-      .map-node-ring, .boat-float, .wave-layer, .float-badge-svg {
+      .route-ring, .route-node, .route-path {
         animation: none !important;
         transition: none !important;
       }
@@ -535,7 +543,7 @@
 
     @media (max-width: 860px) {
       .games-hero { grid-template-columns: 1fr; gap: 28px; }
-      .games-map-card { max-width: 380px; aspect-ratio: 4/3; margin: 0 auto; }
+      .games-map-card { max-width: 420px; aspect-ratio: 4/3.4; margin: 0 auto; }
     }
   </style>
 </head>
@@ -708,72 +716,91 @@
       </div>
 
       <div class="games-map-card">
-        <svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- Clipped backdrop layer: faint dotted world-map texture, kept
+             inside the rounded card border. -->
+        <div class="route-panel-bg">
+          <svg class="route-bg" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <pattern id="routeDots" width="15" height="15" patternUnits="userSpaceOnUse">
+                <circle cx="1.3" cy="1.3" r="1.1" fill="currentColor"/>
+              </pattern>
+              <radialGradient id="routeDotFade" cx="50%" cy="55%" r="65%">
+                <stop offset="0%" stop-color="#fff" stop-opacity="0.5"/>
+                <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+              </radialGradient>
+              <mask id="routeDotMask">
+                <rect x="0" y="0" width="500" height="300" fill="url(#routeDotFade)"/>
+              </mask>
+            </defs>
+            <rect x="0" y="0" width="500" height="300" fill="url(#routeDots)" mask="url(#routeDotMask)"/>
+          </svg>
+        </div>
+
+        <!-- Single dashed route running through all four games, animated
+             so the dashes flow along it. -->
+        <svg class="route-bg" viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <linearGradient id="waterGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.32"/>
-              <stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.10"/>
+            <linearGradient id="routeStroke" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#38BDF8"/>
+              <stop offset="35%" stop-color="#2DD4BF"/>
+              <stop offset="70%" stop-color="#FB923C"/>
+              <stop offset="100%" stop-color="#34D399"/>
             </linearGradient>
-            <radialGradient id="fadeGrad" cx="50%" cy="52%" r="60%">
-              <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
-              <stop offset="65%" stop-color="#fff" stop-opacity="0.85"/>
-              <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-            </radialGradient>
-            <mask id="fadeMask">
-              <rect x="0" y="0" width="480" height="320" fill="url(#fadeGrad)"/>
-            </mask>
           </defs>
-
-          <g mask="url(#fadeMask)">
-            <!-- water body -->
-            <rect x="-20" y="165" width="520" height="160" fill="url(#waterGradient)"/>
-
-            <!-- layered animated waves -->
-            <path class="wave-layer w3" d="M-40 180c40-14 80 14 120 0s80-14 120 0 80 14 120 0 80-14 120 0 80 14 120 0v150h-600z" fill="#38BDF8" fill-opacity="0.10"/>
-            <path class="wave-layer w2" d="M-40 193c40-12 80 12 120 0s80-12 120 0 80 12 120 0 80-12 120 0 80 12 120 0v137h-600z" fill="#38BDF8" fill-opacity="0.14"/>
-            <path class="wave-layer w1" d="M-40 207c40-10 80 10 120 0s80-10 120 0 80 10 120 0 80-10 120 0 80 10 120 0v123h-600z" fill="#38BDF8" fill-opacity="0.20"/>
-
-            <!-- floating boat, sitting on the water line -->
-            <g class="boat-float" transform="translate(240,196)">
-              <ellipse cx="0" cy="16" rx="34" ry="4" fill="#38BDF8" fill-opacity="0.30"/>
-              <path d="M-28 6l8 16c1 2.5 2.5 3.5 5 3.5h30c2.5 0 4-1 5-3.5l8-16z" fill="#5B7FFF"/>
-              <rect x="-2" y="-26" width="3" height="32" fill="#C7D2FE"/>
-              <path d="M1 -26c12 5 19 14 22 25h-22z" fill="#9F7AFF"/>
-            </g>
-
-            <!-- floating badge: Strait (water drop) -->
-            <g class="float-badge-svg fa" transform="translate(66,64)">
-              <circle class="map-node-ring" r="21" fill="none" stroke="#38BDF8" stroke-width="1.5"/>
-              <circle r="18" fill="#0f2540" stroke="#38BDF8" stroke-width="1.5"/>
-              <path d="M0 -7c4 5 7 8 7 12a7 7 0 01-14 0c0-4 3-7 7-12z" fill="#38BDF8"/>
-            </g>
-
-            <!-- floating badge: Volcano -->
-            <g class="float-badge-svg fb" transform="translate(404,54)">
-              <circle class="map-node-ring" r="21" fill="none" stroke="#FB923C" stroke-width="1.5"/>
-              <circle r="18" fill="#3a1f0a" stroke="#FB923C" stroke-width="1.5"/>
-              <path d="M-8 8l5-11 3 4 3-4 5 11z" fill="#FB923C"/>
-              <circle class="icon-volcano-puff p1" cx="-1" cy="-7" r="1.4" fill="#FDBA74"/>
-              <circle class="icon-volcano-puff p2" cx="2" cy="-9" r="1" fill="#FDBA74"/>
-            </g>
-
-            <!-- floating badge: Seas (waves) -->
-            <g class="float-badge-svg fc" transform="translate(52,258)">
-              <circle class="map-node-ring" r="21" fill="none" stroke="#2DD4BF" stroke-width="1.5"/>
-              <circle r="18" fill="#0d2e2a" stroke="#2DD4BF" stroke-width="1.5"/>
-              <path d="M-7 -2c2-3 3-3 5 0s3 3 5 0" stroke="#2DD4BF" stroke-width="2" fill="none" stroke-linecap="round"/>
-              <path d="M-7 3c2-3 3-3 5 0s3 3 5 0" stroke="#2DD4BF" stroke-width="2" fill="none" stroke-linecap="round"/>
-            </g>
-
-            <!-- floating badge: Currents (spiral, matches the "Trace the Currents" game icon) -->
-            <g class="float-badge-svg fd" transform="translate(414,262)">
-              <circle class="map-node-ring" r="21" fill="none" stroke="#9F7AFF" stroke-width="1.5"/>
-              <circle r="18" fill="#241a3d" stroke="#9F7AFF" stroke-width="1.5"/>
-              <circle class="icon-current-ring" cx="0" cy="0" r="8" fill="none" stroke="#9F7AFF" stroke-width="1.8" stroke-dasharray="5 4"/>
-              <path d="M-3 0a3 3 0 106 0" fill="none" stroke="#9F7AFF" stroke-width="1.8" stroke-linecap="round"/>
-            </g>
-          </g>
+          <path class="route-path" d="M70,138 C120,168 155,200 195,198 C245,196 260,148 320,120 C365,100 395,80 440,48"
+                fill="none" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 11"/>
         </svg>
+
+        <!-- Node 1: Match Straits -->
+        <a href="/games/match-the-strait" class="route-node rn1" style="--nc:#38BDF8;">
+          <span class="route-ring"></span>
+          <span class="route-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3.5c3.6 4.3 6 7.3 6 10.2a6 6 0 01-12 0c0-2.9 2.4-5.9 6-10.2z" fill="currentColor" fill-opacity="0.9" stroke="none"/>
+              <path d="M6 18.5c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5"/>
+              <path d="M6 21c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="route-label">Match<br>Straits</span>
+        </a>
+
+        <!-- Node 2: Place the Seas -->
+        <a href="/games/seas" class="route-node rn2" style="--nc:#2DD4BF;">
+          <span class="route-ring"></span>
+          <span class="route-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3.5c3.6 4.3 6 7.3 6 10.2a6 6 0 01-12 0c0-2.9 2.4-5.9 6-10.2z" fill="currentColor" fill-opacity="0.9" stroke="none"/>
+              <path d="M6 18.5c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5"/>
+              <path d="M6 21c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5" opacity="0.5"/>
+            </svg>
+          </span>
+          <span class="route-label">Place<br>Seas</span>
+        </a>
+
+        <!-- Node 3: Volcano Belt -->
+        <a href="/games/volcano" class="route-node rn3" style="--nc:#FB923C;">
+          <span class="route-ring"></span>
+          <span class="route-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 20l6.5-14L18 20"/>
+              <path d="M9 20l2.5-5.5L14 20"/>
+              <circle class="icon-volcano-puff p1" cx="11.5" cy="5.5" r="1" fill="currentColor" stroke="none"/>
+              <circle class="icon-volcano-puff p2" cx="14" cy="4.2" r="0.8" fill="currentColor" stroke="none"/>
+            </svg>
+          </span>
+          <span class="route-label">Volcano<br>Belt</span>
+        </a>
+
+        <!-- Node 4: Trace Currents -->
+        <a href="/games/currents" class="route-node rn4" style="--nc:#34D399;">
+          <span class="route-ring"></span>
+          <span class="route-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 19l5.5-11 3.5 5.5L16 8l5 11z"/>
+            </svg>
+          </span>
+          <span class="route-label">Trace<br>Currents</span>
+        </a>
       </div>
     </div>
 
