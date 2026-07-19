@@ -26,9 +26,6 @@
 <style>
   /* ============================================ */
   /* FALLBACK THEME TOKENS                         */
-  /* Your theme.css already defines these — this   */
-  /* block only fills in gaps if a var is missing, */
-  /* so nothing breaks if theme.css is dropped in. */
   /* ============================================ */
   :root{
     --bg-0:#060810;
@@ -45,7 +42,6 @@
     --ease:cubic-bezier(.4,0,.2,1);
     --amber:#F5B841;
     --amber-alpha:rgba(245,184,65,0.16);
-    /* extra subject accents for this page — kept in the same family as the rest of the site */
     --slate:#8C97BE;
     --slate-alpha:rgba(140,151,190,0.18);
     --sand:#D9A15B;
@@ -91,18 +87,29 @@
   }
 
   /* ============================================ */
-  /* HEADER STYLES — MATCHES ENVIRONMENT PAGE      */
-  /* Fixed to be flat with bottom border           */
+  /* HEADER / NAV BAR — rounded floating pill      */
   /* ============================================ */
   .nav{
-    padding:24px 0 20px 0;
-    border-bottom:1px solid var(--border);
-    margin-bottom:22px;
+    padding:18px 24px 0;
+    margin-bottom:26px;
     background:transparent;
-    transition:border-color 0.3s ease;
   }
   .wrap{max-width:1400px;margin:0 auto;padding:0 24px;}
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+  .nav .wrap{padding:0;max-width:1400px;}
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 20px 12px 16px;
+    border-radius:999px;
+    background:var(--panel-strong);
+    border:1px solid var(--border);
+    backdrop-filter:blur(16px) saturate(140%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    box-shadow:0 12px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06);
+    transition:border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+  [data-theme="light"] .nav-inner{
+    box-shadow:0 12px 32px rgba(11,26,51,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
   .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--text);letter-spacing:1px;transition:color 0.3s ease;}
   .logo .mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;}
   .logo .mark svg{width:38px;height:38px;display:block;}
@@ -137,72 +144,144 @@
   }
   .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.14em;flex-shrink:0;}
   /* ============================================ */
-  /* END HEADER STYLES                             */
+  /* END NAV                                       */
   /* ============================================ */
 
   .mono{font-family:'JetBrains Mono',monospace;}
-
   .page-content{flex:1;padding:0 24px 100px;max-width:1400px;margin:0 auto;width:100%;}
 
   /* ---------- breadcrumb ---------- */
-  .crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dimmer);margin-bottom:28px;font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
-  .crumb a{color:var(--text-dimmer);text-decoration:none;transition:color .2s ease;}
+  .crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dimmer);margin-bottom:26px;font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
+  .crumb a{color:var(--text-dimmer);text-decoration:none;transition:color .2s ease;display:inline-flex;align-items:center;}
   .crumb a:hover{color:var(--blue);}
   .crumb .sep{opacity:.5;}
   .crumb .current{color:var(--text-dim);}
 
-  /* ---------- page head ---------- */
-  .page-head{margin-bottom:30px;position:relative;}
+  /* ============================================ */
+  /* PAGE HERO — matches reference: gradient title,*/
+  /* icon-circle stat pills, glowing starfield boat*/
+  /* ============================================ */
+  .page-head{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.25fr 0.9fr;
+    gap:32px;
+    align-items:center;
+    margin-bottom:22px;
+  }
+  .head-copy{position:relative;z-index:1;}
 
-  /* ---------- sailing boat accent (top right of page head) ---------- */
-  .head-boat{position:absolute;top:-18px;right:0;width:200px;height:120px;pointer-events:none;overflow:hidden;opacity:.85;}
-  .head-boat svg{width:100%;height:100%;display:block;overflow:visible;}
-  .head-boat .wave{fill:none;stroke:var(--blue);stroke-width:2;opacity:.3;}
-  .head-boat .wave.w2{stroke:var(--violet);opacity:.18;}
-  .head-boat .wave.w1{animation:boatWaveDrift 5s linear infinite;}
-  .head-boat .wave.w2{animation:boatWaveDrift 7.5s linear infinite reverse;}
-  @keyframes boatWaveDrift{0%{transform:translateX(0);}100%{transform:translateX(-40px);}}
-  .head-boat .boat-group{animation:boatBob 3.6s ease-in-out infinite;transform-origin:100px 100px;}
-  @keyframes boatBob{0%,100%{transform:translateY(0) rotate(-2.5deg);}50%{transform:translateY(-5px) rotate(2.5deg);}}
-  .head-boat .hull{fill:var(--panel-strong);stroke:var(--blue);stroke-width:2;stroke-linejoin:round;}
-  .head-boat .mast,.head-boat .sail,.head-boat .flag{stroke:var(--blue);}
-  .head-boat .sail{fill:var(--blue);fill-opacity:.14;stroke-width:2;stroke-linejoin:round;}
-  .head-boat .mast{stroke-width:2;stroke-linecap:round;}
-  .head-boat .flag{fill:var(--violet);stroke:none;}
-  .head-boat .ripple{fill:none;stroke:var(--blue);stroke-width:1.5;transform-origin:100px 108px;animation:boatRipple 3.6s ease-out infinite;}
-  .head-boat .ripple.r2{animation-delay:1.2s;}
-  .head-boat .ripple.r3{animation-delay:2.4s;}
-  @keyframes boatRipple{0%{opacity:.5;transform:scale(0.3);}100%{opacity:0;transform:scale(1.6);}}
-  @media (max-width:900px){
-    .page-head{display:flex;flex-direction:column;}
-    .eyebrow{order:1;}
-    .page-head h1{order:2;}
-    .page-head p{order:3;}
-    .head-boat{
-      order:4;
-      position:static;
-      width:100%;
-      max-width:280px;
-      height:110px;
-      margin:18px auto 0;
-      opacity:1;
-    }
-    .page-meta{order:5;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .head-boat .wave,.head-boat .boat-group,.head-boat .ripple{animation:none !important;}
-  }
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 15px;border-radius:40px;background:var(--panel-strong);border:1px solid var(--border);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;font-weight:600;margin-bottom:16px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 16px 7px 12px;border-radius:40px;background:var(--panel-strong);border:1px solid var(--border);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;font-weight:600;margin-bottom:18px;}
+  .eyebrow .ic{width:15px;height:15px;}
   .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulseDot 1.8s ease-in-out infinite;}
   @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.35;}}
-  .page-head h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.05;letter-spacing:-0.6px;margin:0 0 10px;}
-  .page-head p{font-size:15.5px;line-height:1.7;color:var(--text-dim);max-width:620px;margin:0;}
 
-  .page-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:24px;padding-top:18px;border-top:1px solid var(--border);}
-  .page-meta .stats{display:flex;gap:22px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dimmer);letter-spacing:.3px;}
-  .page-meta .stats b{color:var(--text-dim);font-weight:600;}
-  .legend{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dimmer);letter-spacing:.4px;}
-  .legend .sw{width:9px;height:9px;border-radius:2px;background:var(--green);box-shadow:0 0 6px var(--green-alpha);}
+  .page-head h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,4.4vw,50px);line-height:1.04;letter-spacing:-0.8px;margin:0 0 14px;}
+  .grad-word{
+    background:linear-gradient(90deg,#7C93FF 0%,#A98BFF 55%,#C08BFF 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .page-head > .head-copy > p{font-size:15.5px;line-height:1.7;color:var(--text-dim);max-width:520px;margin:0 0 26px;}
+
+  .stats-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .stat-pill{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 18px 10px 10px;
+    background:var(--panel);border:1px solid var(--border);border-radius:16px;
+    transition:border-color .3s ease,transform .3s ease;
+  }
+  .stat-pill:hover{transform:translateY(-2px);}
+  .stat-pill .ic-circle{
+    width:42px;height:42px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .stat-pill .ic-circle svg{width:19px;height:19px;}
+  .stat-pill.stat-blue .ic-circle{background:var(--glow-1);color:var(--blue);}
+  .stat-pill.stat-violet .ic-circle{background:var(--glow-2);color:var(--violet);}
+  .stat-pill.stat-green .ic-circle{background:var(--green-alpha);color:var(--green);}
+  .stat-pill .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;line-height:1;display:block;}
+  .stat-pill .lbl{font-size:12px;color:var(--text-dimmer);display:block;margin-top:3px;}
+
+  /* ---------- hero art: starfield + glowing boat ---------- */
+  .hero-art{
+    position:relative;
+    height:260px;
+    border-radius:24px;
+    overflow:hidden;
+    background:
+      radial-gradient(120% 140% at 75% 30%, rgba(91,127,255,0.16), transparent 60%),
+      radial-gradient(90% 120% at 30% 80%, rgba(139,107,255,0.12), transparent 55%);
+  }
+  .starfield{position:absolute;inset:0;pointer-events:none;}
+  .starfield span{
+    position:absolute;border-radius:50%;background:#fff;
+    animation:starTwinkle var(--dur,3s) ease-in-out infinite;
+    animation-delay:var(--t,0s);
+  }
+  [data-theme="light"] .starfield span{background:#5B7FFF;}
+  @keyframes starTwinkle{0%,100%{opacity:.15;}50%{opacity:.85;}}
+
+  .hero-boat-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .hero-boat-wrap svg{width:88%;height:88%;overflow:visible;filter:drop-shadow(0 0 14px rgba(91,127,255,0.45));}
+  .hero-boat-wrap .wave{fill:none;stroke:var(--blue);stroke-width:1.6;opacity:.55;}
+  .hero-boat-wrap .wave.w2{stroke:var(--violet);opacity:.32;}
+  .hero-boat-wrap .wave.w1{animation:boatWaveDrift 5s linear infinite;}
+  .hero-boat-wrap .wave.w2{animation:boatWaveDrift 7.5s linear infinite reverse;}
+  @keyframes boatWaveDrift{0%{transform:translateX(0);}100%{transform:translateX(-40px);}}
+  .hero-boat-wrap .boat-group{animation:boatBob 3.6s ease-in-out infinite;transform-origin:100px 100px;}
+  @keyframes boatBob{0%,100%{transform:translateY(0) rotate(-2.5deg);}50%{transform:translateY(-6px) rotate(2.5deg);}}
+  .hero-boat-wrap .hull{fill:rgba(91,127,255,0.1);stroke:var(--blue);stroke-width:1.8;stroke-linejoin:round;}
+  .hero-boat-wrap .mast{stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;}
+  .hero-boat-wrap .sail{fill:rgba(91,127,255,0.18);stroke:var(--blue);stroke-width:1.8;stroke-linejoin:round;}
+  .hero-boat-wrap .flag{fill:var(--violet);stroke:none;}
+  .hero-boat-wrap .ripple{fill:none;stroke:var(--blue);stroke-width:1.3;transform-origin:100px 108px;animation:boatRipple 3.6s ease-out infinite;}
+  .hero-boat-wrap .ripple.r2{animation-delay:1.2s;}
+  .hero-boat-wrap .ripple.r3{animation-delay:2.4s;}
+  @keyframes boatRipple{0%{opacity:.5;transform:scale(0.3);}100%{opacity:0;transform:scale(1.8);}}
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-boat-wrap .wave,.hero-boat-wrap .boat-group,.hero-boat-wrap .ripple,.starfield span,.stat-pill{animation:none !important;}
+  }
+
+  @media (max-width:900px){
+    .page-head{grid-template-columns:1fr;}
+    .hero-art{height:190px;order:-1;}
+  }
+  /* ============================================ */
+  /* END PAGE HERO                                 */
+  /* ============================================ */
+
+  /* ============================================ */
+  /* FILTER ROW — dropdown + completed toggle      */
+  /* ============================================ */
+  .filter-row{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+  .filter-select-wrap{position:relative;}
+  .filter-select{
+    appearance:none;-webkit-appearance:none;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;color:var(--text);
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:11px 38px 11px 16px;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .filter-select:hover{border-color:var(--blue);}
+  .filter-select-wrap::after{
+    content:"";position:absolute;right:14px;top:50%;width:8px;height:8px;
+    border-right:1.6px solid var(--text-dimmer);border-bottom:1.6px solid var(--text-dimmer);
+    transform:translateY(-70%) rotate(45deg);pointer-events:none;
+  }
+  .completed-toggle{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 18px 10px 14px;border-radius:12px;
+    background:var(--green-alpha);border:1px solid var(--green-alpha);color:var(--green);
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer;
+    transition:all .2s ease;
+  }
+  .completed-toggle .sw{width:8px;height:8px;border-radius:2px;background:var(--green);box-shadow:0 0 6px var(--green-alpha);}
+  .completed-toggle.active{background:var(--green);color:#06120c;border-color:var(--green);}
+  .completed-toggle.active .sw{background:#06120c;box-shadow:none;}
+  /* ============================================ */
+  /* END FILTER ROW                                */
+  /* ============================================ */
 
   /* ---------- topic grid ---------- */
   .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;}
@@ -214,6 +293,7 @@
     opacity:0;transform:translateY(28px);
     transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
   }
+  .topic-card.filtered-out{display:none;}
   .topic-card.in-view{animation:cardUp .6s var(--ease) forwards;}
   .topic-grid .topic-card:nth-child(1){animation-delay:.02s;}
   .topic-grid .topic-card:nth-child(2){animation-delay:.05s;}
@@ -244,7 +324,6 @@
   .topic-card:hover{border-color:var(--accent, var(--blue));box-shadow:0 24px 50px rgba(0,0,0,0.32), 0 0 30px var(--accent-alpha, var(--glow-1));}
   [data-theme="light"] .topic-card:hover{box-shadow:0 24px 50px rgba(30,40,90,0.12), 0 0 30px var(--accent-alpha, var(--glow-1));}
 
-  /* per-subject accent tokens */
   .topic-card[data-accent="blue"]{--accent:var(--blue);--accent-alpha:var(--glow-1);}
   .topic-card[data-accent="violet"]{--accent:var(--violet);--accent-alpha:var(--glow-2);}
   .topic-card[data-accent="amber"]{--accent:var(--amber);--accent-alpha:var(--amber-alpha);}
@@ -255,15 +334,20 @@
   .topic-card[data-accent="teal"]{--accent:var(--teal);--accent-alpha:var(--teal-alpha);}
 
   /* ============================================ */
-  /* SUBJECT GAME-EFFECTS                          */
-  /* A field of small particles sits behind each   */
-  /* card's content, themed to that subject:       */
-  /* bubbles rising for water, embers for volcano, */
-  /* snow for glaciers, leaves for forest, ripples  */
-  /* for lakes, sparkle for peaks, drifting streaks */
-  /* for wind/cloud/sand. Purely decorative CSS —   */
-  /* no canvas, no JS animation loop.               */
+  /* CARD SCENE ART — a large faint silhouette of  */
+  /* the topic's icon sitting bottom-right, giving */
+  /* each card a "backdrop" feel like the reference */
+  /* screenshot's illustrated card art.            */
   /* ============================================ */
+  .card-scene{
+    position:absolute;right:-14px;bottom:-14px;width:130px;height:130px;
+    color:var(--accent);opacity:.1;pointer-events:none;z-index:0;
+    transition:opacity .3s ease,transform .3s ease;
+  }
+  .card-scene svg{width:100%;height:100%;}
+  .topic-card:hover .card-scene{opacity:.18;transform:scale(1.05) rotate(-2deg);}
+
+  /* ---------- subject particle fx (bubbles/embers/leaves/etc) ---------- */
   .card-fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:20px;z-index:0;}
   .card-fx span{position:absolute;left:var(--l);opacity:0;background:var(--accent);}
 
@@ -284,28 +368,17 @@
 
   .topic-card.in-view .card-fx span{animation-play-state:running;}
   .card-fx span{animation-play-state:paused;}
-  /* ============================================ */
-  /* END SUBJECT GAME-EFFECTS                      */
-  /* ============================================ */
 
   .tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;transform:translateZ(30px);position:relative;z-index:1;}
 
   .tc-icon-wrap{
-    width:52px;height:52px;border-radius:15px;background:var(--panel-strong);border:1px solid var(--border);
+    width:56px;height:56px;border-radius:50%;background:var(--accent-alpha);border:1.5px solid var(--accent);
     display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);
     transition:box-shadow .3s ease,border-color .3s ease;perspective:200px;
+    box-shadow:0 0 0 rgba(0,0,0,0);
   }
-  .topic-card:hover .tc-icon-wrap{border-color:var(--accent);box-shadow:0 0 24px var(--accent-alpha);}
+  .topic-card:hover .tc-icon-wrap{box-shadow:0 0 24px var(--accent-alpha);}
 
-  /* ============================================ */
-  /* 3D SUBJECT ICONS                              */
-  /* Each icon idles with its own subtle 3D motion */
-  /* (float / sway / spin / flicker / shimmer) so  */
-  /* the grid reads as "alive" per-subject rather  */
-  /* than one repeated effect. Motion pauses until  */
-  /* the card scrolls into view, and is disabled     */
-  /* entirely under reduced-motion.                */
-  /* ============================================ */
   .icon3d{width:26px;height:26px;transform-style:preserve-3d;display:block;animation-play-state:paused;}
   .topic-card.in-view .icon3d{animation-play-state:running;}
   .icon3d svg{width:100%;height:100%;display:block;}
@@ -321,24 +394,17 @@
   @keyframes iconSpin{to{transform:rotateY(360deg);}}
   @keyframes iconFlicker{0%,100%{transform:scale(1) rotateX(8deg);filter:brightness(1);}50%{transform:scale(1.1) rotateX(-6deg);filter:brightness(1.35);}}
   @keyframes iconShimmer{0%,100%{opacity:.7;transform:translateY(0) rotateZ(0deg);}50%{opacity:1;transform:translateY(-4px) rotateZ(5deg);}}
-  /* ============================================ */
-  /* END 3D SUBJECT ICONS                          */
-  /* ============================================ */
 
   .tc-done{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--green);background:var(--green-alpha);border:1px solid var(--green-alpha);border-radius:20px;padding:5px 10px;white-space:nowrap;font-weight:600;}
   .tc-diff{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.6px;color:var(--text-dimmer);border:1px solid var(--border);border-radius:20px;padding:5px 10px;white-space:nowrap;}
-  .tc-diff.diff-hard{color:var(--violet);}
-  .tc-diff.diff-medium{color:var(--amber);}
-  .tc-diff.diff-easy{color:var(--green);}
+  .tc-diff.diff-hard{color:var(--violet);border-color:var(--glow-2);}
+  .tc-diff.diff-medium{color:var(--amber);border-color:var(--amber-alpha);}
+  .tc-diff.diff-easy{color:var(--green);border-color:var(--green-alpha);}
 
   .tc-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;margin:16px 0 3px;transform:translateZ(30px);position:relative;z-index:1;}
   .tc-sub{font-size:13px;color:var(--text-dimmer);margin:0 0 18px;transform:translateZ(30px);line-height:1.5;position:relative;z-index:1;}
 
-  /* ============================================ */
-  /* META BOX — Qs count + Challenge CTA           */
-  /* Was a plain top-border row before; now a real */
-  /* boxed pill so both pieces read as one control. */
-  /* ============================================ */
+  /* ---------- meta box: Qs + Challenge, boxed together ---------- */
   .tc-meta{
     display:flex;align-items:center;justify-content:space-between;gap:10px;
     font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dimmer);
@@ -352,6 +418,7 @@
   .topic-card:hover .tc-meta{border-color:var(--accent, var(--border));}
   .tc-meta b{color:var(--text-dim);font-weight:600;}
   .tc-qs{display:inline-flex;align-items:center;gap:6px;}
+  .tc-qs .ic{width:12px;height:12px;}
   .tc-go{
     display:inline-flex;align-items:center;gap:5px;color:var(--accent, var(--blue));font-weight:600;
     background:var(--accent-alpha, transparent);
@@ -362,29 +429,57 @@
   }
   .tc-go .ic{width:13px;height:13px;transition:transform .2s var(--ease);}
   .topic-card:hover .tc-go .ic{transform:translateX(3px);}
-  /* ============================================ */
-  /* END META BOX                                  */
-  /* ============================================ */
 
-  /* ---------- footer ---------- */
-  .footer-link{margin-top:56px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-  .footer-link a{color:var(--text-dim);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px;transition:color .2s ease;}
-  .footer-link a:hover{color:var(--blue);}
-  .footer-link .ic{width:14px;height:14px;}
+  /* ============================================ */
+  /* LEADERBOARD CTA BANNER                        */
+  /* ============================================ */
+  .cta-banner{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    margin-top:36px;padding:26px 30px;border-radius:20px;
+    background:var(--panel);border:1px solid var(--border);
+    position:relative;overflow:hidden;
+  }
+  .cta-banner::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(500px circle at 15% 50%, var(--glow-2), transparent 60%);
+  }
+  .cta-left{display:flex;align-items:center;gap:18px;position:relative;z-index:1;}
+  .cta-trophy{
+    width:56px;height:56px;border-radius:50%;flex-shrink:0;
+    background:var(--glow-2);border:1.5px solid var(--violet);color:var(--violet);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .cta-trophy svg{width:24px;height:24px;}
+  .cta-left h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;margin:0 0 4px;}
+  .cta-left p{margin:0;font-size:13.5px;color:var(--text-dim);}
+  .cta-btn{
+    position:relative;z-index:1;
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+    padding:12px 22px;border-radius:12px;
+    background:var(--glow-2);border:1px solid var(--violet);color:var(--violet);
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;
+    text-decoration:none;transition:background .2s ease,transform .2s ease;
+  }
+  .cta-btn:hover{background:var(--violet);color:#0b0a16;transform:translateY(-2px);}
+  .cta-btn .ic{width:14px;height:14px;}
+  /* ============================================ */
+  /* END LEADERBOARD BANNER                        */
+  /* ============================================ */
 
   @media (max-width:768px){
     .page-content{padding:0 18px 70px;}
+    .filter-row{justify-content:flex-start;}
   }
 
   @media (prefers-reduced-motion: reduce){
-    .topic-card,.icon3d,.icon3d svg,.eyebrow .dot,.card-fx span{transition:none !important;animation:none !important;opacity:0 !important;transform:none !important;}
+    .topic-card,.icon3d,.icon3d svg,.eyebrow .dot,.card-fx span,.card-scene{transition:none !important;animation:none !important;opacity:0 !important;transform:none !important;}
   }
 </style>
 </head>
 <body>
 
 <!-- ============================================ -->
-<!-- HEADER — Fixed to match Environment page      -->
+<!-- HEADER / NAV                                  -->
 <!-- ============================================ -->
 <nav class="nav">
   <div class="wrap">
@@ -433,50 +528,94 @@
 <main class="page-content">
 
   <div class="crumb">
+    <a href="index.html">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+    </a>
+    <span class="sep">›</span>
     <a href="index.html">Home</a>
-    <span class="sep">/</span>
+    <span class="sep">›</span>
     <span class="current">Challenge Friends</span>
   </div>
 
   <div class="page-head">
-    <div class="head-boat" aria-hidden="true">
-      <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- ripples trailing behind the hull -->
-        <ellipse class="ripple r1" cx="100" cy="108" rx="14" ry="4"/>
-        <ellipse class="ripple r2" cx="100" cy="108" rx="14" ry="4"/>
-        <ellipse class="ripple r3" cx="100" cy="108" rx="14" ry="4"/>
+    <div class="head-copy">
+      <span class="eyebrow">
+        <svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 21v-1a5 5 0 013.6-4.8"/></svg>
+        MULTIPLAYER · DAILY QUIZ
+      </span>
+      <h1>Challenge <span class="grad-word">Friends</span></h1>
+      <p>Pick a battlefield below, then challenge a friend to it — same questions, same clock, for both of you.</p>
 
-        <!-- boat: mast, sail, flag, hull -->
-        <g class="boat-group">
-          <line class="mast" x1="100" y1="100" x2="100" y2="58"/>
-          <path class="sail" d="M100 61 L100 92 L131 92 Z"/>
-          <path class="flag" d="M100 58 L114 61.5 L100 65 Z"/>
-          <path class="hull" d="M68 100 Q100 116 132 100 L124 92 L76 92 Z"/>
-        </g>
-
-        <!-- drifting wave lines, period 40, looped -->
-        <path class="wave w1" d="M-40 100 Q-20 90 0 100 T 40 100 T 80 100 T 120 100 T 160 100 T 200 100 T 240 100"/>
-        <path class="wave w2" d="M-40 108 Q-20 100 0 108 T 40 108 T 80 108 T 120 108 T 160 108 T 200 108 T 240 108"/>
-      </svg>
-    </div>
-    <span class="eyebrow"><span class="dot"></span>MULTIPLAYER · DAILY QUIZ</span>
-    <h1>Challenge Friends</h1>
-    <p>Pick a battlefield below, then challenge a friend to it — same questions, same clock, for both of you.</p>
-
-    <div class="page-meta">
-      <div class="stats">
-        <span><b id="statTopics">18</b> topics</span>
-        <span><b id="statQs">180</b> Qs mapped</span>
-        <span><b id="statDone">3</b> completed</span>
+      <div class="stats-row">
+        <div class="stat-pill stat-blue">
+          <span class="ic-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg></span>
+          <span><span class="num" id="statTopics">18</span><span class="lbl">Topics</span></span>
+        </div>
+        <div class="stat-pill stat-violet">
+          <span class="ic-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/></svg></span>
+          <span><span class="num" id="statQs">180</span><span class="lbl">Qs mapped</span></span>
+        </div>
+        <div class="stat-pill stat-green">
+          <span class="ic-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M6 4h12v3a6 6 0 01-12 0V4z"/><path d="M6 5H3v1a4 4 0 004 4M18 5h3v1a4 4 0 01-4 4"/></svg></span>
+          <span><span class="num" id="statDone">3</span><span class="lbl">Completed</span></span>
+        </div>
       </div>
-      <div class="legend"><span class="sw"></span>COMPLETED</div>
     </div>
+
+    <div class="hero-art">
+      <div class="starfield" id="heroStars"></div>
+      <div class="hero-boat-wrap">
+        <svg viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse class="ripple r1" cx="100" cy="108" rx="14" ry="4"/>
+          <ellipse class="ripple r2" cx="100" cy="108" rx="14" ry="4"/>
+          <ellipse class="ripple r3" cx="100" cy="108" rx="14" ry="4"/>
+          <g class="boat-group">
+            <line class="mast" x1="100" y1="100" x2="100" y2="52"/>
+            <path class="sail" d="M100 55 L100 92 L134 92 Z"/>
+            <path class="flag" d="M100 52 L116 55.5 L100 59 Z"/>
+            <path class="hull" d="M66 100 Q100 118 134 100 L124 92 L76 92 Z"/>
+          </g>
+          <path class="wave w1" d="M-40 100 Q-20 90 0 100 T 40 100 T 80 100 T 120 100 T 160 100 T 200 100 T 240 100"/>
+          <path class="wave w2" d="M-40 108 Q-20 100 0 108 T 40 108 T 80 108 T 120 108 T 160 108 T 200 108 T 240 108"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <div class="filter-select-wrap">
+      <select class="filter-select" id="difficultyFilter">
+        <option value="all">All Topics</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+    <button class="completed-toggle" id="completedToggle" type="button">
+      <span class="sw"></span> Completed
+    </button>
   </div>
 
   <div class="topic-grid" id="topicGrid"></div>
 
-  <div class="footer-link">
-    <a href="index.html">
+  <div class="cta-banner">
+    <div class="cta-left">
+      <span class="cta-trophy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M6 4h12v3a6 6 0 01-12 0V4z"/><path d="M6 5H3v1a4 4 0 004 4M18 5h3v1a4 4 0 01-4 4"/></svg>
+      </span>
+      <div>
+        <h3>Compete. Learn. Climb the leaderboard.</h3>
+        <p>Track your progress and see how you rank.</p>
+      </div>
+    </div>
+    <a href="/leaderboard" class="cta-btn">
+      View Leaderboard
+      <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="footer-link" style="margin-top:40px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <a href="index.html" style="color:var(--text-dim);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px;">
       <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
       Back to home
     </a>
@@ -488,7 +627,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
 
-    // ---- theme toggle (same as rest of site) ----
+    // ---- theme toggle ----
     var themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
       themeToggle.addEventListener('click', function () {
@@ -502,22 +641,34 @@
       });
     }
 
+    // ---- starfield behind the hero boat ----
+    var starsEl = document.getElementById('heroStars');
+    if (starsEl) {
+      var starsHtml = '';
+      for (var i = 0; i < 22; i++) {
+        var l = (Math.random() * 100).toFixed(1) + '%';
+        var t = (Math.random() * 100).toFixed(1) + '%';
+        var s = (Math.random() * 1.8 + 1).toFixed(1) + 'px';
+        var dur = (Math.random() * 2.5 + 2).toFixed(1) + 's';
+        var delay = (-Math.random() * 3).toFixed(1) + 's';
+        starsHtml += '<span style="left:' + l + ';top:' + t + ';width:' + s + ';height:' + s + ';--dur:' + dur + ';--t:' + delay + '"></span>';
+      }
+      starsEl.innerHTML = starsHtml;
+    }
+
     // ============================================
-    // TOPIC DATA
-    // One entry per wiki backlink. Add a new object
-    // here and a new card + route appears automatically.
-    // Every topic is fixed at 10 questions, ~6 min.
+    // TOPIC DATA — every topic fixed at 10 Qs
     // ============================================
     var QS_PER_TOPIC = 10;
 
     var TOPICS = [
       { slug:'oceans',          title:'Oceans',                 sub:'The five great oceans and what makes each one distinct.',                icon:'ocean',       motion:'float',   accent:'blue',   effect:'rise',    diff:'Medium' },
-      { slug:'seas',            title:'Seas',                   sub:'Marginal and enclosed seas, and how they differ from oceans.',            icon:'sea',         motion:'float',   accent:'blue',   effect:'rise',    diff:'Easy',   done:true },
-      { slug:'straits',         title:'Straits',                sub:'Narrow passages that link two larger bodies of water.',                   icon:'strait',      motion:'float',   accent:'blue',   effect:'rise',    diff:'Hard',   done:true },
-      { slug:'gulfs',           title:'Gulfs',                  sub:'Large inlets where the sea cuts deep into the coastline.',                icon:'gulf',        motion:'float',   accent:'blue',   effect:'rise',    diff:'Medium' },
-      { slug:'bays',            title:'Bays',                   sub:'Coastal recesses, smaller and gentler than a gulf.',                      icon:'bay',         motion:'float',   accent:'blue',   effect:'rise',    diff:'Easy' },
+      { slug:'seas',            title:'Seas',                   sub:'Marginal and enclosed seas, and how they differ from oceans.',            icon:'sea',         motion:'float',   accent:'teal',   effect:'rise',    diff:'Easy',   done:true },
+      { slug:'straits',         title:'Straits',                sub:'Narrow passages that link two larger bodies of water.',                   icon:'strait',      motion:'float',   accent:'violet', effect:'rise',    diff:'Hard',   done:true },
+      { slug:'gulfs',           title:'Gulfs',                  sub:'Large inlets where the sea cuts deep into the coastline.',                icon:'gulf',        motion:'float',   accent:'amber',  effect:'rise',    diff:'Medium' },
+      { slug:'bays',            title:'Bays',                   sub:'Coastal recesses, smaller and gentler than a gulf.',                      icon:'bay',         motion:'float',   accent:'teal',   effect:'rise',    diff:'Easy' },
       { slug:'rivers',          title:'Rivers',                 sub:'Major river systems, basins, and the cities built on them.',              icon:'river',       motion:'float',   accent:'blue',   effect:'drift',   diff:'Medium' },
-      { slug:'lakes',           title:'Lakes',                  sub:'Freshwater, saline, and crater lakes around the world.',                  icon:'lake',        motion:'float',   accent:'blue',   effect:'pulse',   diff:'Easy' },
+      { slug:'lakes',           title:'Lakes',                  sub:'Freshwater, saline, and crater lakes around the world.',                  icon:'lake',        motion:'float',   accent:'ice',    effect:'pulse',   diff:'Easy' },
       { slug:'mountain-ranges', title:'Mountain Ranges',        sub:'The great ranges that shape continents and climates.',                    icon:'range',       motion:'sway',    accent:'slate',  effect:'drift',   diff:'Medium' },
       { slug:'peaks',           title:'Peaks',                  sub:'The highest summit on every continent, and how they were measured.',      icon:'peak',        motion:'sway',    accent:'slate',  effect:'twinkle', diff:'Hard' },
       { slug:'volcanoes',       title:'Volcanoes',              sub:'Active, dormant, and extinct volcanic systems worldwide.',                icon:'volcano',     motion:'flicker', accent:'amber',  effect:'rise',    diff:'Hard',   done:true },
@@ -531,7 +682,6 @@
       { slug:'wind-belts',      title:'Major Wind Belts',       sub:'Global wind systems and the pressure belts that drive them.',             icon:'wind',        motion:'spin',    accent:'violet', effect:'drift',   diff:'Hard' }
     ];
 
-    // ---- per-subject line icons, 24x24, stroke-based to match the site's icon style ----
     var ICONS = {
       ocean:       '<path d="M2 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0"/><path d="M2 13c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".6"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".35"/>',
       sea:         '<circle cx="18" cy="5" r="2.2"/><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".5"/>',
@@ -553,12 +703,10 @@
       wind:        '<path d="M3 8.5c4.5-4 10-2 10 1.8S9 14 7 11"/><path d="M3 14.5c6.5-3 15-1 15 4.2S11 24 8 19.5" opacity=".6"/>'
     };
 
-    function svgIcon(type) {
-      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONS[type] + '</svg>';
+    function svgIcon(type, strokeWidth) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (strokeWidth || 1.8) + '" stroke-linecap="round" stroke-linejoin="round">' + ICONS[type] + '</svg>';
     }
 
-    // particle counts + size/duration ranges per effect, tuned so each
-    // reads like the thing it represents rather than generic confetti
     var FX_TUNING = {
       rise:    { count:6, size:[3,6],  dur:[3.5,6]   },
       fall:    { count:6, size:[3,6],  dur:[4,7]     },
@@ -590,7 +738,8 @@
         ? '<span class="tc-done">\u2713 Done</span>'
         : '<span class="tc-diff diff-' + t.diff.toLowerCase() + '">' + t.diff + '</span>';
       html += ''
-        + '<a href="wiki/' + t.slug + '.html" class="topic-card" data-accent="' + t.accent + '">'
+        + '<a href="wiki/' + t.slug + '.html" class="topic-card" data-accent="' + t.accent + '" data-diff="' + t.diff.toLowerCase() + '" data-done="' + (t.done ? '1' : '0') + '">'
+        +   '<div class="card-scene">' + svgIcon(t.icon, 1.2) + '</div>'
         +   '<div class="card-fx fx-' + t.effect + '">' + fxHTML(t.effect) + '</div>'
         +   '<div class="tc-top">'
         +     '<div class="tc-icon-wrap"><span class="icon3d m-' + t.motion + '">' + svgIcon(t.icon) + '</span></div>'
@@ -599,16 +748,20 @@
         +   '<div class="tc-title">' + t.title + '</div>'
         +   '<p class="tc-sub">' + t.sub + '</p>'
         +   '<div class="tc-meta">'
-        +     '<span class="tc-qs"><b>' + QS_PER_TOPIC + '</b> Qs \u00b7 ~' + Math.ceil(QS_PER_TOPIC * 0.6) + ' min</span>'
+        +     '<span class="tc-qs"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><b>' + QS_PER_TOPIC + '</b> Qs \u00b7 ~' + Math.ceil(QS_PER_TOPIC * 0.6) + ' min</span>'
         +     '<span class="tc-go">Challenge<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>'
         +   '</div>'
         + '</a>';
     });
     grid.innerHTML = html;
 
-    // ---- header stat: total Qs mapped, derived from topic count \u00d7 fixed 10/topic ----
+    // header stats derived from data
+    var statTopicsEl = document.getElementById('statTopics');
     var statQsEl = document.getElementById('statQs');
+    var statDoneEl = document.getElementById('statDone');
+    if (statTopicsEl) statTopicsEl.textContent = TOPICS.length;
     if (statQsEl) statQsEl.textContent = TOPICS.length * QS_PER_TOPIC;
+    if (statDoneEl) statDoneEl.textContent = TOPICS.filter(function(t){ return t.done; }).length;
 
     // ---- reveal cards on scroll ----
     var io = new IntersectionObserver(function (entries) {
@@ -621,7 +774,7 @@
     }, { threshold: 0.2 });
     document.querySelectorAll('.topic-card').forEach(function (c) { io.observe(c); });
 
-    // ---- 3D tilt + cursor glow on topic cards ----
+    // ---- 3D tilt + cursor glow ----
     document.querySelectorAll('.topic-card').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         var r = card.getBoundingClientRect();
@@ -636,6 +789,27 @@
       card.addEventListener('mouseleave', function () {
         card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0)';
       });
+    });
+
+    // ---- filters: difficulty dropdown + completed toggle ----
+    var diffSelect = document.getElementById('difficultyFilter');
+    var doneToggle = document.getElementById('completedToggle');
+    var doneActive = false;
+
+    function applyFilters() {
+      var diff = diffSelect.value;
+      document.querySelectorAll('.topic-card').forEach(function (card) {
+        var matchesDiff = diff === 'all' || card.getAttribute('data-diff') === diff;
+        var matchesDone = !doneActive || card.getAttribute('data-done') === '1';
+        card.classList.toggle('filtered-out', !(matchesDiff && matchesDone));
+      });
+    }
+
+    diffSelect.addEventListener('change', applyFilters);
+    doneToggle.addEventListener('click', function () {
+      doneActive = !doneActive;
+      doneToggle.classList.toggle('active', doneActive);
+      applyFilters();
     });
   });
 
