@@ -332,13 +332,39 @@
   .tc-diff.diff-easy{color:var(--green);}
 
   .tc-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;margin:16px 0 3px;transform:translateZ(30px);position:relative;z-index:1;}
-  .tc-sub{font-size:13px;color:var(--text-dimmer);margin:0 0 20px;transform:translateZ(30px);line-height:1.5;position:relative;z-index:1;}
+  .tc-sub{font-size:13px;color:var(--text-dimmer);margin:0 0 18px;transform:translateZ(30px);line-height:1.5;position:relative;z-index:1;}
 
-  .tc-meta{display:flex;align-items:center;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dimmer);border-top:1px solid var(--border);padding-top:14px;transform:translateZ(24px);position:relative;z-index:1;background:var(--panel);}
+  /* ============================================ */
+  /* META BOX — Qs count + Challenge CTA           */
+  /* Was a plain top-border row before; now a real */
+  /* boxed pill so both pieces read as one control. */
+  /* ============================================ */
+  .tc-meta{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dimmer);
+    transform:translateZ(24px);position:relative;z-index:1;
+    background:var(--panel-strong);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:11px 14px;
+    transition:border-color .3s ease, background .3s ease;
+  }
+  .topic-card:hover .tc-meta{border-color:var(--accent, var(--border));}
   .tc-meta b{color:var(--text-dim);font-weight:600;}
-  .tc-go{display:inline-flex;align-items:center;gap:5px;color:var(--accent, var(--blue));font-weight:600;}
+  .tc-qs{display:inline-flex;align-items:center;gap:6px;}
+  .tc-go{
+    display:inline-flex;align-items:center;gap:5px;color:var(--accent, var(--blue));font-weight:600;
+    background:var(--accent-alpha, transparent);
+    border:1px solid var(--accent-alpha, transparent);
+    border-radius:8px;
+    padding:5px 10px;
+    transition:background .2s ease, border-color .2s ease;
+  }
   .tc-go .ic{width:13px;height:13px;transition:transform .2s var(--ease);}
   .topic-card:hover .tc-go .ic{transform:translateX(3px);}
+  /* ============================================ */
+  /* END META BOX                                  */
+  /* ============================================ */
 
   /* ---------- footer ---------- */
   .footer-link{margin-top:56px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
@@ -440,7 +466,7 @@
     <div class="page-meta">
       <div class="stats">
         <span><b id="statTopics">18</b> topics</span>
-        <span><b id="statQs">254</b> Qs mapped</span>
+        <span><b id="statQs">180</b> Qs mapped</span>
         <span><b id="statDone">3</b> completed</span>
       </div>
       <div class="legend"><span class="sw"></span>COMPLETED</div>
@@ -480,26 +506,29 @@
     // TOPIC DATA
     // One entry per wiki backlink. Add a new object
     // here and a new card + route appears automatically.
+    // Every topic is fixed at 10 questions, ~6 min.
     // ============================================
+    var QS_PER_TOPIC = 10;
+
     var TOPICS = [
-      { slug:'oceans',          title:'Oceans',                 sub:'The five great oceans and what makes each one distinct.',                icon:'ocean',       motion:'float',   accent:'blue',   effect:'rise',    qs:18, diff:'Medium' },
-      { slug:'seas',            title:'Seas',                   sub:'Marginal and enclosed seas, and how they differ from oceans.',            icon:'sea',         motion:'float',   accent:'blue',   effect:'rise',    qs:16, diff:'Easy',   done:true },
-      { slug:'straits',         title:'Straits',                sub:'Narrow passages that link two larger bodies of water.',                   icon:'strait',      motion:'float',   accent:'blue',   effect:'rise',    qs:14, diff:'Hard',   done:true },
-      { slug:'gulfs',           title:'Gulfs',                  sub:'Large inlets where the sea cuts deep into the coastline.',                icon:'gulf',        motion:'float',   accent:'blue',   effect:'rise',    qs:12, diff:'Medium' },
-      { slug:'bays',            title:'Bays',                   sub:'Coastal recesses, smaller and gentler than a gulf.',                      icon:'bay',         motion:'float',   accent:'blue',   effect:'rise',    qs:12, diff:'Easy' },
-      { slug:'rivers',          title:'Rivers',                 sub:'Major river systems, basins, and the cities built on them.',              icon:'river',       motion:'float',   accent:'blue',   effect:'drift',   qs:20, diff:'Medium' },
-      { slug:'lakes',           title:'Lakes',                  sub:'Freshwater, saline, and crater lakes around the world.',                  icon:'lake',        motion:'float',   accent:'blue',   effect:'pulse',   qs:15, diff:'Easy' },
-      { slug:'mountain-ranges', title:'Mountain Ranges',        sub:'The great ranges that shape continents and climates.',                    icon:'range',       motion:'sway',    accent:'slate',  effect:'drift',   qs:17, diff:'Medium' },
-      { slug:'peaks',           title:'Peaks',                  sub:'The highest summit on every continent, and how they were measured.',      icon:'peak',        motion:'sway',    accent:'slate',  effect:'twinkle', qs:13, diff:'Hard' },
-      { slug:'volcanoes',       title:'Volcanoes',              sub:'Active, dormant, and extinct volcanic systems worldwide.',                icon:'volcano',     motion:'flicker', accent:'amber',  effect:'rise',    qs:15, diff:'Hard',   done:true },
-      { slug:'deserts',         title:'Deserts',                sub:'Hot and cold deserts, and the life that survives in them.',               icon:'desert',      motion:'sway',    accent:'sand',   effect:'drift',   qs:14, diff:'Medium' },
-      { slug:'forests',         title:'Forests & Rainforests',  sub:'The biomes that hold most of the planet\u2019s biodiversity.',            icon:'forest',      motion:'sway',    accent:'green',  effect:'fall',    qs:16, diff:'Medium' },
-      { slug:'glaciers',        title:'Glaciers',               sub:'Ice sheets, fjords, and the slow rivers of ice that carved them.',        icon:'glacier',     motion:'shimmer', accent:'ice',    effect:'fall',    qs:11, diff:'Hard' },
-      { slug:'islands',         title:'Islands',                sub:'Volcanic, coral, and continental islands, and how each forms.',           icon:'island',      motion:'float',   accent:'teal',   effect:'pulse',   qs:14, diff:'Easy' },
-      { slug:'archipelagos',    title:'Archipelagos',           sub:'Island chains, and the nations built across them.',                       icon:'archipelago', motion:'spin',    accent:'teal',   effect:'drift',   qs:12, diff:'Medium' },
-      { slug:'waterfalls',      title:'Waterfalls',             sub:'The tallest and most powerful falls on Earth.',                           icon:'waterfall',   motion:'float',   accent:'blue',   effect:'fall',    qs:13, diff:'Easy' },
-      { slug:'canals',          title:'Canals',                 sub:'Man-made waterways that rewrote global trade routes.',                    icon:'canal',       motion:'sway',    accent:'violet', effect:'drift',   qs:10, diff:'Medium' },
-      { slug:'wind-belts',      title:'Major Wind Belts',       sub:'Global wind systems and the pressure belts that drive them.',             icon:'wind',        motion:'spin',    accent:'violet', effect:'drift',   qs:12, diff:'Hard' }
+      { slug:'oceans',          title:'Oceans',                 sub:'The five great oceans and what makes each one distinct.',                icon:'ocean',       motion:'float',   accent:'blue',   effect:'rise',    diff:'Medium' },
+      { slug:'seas',            title:'Seas',                   sub:'Marginal and enclosed seas, and how they differ from oceans.',            icon:'sea',         motion:'float',   accent:'blue',   effect:'rise',    diff:'Easy',   done:true },
+      { slug:'straits',         title:'Straits',                sub:'Narrow passages that link two larger bodies of water.',                   icon:'strait',      motion:'float',   accent:'blue',   effect:'rise',    diff:'Hard',   done:true },
+      { slug:'gulfs',           title:'Gulfs',                  sub:'Large inlets where the sea cuts deep into the coastline.',                icon:'gulf',        motion:'float',   accent:'blue',   effect:'rise',    diff:'Medium' },
+      { slug:'bays',            title:'Bays',                   sub:'Coastal recesses, smaller and gentler than a gulf.',                      icon:'bay',         motion:'float',   accent:'blue',   effect:'rise',    diff:'Easy' },
+      { slug:'rivers',          title:'Rivers',                 sub:'Major river systems, basins, and the cities built on them.',              icon:'river',       motion:'float',   accent:'blue',   effect:'drift',   diff:'Medium' },
+      { slug:'lakes',           title:'Lakes',                  sub:'Freshwater, saline, and crater lakes around the world.',                  icon:'lake',        motion:'float',   accent:'blue',   effect:'pulse',   diff:'Easy' },
+      { slug:'mountain-ranges', title:'Mountain Ranges',        sub:'The great ranges that shape continents and climates.',                    icon:'range',       motion:'sway',    accent:'slate',  effect:'drift',   diff:'Medium' },
+      { slug:'peaks',           title:'Peaks',                  sub:'The highest summit on every continent, and how they were measured.',      icon:'peak',        motion:'sway',    accent:'slate',  effect:'twinkle', diff:'Hard' },
+      { slug:'volcanoes',       title:'Volcanoes',              sub:'Active, dormant, and extinct volcanic systems worldwide.',                icon:'volcano',     motion:'flicker', accent:'amber',  effect:'rise',    diff:'Hard',   done:true },
+      { slug:'deserts',         title:'Deserts',                sub:'Hot and cold deserts, and the life that survives in them.',               icon:'desert',      motion:'sway',    accent:'sand',   effect:'drift',   diff:'Medium' },
+      { slug:'forests',         title:'Forests & Rainforests',  sub:'The biomes that hold most of the planet\u2019s biodiversity.',            icon:'forest',      motion:'sway',    accent:'green',  effect:'fall',    diff:'Medium' },
+      { slug:'glaciers',        title:'Glaciers',               sub:'Ice sheets, fjords, and the slow rivers of ice that carved them.',        icon:'glacier',     motion:'shimmer', accent:'ice',    effect:'fall',    diff:'Hard' },
+      { slug:'islands',         title:'Islands',                sub:'Volcanic, coral, and continental islands, and how each forms.',           icon:'island',      motion:'float',   accent:'teal',   effect:'pulse',   diff:'Easy' },
+      { slug:'archipelagos',    title:'Archipelagos',           sub:'Island chains, and the nations built across them.',                       icon:'archipelago', motion:'spin',    accent:'teal',   effect:'drift',   diff:'Medium' },
+      { slug:'waterfalls',      title:'Waterfalls',             sub:'The tallest and most powerful falls on Earth.',                           icon:'waterfall',   motion:'float',   accent:'blue',   effect:'fall',    diff:'Easy' },
+      { slug:'canals',          title:'Canals',                 sub:'Man-made waterways that rewrote global trade routes.',                    icon:'canal',       motion:'sway',    accent:'violet', effect:'drift',   diff:'Medium' },
+      { slug:'wind-belts',      title:'Major Wind Belts',       sub:'Global wind systems and the pressure belts that drive them.',             icon:'wind',        motion:'spin',    accent:'violet', effect:'drift',   diff:'Hard' }
     ];
 
     // ---- per-subject line icons, 24x24, stroke-based to match the site's icon style ----
@@ -570,12 +599,16 @@
         +   '<div class="tc-title">' + t.title + '</div>'
         +   '<p class="tc-sub">' + t.sub + '</p>'
         +   '<div class="tc-meta">'
-        +     '<span><b>' + t.qs + '</b> Qs \u00b7 ~' + Math.ceil(t.qs * 0.6) + ' min</span>'
+        +     '<span class="tc-qs"><b>' + QS_PER_TOPIC + '</b> Qs \u00b7 ~' + Math.ceil(QS_PER_TOPIC * 0.6) + ' min</span>'
         +     '<span class="tc-go">Challenge<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>'
         +   '</div>'
         + '</a>';
     });
     grid.innerHTML = html;
+
+    // ---- header stat: total Qs mapped, derived from topic count \u00d7 fixed 10/topic ----
+    var statQsEl = document.getElementById('statQs');
+    if (statQsEl) statQsEl.textContent = TOPICS.length * QS_PER_TOPIC;
 
     // ---- reveal cards on scroll ----
     var io = new IntersectionObserver(function (entries) {
