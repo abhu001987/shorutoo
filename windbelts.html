@@ -1078,7 +1078,7 @@ const map = L.map('map', {
 }).setView([20,20], 2);
 
 const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
   subdomains:'abcd',
   maxZoom:19,
   keepBuffer:4,
@@ -1101,6 +1101,31 @@ tiles.on('load', ()=>{
   document.getElementById('map-loading').classList.add('hidden');
 });
 setTimeout(()=>{ if(!tilesLoaded) document.getElementById('map-loading').classList.add('hidden'); }, 2500);
+
+/* ---------------- India boundary overlay ---------------- */
+let indiaLayer = null;
+const INDIA_BOUNDARY_URLS = [
+  'https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson',
+  'https://cdn.jsdelivr.net/gh/datameet/maps@master/Country/india-land-simplified.geojson'
+];
+async function loadIndiaBoundary(){
+  for(const url of INDIA_BOUNDARY_URLS){
+    try{
+      const res = await fetch(url);
+      if(!res.ok) continue;
+      const geo = await res.json();
+      indiaLayer = L.geoJSON(geo, {
+        interactive:false,
+        style:{ color:'#5B7FFF', weight:2.2, opacity:1, fillColor:'#5B7FFF', fillOpacity:0.06 }
+      }).addTo(map);
+      return;
+    }catch(e){
+      console.warn('India boundary overlay source failed, trying next:', url, e);
+    }
+  }
+  console.warn('India boundary overlay: all sources failed — falling back to base tiles only.');
+}
+loadIndiaBoundary();
 
 let markerLayer = L.layerGroup().addTo(map);
 
