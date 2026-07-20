@@ -759,7 +759,11 @@
   }
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:1999;}
+  /* FIX: confetti must render above the fixed overlay screens (z-index:5000),
+     otherwise a burst fired on the results screen paints behind the screen's
+     opaque background and looks "trapped in a box" instead of covering the
+     whole viewport. Raised from 1999 to sit above .screen. */
+  #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:5600;}
 
   /* ===== Menu footer (only visible on start screen) ===== */
   .menu-footer {
@@ -1293,21 +1297,30 @@ function goBack() {
 /* ---------------- Header visibility ----------------
    Shown on the start screen and the results screen.
    Hidden only while the map/gameplay screen is active (i.e. while the
-   player is choosing/dropping a pin, from beginRound() through endGame()). */
+   player is choosing/dropping a pin, from beginRound() through endGame()).
+
+   FIX: previously syncNavHeight() was deferred inside a setTimeout(...,50)
+   alongside map.invalidateSize(). That meant a screen (screen-end /
+   screen-invite) could become visible and get painted using a STALE or
+   fallback --nav-height value (from before the header was hidden, or the
+   CSS fallback), producing exactly one frame — sometimes longer, on slow
+   devices — where the panel's title/kicker text renders too high and
+   sits underneath/behind the fixed header. Measuring the real header
+   height is cheap and synchronous (just a layout read), so it doesn't
+   need the delay; only the Leaflet map resize genuinely benefits from
+   waiting a frame for the reveal transition/reflow to settle. */
 function setHeaderVisible(visible){
   var nav = document.getElementById('siteNav');
   if (!nav) return;
   nav.classList.toggle('header-hidden', !visible);
-  // The header is fixed/out of flow, so #app fills the full viewport
-  // regardless — but .screen's top padding depends on --nav-height, which
-  // is only accurate while the nav is actually rendered. Re-sync it here
-  // after the reflow settles, same call the map resize already waits for.
-  // (syncNavHeight() itself now no-ops while header-hidden is set, so this
-  // only actually updates the variable when we just turned the nav back on.)
-  setTimeout(function(){
+  if (visible) {
+    // Measure immediately, before any screen becomes visible/painted,
+    // so .screen's padding-top is correct from the very first frame.
     syncNavHeight();
+  }
+  requestAnimationFrame(function(){
     try { map.invalidateSize(); } catch(e){}
-  }, 50);
+  });
 }
 
 /* ---------------- Strait data ---------------- */
