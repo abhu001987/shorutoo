@@ -593,7 +593,7 @@
   .hero-art svg{ width:100%; height:100%; display:block; }
   @media (max-width:860px){
     .hero-grid{ grid-template-columns:1fr; }
-    .hero-art{ min-height:180px; order:-1; }
+    .hero-art{ display:none; }
   }
 
   /* Two-up info cards under the hero (mission / start challenge) */
@@ -1039,6 +1039,7 @@
                 <div class="mini-stat-text"><span class="t">Share &amp; Compare</span><span class="d">Challenge your friends</span></div>
               </div>
             </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="startFreshGame()">Begin Mission →</button>
           </div>
         </div>
 
@@ -1053,8 +1054,7 @@
           <div class="info-body">
             <textarea id="paste-input" placeholder="Paste a challenge link here…"></textarea>
             <div class="paste-err" id="paste-err"></div>
-            <button class="btn btn-primary" onclick="startFreshGame()">Begin Mission →</button>
-            <button class="btn btn-teal" style="width:100%;margin-top:10px;" onclick="acceptPastedChallenge()">Accept Challenge</button>
+            <button class="btn btn-teal" style="width:100%;" onclick="acceptPastedChallenge()">Accept Challenge</button>
           </div>
         </div>
       </div>
