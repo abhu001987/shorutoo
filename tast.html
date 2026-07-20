@@ -313,22 +313,42 @@
             animation: shimmer 2.2s ease-in-out infinite;
         }
 
+        /* ============================================ */
+        /* MAIN LAYOUT — two independent columns so the  */
+        /* right column's card heights never depend on   */
+        /* the left column's row heights (fixes the gap  */
+        /* under "Up next" and keeps Image from hanging   */
+        /* below "Did you know?").                        */
+        /* ============================================ */
         .main {
-            display: grid;
-            grid-template-columns: 2.2fr 0.85fr;
-            grid-template-areas:
-                "question learn"
-                "answer   upnext"
-                "fact     image";
+            display: flex;
+            align-items: flex-start;
             gap: 18px;
-            align-items: start;
         }
-        .gc-question { grid-area: question; }
-        .gc-answer   { grid-area: answer; }
-        .gc-fact     { grid-area: fact; }
-        .gc-learn    { grid-area: learn; }
-        .gc-upnext   { grid-area: upnext; }
-        .gc-image    { grid-area: image; }
+        .main-left {
+            flex: 2.2;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .main-right {
+            flex: 0.85;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Stacking order used once the columns flatten on mobile (see media query below).
+           On desktop these numbers are only compared within their own column, so they
+           have no visible effect there. */
+        .question   { order: 1; }
+        .answer     { order: 2; }
+        .card-learn { order: 3; }
+        .card-upnext{ order: 4; }
+        .card-image { order: 5; }
+        .fact-line  { order: 6; }
 
         .question { padding: 28px 30px; }
         .question .q-top-row {
@@ -541,13 +561,10 @@
         .assistant-btn:hover { background: var(--panel-strong); border-color: var(--blue); }
 
         /* ---- Small sidebar image card ---- */
-        .side-card-image { 
-            padding: 8px;
-            margin-top: -6px; /* Slight upward adjustment for natural spacing */
-        }
+        .side-card-image { padding: 1px; }
         .side-image-wrap {
             width: 100%;
-            height: 120px; /* Balanced height */
+            height: 150px;
             border-radius: var(--radius-sm);
             overflow: hidden;
             background: var(--input-bg);
@@ -655,18 +672,17 @@
 
         @media (max-width: 1100px) {
             .main {
-                grid-template-columns: 1fr;
-                grid-template-areas:
-                    "question"
-                    "answer"
-                    "learn"
-                    "upnext"
-                    "image"
-                    "fact";
-                gap: 16px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 18px;
+            }
+            /* Remove the wrapper divs from layout so their children become direct
+               flex items of .main and can be reordered with the `order` values above:
+               question -> answer -> learn -> up next -> image -> did you know */
+            .main-left, .main-right {
+                display: contents;
             }
             .side-image-wrap { height: 210px; }
-            .gc-image { margin-top: -6px; }
             .question h1 { font-size: 26px; }
             .container { padding: 0; }
             textarea { height: 180px; }
@@ -676,6 +692,7 @@
             .question { padding: 20px 18px; }
             .question h1 { font-size: 22px; margin: 10px 0; }
             .answer { padding: 18px 16px; }
+            textarea { resize: none; }
             .buttons { flex-direction: column; }
             .voice, .submit { width: 100%; padding: 13px; font-size: 14px; }
             .side-card { padding: 16px 16px; }
@@ -1016,6 +1033,34 @@
             100% { transform: translateY(60px); opacity: 0; }
         }
         .fx-sky-layer { position: fixed; inset: 0; pointer-events: none; z-index: 19999; overflow: hidden; }
+
+        /* ---- Footer ---- */
+        .footer-link {
+            margin-top: 56px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-link a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color .2s ease;
+        }
+        .footer-link a:hover {
+            color: var(--blue);
+        }
+        .footer-link .ic {
+            width: 14px;
+            height: 14px;
+        }
     </style>
 </head>
 <body>
@@ -1114,88 +1159,85 @@
 
         <div class="main">
 
-            <div class="card question fade-in gc-question">
-                <div class="q-top-row">
-                    <span class="q-eyebrow" id="qNum">Question 1 of 10</span>
-                    <span class="q-timer-chip" id="timerWrap">
-                        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                        <span id="timerDisplay">01:30</span>
-                    </span>
+            <!-- LEFT COLUMN: question, answer box, fact strip -->
+            <div class="main-left">
+                <div class="card question fade-in">
+                    <div class="q-top-row">
+                        <span class="q-eyebrow" id="qNum">Question 1 of 10</span>
+                        <span class="q-timer-chip" id="timerWrap">
+                            <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <span id="timerDisplay">01:30</span>
+                        </span>
+                    </div>
+                    <h1 id="questionText">Loading...</h1>
+                    <p><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;color:var(--blue)"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>Share your knowledge in detail. Structure, clarity and relevance matter.</p>
                 </div>
-                <h1 id="questionText">Loading...</h1>
-                <p><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;color:var(--blue)"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>Share your knowledge in detail. Structure, clarity and relevance matter.</p>
-            </div>
 
-            <div class="card answer fade-in gc-answer" style="animation-delay:.05s">
-                <h3><svg class="ic" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></svg>Your answer</h3>
-                <textarea id="answerInput" placeholder="Start typing your answer here...
+                <div class="card answer fade-in" style="animation-delay:.05s">
+                    <h3><svg class="ic" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></svg>Your answer</h3>
+                    <textarea id="answerInput" placeholder="Start typing your answer here...
 
 • Press Enter for a new paragraph
 • AI evaluation begins after submission"></textarea>
 
-                <div class="buttons">
-                    <button class="voice" id="voiceBtn">
-                        <span class="mic-static" style="display:flex;align-items:center;gap:9px;">
-                            <svg class="ic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v7a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
-                            Voice input
-                        </span>
-                        <span class="wave"><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span></span>
-                        <span class="wave-label" style="display:none">Listening</span>
-                    </button>
-                    <button class="submit" id="submitBtn">Submit answer <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+                    <div class="buttons">
+                        <button class="voice" id="voiceBtn">
+                            <span class="mic-static" style="display:flex;align-items:center;gap:9px;">
+                                <svg class="ic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v7a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v1a7 7 0 01-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+                                Voice input
+                            </span>
+                            <span class="wave"><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span><span class="wave-bar"></span></span>
+                            <span class="wave-label" style="display:none">Listening</span>
+                        </button>
+                        <button class="submit" id="submitBtn">Submit answer <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="fact-line fade-in" style="animation-delay:.25s">
+                    <span class="ic-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.75V17h8v-2.25A7 7 0 0012 2z"/></svg></span>
+                    <div class="fact-text">
+                        <span class="fact-eyebrow">Did you know?</span>
+                        Gandhi demanded fair treatment for the untouchables, India's lowest caste; he underwent several fasts to support the cause. He called the untouchables <strong>harijans</strong>, which means <strong>"children of God."</strong>
+                    </div>
                 </div>
             </div>
 
-            <div class="fact-line fade-in gc-fact" style="animation-delay:.25s">
-                <span class="ic-chip"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 00-4 12.75V17h8v-2.25A7 7 0 0012 2z"/></svg></span>
-                <div class="fact-text">
-                    <span class="fact-eyebrow">Did you know?</span>
-                    Gandhi demanded fair treatment for the untouchables, India's lowest caste; he underwent several fasts to support the cause. He called the untouchables <strong>harijans</strong>, which means <strong>"children of God."</strong>
+            <!-- RIGHT COLUMN: learn more, up next, image. Independent of left column height. -->
+            <div class="main-right">
+                <div class="card side-card card-learn fade-in" style="animation-delay:.1s">
+                    <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--mint)"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>Learn more</h2>
+                    <p style="color:var(--text-dim);margin-bottom:14px;font-size:13.5px;">Want a quick overview of this topic before you answer?</p>
+                    <button class="assistant-btn" id="explainBtn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Read topic overview</button>
+                </div>
+
+                <div class="card side-card card-upnext fade-in" style="animation-delay:.15s">
+                    <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Up next</h2>
+                    <div class="roadmap-list" id="roadmapList"></div>
+                </div>
+
+                <div class="card side-card side-card-image card-image fade-in" style="animation-delay:.2s">
+                    <div class="side-image-wrap">
+                        <img class="side-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIkLCwqql12Su0n2yx4LxzEDCkguBeDQjz4P550Je6vG_yqTQbwy7fk7tF&s=10" alt="Stay motivated" loading="lazy">
+                    </div>
                 </div>
             </div>
 
-            <div class="card side-card fade-in gc-learn" style="animation-delay:.1s">
-                <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--mint)"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>Learn more</h2>
-                <p style="color:var(--text-dim);margin-bottom:14px;font-size:13.5px;">Want a quick overview of this topic before you answer?</p>
-                <button class="assistant-btn" id="explainBtn"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Read topic overview</button>
-            </div>
+        </div>
 
-            <div class="card side-card fade-in gc-upnext" style="animation-delay:.15s">
-                <h2><span class="ic-chip sm" style="background:var(--panel-strong);color:var(--violet)"><svg class="ic" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></span>Up next</h2>
-                <div class="roadmap-list" id="roadmapList"></div>
-            </div>
-
-            <div class="card side-card side-card-image fade-in gc-image" style="animation-delay:.2s">
-                <div class="side-image-wrap">
-                    <img class="side-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIkLCwqql12Su0n2yx4LxzEDCkguBeDQjz4P550Je6vG_yqTQbwy7fk7tF&s=10" alt="Stay motivated" loading="lazy">
-                </div>
-            </div>
-
+        <div class="footer-link">
+          <a href="index.html">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+            Back to all subjects
+          </a>
+          <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
         </div>
 
     </div>
 
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-box">
-            <h2><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Topic overview · PM E-DRIVE</h2>
-            <div class="popup-body">
-                <p><strong style="color:var(--text);">PM E-DRIVE</strong> (Electric Drive Revolution in Innovative Vehicle Enhancement) is a central sector scheme launched to accelerate EV adoption in India.</p>
-                <p><strong style="color:var(--text);">Key features:</strong></p>
-                <ul>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Upfront incentives for 2W, 3W, e-buses, and e-trucks</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Allocates funds for charging infrastructure</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Supports advanced cell chemistry battery manufacturing</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Promotes R&D in battery technology</li>
-                </ul>
-                <p><strong style="color:var(--text);">Significance:</strong></p>
-                <ul>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Reduces oil imports and fossil fuel dependence</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Lowers carbon emissions and urban pollution</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Fosters a domestic EV manufacturing hub</li>
-                    <li><svg class="ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Creates jobs in the EV ecosystem</li>
-                </ul>
-                <p style="color:var(--text-dimmer);font-size:12.5px;margin-top:10px;border-top:1px solid var(--border);padding-top:12px;">The scheme is a key part of India's transition to clean mobility and aligns with the country's climate commitments.</p>
-            </div>
+            <h2 id="popupTitle"><svg class="ic" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span id="popupTitleText">Topic overview</span></h2>
+            <div class="popup-body" id="popupBody"></div>
             <div class="popup-actions">
                 <button class="popup-cancel" id="popupCancel">Close</button>
                 <button class="popup-confirm" id="popupConfirm">Got it</button>
@@ -2000,8 +2042,39 @@
             const popupCancel = document.getElementById('popupCancel');
             const popupConfirm = document.getElementById('popupConfirm');
             const explainBtn = document.getElementById('explainBtn');
+            const popupTitleText = document.getElementById('popupTitleText');
+            const popupBody = document.getElementById('popupBody');
 
-            function openPopup() { popupOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+            function currentQuestionObj() {
+                if (testOrder && testOrder.length && questions.length) {
+                    return questions[testOrder[current]];
+                }
+                return null;
+            }
+
+            function escapeHtml(str) {
+                return String(str)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;");
+            }
+
+            function buildOverviewHtml(q) {
+                if (!q) {
+                    return `<p>Start the test to see the overview here.</p>`;
+                }
+                return q.model && q.model.trim()
+                    ? `<p style="color:var(--text);">${escapeHtml(q.model)}</p>`
+                    : `<p style="color:var(--text-dimmer);">No overview available for this question yet.</p>`;
+            }
+
+            function openPopup() {
+                const q = currentQuestionObj();
+                if (popupTitleText) popupTitleText.textContent = q ? "Topic overview" : "Topic overview";
+                if (popupBody) popupBody.innerHTML = buildOverviewHtml(q);
+                popupOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
             function closePopup() { popupOverlay.classList.remove('active'); document.body.style.overflow = ''; }
 
             explainBtn.addEventListener('click', openPopup);
