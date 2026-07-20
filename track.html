@@ -526,7 +526,6 @@
     justify-content:center;
   }
   .kicker{font-size:11px;letter-spacing:.3em;color:var(--teal);text-transform:uppercase;margin-bottom:14px;}
-  /* FIX: ensure "Satellite Geo Ops" stays visible on mobile */
   .kicker { 
     font-size:clamp(10px, 2.5vw, 13px); 
     letter-spacing:0.25em; 
@@ -571,30 +570,14 @@
   }
   .mode-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);flex-shrink:0;}
 
-  /* Hero split: copy on the left, illustration on the right */
+  /* Hero: single-column text intro (illustration removed) */
   .hero-grid{
-    display:grid;grid-template-columns:1.15fr 0.85fr;gap:34px;align-items:stretch;
+    display:block;
     text-align:left;margin-bottom:8px;
   }
   .hero-copy h1{margin-bottom:10px;}
   .hero-copy .kicker{margin-bottom:14px;}
-  .hero-copy .sub{margin-bottom:0;max-width:480px;}
-
-  .hero-art{
-    position:relative;border-radius:22px;overflow:hidden;
-    background:
-      radial-gradient(circle at 72% 28%, rgba(91,127,255,0.35), transparent 55%),
-      radial-gradient(circle at 20% 85%, rgba(139,124,255,0.25), transparent 50%),
-      linear-gradient(160deg, #060a16, #0b1120 60%, #0a0f1c);
-    border:1px solid var(--glass-brd);
-    min-height:260px;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .hero-art svg{ width:100%; height:100%; display:block; }
-  @media (max-width:860px){
-    .hero-grid{ grid-template-columns:1fr; }
-    .hero-art{ display:none; }
-  }
+  .hero-copy .sub{margin-bottom:0;max-width:640px;}
 
   /* Two-up info cards under the hero (mission / start challenge) */
   .info-cards{
@@ -983,39 +966,8 @@
 
       <div class="hero-grid">
         <div class="hero-copy">
-          <div class="mode-badge"><span class="dot"></span>Challenge Mode</div>
           <h1>Strait <span>Navigator</span></h1>
-          <div class="kicker">Satellite Geo Ops</div>
           <p class="sub">Finish a run and get a link with the exact same 13 straits, in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, strait by strait. No sign-up, just a link.</p>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="150" cy="165" r="92" fill="none" stroke="#5B7FFF" stroke-width="1.4" opacity="0.35"/>
-            <circle cx="150" cy="165" r="68" fill="url(#gGlobe)" stroke="#5B7FFF" stroke-width="1.6" opacity="0.9"/>
-            <ellipse cx="150" cy="165" rx="68" ry="24" fill="none" stroke="#5B7FFF" stroke-width="1" opacity="0.4"/>
-            <ellipse cx="150" cy="165" rx="30" ry="68" fill="none" stroke="#5B7FFF" stroke-width="1" opacity="0.4"/>
-            <path d="M100 150 Q130 130 150 150 T200 150" fill="none" stroke="#5eead4" stroke-width="1.6" opacity="0.7"/>
-            <path d="M95 185 Q140 205 150 185 T210 190" fill="none" stroke="#5eead4" stroke-width="1.6" opacity="0.55"/>
-            <circle cx="150" cy="165" r="3" fill="#ff5d73"/>
-            <g transform="translate(266 88) rotate(18)">
-              <rect x="-9" y="-16" width="18" height="32" rx="4" fill="#0b1120" stroke="#8B7CFF" stroke-width="1.6"/>
-              <rect x="-30" y="-8" width="16" height="16" fill="none" stroke="#8B7CFF" stroke-width="1.4"/>
-              <rect x="14" y="-8" width="16" height="16" fill="none" stroke="#8B7CFF" stroke-width="1.4"/>
-              <line x1="-14" y1="0" x2="-30" y2="0" stroke="#8B7CFF" stroke-width="1.4"/>
-              <line x1="14" y1="0" x2="30" y2="0" stroke="#8B7CFF" stroke-width="1.4"/>
-            </g>
-            <path d="M235 105 Q205 130 178 148" fill="none" stroke="#8B7CFF" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.6"/>
-            <circle cx="60" cy="60" r="2" fill="#5eead4" opacity="0.8"/>
-            <circle cx="330" cy="200" r="2" fill="#5B7FFF" opacity="0.8"/>
-            <circle cx="80" cy="240" r="1.6" fill="#8B7CFF" opacity="0.7"/>
-            <circle cx="300" cy="60" r="1.6" fill="#5eead4" opacity="0.6"/>
-            <defs>
-              <radialGradient id="gGlobe" cx="35%" cy="30%" r="75%">
-                <stop offset="0%" stop-color="#16233d"/>
-                <stop offset="100%" stop-color="#0a1120"/>
-              </radialGradient>
-            </defs>
-          </svg>
         </div>
       </div>
 
@@ -1068,15 +1020,15 @@
         <div class="steps-row">
           <div class="step">
             <div class="step-num">1</div>
-            <div class="step-text"><div class="t">Get a Challenge Link</div><div class="d">Paste a link from a friend</div></div>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
             <div class="step-text"><div class="t">Complete the Mission</div><div class="d">Find all 13 straits in order</div></div>
           </div>
           <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text"><div class="t">Get Your Link</div><div class="d">Share your run with a friend</div></div>
+          </div>
+          <div class="step">
             <div class="step-num">3</div>
-            <div class="step-text"><div class="t">Share Your Result</div><div class="d">See who got closest</div></div>
+            <div class="step-text"><div class="t">Compare Results</div><div class="d">See who navigated closer</div></div>
           </div>
         </div>
       </div>
