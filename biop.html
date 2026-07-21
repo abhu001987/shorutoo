@@ -206,6 +206,93 @@
   .b-pts.good{background:rgba(63,176,119,.16);color:var(--leaf);}
   .b-pts.mid{background:rgba(242,166,73,.16);color:var(--saffron);}
   .b-pts.bad{background:rgba(255,93,115,.16);color:var(--coral);}
+  .b-marks{display:flex;gap:5px;flex-shrink:0;margin-left:auto;}
+  .b-mk{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+  .b-mk.ok{background:rgba(63,176,119,.16);color:var(--leaf);}
+  .b-mk.no{background:rgba(255,93,115,.16);color:var(--coral);}
+
+  /* ---- challenge: paste-a-link card on start screen ---- */
+  .mode-badge{
+    display:inline-flex;align-items:center;gap:7px;background:rgba(242,166,73,.1);border:1px solid rgba(242,166,73,.35);
+    color:var(--saffron);font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    padding:7px 14px 7px 11px;border-radius:100px;margin-bottom:20px;
+  }
+  .mode-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--saffron);box-shadow:0 0 8px var(--saffron);flex-shrink:0;}
+
+  .info-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0 26px;}
+  @media(max-width:640px){ .info-cards{grid-template-columns:1fr;} }
+  .info-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;flex-direction:column;}
+  .info-card.accent{border-color:var(--leaf-soft);}
+  .info-card-head{display:flex;align-items:center;gap:11px;margin-bottom:4px;}
+  .info-card-head h3{font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:700;margin:0;color:var(--text);}
+  .info-card-head p{margin:1px 0 0;font-size:11px;color:var(--text-dim);}
+  .icon-circle{
+    width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:15px;background:var(--leaf-soft);border:1px solid var(--leaf-soft);color:var(--leaf);
+  }
+  .icon-circle.accent2{background:rgba(242,166,73,.14);border-color:rgba(242,166,73,.35);color:var(--saffron);}
+  .info-card textarea{
+    width:100%;min-height:46px;resize:vertical;background:var(--bg-0);border:1px solid var(--border);border-radius:12px;
+    color:var(--leaf);font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:10px 12px;outline:none;margin:12px 0 8px;
+  }
+  .info-card textarea:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(242,166,73,.15);}
+  .info-card .btn{width:100%;}
+  .paste-err{font-size:11.5px;color:var(--coral);margin-top:8px;display:none;}
+
+  /* ---- challenge flag pill (shown in HUD during a challenge run) ---- */
+  #challenge-flag{
+    display:none;align-items:center;gap:6px;background:rgba(242,166,73,.12);border:1px solid rgba(242,166,73,.4);
+    border-radius:100px;padding:5px 11px;font-size:10.5px;font-weight:700;color:var(--saffron);
+    white-space:nowrap;margin-bottom:10px;letter-spacing:.03em;
+  }
+  #challenge-flag.show{display:inline-flex;}
+  #challenge-flag .dotpulse{width:6px;height:6px;border-radius:50%;background:var(--saffron);animation:pulseDot 1.4s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.25;}}
+  #rival-line{font-size:11px;color:var(--saffron);margin-top:8px;font-weight:700;display:none;}
+
+  /* ---- end screen: VS comparison + share ---- */
+  #vs-block{display:none;margin-bottom:18px;}
+  .vs-card{display:flex;align-items:center;border-radius:16px;overflow:hidden;border:1px solid var(--border);position:relative;margin-bottom:14px;}
+  .vs-side{flex:1;padding:18px 10px;text-align:center;}
+  .vs-side.rival{background:linear-gradient(160deg, rgba(255,93,115,.14), var(--panel));}
+  .vs-side.you{background:linear-gradient(200deg, rgba(63,176,119,.14), var(--panel));}
+  .vs-name{font-size:10px;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;font-weight:700;}
+  .vs-score{font-size:30px;font-weight:800;font-family:'Space Grotesk',sans-serif;}
+  .vs-side.rival .vs-score{color:var(--coral);}
+  .vs-side.you .vs-score{color:var(--leaf);}
+  .vs-badge{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;
+    background:var(--bg-0);border:2px solid var(--saffron);display:flex;align-items:center;justify-content:center;
+    font-size:10.5px;font-weight:800;color:var(--saffron);z-index:2;box-shadow:0 0 16px rgba(242,166,73,.4);
+  }
+  .verdict-box{text-align:center;font-weight:800;font-size:15px;padding:12px 10px;border-radius:12px;margin-bottom:16px;}
+  .verdict-box.win{background:rgba(63,176,119,.1);color:var(--leaf);border:1px solid rgba(63,176,119,.35);}
+  .verdict-box.lose{background:rgba(255,93,115,.12);color:var(--coral);border:1px solid rgba(255,93,115,.35);}
+  .verdict-box.tie{background:rgba(242,166,73,.12);color:var(--saffron);border:1px solid rgba(242,166,73,.35);}
+  @keyframes winnerGlow{0%,100%{box-shadow:0 0 0 rgba(63,176,119,0), 0 0 0 rgba(242,166,73,0);}50%{box-shadow:0 0 30px rgba(63,176,119,.5), 0 0 50px rgba(242,166,73,.25);}}
+  .vs-card.fx-winner{animation:winnerGlow 1s ease 3;}
+
+  .share-block{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+  .share-title{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:14px;margin-bottom:4px;}
+  .share-sub{font-size:12px;color:var(--text-dim);margin-bottom:12px;line-height:1.5;}
+  .link-box{
+    display:flex;gap:8px;align-items:center;background:var(--bg-0);border:1px solid var(--border);border-radius:14px;
+    padding:9px 9px 9px 13px;margin-bottom:12px;
+  }
+  .link-box input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--leaf);font-family:'JetBrains Mono',monospace;font-size:11.5px;}
+  .copy-btn{
+    background:var(--panel);border:1px solid var(--border);color:var(--text);font-size:11px;font-weight:800;
+    padding:8px 13px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:.15s;text-transform:uppercase;letter-spacing:.03em;
+  }
+  .copy-btn:hover{border-color:var(--leaf);color:var(--leaf);}
+  .copy-btn.copied{border-color:var(--leaf);color:var(--leaf);}
+  .share-icons{display:flex;gap:9px;}
+  .share-icons a{
+    flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;border-radius:10px;
+    font-weight:800;font-size:12.5px;border:1px solid var(--border);background:var(--panel);color:var(--text);
+    transition:.15s;text-transform:uppercase;letter-spacing:.02em;
+  }
+  .share-icons a:hover{border-color:var(--leaf);color:var(--leaf);transform:translateY(-1px);}
 
   /* ============================================
      GAME LAYOUT
@@ -214,7 +301,7 @@
                 overlay bars on top of a full-bleed map
      ============================================ */
   .game-layout{position:relative;flex:1;min-height:0;display:flex;}
-  #map-panel{position:relative;flex:1;min-width:0;background:#0c1a13;}
+  #map-panel{position:relative;z-index:1;flex:1;min-width:0;background:#0c1a13;isolation:isolate;}
   #map{position:absolute;inset:0;cursor:crosshair;}
   #map .leaflet-container{background:#dfe9e1;}
   #map .leaflet-tile-pane{filter:saturate(1.05) contrast(1.02);}
@@ -406,11 +493,57 @@
 
       <div class="reserve-list" id="reserve-list-preview"></div>
 
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="startGame()">Begin Mission →</button>
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-card-head">
+            <div class="icon-circle">🎯</div>
+            <div><h3>Start Fresh</h3><p>A new random order of all 10 reserves</p></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:auto;" onclick="startFreshGame()">Begin Mission →</button>
+        </div>
+        <div class="info-card accent">
+          <div class="info-card-head">
+            <div class="icon-circle accent2">🚩</div>
+            <div><h3>Accept a Challenge</h3><p>Paste a friend's challenge link</p></div>
+          </div>
+          <textarea id="paste-input" placeholder="Paste a challenge link here…"></textarea>
+          <div class="paste-err" id="paste-err"></div>
+          <button class="btn btn-primary" onclick="acceptPastedChallenge()">Accept Challenge</button>
+        </div>
       </div>
 
       <div class="footer-line">Tap or click anywhere on the map to drop your pin for each reserve.</div>
+    </div>
+  </div>
+
+  <!-- CHALLENGE INVITE SCREEN (shown when opening a friend's challenge link) -->
+  <div class="screen hidden" id="screen-invite">
+    <div class="panel">
+      <div class="mode-badge"><span class="dot"></span>Incoming Challenge</div>
+      <h1>You've Been <span>Challenged</span></h1>
+      <p class="sub">A friend already charted these 10 reserves and dared you to beat them. Same reserves, same order — their score stays hidden until you finish your own run.</p>
+
+      <div class="info-cards">
+        <div class="info-card accent">
+          <div class="info-card-head">
+            <div class="icon-circle accent2">⚓</div>
+            <div><h3>From <span id="invite-rival-name">A navigator</span></h3><p>Locked in a score across all 10 reserves</p></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0;">Accept to take the exact same run and find out who navigated closer, reserve by reserve.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-head">
+            <div class="icon-circle">🧭</div>
+            <div><h3>How it Works</h3><p>Same map, same order, head-to-head</p></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0;">Drop a pin as close as you can to each reserve — closer guesses score higher. At the end you'll get a full head-to-head breakdown.</p>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="acceptChallengeInvite()">Accept Challenge</button>
+        <button class="btn btn-ghost" onclick="declineChallengeInvite()">Not Now</button>
+      </div>
     </div>
   </div>
 
@@ -425,9 +558,38 @@
         </div>
       </div>
       <p class="sub" id="final-msg" style="margin-bottom:18px;"></p>
+
+      <div id="vs-block">
+        <div class="vs-card" id="vs-card">
+          <div class="vs-side rival">
+            <div class="vs-name" id="vs-rival-name">Rival</div>
+            <div class="vs-score" id="vs-rival-score">0%</div>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="vs-side you">
+            <div class="vs-name">You</div>
+            <div class="vs-score" id="vs-you-score">0%</div>
+          </div>
+        </div>
+        <div class="verdict-box" id="verdict-box"></div>
+      </div>
+
       <div class="breakdown" id="breakdown-list"></div>
       <div class="btn-row" style="margin-top:6px;">
-        <button class="btn btn-primary" onclick="startGame()">Chart Again</button>
+        <button class="btn btn-primary" onclick="startFreshGame()">Chart Again</button>
+      </div>
+
+      <div class="share-block">
+        <div class="share-title">⚓ Challenge a Friend</div>
+        <div class="share-sub">Send them this exact run's 10 reserves and see if they can out-navigate you.</div>
+        <div class="link-box">
+          <input id="challenge-link" readonly>
+          <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
+        </div>
+        <div class="share-icons">
+          <a id="wa-share" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+          <a id="tg-share" href="#" target="_blank" rel="noopener">✈️ Telegram</a>
+        </div>
       </div>
     </div>
   </div>
@@ -436,6 +598,7 @@
   <div class="game-layout" id="game-layout" style="display:none;">
     <div id="side-panel">
       <div id="panel-top">
+        <div id="challenge-flag"><span class="dotpulse"></span>Challenge</div>
         <div class="eyebrow" id="round-label">Round 1 of 10</div>
         <h2 id="reserve-name">—</h2>
         <div class="states" id="reserve-states"></div>
@@ -449,6 +612,7 @@
             <div class="verdict" id="verdict-text"></div>
             <div id="dist-text"></div>
             <div id="fact-text"></div>
+            <div id="rival-line"></div>
           </div>
         </div>
         <div id="panel-actions">
@@ -490,9 +654,12 @@ function confirmExit(){
   markerLayer.clearLayers();
   document.getElementById('game-layout').style.display = 'none';
   document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('screen-invite').classList.add('hidden');
   document.getElementById('screen-start').classList.remove('hidden');
   document.getElementById('siteNav').classList.remove('header-hidden');
+  document.getElementById('challenge-flag').classList.remove('show');
   roundIdx = 0; scores = []; results = []; guessed = false;
+  mode = 'own'; rival = null;
 }
 
 /* ---------------- Reserve data ---------------- */
@@ -581,6 +748,8 @@ let roundIdx = 0;
 let scores = [];
 let results = [];
 let guessed = false;
+let mode = 'own';
+let rival = null;
 
 function shuffleIdx(n){
   const a = Array.from({length:n}, (_,i)=>i);
@@ -623,13 +792,28 @@ function renderReserveListPreview(){
 }
 renderReserveListPreview();
 
-function startGame(){
+function startFreshGame(){
+  mode = 'own';
+  rival = null;
   order = shuffleIdx(RESERVES.length);
+  beginRound();
+}
+
+function loadChallengeGame(payload){
+  mode = 'challenge';
+  rival = { name: payload.name || 'A navigator', score: payload.s, pts: payload.p };
+  order = payload.o;
+  beginRound();
+}
+
+function beginRound(){
   roundIdx = 0; scores = []; results = [];
   document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-invite').classList.add('hidden');
   document.getElementById('screen-end').classList.add('hidden');
   document.getElementById('game-layout').style.display = 'flex';
   document.getElementById('siteNav').classList.remove('header-hidden');
+  document.getElementById('challenge-flag').classList.toggle('show', mode === 'challenge');
   setupDots();
   loadRound();
   setTimeout(()=>map.invalidateSize(), 60);
@@ -639,6 +823,7 @@ function loadRound(){
   guessed = false;
   markerLayer.clearLayers();
   document.getElementById('panel-mid').classList.remove('show');
+  document.getElementById('rival-line').style.display = 'none';
   document.getElementById('next-btn').style.display = 'none';
   document.getElementById('tap-hint').style.display = 'block';
   document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${order.length}`;
@@ -677,6 +862,16 @@ function onMapClick(evt){
   document.getElementById('verdict-text').className = 'verdict ' + v.cls;
   document.getElementById('dist-text').textContent = `${Math.round(km)} km away · +${pts} pts`;
   document.getElementById('fact-text').textContent = target.fact;
+
+  const rivalLine = document.getElementById('rival-line');
+  if(mode === 'challenge' && rival){
+    const theirPts = rival.pts[roundIdx];
+    if(pts > theirPts){ rivalLine.textContent = `You beat your rival on this one — they scored +${theirPts} pts here.`; }
+    else if(pts < theirPts){ rivalLine.textContent = `Your rival had the edge here — they scored +${theirPts} pts.`; }
+    else{ rivalLine.textContent = `Dead even with your rival on this reserve — +${theirPts} pts each.`; }
+    rivalLine.style.display = 'block';
+  }
+
   document.getElementById('panel-mid').classList.add('show');
 
   document.getElementById('tap-hint').style.display = 'none';
@@ -728,6 +923,44 @@ function endGame(){
   else msg = "A rough first pass across a huge country — give it another go.";
   document.getElementById('final-msg').textContent = msg;
 
+  const vsBlock = document.getElementById('vs-block');
+  const vsCard = document.getElementById('vs-card');
+  vsCard.classList.remove('fx-winner');
+
+  if(mode === 'challenge' && rival){
+    vsBlock.style.display = 'block';
+    document.getElementById('vs-rival-name').textContent = rival.name;
+    document.getElementById('vs-rival-score').textContent = rival.score + '%';
+    document.getElementById('vs-you-score').textContent = avg + '%';
+
+    const vb = document.getElementById('verdict-box');
+    vb.classList.remove('win','lose','tie');
+    if(avg > rival.score){
+      vb.textContent = '🎉 You out-navigated your rival!';
+      vb.classList.add('win');
+      vsCard.classList.add('fx-winner');
+      fireConfetti({count:110, maxFrames:230, spread:1});
+    } else if(avg < rival.score){
+      vb.textContent = '😅 Your rival navigated closer. Chart again!';
+      vb.classList.add('lose');
+    } else {
+      vb.textContent = '🤝 Dead even — perfectly matched navigators.';
+      vb.classList.add('tie');
+    }
+    renderChallengeBreakdown(scores, rival.pts);
+  } else {
+    vsBlock.style.display = 'none';
+    renderSoloBreakdown();
+    if(avg >= 85) fireConfetti({count:70, maxFrames:200, spread:1});
+  }
+
+  buildAndShowChallengeLink(avg);
+
+  document.getElementById('game-layout').style.display = 'none';
+  document.getElementById('screen-end').classList.remove('hidden');
+}
+
+function renderSoloBreakdown(){
   const box = document.getElementById('breakdown-list');
   box.innerHTML = results.map((r,i)=>`
     <div class="b-row">
@@ -736,12 +969,160 @@ function endGame(){
       <span class="b-dist">${r.km} km</span>
       <span class="b-pts ${r.cls}">+${r.pts}</span>
     </div>`).join('');
-
-  if(avg >= 85) fireConfetti({count:70, maxFrames:200, spread:1});
-
-  document.getElementById('game-layout').style.display = 'none';
-  document.getElementById('screen-end').classList.remove('hidden');
 }
+
+function renderChallengeBreakdown(myPts, theirPts){
+  const box = document.getElementById('breakdown-list');
+  box.innerHTML = order.map((rIdx, i)=>{
+    const mine = myPts[i], theirs = theirPts[i];
+    return `<div class="b-row">
+      <span class="b-idx">${i+1}</span>
+      <span class="b-name">${RESERVES[rIdx].name}</span>
+      <span class="b-marks">
+        <span class="b-mk ${theirs > mine ? 'ok' : 'no'}" title="Rival">${theirs}</span>
+        <span class="b-mk ${mine >= theirs ? 'ok' : 'no'}" title="You">${mine}</span>
+      </span>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- Challenge link build / share ---------------- */
+function randomCode(){
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let out = '';
+  for(let i=0;i<6;i++) out += chars[Math.floor(Math.random()*chars.length)];
+  return out;
+}
+
+function buildChallengeLink(avgScore){
+  const payload = { s: avgScore, o: order, p: scores, code: randomCode(), name: 'A navigator' };
+  const b64 = btoa(JSON.stringify(payload));
+  const base = window.location.origin + window.location.pathname;
+  return base + '?d=' + encodeURIComponent(b64);
+}
+
+function buildAndShowChallengeLink(avgScore){
+  const link = buildChallengeLink(avgScore);
+  document.getElementById('challenge-link').value = link;
+  const copyBtn = document.getElementById('copy-link-btn');
+  copyBtn.textContent = 'Copy';
+  copyBtn.classList.remove('copied');
+
+  const msg = `🌿 I just charted the Biosphere Navigator and scored ${avgScore}%. Think you can navigate closer? Take the same 10 reserves: ${link}`;
+  document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  document.getElementById('tg-share').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(`🌿 Think you can beat my Biosphere Navigator score of ${avgScore}%?`);
+}
+
+function copyChallengeLink(){
+  const input = document.getElementById('challenge-link');
+  input.select();
+  const btn = document.getElementById('copy-link-btn');
+  function done(){
+    showToast('Challenge link copied');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  }
+  navigator.clipboard.writeText(input.value).then(done).catch(()=>{
+    document.execCommand('copy');
+    done();
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg || 'Copied';
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+/* ---------------- Accepting a challenge ---------------- */
+function safeDecodeBase64(str){
+  let candidate = str;
+  try{
+    if(/%[0-9A-Fa-f]{2}/.test(str)){ candidate = decodeURIComponent(str); }
+  }catch(e){ candidate = str; }
+  try{ return atob(candidate); }
+  catch(e){
+    try{ return atob(str); }
+    catch(e2){ throw new Error('This challenge link looks corrupted.'); }
+  }
+}
+
+function parseChallengeString(raw){
+  raw = (raw || '').trim();
+  if(!raw) throw new Error('Paste a challenge link first.');
+  let d;
+  if(raw.includes('?')){
+    const qs = raw.split('?').slice(1).join('?');
+    const params = new URLSearchParams(qs);
+    d = params.get('d');
+  } else if(/(^|[&?])d=/.test(raw)){
+    const params2 = new URLSearchParams(raw);
+    d = params2.get('d');
+  } else {
+    d = raw;
+  }
+  if(!d) throw new Error('This link is missing its challenge data.');
+  const payload = JSON.parse(safeDecodeBase64(d));
+  if(!Array.isArray(payload.o) || !Array.isArray(payload.p)) throw new Error('This challenge link looks corrupted.');
+  return payload;
+}
+
+let pendingChallenge = null;
+
+function showChallengeInvite(payload){
+  pendingChallenge = payload;
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('invite-rival-name').textContent = payload.name || 'A navigator';
+  document.getElementById('screen-invite').classList.remove('hidden');
+}
+
+function acceptChallengeInvite(){
+  if(!pendingChallenge) return;
+  const payload = pendingChallenge;
+  pendingChallenge = null;
+  document.getElementById('screen-invite').classList.add('hidden');
+  loadChallengeGame(payload);
+}
+
+function declineChallengeInvite(){
+  pendingChallenge = null;
+  document.getElementById('screen-invite').classList.add('hidden');
+  document.getElementById('screen-start').classList.remove('hidden');
+  try{
+    const url = new URL(window.location.href);
+    url.searchParams.delete('d');
+    window.history.replaceState({}, '', url.toString());
+  }catch(e){}
+}
+
+function acceptPastedChallenge(){
+  const raw = document.getElementById('paste-input').value;
+  const errBox = document.getElementById('paste-err');
+  errBox.style.display = 'none';
+  try{
+    const payload = parseChallengeString(raw);
+    showChallengeInvite(payload);
+  }catch(e){
+    errBox.textContent = e.message || 'Could not read that challenge link.';
+    errBox.style.display = 'block';
+  }
+}
+
+(function autoDetectChallenge(){
+  try{
+    const params = new URLSearchParams(window.location.search);
+    const d = params.get('d');
+    if(d){
+      const payload = JSON.parse(safeDecodeBase64(d));
+      if(Array.isArray(payload.o) && Array.isArray(payload.p)){
+        showChallengeInvite(payload);
+      }
+    }
+  }catch(e){ /* ignore malformed links, fall back to start screen */ }
+})();
 
 /* ---------------- Confetti ---------------- */
 function fireConfetti(opts){
