@@ -273,10 +273,9 @@
       transition: opacity 0.2s ease, transform 0.2s ease;
       pointer-events: none;
     }
-    .connect-fab:hover .tip { opacity: 1; transform: translateX(0); }
-    .connect-fab:hover svg { animation-play-state: paused; }
-    @media (prefers-reduced-motion: reduce) {
-      .connect-fab svg, .connect-fab .ring, .connect-fab .node { animation: none !important; }
+    @media (hover: hover) and (pointer: fine) {
+  .connect-fab:hover .tip { opacity: 1; transform: translateX(0); }
+  .connect-fab:hover svg { animation-play-state: paused; }
     }
     @media (max-width: 640px) {
       .connect-fab { width: 54px; height: 54px; right: 16px; bottom: 16px; }
