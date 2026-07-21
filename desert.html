@@ -796,7 +796,7 @@
             <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
           </svg>
         </span>
-        <span class="logo-text">Desert Nav</span>
+        <span class="logo-text">Shoruto</span>
       </a>
       <div class="nav-links">
         <a href="index.html#why"></a>
@@ -838,7 +838,7 @@
       <div class="hero-grid">
         <div class="hero-copy">
           <h1>Desert <span>Navigator</span></h1>
-          <p class="sub">Finish a run and get a link with the exact same 13 deserts, in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, dune by dune. No sign-up, just a link.</p>
+          <p class="sub">Finish a run and get a link with the exact same 10 deserts, in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, dune by dune. No sign-up, just a link.</p>
         </div>
       </div>
       <div class="info-cards">
@@ -847,14 +847,14 @@
             <div class="icon-circle">🏜️</div>
             <div>
               <h3>Your Mission</h3>
-              <p>Navigate all 13 deserts in the correct order.</p>
+              <p>Navigate all 10 deserts in the correct order.</p>
             </div>
           </div>
           <div class="info-body">
             <div class="mini-stats">
               <div class="mini-stat">
                 <div class="icon-circle blue">🧭</div>
-                <div class="mini-stat-text"><span class="t">13 Deserts</span><span class="d">In exact order</span></div>
+                <div class="mini-stat-text"><span class="t">10 Deserts</span><span class="d">In exact order</span></div>
               </div>
               <div class="mini-stat">
                 <div class="icon-circle violet">🔒</div>
@@ -888,7 +888,7 @@
         <div class="steps-row">
           <div class="step">
             <div class="step-num">1</div>
-            <div class="step-text"><div class="t">Complete the Mission</div><div class="d">Find all 13 deserts in order</div></div>
+            <div class="step-text"><div class="t">Complete the Mission</div><div class="d">Find all 10 deserts in order</div></div>
           </div>
           <div class="step">
             <div class="step-num">2</div>
@@ -915,14 +915,14 @@
     <div class="panel wide" style="max-width:760px;">
       <div class="mode-badge"><span class="dot"></span>Incoming Challenge</div>
       <h1 style="text-align:left;">You've Been <span>Challenged</span></h1>
-      <p class="sub" style="text-align:left;">A friend already charted these sands and dared you to beat them. Same 13 deserts, same order — their score stays hidden until you finish your own run.</p>
+      <p class="sub" style="text-align:left;">A friend already charted these sands and dared you to beat them. Same 10 deserts, same order — their score stays hidden until you finish your own run.</p>
       <div class="info-cards">
         <div class="info-card accent">
           <div class="info-card-head">
             <div class="icon-circle coral">⚓</div>
             <div>
               <h3>From <span id="invite-rival-name">A navigator</span></h3>
-              <p>Locked in a score across all 13 deserts</p>
+              <p>Locked in a score across all 10 deserts</p>
             </div>
           </div>
           <div class="info-body">
@@ -988,7 +988,7 @@
       </div>
       <div class="share-block">
         <div class="share-title">⚓ Challenge a Friend</div>
-        <div class="share-sub">Send them this exact run's 13 deserts and see if they can out-navigate you.</div>
+        <div class="share-sub">Send them this exact run's 10 deserts and see if they can out-navigate you.</div>
         <div class="link-box">
           <input id="challenge-link" readonly>
           <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
@@ -1113,6 +1113,31 @@ function setHeaderVisible(visible){
   });
 }
 
+/* ---------------- India boundary overlay ---------------- */
+let indiaLayer = null;
+const INDIA_BOUNDARY_URLS = [
+  'https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson',
+  'https://cdn.jsdelivr.net/gh/datameet/maps@master/Country/india-land-simplified.geojson'
+];
+async function loadIndiaBoundary(){
+  for(const url of INDIA_BOUNDARY_URLS){
+    try{
+      const res = await fetch(url);
+      if(!res.ok) continue;
+      const geo = await res.json();
+      indiaLayer = L.geoJSON(geo, {
+        interactive:false,
+        style:{ color:'#E8A87C', weight:2.2, opacity:1, fillColor:'#E8A87C', fillOpacity:0.06 }
+      }).addTo(map);
+      return;
+    }catch(e){
+      console.warn('India boundary overlay source failed, trying next:', url, e);
+    }
+  }
+  console.warn('India boundary overlay: all sources failed — falling back to base tiles only.');
+}
+loadIndiaBoundary();
+
 /* ---------------- Desert data (13 deserts) ---------------- */
 const DESERTS = [
   {name:"Sahara Desert", lat:23.0, lon:13.0, fact:"The largest hot desert in the world, stretching across North Africa."},
@@ -1140,7 +1165,7 @@ const map = L.map('map', {
 }).setView([20,20], 2);
 
 const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
-  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
   subdomains:'abcd',
   maxZoom:19,
   keepBuffer:4,
@@ -1450,7 +1475,7 @@ function buildAndShowChallengeLink(avgScore){
   copyBtn.textContent = 'Copy';
   copyBtn.classList.remove('copied');
 
-  const msg = `🏜️ I just charted the Desert Navigator and scored ${avgScore}%. Think you can navigate closer? Take the same 13 deserts: ${link}`;
+  const msg = `🏜️ I just charted the Desert Navigator and scored ${avgScore}%. Think you can navigate closer? Take the same 10 deserts: ${link}`;
   document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
   document.getElementById('tg-share').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(`🏜️ Think you can beat my Desert Navigator score of ${avgScore}%?`);
 }
