@@ -796,7 +796,7 @@
             <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
           </svg>
         </span>
-        <span class="logo-text">Mountain Nav</span>
+        <span class="logo-text">Shoruto</span>
       </a>
       <div class="nav-links">
         <a href="index.html#why"></a>
@@ -838,7 +838,7 @@
       <div class="hero-grid">
         <div class="hero-copy">
           <h1>Mountain <span>Navigator</span></h1>
-          <p class="sub">Finish a run and get a link with the exact same 10 mountains, in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, peak by peak. No sign-up, just a link.</p>
+          <p class="sub">Finish a run and get a link with the exact same 10 iconic mountains, in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, peak by peak. No sign-up, just a link.</p>
         </div>
       </div>
       <div class="info-cards">
@@ -847,7 +847,7 @@
             <div class="icon-circle">🏔️</div>
             <div>
               <h3>Your Mission</h3>
-              <p>Navigate all 10 mountains in the correct order.</p>
+              <p>Navigate all 10 iconic mountains in the correct order.</p>
             </div>
           </div>
           <div class="info-body">
@@ -1138,18 +1138,18 @@ async function loadIndiaBoundary(){
 }
 loadIndiaBoundary();
 
-/* ---------------- Mountain data (10 highest peaks) ---------------- */
+/* ---------------- Mountain data (10 iconic mountains) ---------------- */
 const MOUNTAINS = [
-  {name:"Mount Everest", lat:27.9881, lon:86.9250, fact:"The highest mountain in the world at 8,848.86m, located on the Nepal-China border."},
+  {name:"Mount Everest", lat:27.9881, lon:86.9250, fact:"The highest mountain on Earth at 8,848m, straddling the Nepal-China border."},
   {name:"K2", lat:35.8808, lon:76.5155, fact:"The second-highest mountain at 8,611m, located on the Pakistan-China border."},
-  {name:"Kangchenjunga", lat:27.7025, lon:88.1475, fact:"The third-highest mountain at 8,586m, located on the Nepal-India border."},
-  {name:"Lhotse", lat:27.9617, lon:86.9333, fact:"The fourth-highest mountain at 8,516m, located on the Nepal-China border."},
-  {name:"Makalu", lat:27.8892, lon:87.0889, fact:"The fifth-highest mountain at 8,485m, located on the Nepal-China border."},
-  {name:"Cho Oyu", lat:28.0942, lon:86.6608, fact:"The sixth-highest mountain at 8,188m, located on the Nepal-China border."},
-  {name:"Dhaulagiri I", lat:28.6967, lon:83.4975, fact:"The seventh-highest mountain at 8,167m, located in Nepal."},
-  {name:"Manaslu", lat:28.5497, lon:84.5597, fact:"The eighth-highest mountain at 8,163m, located in Nepal."},
-  {name:"Nanga Parbat", lat:35.2375, lon:74.5892, fact:"The ninth-highest mountain at 8,126m, located in Pakistan."},
-  {name:"Annapurna I", lat:28.5956, lon:83.8197, fact:"The tenth-highest mountain at 8,091m, located in Nepal."}
+  {name:"Mount Kilimanjaro", lat:-3.0674, lon:37.3556, fact:"The highest mountain in Africa at 5,895m, a dormant volcano in Tanzania."},
+  {name:"Matterhorn", lat:45.9764, lon:7.6586, fact:"An iconic Alpine peak at 4,478m, located on the Switzerland-Italy border."},
+  {name:"Mount Fuji", lat:35.3606, lon:138.7274, fact:"Japan's highest mountain at 3,776m, an active stratovolcano near Tokyo."},
+  {name:"Mount Elbrus", lat:43.3520, lon:42.4379, fact:"Europe's highest mountain at 5,642m, a dormant volcano in Russia."},
+  {name:"Mount Denali", lat:63.0690, lon:-151.0070, fact:"North America's highest peak at 6,190m, located in Alaska, USA."},
+  {name:"Mount Aconcagua", lat:-32.6532, lon:-70.0111, fact:"The highest mountain in the Americas at 6,961m, located in Argentina."},
+  {name:"Mount Ararat", lat:39.7013, lon:44.2996, fact:"A dormant volcanic peak at 5,137m, located in eastern Türkiye."},
+  {name:"Mount Vinson", lat:-78.5254, lon:-85.6171, fact:"The highest mountain in Antarctica at 4,892m, located in the Ellsworth Mountains."}
 ];
 
 /* ---------------- Map setup ---------------- */
@@ -1384,7 +1384,7 @@ function endGame(){
   let msg;
   if(avg >= 85) msg = "Master navigator. You could chart these peaks blind.";
   else if(avg >= 65) msg = "Sharp sense of the map — a seasoned mountaineer's eye.";
-  else if(avg >= 40) msg = "Solid run. The world's highest peaks are tricky — chart again to sharpen your eye.";
+  else if(avg >= 40) msg = "Solid run. The world's iconic peaks are tricky — chart again to sharpen your eye.";
   else msg = "";
   document.getElementById('final-msg').textContent = msg;
 
