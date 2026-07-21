@@ -81,7 +81,9 @@
     background:var(--bg-0);
     background-image:
       radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
-      radial-gradient(circle at 85% 10%, var(--glow-2), transparent 40%);
+      radial-gradient(circle at 85% 10%, var(--glow-2), transparent 40%),
+      radial-gradient(circle at 20% 100%, var(--glow-2), transparent 42%),
+      radial-gradient(circle at 90% 95%, var(--glow-1), transparent 38%);
     color:var(--text);
     transition:background 0.3s ease, color 0.3s ease;
   }
@@ -183,12 +185,30 @@
     padding:11px 38px 11px 16px;cursor:pointer;
     transition:border-color .2s ease,background .2s ease;
   }
-  .filter-select:hover{border-color:var(--blue);}
+  .filter-select:hover, .filter-select.open{border-color:var(--blue);}
   .filter-select-wrap::after{
     content:"";position:absolute;right:14px;top:50%;width:8px;height:8px;
     border-right:1.6px solid var(--text-dimmer);border-bottom:1.6px solid var(--text-dimmer);
     transform:translateY(-70%) rotate(45deg);pointer-events:none;
+    transition:transform .2s ease;
   }
+  .filter-select-wrap:has(.filter-select.open)::after{transform:translateY(-30%) rotate(-135deg);}
+  .filter-options{
+    position:absolute;top:calc(100% + 8px);right:0;min-width:100%;z-index:20;
+    list-style:none;margin:0;padding:6px;
+    background:var(--bg-0);border:1px solid var(--border);border-radius:12px;
+    box-shadow:0 16px 32px rgba(0,0,0,0.28);
+    opacity:0;transform:translateY(-4px);pointer-events:none;
+    transition:opacity .16s ease,transform .16s ease;
+  }
+  [data-theme="light"] .filter-options{box-shadow:0 16px 32px rgba(20,25,60,0.12);}
+  .filter-options.open{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .filter-options li{
+    padding:9px 14px;border-radius:8px;font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;
+    color:var(--text-dim);cursor:pointer;white-space:nowrap;transition:background .15s ease,color .15s ease;
+  }
+  .filter-options li:hover{background:var(--panel-strong);color:var(--text);}
+  .filter-options li.selected{color:var(--blue);background:var(--glow-1);}
   .completed-toggle{
     display:inline-flex;align-items:center;gap:8px;
     padding:10px 18px 10px 14px;border-radius:12px;
@@ -205,28 +225,6 @@
 
   /* ---------- topic grid — simple, calm cards ---------- */
   .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
-  .topic-grid.hidden{display:none;}
-
-  /* ---------- topic slider — shown for "All Topics" ---------- */
-  .topic-slider-wrap{position:relative;display:none;}
-  .topic-slider-wrap.active{display:block;}
-  .topic-slider-track{
-    display:flex;gap:18px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x mandatory;
-    padding-bottom:6px;margin:0 -2px;
-  }
-  .topic-slider-track::-webkit-scrollbar{height:6px;}
-  .topic-slider-track::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
-  .topic-slider-track .topic-card{flex:0 0 280px;scroll-snap-align:start;}
-  .slider-nav{
-    display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:12px;
-  }
-  .slider-nav-btn{
-    width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--panel);
-    color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;
-    transition:border-color .2s ease,background .2s ease,transform .2s ease;
-  }
-  .slider-nav-btn:hover{border-color:var(--blue);background:var(--panel-strong);transform:translateY(-1px);}
-  .slider-nav-btn svg{width:16px;height:16px;}
 
   .topic-card{
     position:relative;background:var(--panel);border:1px solid var(--border);border-radius:16px;
@@ -401,29 +399,20 @@
   </div>
 
   <div class="filter-row">
-    <div class="filter-select-wrap">
-      <select class="filter-select" id="difficultyFilter">
-        <option value="all">All Topics</option>
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
+    <div class="filter-select-wrap" id="difficultyDropdown">
+      <button class="filter-select" id="difficultyBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+        <span id="difficultyLabel">Difficulty</span>
+      </button>
+      <ul class="filter-options" id="difficultyOptions" role="listbox">
+        <li role="option" data-value="all" class="selected">Difficulty</li>
+        <li role="option" data-value="easy">Easy</li>
+        <li role="option" data-value="medium">Medium</li>
+        <li role="option" data-value="hard">Hard</li>
+      </ul>
     </div>
     <button class="completed-toggle" id="completedToggle" type="button">
       <span class="sw"></span> Completed
     </button>
-  </div>
-
-  <div class="topic-slider-wrap" id="topicSliderWrap">
-    <div class="slider-nav">
-      <button class="slider-nav-btn" id="sliderPrev" type="button" aria-label="Scroll left">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
-      </button>
-      <button class="slider-nav-btn" id="sliderNext" type="button" aria-label="Scroll right">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </button>
-    </div>
-    <div class="topic-slider-track" id="topicSlider"></div>
   </div>
 
   <div class="topic-grid" id="topicGrid"></div>
@@ -546,8 +535,6 @@
     }
 
     var grid = document.getElementById('topicGrid');
-    var slider = document.getElementById('topicSlider');
-    var sliderWrap = document.getElementById('topicSliderWrap');
 
     function cardHTML(t, done) {
       var badge = done
@@ -575,7 +562,6 @@
         html += cardHTML(t, completed.indexOf(t.slug) !== -1);
       });
       grid.innerHTML = html;
-      slider.innerHTML = html;
 
       // header stats derived from data + live cache
       var statTopicsEl = document.getElementById('statTopics');
@@ -614,44 +600,55 @@
 
     renderCards();
 
-    // ---- filters: difficulty dropdown + completed toggle ----
-    var diffSelect = document.getElementById('difficultyFilter');
+    // ---- custom difficulty dropdown ----
+    var diffBtn = document.getElementById('difficultyBtn');
+    var diffLabel = document.getElementById('difficultyLabel');
+    var diffOptions = document.getElementById('difficultyOptions');
     var doneToggle = document.getElementById('completedToggle');
+    var currentDiff = 'all';
     var doneActive = false;
 
+    function closeDiffDropdown() {
+      diffBtn.classList.remove('open');
+      diffBtn.setAttribute('aria-expanded', 'false');
+      diffOptions.classList.remove('open');
+    }
+    diffBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = !diffOptions.classList.contains('open');
+      diffBtn.classList.toggle('open', willOpen);
+      diffBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      diffOptions.classList.toggle('open', willOpen);
+    });
+    diffOptions.addEventListener('click', function (e) {
+      var li = e.target.closest ? e.target.closest('li') : null;
+      if (!li) return;
+      currentDiff = li.getAttribute('data-value');
+      diffLabel.textContent = li.textContent;
+      diffOptions.querySelectorAll('li').forEach(function (opt) { opt.classList.toggle('selected', opt === li); });
+      closeDiffDropdown();
+      applyFilters();
+    });
+    document.addEventListener('click', function (e) {
+      if (!diffOptions.contains(e.target) && e.target !== diffBtn) closeDiffDropdown();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeDiffDropdown();
+    });
+
     function applyFilters() {
-      var diff = diffSelect.value;
-      var showSlider = diff === 'all';
-
-      sliderWrap.classList.toggle('active', showSlider);
-      grid.classList.toggle('hidden', showSlider);
-
       document.querySelectorAll('.topic-card').forEach(function (card) {
-        var matchesDiff = diff === 'all' || card.getAttribute('data-diff') === diff;
+        var matchesDiff = currentDiff === 'all' || card.getAttribute('data-diff') === currentDiff;
         var matchesDone = !doneActive || card.getAttribute('data-done') === '1';
         card.classList.toggle('filtered-out', !(matchesDiff && matchesDone));
       });
     }
 
-    diffSelect.addEventListener('change', applyFilters);
     doneToggle.addEventListener('click', function () {
       doneActive = !doneActive;
       doneToggle.classList.toggle('active', doneActive);
       applyFilters();
     });
-
-    // ---- slider nav buttons ----
-    var sliderPrev = document.getElementById('sliderPrev');
-    var sliderNext = document.getElementById('sliderNext');
-    function scrollSlider(dir) {
-      var card = slider.querySelector('.topic-card');
-      var step = card ? (card.offsetWidth + 18) * 2 : 320;
-      slider.scrollBy({ left: dir * step, behavior: 'smooth' });
-    }
-    sliderPrev.addEventListener('click', function () { scrollSlider(-1); });
-    sliderNext.addEventListener('click', function () { scrollSlider(1); });
-
-    applyFilters();
   });
 
   function goBack() {
