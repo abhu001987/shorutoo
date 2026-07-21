@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Biosphere Navigator — Chart India's Wild Reserves</title>
+
+<script>
+  (function() {
+    try {
+      var theme = localStorage.getItem('bn-theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<link rel="preconnect" href="https://a.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://b.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://c.basemaps.cartocdn.com">
+<link rel="preconnect" href="https://d.basemaps.cartocdn.com">
+
+<style>
+  /* ============================================
+     TOKENS — dark theme default, forest-green +
+     saffron accent pair (biosphere / India), navy
+     base kept close to the sibling Strait game so
+     the two feel like one product family.
+     ============================================ */
+  :root{
+    --bg-0:#070b09;
+    --panel: rgba(255,255,255,.045);
+    --panel-strong: rgba(14,28,22,0.65);
+    --border: rgba(58,168,110,0.22);
+    --leaf: #3FB077;        /* primary accent — forest */
+    --leaf-soft: rgba(63,176,119,.35);
+    --saffron: #F2A649;     /* secondary accent — India */
+    --clay: #C77B3D;
+    --coral: #ff5d73;
+    --text: #eaf5ee;
+    --text-dim: #9fc2ac;
+    --text-dimmer: #5c7d6c;
+    --input-bg: rgba(255,255,255,.04);
+    --glow-1: rgba(63,176,119,.12);
+    --glow-2: rgba(242,166,73,.08);
+    --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  [data-theme="light"]{
+    --bg-0:#F3F7F3;
+    --panel: rgba(255,255,255,.6);
+    --panel-strong: rgba(255,255,255,.8);
+    --border: rgba(47,140,90,.2);
+    --leaf:#2F8C5A;
+    --leaf-soft: rgba(47,140,90,.22);
+    --saffron:#B36A1E;
+    --clay:#9C5A26;
+    --coral:#d1354a;
+    --text:#0F1F16;
+    --text-dim:#3B5647;
+    --text-dimmer:#6B8577;
+    --input-bg: rgba(255,255,255,.35);
+    --glow-1: rgba(47,140,90,.10);
+    --glow-2: rgba(179,106,30,.08);
+  }
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0;padding:0;height:100%;height:100dvh;overscroll-behavior:none;
+    background:var(--bg-0);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--text);
+    transition:background .3s ease,color .3s ease;
+  }
+  body{
+    display:flex;flex-direction:column;overflow:hidden;
+    background-image:
+      radial-gradient(circle at 12% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 88% 15%, var(--glow-2), transparent 42%);
+  }
+
+  /* ---------------- Header — fixed, transparent, floating (matches Strait Navigator) ---------------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;width:100%;z-index:1000;
+    padding:24px 0 20px 0;border-bottom:none;background:transparent;
+    transition:border-color 0.3s ease;margin-bottom:0;
+  }
+  .nav.header-hidden{display:none;}
+
+  .wrap{max-width:1400px;margin:0 auto;padding:0 24px;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+
+  .logo{
+    display:flex;align-items:center;gap:10px;text-decoration:none;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--text);
+    letter-spacing:1px;transition:color 0.3s ease;
+  }
+  .logo .mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;}
+  .logo .mark svg{width:38px;height:38px;display:block;}
+  .logo-text{color:var(--text);transition:color 0.3s ease;}
+
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s ease;font-family:'Inter',sans-serif;}
+  .nav-links a:hover{color:var(--text);}
+
+  .nav-cta{display:flex;align-items:center;gap:12px;}
+  .exit-btn{
+    display:inline-flex;align-items:center;gap:7px;padding:10px 20px 10px 16px;
+    border:1px solid var(--border);border-radius:12px;color:var(--text-dim);
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;
+    background:transparent;transition:0.2s var(--ease),border-color 0.3s ease,color 0.3s ease,background 0.3s ease;
+  }
+  .exit-btn .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s var(--ease);flex-shrink:0;}
+  .exit-btn:hover{background:var(--panel-strong);border-color:var(--coral);color:var(--coral);}
+  .exit-btn:hover .ic{transform:translateX(-3px);}
+
+  .theme-toggle{
+    width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--panel);
+    color:var(--text);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;
+    transition:all 0.3s var(--ease);position:relative;flex-shrink:0;
+  }
+  .theme-toggle:hover{background:var(--panel-strong);border-color:var(--leaf);transform:scale(1.06);}
+  .theme-toggle .sun-icon,.theme-toggle .moon-icon{position:absolute;transition:all 0.45s var(--ease);font-size:18px;}
+  .theme-toggle .sun-icon{opacity:0;transform:rotate(-90deg) scale(0.4);}
+  .theme-toggle .moon-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .sun-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .moon-icon{opacity:0;transform:rotate(90deg) scale(0.4);}
+
+  @media (max-width:600px){
+    .nav{padding:16px 0 14px 0;}
+    .wrap{padding:0 16px;}
+    .logo{font-size:18px;}
+    .logo .mark{width:32px;height:32px;}
+    .logo .mark svg{width:30px;height:30px;}
+    .nav-links{display:none;}
+    .exit-btn{padding:6px 12px;font-size:12px;}
+    .exit-btn span{display:none;}
+    .theme-toggle{width:36px;height:36px;font-size:16px;}
+  }
+
+  /* ---------------- App shell ---------------- */
+  #app{position:relative;z-index:1;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;}
+
+  /* ---------------- Overlay screens (start / end) ---------------- */
+  .screen{
+    position:absolute;inset:0;z-index:3000;display:flex;justify-content:center;
+    background:var(--bg-0);
+    background-image:
+      radial-gradient(circle at 12% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 88% 15%, var(--glow-2), transparent 42%);
+    padding:36px 20px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  }
+  .screen.hidden{display:none;}
+  .panel{max-width:620px;width:100%;margin:auto;}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.18em;
+    color:var(--leaf);text-transform:uppercase;margin-bottom:16px;
+  }
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--leaf);box-shadow:0 0 8px var(--leaf);}
+  h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,6vw,44px);margin:0 0 12px;line-height:1.05;letter-spacing:-.5px;}
+  h1 span{color:var(--saffron);}
+  .sub{color:var(--text-dim);font-size:14.5px;line-height:1.65;margin:0 0 26px;max-width:520px;}
+
+  .stat-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px;}
+  .stat-chip{
+    flex:1;min-width:130px;background:var(--panel);border:1px solid var(--border);border-radius:14px;
+    padding:14px 16px;
+  }
+  .stat-chip .n{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--leaf);}
+  .stat-chip .l{font-size:11px;color:var(--text-dim);margin-top:2px;letter-spacing:.03em;}
+
+  .reserve-list{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:30px;
+  }
+  @media(max-width:560px){ .reserve-list{grid-template-columns:1fr;} }
+  .reserve-chip{
+    display:flex;align-items:center;gap:9px;background:var(--panel);border:1px solid var(--border);
+    border-radius:10px;padding:9px 12px;font-size:12px;color:var(--text-dim);
+  }
+  .reserve-chip .num{
+    width:20px;height:20px;border-radius:50%;background:var(--leaf-soft);color:var(--leaf);
+    font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  .btn{
+    border:none;border-radius:40px;padding:14px 30px;font-size:13.5px;font-weight:800;letter-spacing:.03em;
+    cursor:pointer;transition:transform .12s ease,box-shadow .2s,background .25s ease;text-transform:uppercase;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:var(--leaf);color:#04150c;box-shadow:0 8px 22px rgba(63,176,119,.28);}
+  .btn-primary:hover{background:#4fce8e;transform:scale(1.02);}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--leaf);color:var(--leaf);}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+
+  .footer-line{
+    margin-top:34px;padding-top:16px;border-top:1px solid var(--border);
+    font-size:11px;color:var(--text-dimmer);
+  }
+
+  /* ---- end screen ---- */
+  .score-hero{
+    display:flex;align-items:center;gap:18px;background:var(--panel);border:1px solid var(--border);
+    border-radius:20px;padding:22px 24px;margin-bottom:20px;
+  }
+  .score-hero .badge{
+    width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:22px;background:var(--leaf-soft);border:1px solid var(--leaf-soft);color:var(--leaf);
+  }
+  .final-score{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:800;color:var(--leaf);line-height:1;}
+  .final-label{color:var(--text-dim);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;}
+
+  .breakdown{margin-bottom:8px;}
+  .b-row{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+    background:var(--panel);border:1px solid var(--border);margin-bottom:7px;font-size:12.5px;
+  }
+  .b-row .b-idx{
+    width:22px;height:22px;border-radius:6px;background:var(--leaf-soft);color:var(--leaf);
+    font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .b-row .b-name{flex:1;min-width:0;color:var(--text);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .b-row .b-dist{color:var(--text-dim);font-size:11.5px;flex-shrink:0;}
+  .b-row .b-pts{
+    flex-shrink:0;font-weight:800;font-size:12px;padding:3px 9px;border-radius:20px;
+  }
+  .b-pts.good{background:rgba(63,176,119,.16);color:var(--leaf);}
+  .b-pts.mid{background:rgba(242,166,73,.16);color:var(--saffron);}
+  .b-pts.bad{background:rgba(255,93,115,.16);color:var(--coral);}
+  .b-marks{display:flex;gap:5px;flex-shrink:0;margin-left:auto;}
+  .b-mk{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+  .b-mk.ok{background:rgba(63,176,119,.16);color:var(--leaf);}
+  .b-mk.no{background:rgba(255,93,115,.16);color:var(--coral);}
+
+  /* ---- challenge: paste-a-link card on start screen ---- */
+  .mode-badge{
+    display:inline-flex;align-items:center;gap:7px;background:rgba(242,166,73,.1);border:1px solid rgba(242,166,73,.35);
+    color:var(--saffron);font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    padding:7px 14px 7px 11px;border-radius:100px;margin-bottom:20px;
+  }
+  .mode-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--saffron);box-shadow:0 0 8px var(--saffron);flex-shrink:0;}
+
+  .info-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0 26px;}
+  @media(max-width:640px){ .info-cards{grid-template-columns:1fr;} }
+  .info-card{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;flex-direction:column;}
+  .info-card.accent{border-color:var(--leaf-soft);}
+  .info-card-head{display:flex;align-items:center;gap:11px;margin-bottom:4px;}
+  .info-card-head h3{font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:700;margin:0;color:var(--text);}
+  .info-card-head p{margin:1px 0 0;font-size:11px;color:var(--text-dim);}
+  .icon-circle{
+    width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+    font-size:15px;background:var(--leaf-soft);border:1px solid var(--leaf-soft);color:var(--leaf);
+  }
+  .icon-circle.accent2{background:rgba(242,166,73,.14);border-color:rgba(242,166,73,.35);color:var(--saffron);}
+  .info-card textarea{
+    width:100%;min-height:46px;resize:vertical;background:var(--bg-0);border:1px solid var(--border);border-radius:12px;
+    color:var(--leaf);font-family:'JetBrains Mono',monospace;font-size:11.5px;padding:10px 12px;outline:none;margin:12px 0 8px;
+  }
+  .info-card textarea:focus{border-color:var(--saffron);box-shadow:0 0 0 3px rgba(242,166,73,.15);}
+  .info-card .btn{width:100%;}
+  .paste-err{font-size:11.5px;color:var(--coral);margin-top:8px;display:none;}
+
+  /* ---- challenge flag pill (shown in HUD during a challenge run) ---- */
+  #challenge-flag{
+    display:none;align-items:center;gap:6px;background:rgba(242,166,73,.12);border:1px solid rgba(242,166,73,.4);
+    border-radius:100px;padding:5px 11px;font-size:10.5px;font-weight:700;color:var(--saffron);
+    white-space:nowrap;margin-bottom:10px;letter-spacing:.03em;
+  }
+  #challenge-flag.show{display:inline-flex;}
+  #challenge-flag .dotpulse{width:6px;height:6px;border-radius:50%;background:var(--saffron);animation:pulseDot 1.4s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.25;}}
+  #rival-line{font-size:11px;color:var(--saffron);margin-top:8px;font-weight:700;display:none;}
+
+  /* ---- end screen: VS comparison + share ---- */
+  #vs-block{display:none;margin-bottom:18px;}
+  .vs-card{display:flex;align-items:center;border-radius:16px;overflow:hidden;border:1px solid var(--border);position:relative;margin-bottom:14px;}
+  .vs-side{flex:1;padding:18px 10px;text-align:center;}
+  .vs-side.rival{background:linear-gradient(160deg, rgba(255,93,115,.14), var(--panel));}
+  .vs-side.you{background:linear-gradient(200deg, rgba(63,176,119,.14), var(--panel));}
+  .vs-name{font-size:10px;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;font-weight:700;}
+  .vs-score{font-size:30px;font-weight:800;font-family:'Space Grotesk',sans-serif;}
+  .vs-side.rival .vs-score{color:var(--coral);}
+  .vs-side.you .vs-score{color:var(--leaf);}
+  .vs-badge{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;
+    background:var(--bg-0);border:2px solid var(--saffron);display:flex;align-items:center;justify-content:center;
+    font-size:10.5px;font-weight:800;color:var(--saffron);z-index:2;box-shadow:0 0 16px rgba(242,166,73,.4);
+  }
+  .verdict-box{text-align:center;font-weight:800;font-size:15px;padding:12px 10px;border-radius:12px;margin-bottom:16px;}
+  .verdict-box.win{background:rgba(63,176,119,.1);color:var(--leaf);border:1px solid rgba(63,176,119,.35);}
+  .verdict-box.lose{background:rgba(255,93,115,.12);color:var(--coral);border:1px solid rgba(255,93,115,.35);}
+  .verdict-box.tie{background:rgba(242,166,73,.12);color:var(--saffron);border:1px solid rgba(242,166,73,.35);}
+  @keyframes winnerGlow{0%,100%{box-shadow:0 0 0 rgba(63,176,119,0), 0 0 0 rgba(242,166,73,0);}50%{box-shadow:0 0 30px rgba(63,176,119,.5), 0 0 50px rgba(242,166,73,.25);}}
+  .vs-card.fx-winner{animation:winnerGlow 1s ease 3;}
+
+  .share-block{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);}
+  .share-title{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:14px;margin-bottom:4px;}
+  .share-sub{font-size:12px;color:var(--text-dim);margin-bottom:12px;line-height:1.5;}
+  .link-box{
+    display:flex;gap:8px;align-items:center;background:var(--bg-0);border:1px solid var(--border);border-radius:14px;
+    padding:9px 9px 9px 13px;margin-bottom:12px;
+  }
+  .link-box input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--leaf);font-family:'JetBrains Mono',monospace;font-size:11.5px;}
+  .copy-btn{
+    background:var(--panel);border:1px solid var(--border);color:var(--text);font-size:11px;font-weight:800;
+    padding:8px 13px;border-radius:8px;cursor:pointer;white-space:nowrap;transition:.15s;text-transform:uppercase;letter-spacing:.03em;
+  }
+  .copy-btn:hover{border-color:var(--leaf);color:var(--leaf);}
+  .copy-btn.copied{border-color:var(--leaf);color:var(--leaf);}
+  .share-icons{display:flex;gap:9px;}
+  .share-icons a{
+    flex:1;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;border-radius:10px;
+    font-weight:800;font-size:12.5px;border:1px solid var(--border);background:var(--panel);color:var(--text);
+    transition:.15s;text-transform:uppercase;letter-spacing:.02em;
+  }
+  .share-icons a:hover{border-color:var(--leaf);color:var(--leaf);transform:translateY(-1px);}
+
+  /* ============================================
+     GAME LAYOUT
+     Desktop  : side-panel (question) | map-panel  — flex row
+     Mobile   : side-panel's children become absolute
+                overlay bars on top of a full-bleed map
+     ============================================ */
+  .game-layout{position:relative;flex:1;min-height:0;display:flex;}
+  #map-panel{position:relative;z-index:1;flex:1;min-width:0;background:#0c1a13;isolation:isolate;}
+  #map{position:absolute;inset:0;cursor:crosshair;}
+  #map .leaflet-container{background:#dfe9e1;}
+  #map .leaflet-tile-pane{filter:saturate(1.05) contrast(1.02);}
+  #map .leaflet-control-attribution{background:rgba(3,8,6,0.6)!important;color:var(--text-dim)!important;font-size:9px!important;}
+  #map .leaflet-control-attribution a{color:var(--leaf)!important;}
+  #map .leaflet-control-zoom a{background:var(--panel-strong)!important;color:var(--text)!important;border:1px solid var(--border)!important;}
+
+  #map-loading{
+    position:absolute;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+    background:#0c1a13;color:var(--text-dim);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    pointer-events:none;transition:opacity .3s ease;
+  }
+  #map-loading.hidden{opacity:0;}
+
+  #side-panel{
+    width:400px;flex-shrink:0;height:100%;overflow-y:auto;
+    background:var(--panel-strong);backdrop-filter:blur(14px);
+    border-right:1px solid var(--border);
+    padding:22px 22px 20px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+
+  #panel-top .eyebrow{font-size:10.5px;letter-spacing:.16em;color:var(--text-dim);text-transform:uppercase;font-weight:700;}
+  #panel-top h2{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,3vw,25px);
+    margin:6px 0 4px;color:var(--saffron);line-height:1.15;
+  }
+  #panel-top .states{font-size:12px;color:var(--text-dim);margin-bottom:12px;}
+
+  #dots{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0 14px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);transition:.2s;flex-shrink:0;}
+  [data-theme="light"] .dot{background:rgba(0,0,0,.12);}
+  .dot.done{background:var(--leaf);box-shadow:0 0 6px var(--leaf);}
+  .dot.now{background:var(--saffron);box-shadow:0 0 8px var(--saffron);transform:scale(1.4);}
+
+  .score-pill{
+    display:inline-flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--border);
+    border-radius:100px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--text-dim);
+  }
+  .score-pill b{color:var(--leaf);font-size:13px;}
+
+  #panel-mid{display:none;}
+  #panel-mid.show{display:block;}
+  #feedback-card{
+    background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 16px;
+  }
+  #verdict-text{font-weight:800;font-size:15px;margin-bottom:6px;}
+  #verdict-text.good{color:var(--leaf);}
+  #verdict-text.mid{color:var(--saffron);}
+  #verdict-text.bad{color:var(--coral);}
+  #dist-text{font-size:11.5px;color:var(--text-dim);margin-bottom:10px;font-family:'JetBrains Mono',monospace;}
+  #fact-text{font-size:12.5px;color:var(--text-dim);line-height:1.55;}
+
+  #panel-actions{margin-top:auto;display:flex;flex-direction:column;gap:10px;}
+  .hint-tap{font-size:11.5px;color:var(--text-dim);letter-spacing:.03em;text-align:center;padding:6px 0;}
+  #next-btn{display:none;width:100%;}
+
+  /* -------- Mobile: overlay-on-map layout -------- */
+  @media (max-width:900px){
+    #side-panel{
+      display:contents;
+    }
+    #panel-top{
+      position:absolute;top:0;left:0;right:0;z-index:60;
+      background:var(--panel-strong);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      border-radius:0 0 18px 18px;
+      padding:10px 14px 12px;
+    }
+    #panel-top .eyebrow{font-size:9.5px;}
+    #panel-top h2{font-size:16.5px;margin:3px 0;}
+    #panel-top .states{font-size:10.5px;margin-bottom:6px;}
+    #dots{margin:2px 0 8px;gap:4px;}
+    .dot{width:5px;height:5px;}
+    .score-pill{padding:5px 11px;font-size:10.5px;}
+
+    #panel-bottom-group{
+      position:absolute;bottom:0;left:0;right:0;z-index:60;
+      display:flex;flex-direction:column;gap:8px;
+      padding:10px 12px calc(12px + env(safe-area-inset-bottom));
+      background:linear-gradient(to top, var(--bg-0) 15%, transparent);
+    }
+    #panel-mid{width:100%;max-width:520px;margin:0 auto;}
+    #feedback-card{padding:11px 14px;border-radius:16px;}
+    #verdict-text{font-size:13px;}
+    #dist-text{font-size:10.5px;margin-bottom:6px;}
+    #fact-text{font-size:11px;}
+    #panel-actions{width:100%;max-width:520px;margin:0 auto;gap:8px;}
+    .hint-tap{padding:2px 0;}
+  }
+
+  @media (max-height:600px) and (max-width:900px){
+    #panel-top{padding:7px 12px 8px;}
+    .hint-tap{display:none;}
+  }
+
+  /* ---------------- pins ---------------- */
+  .pin-wrap{position:relative;width:22px;height:22px;}
+  .pin-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;}
+  .pin-ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;border:1.6px solid;box-shadow:0 0 0 1.5px rgba(255,255,255,0.85);}
+  .pin-guess .pin-core{background:var(--saffron);box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 8px var(--saffron);}
+  .pin-guess .pin-ring{border-color:var(--saffron);}
+  .pin-target .pin-core{background:var(--leaf);box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 8px var(--leaf);}
+  .pin-target .pin-ring{border-color:var(--leaf);}
+  .pin-ping{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:50%;border:2px solid var(--saffron);animation:ping 1s ease-out forwards;}
+  @keyframes ping{from{width:6px;height:6px;opacity:.9;}to{width:60px;height:60px;opacity:0;}}
+
+  /* ---------------- exit dialog ---------------- */
+  #exit-dialog-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);z-index:9999;
+    display:none;align-items:center;justify-content:center;padding:24px;
+  }
+  #exit-dialog-overlay.show{display:flex;}
+  #exit-dialog{
+    background:var(--bg-0);border:1px solid var(--border);border-radius:24px;padding:28px 24px 22px;
+    max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center;
+  }
+  #exit-dialog h3{font-family:'Space Grotesk',sans-serif;font-size:19px;margin:0 0 8px;}
+  #exit-dialog p{color:var(--text-dim);font-size:13.5px;margin:0 0 22px;line-height:1.5;}
+  #exit-dialog .btn-row{justify-content:center;}
+
+  /* ---------------- micro fx ---------------- */
+  @keyframes badShake{10%,90%{transform:translateX(-1px);}20%,80%{transform:translateX(2px);}30%,50%,70%{transform:translateX(-5px);}40%,60%{transform:translateX(5px);}}
+  .fx-shake{animation:badShake .5s ease;}
+  @keyframes goodPulse{0%{box-shadow:0 0 0 0 rgba(63,176,119,.55);}70%{box-shadow:0 0 0 16px rgba(63,176,119,0);}100%{box-shadow:0 0 0 0 rgba(63,176,119,0);}}
+  .fx-pulse-good{animation:goodPulse .8s ease;}
+  #confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:9500;}
+  #toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);
+    background:var(--text);color:var(--bg-0);font-weight:800;font-size:12.5px;padding:10px 18px;
+    border-radius:30px;opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:9600;
+  }
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="siteNav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="#" class="logo" onclick="return false;">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#3FB077" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M30 8 C18 8 10 18 10 30 C10 44 20 52 30 52 C40 52 50 44 50 30 C50 18 42 8 30 8Z"/>
+            <path d="M30 18 L30 44" stroke-dasharray="1 5"/>
+            <path d="M20 26 Q30 22 40 26" />
+            <path d="M18 36 Q30 31 42 36" />
+            <circle cx="30" cy="30" r="3" fill="#F2A649" fill-opacity="0.8"/>
+          </svg>
+        </span>
+        <span class="logo-text">Biosphere Navigator</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#screen-start">Mission</a>
+        <a href="#reserve-list-preview">Reserves</a>
+        <a href="#" onclick="showExitDialog();return false;">Restart</a>
+      </div>
+
+      <div class="nav-cta">
+        <button class="exit-btn" onclick="showExitDialog()">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          <span>Exit</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div id="exit-dialog-overlay">
+  <div id="exit-dialog">
+    <h3>Leave this run?</h3>
+    <p>Your progress on this attempt will be lost.</p>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="closeExitDialog()">Stay</button>
+      <button class="btn btn-primary" onclick="confirmExit()">Leave</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- START SCREEN -->
+  <div class="screen" id="screen-start">
+    <div class="panel">
+      <div class="kicker"><span class="dot"></span>India · Field Mission</div>
+      <h1>Biosphere <span>Navigator</span></h1>
+      <p class="sub">India holds 10 of its UNESCO-designated Biosphere Reserves in this run — from Himalayan alpine wilderness to mangrove deltas and coral coasts. You'll get the name of each reserve; drop your pin as close as you can to where it actually lies. Closer guesses score higher.</p>
+
+      <div class="stat-row">
+        <div class="stat-chip"><div class="n">10</div><div class="l">Biosphere reserves</div></div>
+        <div class="stat-chip"><div class="n">1</div><div class="l">Focused India map</div></div>
+        <div class="stat-chip"><div class="n">100</div><div class="l">Max pts per reserve</div></div>
+      </div>
+
+      <div class="reserve-list" id="reserve-list-preview"></div>
+
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-card-head">
+            <div class="icon-circle">🎯</div>
+            <div><h3>Start Fresh</h3><p>A new random order of all 10 reserves</p></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:auto;" onclick="startFreshGame()">Begin Mission →</button>
+        </div>
+        <div class="info-card accent">
+          <div class="info-card-head">
+            <div class="icon-circle accent2">🚩</div>
+            <div><h3>Accept a Challenge</h3><p>Paste a friend's challenge link</p></div>
+          </div>
+          <textarea id="paste-input" placeholder="Paste a challenge link here…"></textarea>
+          <div class="paste-err" id="paste-err"></div>
+          <button class="btn btn-primary" onclick="acceptPastedChallenge()">Accept Challenge</button>
+        </div>
+      </div>
+
+      <div class="footer-line">Tap or click anywhere on the map to drop your pin for each reserve.</div>
+    </div>
+  </div>
+
+  <!-- CHALLENGE INVITE SCREEN (shown when opening a friend's challenge link) -->
+  <div class="screen hidden" id="screen-invite">
+    <div class="panel">
+      <div class="mode-badge"><span class="dot"></span>Incoming Challenge</div>
+      <h1>You've Been <span>Challenged</span></h1>
+      <p class="sub">A friend already charted these 10 reserves and dared you to beat them. Same reserves, same order — their score stays hidden until you finish your own run.</p>
+
+      <div class="info-cards">
+        <div class="info-card accent">
+          <div class="info-card-head">
+            <div class="icon-circle accent2">⚓</div>
+            <div><h3>From <span id="invite-rival-name">A navigator</span></h3><p>Locked in a score across all 10 reserves</p></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0;">Accept to take the exact same run and find out who navigated closer, reserve by reserve.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-head">
+            <div class="icon-circle">🧭</div>
+            <div><h3>How it Works</h3><p>Same map, same order, head-to-head</p></div>
+          </div>
+          <p style="font-size:12.5px;color:var(--text-dim);line-height:1.6;margin:8px 0 0;">Drop a pin as close as you can to each reserve — closer guesses score higher. At the end you'll get a full head-to-head breakdown.</p>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="acceptChallengeInvite()">Accept Challenge</button>
+        <button class="btn btn-ghost" onclick="declineChallengeInvite()">Not Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div class="screen hidden" id="screen-end">
+    <div class="panel">
+      <div class="score-hero">
+        <div class="badge">🌿</div>
+        <div>
+          <div class="final-score" id="final-score">0%</div>
+          <div class="final-label">Average Navigation Accuracy</div>
+        </div>
+      </div>
+      <p class="sub" id="final-msg" style="margin-bottom:18px;"></p>
+
+      <div id="vs-block">
+        <div class="vs-card" id="vs-card">
+          <div class="vs-side rival">
+            <div class="vs-name" id="vs-rival-name">Rival</div>
+            <div class="vs-score" id="vs-rival-score">0%</div>
+          </div>
+          <div class="vs-badge">VS</div>
+          <div class="vs-side you">
+            <div class="vs-name">You</div>
+            <div class="vs-score" id="vs-you-score">0%</div>
+          </div>
+        </div>
+        <div class="verdict-box" id="verdict-box"></div>
+      </div>
+
+      <div class="breakdown" id="breakdown-list"></div>
+      <div class="btn-row" style="margin-top:6px;">
+        <button class="btn btn-primary" onclick="startFreshGame()">Chart Again</button>
+      </div>
+
+      <div class="share-block">
+        <div class="share-title">⚓ Challenge a Friend</div>
+        <div class="share-sub">Send them this exact run's 10 reserves and see if they can out-navigate you.</div>
+        <div class="link-box">
+          <input id="challenge-link" readonly>
+          <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
+        </div>
+        <div class="share-icons">
+          <a id="wa-share" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+          <a id="tg-share" href="#" target="_blank" rel="noopener">✈️ Telegram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME LAYOUT -->
+  <div class="game-layout" id="game-layout" style="display:none;">
+    <div id="side-panel">
+      <div id="panel-top">
+        <div id="challenge-flag"><span class="dotpulse"></span>Challenge</div>
+        <div class="eyebrow" id="round-label">Round 1 of 10</div>
+        <h2 id="reserve-name">—</h2>
+        <div class="states" id="reserve-states"></div>
+        <div id="dots"></div>
+        <div class="score-pill">Accuracy <b id="score-live">0%</b></div>
+      </div>
+
+      <div id="panel-bottom-group">
+        <div id="panel-mid">
+          <div id="feedback-card">
+            <div class="verdict" id="verdict-text"></div>
+            <div id="dist-text"></div>
+            <div id="fact-text"></div>
+            <div id="rival-line"></div>
+          </div>
+        </div>
+        <div id="panel-actions">
+          <div class="hint-tap" id="tap-hint">Tap anywhere on the India map to drop your pin</div>
+          <button class="btn btn-primary" id="next-btn" onclick="nextRound()">Next Reserve →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="map-panel">
+      <div id="map"></div>
+      <div id="map-loading">Loading chart…</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast">Copied</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ---------------- Theme ---------------- */
+document.addEventListener('DOMContentLoaded', function(){
+  var themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', function(){
+    var html = document.documentElement;
+    var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    try{ localStorage.setItem('bn-theme', next); }catch(e){}
+    setTimeout(function(){ try{ map.invalidateSize(); }catch(e){} }, 250);
+  });
+});
+
+/* ---------------- Exit dialog ---------------- */
+function showExitDialog(){ document.getElementById('exit-dialog-overlay').classList.add('show'); }
+function closeExitDialog(){ document.getElementById('exit-dialog-overlay').classList.remove('show'); }
+function confirmExit(){
+  closeExitDialog();
+  markerLayer.clearLayers();
+  document.getElementById('game-layout').style.display = 'none';
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('screen-invite').classList.add('hidden');
+  document.getElementById('screen-start').classList.remove('hidden');
+  document.getElementById('siteNav').classList.remove('header-hidden');
+  document.getElementById('challenge-flag').classList.remove('show');
+  roundIdx = 0; scores = []; results = []; guessed = false;
+  mode = 'own'; rival = null;
+}
+
+/* ---------------- Reserve data ---------------- */
+const RESERVES = [
+  {name:"Nilgiri Biosphere Reserve", states:"Tamil Nadu, Kerala & Karnataka", lat:11.4, lon:76.7,
+   fact:"India's very first biosphere reserve, declared in 1986 — a Western Ghats stronghold of rainforest and shola-grassland where the Nilgiri tahr still roams."},
+  {name:"Sundarbans Biosphere Reserve", states:"West Bengal", lat:21.9, lon:88.9,
+   fact:"The world's largest mangrove forest, straddling the India-Bangladesh delta and one of the last wild refuges of the Royal Bengal Tiger."},
+  {name:"Gulf of Mannar Biosphere Reserve", states:"Tamil Nadu", lat:9.2, lon:79.0,
+   fact:"A chain of 21 coral islands between India and Sri Lanka, ranked among the richest marine biodiversity zones in all of Asia."},
+  {name:"Nanda Devi Biosphere Reserve", states:"Uttarakhand", lat:30.5, lon:79.9,
+   fact:"Wraps the towering Nanda Devi peak and its Valley of Flowers — a UNESCO World Heritage alpine wilderness deep in the high Himalaya."},
+  {name:"Nokrek Biosphere Reserve", states:"Meghalaya", lat:25.5, lon:90.3,
+   fact:"Set in the Garo Hills, recognised as a centre of origin for wild citrus species and home to the elusive red panda."},
+  {name:"Pachmarhi Biosphere Reserve", states:"Madhya Pradesh", lat:22.5, lon:78.4,
+   fact:"Tucked into the Satpura hill range, holding ancient rock shelters alongside dense sal and teak forest."},
+  {name:"Simlipal Biosphere Reserve", states:"Odisha", lat:21.6, lon:86.3,
+   fact:"A tiger reserve of sal forest, waterfalls and rolling plateau country in the Mayurbhanj hills."},
+  {name:"Great Nicobar Biosphere Reserve", states:"Andaman & Nicobar Islands", lat:7.0, lon:93.9,
+   fact:"India's southernmost biosphere reserve — tropical rainforest home to the Shompen and Nicobarese communities, and nesting giant leatherback turtles."},
+  {name:"Khangchendzonga Biosphere Reserve", states:"Sikkim", lat:27.6, lon:88.4,
+   fact:"Wraps around Khangchendzonga, the world's third-highest peak, spanning alpine meadow all the way down to temperate forest."},
+  {name:"Agasthyamalai Biosphere Reserve", states:"Kerala & Tamil Nadu", lat:8.6, lon:77.2,
+   fact:"The southernmost hill cluster of the Western Ghats, exceptionally rich in endemic medicinal plants and traditional tribal knowledge."}
+];
+
+/* ---------------- Map setup (India-focused) ---------------- */
+const INDIA_CENTER = [22.6, 80.5];
+const INDIA_BOUNDS = [[2, 58], [40, 102]];
+
+const map = L.map('map', {
+  worldCopyJump:false,
+  minZoom:4,
+  maxZoom:9,
+  zoomControl:true,
+  attributionControl:true,
+  maxBounds: INDIA_BOUNDS,
+  maxBoundsViscosity: 0.85
+}).setView(INDIA_CENTER, 5);
+
+const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
+  subdomains:'abcd', maxZoom:19, keepBuffer:4, updateWhenZooming:false, crossOrigin:true
+}).addTo(map);
+
+const labelTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+  subdomains:'abcd', minZoom:4, maxZoom:19, keepBuffer:4, updateWhenZooming:false, crossOrigin:true
+}).addTo(map);
+
+let tilesLoaded = false;
+tiles.on('load', ()=>{ tilesLoaded = true; document.getElementById('map-loading').classList.add('hidden'); });
+setTimeout(()=>{ if(!tilesLoaded) document.getElementById('map-loading').classList.add('hidden'); }, 2500);
+
+/* India boundary overlay for a crisper outline */
+const INDIA_BOUNDARY_URLS = [
+  'https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson',
+  'https://cdn.jsdelivr.net/gh/datameet/maps@master/Country/india-land-simplified.geojson'
+];
+async function loadIndiaBoundary(){
+  for(const url of INDIA_BOUNDARY_URLS){
+    try{
+      const res = await fetch(url);
+      if(!res.ok) continue;
+      const geo = await res.json();
+      L.geoJSON(geo, {
+        interactive:false,
+        style:{ color:'#3FB077', weight:2, opacity:0.9, fillColor:'#3FB077', fillOpacity:0.05 }
+      }).addTo(map);
+      return;
+    }catch(e){ /* try next source */ }
+  }
+}
+loadIndiaBoundary();
+
+let markerLayer = L.layerGroup().addTo(map);
+function pinIcon(cls){
+  return L.divIcon({ className:'', html:`<div class="pin-wrap ${cls}"><div class="pin-ring"></div><div class="pin-core"></div></div>`, iconSize:[22,22], iconAnchor:[11,11] });
+}
+function pingIcon(){
+  return L.divIcon({ className:'', html:`<div class="pin-ping"></div>`, iconSize:[6,6], iconAnchor:[3,3] });
+}
+
+/* ---------------- Game state ---------------- */
+let order = [];
+let roundIdx = 0;
+let scores = [];
+let results = [];
+let guessed = false;
+let mode = 'own';
+let rival = null;
+
+function shuffleIdx(n){
+  const a = Array.from({length:n}, (_,i)=>i);
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function haversine(lat1,lon1,lat2,lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function verdictFor(km){
+  if(km < 40) return {label:'Bullseye — spot on!', cls:'good'};
+  if(km < 120) return {label:'Excellent placement!', cls:'good'};
+  if(km < 280) return {label:'Nearby — solid instinct.', cls:'mid'};
+  if(km < 650) return {label:'Right region, rough spot.', cls:'mid'};
+  return {label:'Way off course — but noted.', cls:'bad'};
+}
+function scoreFor(km){ return Math.max(0, Math.round(100 - km/25)); }
+
+function setupDots(){
+  document.getElementById('dots').innerHTML = order.map((_,i)=>`<div class="dot" id="dot-${i}"></div>`).join('');
+}
+function updateDots(){
+  order.forEach((_,i)=>{
+    const d = document.getElementById('dot-'+i);
+    d.classList.toggle('done', i < roundIdx);
+    d.classList.toggle('now', i === roundIdx);
+  });
+}
+
+/* ---------------- Start / rounds ---------------- */
+function renderReserveListPreview(){
+  const box = document.getElementById('reserve-list-preview');
+  box.innerHTML = RESERVES.map((r,i)=>`<div class="reserve-chip"><span class="num">${i+1}</span>${r.name.replace(' Biosphere Reserve','')}</div>`).join('');
+}
+renderReserveListPreview();
+
+function startFreshGame(){
+  mode = 'own';
+  rival = null;
+  order = shuffleIdx(RESERVES.length);
+  beginRound();
+}
+
+function loadChallengeGame(payload){
+  mode = 'challenge';
+  rival = { name: payload.name || 'A navigator', score: payload.s, pts: payload.p };
+  order = payload.o;
+  beginRound();
+}
+
+function beginRound(){
+  roundIdx = 0; scores = []; results = [];
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-invite').classList.add('hidden');
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('game-layout').style.display = 'flex';
+  document.getElementById('siteNav').classList.remove('header-hidden');
+  document.getElementById('challenge-flag').classList.toggle('show', mode === 'challenge');
+  setupDots();
+  loadRound();
+  setTimeout(()=>map.invalidateSize(), 60);
+}
+
+function loadRound(){
+  guessed = false;
+  markerLayer.clearLayers();
+  document.getElementById('panel-mid').classList.remove('show');
+  document.getElementById('rival-line').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('tap-hint').style.display = 'block';
+  document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${order.length}`;
+  const r = RESERVES[order[roundIdx]];
+  document.getElementById('reserve-name').textContent = r.name;
+  document.getElementById('reserve-states').textContent = r.states;
+  updateDots();
+  map.setView(INDIA_CENTER, 5);
+}
+
+map.on('click', onMapClick);
+
+function onMapClick(evt){
+  if(guessed) return;
+  guessed = true;
+
+  const gLat = evt.latlng.lat, gLon = evt.latlng.lng;
+  const target = RESERVES[order[roundIdx]];
+  const km = haversine(gLat, gLon, target.lat, target.lon);
+  const v = verdictFor(km);
+  const pts = scoreFor(km);
+  scores.push(pts);
+  results.push({name:target.name, km:Math.round(km), pts, cls:v.cls});
+
+  const guessLatLng = [gLat, gLon], targetLatLng = [target.lat, target.lon];
+  markerLayer.clearLayers();
+  L.marker(guessLatLng, {icon:pingIcon(), interactive:false}).addTo(markerLayer);
+  L.polyline([guessLatLng, targetLatLng], {color:'#3a5a4a', weight:1.4, dashArray:'4 4', opacity:0.75, interactive:false}).addTo(markerLayer);
+  L.marker(guessLatLng, {icon:pinIcon('pin-guess'), interactive:false}).addTo(markerLayer);
+  L.marker(targetLatLng, {icon:pinIcon('pin-target'), interactive:false}).addTo(markerLayer);
+
+  const bounds = L.latLngBounds([guessLatLng, targetLatLng]);
+  map.flyToBounds(bounds, {padding:[60,60], maxZoom:8, duration:0.6});
+
+  document.getElementById('verdict-text').textContent = `${v.label}`;
+  document.getElementById('verdict-text').className = 'verdict ' + v.cls;
+  document.getElementById('dist-text').textContent = `${Math.round(km)} km away · +${pts} pts`;
+  document.getElementById('fact-text').textContent = target.fact;
+
+  const rivalLine = document.getElementById('rival-line');
+  if(mode === 'challenge' && rival){
+    const theirPts = rival.pts[roundIdx];
+    if(pts > theirPts){ rivalLine.textContent = `You beat your rival on this one — they scored +${theirPts} pts here.`; }
+    else if(pts < theirPts){ rivalLine.textContent = `Your rival had the edge here — they scored +${theirPts} pts.`; }
+    else{ rivalLine.textContent = `Dead even with your rival on this reserve — +${theirPts} pts each.`; }
+    rivalLine.style.display = 'block';
+  }
+
+  document.getElementById('panel-mid').classList.add('show');
+
+  document.getElementById('tap-hint').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'inline-block';
+  document.getElementById('next-btn').textContent = roundIdx === order.length-1 ? 'See Results →' : 'Next Reserve →';
+
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+  document.getElementById('score-live').textContent = avg + '%';
+
+  updateDots();
+  triggerRoundEffect(v.cls);
+}
+
+function triggerRoundEffect(cls){
+  const card = document.getElementById('feedback-card');
+  const scorePill = document.querySelector('.score-pill');
+  const mapPanel = document.getElementById('map-panel');
+  if(cls === 'good'){
+    fireConfetti({count:24, maxFrames:80, spread:0.35});
+    [card, scorePill].forEach(el=>{
+      if(!el) return;
+      el.classList.remove('fx-pulse-good'); void el.offsetWidth;
+      el.classList.add('fx-pulse-good');
+      setTimeout(()=>el.classList.remove('fx-pulse-good'), 900);
+    });
+  } else if(cls === 'bad'){
+    [mapPanel, card].forEach(el=>{
+      if(!el) return;
+      el.classList.remove('fx-shake'); void el.offsetWidth;
+      el.classList.add('fx-shake');
+      setTimeout(()=>el.classList.remove('fx-shake'), 550);
+    });
+  }
+}
+
+function nextRound(){
+  roundIdx++;
+  if(roundIdx >= order.length){ endGame(); return; }
+  loadRound();
+}
+
+function endGame(){
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+  document.getElementById('final-score').textContent = avg + '%';
+  let msg;
+  if(avg >= 85) msg = "Master field navigator — you could chart India's wild reserves blind.";
+  else if(avg >= 65) msg = "Sharp sense of the map — a seasoned navigator's eye.";
+  else if(avg >= 40) msg = "Solid run. India's reserves are scattered wide — chart again to sharpen your eye.";
+  else msg = "A rough first pass across a huge country — give it another go.";
+  document.getElementById('final-msg').textContent = msg;
+
+  const vsBlock = document.getElementById('vs-block');
+  const vsCard = document.getElementById('vs-card');
+  vsCard.classList.remove('fx-winner');
+
+  if(mode === 'challenge' && rival){
+    vsBlock.style.display = 'block';
+    document.getElementById('vs-rival-name').textContent = rival.name;
+    document.getElementById('vs-rival-score').textContent = rival.score + '%';
+    document.getElementById('vs-you-score').textContent = avg + '%';
+
+    const vb = document.getElementById('verdict-box');
+    vb.classList.remove('win','lose','tie');
+    if(avg > rival.score){
+      vb.textContent = '🎉 You out-navigated your rival!';
+      vb.classList.add('win');
+      vsCard.classList.add('fx-winner');
+      fireConfetti({count:110, maxFrames:230, spread:1});
+    } else if(avg < rival.score){
+      vb.textContent = '😅 Your rival navigated closer. Chart again!';
+      vb.classList.add('lose');
+    } else {
+      vb.textContent = '🤝 Dead even — perfectly matched navigators.';
+      vb.classList.add('tie');
+    }
+    renderChallengeBreakdown(scores, rival.pts);
+  } else {
+    vsBlock.style.display = 'none';
+    renderSoloBreakdown();
+    if(avg >= 85) fireConfetti({count:70, maxFrames:200, spread:1});
+  }
+
+  buildAndShowChallengeLink(avg);
+
+  document.getElementById('game-layout').style.display = 'none';
+  document.getElementById('screen-end').classList.remove('hidden');
+}
+
+function renderSoloBreakdown(){
+  const box = document.getElementById('breakdown-list');
+  box.innerHTML = results.map((r,i)=>`
+    <div class="b-row">
+      <span class="b-idx">${i+1}</span>
+      <span class="b-name">${r.name}</span>
+      <span class="b-dist">${r.km} km</span>
+      <span class="b-pts ${r.cls}">+${r.pts}</span>
+    </div>`).join('');
+}
+
+function renderChallengeBreakdown(myPts, theirPts){
+  const box = document.getElementById('breakdown-list');
+  box.innerHTML = order.map((rIdx, i)=>{
+    const mine = myPts[i], theirs = theirPts[i];
+    return `<div class="b-row">
+      <span class="b-idx">${i+1}</span>
+      <span class="b-name">${RESERVES[rIdx].name}</span>
+      <span class="b-marks">
+        <span class="b-mk ${theirs > mine ? 'ok' : 'no'}" title="Rival">${theirs}</span>
+        <span class="b-mk ${mine >= theirs ? 'ok' : 'no'}" title="You">${mine}</span>
+      </span>
+    </div>`;
+  }).join('');
+}
+
+/* ---------------- Challenge link build / share ---------------- */
+function randomCode(){
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let out = '';
+  for(let i=0;i<6;i++) out += chars[Math.floor(Math.random()*chars.length)];
+  return out;
+}
+
+function buildChallengeLink(avgScore){
+  const payload = { s: avgScore, o: order, p: scores, code: randomCode(), name: 'A navigator' };
+  const b64 = btoa(JSON.stringify(payload));
+  const base = window.location.origin + window.location.pathname;
+  return base + '?d=' + encodeURIComponent(b64);
+}
+
+function buildAndShowChallengeLink(avgScore){
+  const link = buildChallengeLink(avgScore);
+  document.getElementById('challenge-link').value = link;
+  const copyBtn = document.getElementById('copy-link-btn');
+  copyBtn.textContent = 'Copy';
+  copyBtn.classList.remove('copied');
+
+  const msg = `🌿 I just charted the Biosphere Navigator and scored ${avgScore}%. Think you can navigate closer? Take the same 10 reserves: ${link}`;
+  document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+  document.getElementById('tg-share').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(`🌿 Think you can beat my Biosphere Navigator score of ${avgScore}%?`);
+}
+
+function copyChallengeLink(){
+  const input = document.getElementById('challenge-link');
+  input.select();
+  const btn = document.getElementById('copy-link-btn');
+  function done(){
+    showToast('Challenge link copied');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  }
+  navigator.clipboard.writeText(input.value).then(done).catch(()=>{
+    document.execCommand('copy');
+    done();
+  });
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg || 'Copied';
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+/* ---------------- Accepting a challenge ---------------- */
+function safeDecodeBase64(str){
+  let candidate = str;
+  try{
+    if(/%[0-9A-Fa-f]{2}/.test(str)){ candidate = decodeURIComponent(str); }
+  }catch(e){ candidate = str; }
+  try{ return atob(candidate); }
+  catch(e){
+    try{ return atob(str); }
+    catch(e2){ throw new Error('This challenge link looks corrupted.'); }
+  }
+}
+
+function parseChallengeString(raw){
+  raw = (raw || '').trim();
+  if(!raw) throw new Error('Paste a challenge link first.');
+  let d;
+  if(raw.includes('?')){
+    const qs = raw.split('?').slice(1).join('?');
+    const params = new URLSearchParams(qs);
+    d = params.get('d');
+  } else if(/(^|[&?])d=/.test(raw)){
+    const params2 = new URLSearchParams(raw);
+    d = params2.get('d');
+  } else {
+    d = raw;
+  }
+  if(!d) throw new Error('This link is missing its challenge data.');
+  const payload = JSON.parse(safeDecodeBase64(d));
+  if(!Array.isArray(payload.o) || !Array.isArray(payload.p)) throw new Error('This challenge link looks corrupted.');
+  return payload;
+}
+
+let pendingChallenge = null;
+
+function showChallengeInvite(payload){
+  pendingChallenge = payload;
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-end').classList.add('hidden');
+  document.getElementById('invite-rival-name').textContent = payload.name || 'A navigator';
+  document.getElementById('screen-invite').classList.remove('hidden');
+}
+
+function acceptChallengeInvite(){
+  if(!pendingChallenge) return;
+  const payload = pendingChallenge;
+  pendingChallenge = null;
+  document.getElementById('screen-invite').classList.add('hidden');
+  loadChallengeGame(payload);
+}
+
+function declineChallengeInvite(){
+  pendingChallenge = null;
+  document.getElementById('screen-invite').classList.add('hidden');
+  document.getElementById('screen-start').classList.remove('hidden');
+  try{
+    const url = new URL(window.location.href);
+    url.searchParams.delete('d');
+    window.history.replaceState({}, '', url.toString());
+  }catch(e){}
+}
+
+function acceptPastedChallenge(){
+  const raw = document.getElementById('paste-input').value;
+  const errBox = document.getElementById('paste-err');
+  errBox.style.display = 'none';
+  try{
+    const payload = parseChallengeString(raw);
+    showChallengeInvite(payload);
+  }catch(e){
+    errBox.textContent = e.message || 'Could not read that challenge link.';
+    errBox.style.display = 'block';
+  }
+}
+
+(function autoDetectChallenge(){
+  try{
+    const params = new URLSearchParams(window.location.search);
+    const d = params.get('d');
+    if(d){
+      const payload = JSON.parse(safeDecodeBase64(d));
+      if(Array.isArray(payload.o) && Array.isArray(payload.p)){
+        showChallengeInvite(payload);
+      }
+    }
+  }catch(e){ /* ignore malformed links, fall back to start screen */ }
+})();
+
+/* ---------------- Confetti ---------------- */
+function fireConfetti(opts){
+  opts = opts || {};
+  const count = opts.count || 70, maxFrames = opts.maxFrames || 200, spread = opts.spread || 1;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const colors = ['#3FB077', '#F2A649', '#5eead4', '#ff5d73'];
+  const canvas = document.createElement('canvas');
+  canvas.id = 'confettiCanvas';
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const midX = canvas.width/2, halfSpread = (canvas.width*spread)/2;
+  const pieces = Array.from({length:count}, ()=>({
+    x: midX + (Math.random()*2-1)*halfSpread, y: -20 - Math.random()*canvas.height*0.3,
+    w: 5+Math.random()*4, h: 7+Math.random()*5, color: colors[Math.floor(Math.random()*colors.length)],
+    vx: (Math.random()-0.5)*3, vy: 2+Math.random()*3, rot: Math.random()*Math.PI, vrot: (Math.random()-0.5)*0.3
+  }));
+  let frame = 0;
+  function loop(){
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.x += p.vx; p.y += p.vy; p.vy += 0.03; p.rot += p.vrot;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    if(frame < maxFrames) requestAnimationFrame(loop); else canvas.remove();
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ---------------- Resize handling (debounced) ---------------- */
+let lastKnownWidth = window.innerWidth;
+let resizeSettleTimer = null;
+function handleViewportSettle(){
+  clearTimeout(resizeSettleTimer);
+  resizeSettleTimer = setTimeout(function(){
+    lastKnownWidth = window.innerWidth;
+    try{ map.invalidateSize(); }catch(e){}
+  }, 150);
+}
+window.addEventListener('resize', handleViewportSettle);
+window.visualViewport && window.visualViewport.addEventListener('resize', handleViewportSettle);
+setTimeout(()=>{ try{ map.invalidateSize(); }catch(e){} }, 200);
+</script>
+</body>
+</html>
