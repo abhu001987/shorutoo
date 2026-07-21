@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Challenge Friends · Shoruto</title>
+
+<!-- Theme: set instantly, before any CSS loads -->
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared CSS & JS (theme) -->
+  <link rel="stylesheet" href="theme.css" />
+  <script src="theme.js"></script>
+
+<style>
+  /* ============================================ */
+  /* FALLBACK THEME TOKENS                         */
+  /* ============================================ */
+  :root{
+    --bg-0:#03050b;
+    --panel:rgba(255,255,255,0.035);
+    --panel-strong:rgba(255,255,255,0.07);
+    --border:rgba(255,255,255,0.09);
+    --text:#eef1fb;
+    --text-dim:#9aa3c4;
+    --text-dimmer:#666e91;
+    --blue:#5B7FFF;
+    --violet:#8B6BFF;
+    --glow-1:rgba(91,127,255,0.22);
+    --glow-2:rgba(139,107,255,0.16);
+    --ease:cubic-bezier(.4,0,.2,1);
+    --amber:#F5B841;
+    --amber-alpha:rgba(245,184,65,0.16);
+    --slate:#8C97BE;
+    --slate-alpha:rgba(140,151,190,0.18);
+    --sand:#D9A15B;
+    --sand-alpha:rgba(217,161,91,0.18);
+    --green:#59C08A;
+    --green-alpha:rgba(89,192,138,0.18);
+    --ice:#7FE3F0;
+    --ice-alpha:rgba(127,227,240,0.18);
+    --teal:#3FC7B4;
+    --teal-alpha:rgba(63,199,180,0.18);
+  }
+  [data-theme="light"]{
+    --bg-0:#f6f7fb;
+    --panel:rgba(10,14,30,0.03);
+    --panel-strong:rgba(10,14,30,0.06);
+    --border:rgba(10,14,30,0.1);
+    --text:#12142a;
+    --text-dim:#4d5578;
+    --text-dimmer:#8890b0;
+    --glow-1:rgba(91,127,255,0.14);
+    --glow-2:rgba(139,107,255,0.12);
+    --amber-alpha:rgba(245,184,65,0.22);
+    --slate-alpha:rgba(140,151,190,0.24);
+    --sand-alpha:rgba(217,161,91,0.24);
+    --green-alpha:rgba(89,192,138,0.22);
+    --ice-alpha:rgba(127,227,240,0.28);
+    --teal-alpha:rgba(63,199,180,0.24);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;padding:0;
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    display:flex;flex-direction:column;
+    background:var(--bg-0);
+    background-image:
+      radial-gradient(circle at 15% 0%, var(--glow-1), transparent 45%),
+      radial-gradient(circle at 85% 10%, var(--glow-2), transparent 40%);
+    color:var(--text);
+    transition:background 0.3s ease, color 0.3s ease;
+  }
+
+  /* ============================================ */
+  /* HEADER / NAV BAR — unchanged                  */
+  /* ============================================ */
+  .nav{
+    padding:24px 0 20px 0;
+    border-bottom:1px solid var(--border);
+    margin-bottom:22px;
+    background:transparent;
+    transition:border-color 0.3s ease;
+  }
+  .wrap{max-width:1400px;margin:0 auto;padding:0 24px;}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;color:var(--text);letter-spacing:1px;transition:color 0.3s ease;}
+  .logo .mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;}
+  .logo .mark svg{width:38px;height:38px;display:block;}
+  .logo .mark svg circle,.logo .mark svg path{stroke:var(--blue);transition:stroke 0.3s ease;}
+  .logo .mark svg [fill]:not([fill="none"]){fill:var(--blue);transition:fill 0.3s ease;}
+  .logo-text{color:var(--text);transition:color 0.3s ease;}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s ease;font-family:'Inter',sans-serif;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{display:flex;align-items:center;gap:12px;}
+  .exit-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px 10px 16px;border:1px solid var(--border);border-radius:12px;color:var(--text-dim);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;cursor:pointer;background:transparent;transition:0.2s var(--ease),border-color 0.3s ease,color 0.3s ease,background 0.3s ease;}
+  .exit-btn .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s var(--ease);flex-shrink:0;}
+  .exit-btn:hover{background:var(--panel-strong);border-color:var(--violet);color:var(--violet);}
+  .exit-btn:hover .ic{transform:translateX(-3px);}
+  .theme-toggle{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.3s var(--ease);position:relative;flex-shrink:0;}
+  .theme-toggle:hover{background:var(--panel-strong);border-color:var(--blue);transform:scale(1.06);}
+  .theme-toggle .sun-icon,.theme-toggle .moon-icon{position:absolute;transition:all 0.45s var(--ease);font-size:18px;}
+  .theme-toggle .sun-icon{opacity:0;transform:rotate(-90deg) scale(0.4);}
+  .theme-toggle .moon-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .sun-icon{opacity:1;transform:rotate(0) scale(1);}
+  [data-theme="light"] .theme-toggle .moon-icon{opacity:0;transform:rotate(90deg) scale(0.4);}
+  @media (max-width:600px){
+    .nav{padding:16px 0 14px 0;margin-bottom:14px;}
+    .wrap{padding:0 16px;}
+    .logo{font-size:18px;}
+    .logo .mark{width:32px;height:32px;}
+    .logo .mark svg{width:30px;height:30px;}
+    .nav-links{display:none;}
+    .exit-btn{padding:6px 12px;font-size:12px;}
+    .exit-btn span{display:none;}
+    .theme-toggle{width:36px;height:36px;font-size:16px;}
+  }
+  .ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-0.14em;flex-shrink:0;}
+  /* ============================================ */
+  /* END NAV                                       */
+  /* ============================================ */
+
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .page-content{flex:1;padding:0 24px 100px;max-width:1200px;margin:0 auto;width:100%;}
+
+  /* ---------- breadcrumb ---------- */
+  .crumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dimmer);margin-bottom:26px;font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
+  .crumb a{color:var(--text-dimmer);text-decoration:none;transition:color .2s ease;display:inline-flex;align-items:center;}
+  .crumb a:hover{color:var(--blue);}
+  .crumb .sep{opacity:.5;}
+  .crumb .current{color:var(--text-dim);}
+
+  /* ============================================ */
+  /* PAGE HEAD — plain, no hero art, no gradient   */
+  /* word, no pulsing eyebrow                      */
+  /* ============================================ */
+  .page-head{margin-bottom:30px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 16px 7px 12px;border-radius:40px;background:var(--panel-strong);border:1px solid var(--border);color:var(--blue);font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:1.5px;font-weight:600;margin-bottom:16px;}
+  .eyebrow .ic{width:15px;height:15px;}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);animation:pulseDot 1.8s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+  .page-head h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.5px;margin:0 0 12px;}
+  .grad-word{background:linear-gradient(90deg,#7C93FF 0%,#A98BFF 55%,#C08BFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .page-head p.lede{font-size:15.5px;line-height:1.7;color:var(--text-dim);max-width:560px;margin:0 0 24px;}
+
+  .stats-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .stat-pill{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 16px;
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+  }
+  .stat-pill .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--text);}
+  .stat-pill .lbl{font-size:12px;color:var(--text-dimmer);}
+  /* ============================================ */
+  /* END PAGE HEAD                                 */
+  /* ============================================ */
+
+  /* ============================================ */
+  /* FILTER ROW — dropdown + completed toggle      */
+  /* ============================================ */
+  .filter-row{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-bottom:22px;flex-wrap:wrap;}
+  .filter-select-wrap{position:relative;}
+  .filter-select{
+    appearance:none;-webkit-appearance:none;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;color:var(--text);
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:11px 38px 11px 16px;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .filter-select:hover{border-color:var(--blue);}
+  .filter-select-wrap::after{
+    content:"";position:absolute;right:14px;top:50%;width:8px;height:8px;
+    border-right:1.6px solid var(--text-dimmer);border-bottom:1.6px solid var(--text-dimmer);
+    transform:translateY(-70%) rotate(45deg);pointer-events:none;
+  }
+  .completed-toggle{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 18px 10px 14px;border-radius:12px;
+    background:var(--green-alpha);border:1px solid var(--green-alpha);color:var(--green);
+    font-family:'Inter',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer;
+    transition:all .2s ease;
+  }
+  .completed-toggle .sw{width:8px;height:8px;border-radius:2px;background:var(--green);}
+  .completed-toggle.active{background:var(--green);color:#06120c;border-color:var(--green);}
+  .completed-toggle.active .sw{background:#06120c;}
+  /* ============================================ */
+  /* END FILTER ROW                                */
+  /* ============================================ */
+
+  /* ---------- topic grid — simple, calm cards ---------- */
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+  .topic-grid.hidden{display:none;}
+
+  /* ---------- topic slider — shown for "All Topics" ---------- */
+  .topic-slider-wrap{position:relative;display:none;}
+  .topic-slider-wrap.active{display:block;}
+  .topic-slider-track{
+    display:flex;gap:18px;overflow-x:auto;scroll-behavior:smooth;scroll-snap-type:x mandatory;
+    padding-bottom:6px;margin:0 -2px;
+  }
+  .topic-slider-track::-webkit-scrollbar{height:6px;}
+  .topic-slider-track::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
+  .topic-slider-track .topic-card{flex:0 0 280px;scroll-snap-align:start;}
+  .slider-nav{
+    display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:12px;
+  }
+  .slider-nav-btn{
+    width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--panel);
+    color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease,transform .2s ease;
+  }
+  .slider-nav-btn:hover{border-color:var(--blue);background:var(--panel-strong);transform:translateY(-1px);}
+  .slider-nav-btn svg{width:16px;height:16px;}
+
+  .topic-card{
+    position:relative;background:var(--panel);border:1px solid var(--border);border-radius:16px;
+    padding:22px 22px 20px;text-decoration:none;color:inherit;display:block;
+    transition:border-color .2s ease, transform .2s ease, background .2s ease, box-shadow .2s ease;
+    opacity:0;transform:translateY(14px);
+  }
+  .topic-card.in-view{animation:cardUp .5s var(--ease) forwards;}
+  @keyframes cardUp{to{opacity:1;transform:translateY(0);}}
+  .topic-card.filtered-out{display:none;}
+  .topic-card:hover{border-color:var(--accent, var(--blue));transform:translateY(-3px);background:var(--panel-strong);box-shadow:0 12px 28px rgba(0,0,0,0.22), 0 0 0 1px var(--accent-alpha, transparent);}
+  [data-theme="light"] .topic-card:hover{box-shadow:0 12px 28px rgba(30,40,90,0.1), 0 0 0 1px var(--accent-alpha, transparent);}
+
+  .topic-card[data-accent="blue"]{--accent:var(--blue);--accent-alpha:var(--glow-1);}
+  .topic-card[data-accent="violet"]{--accent:var(--violet);--accent-alpha:var(--glow-2);}
+  .topic-card[data-accent="amber"]{--accent:var(--amber);--accent-alpha:var(--amber-alpha);}
+  .topic-card[data-accent="slate"]{--accent:var(--slate);--accent-alpha:var(--slate-alpha);}
+  .topic-card[data-accent="sand"]{--accent:var(--sand);--accent-alpha:var(--sand-alpha);}
+  .topic-card[data-accent="green"]{--accent:var(--green);--accent-alpha:var(--green-alpha);}
+  .topic-card[data-accent="ice"]{--accent:var(--ice);--accent-alpha:var(--ice-alpha);}
+  .topic-card[data-accent="teal"]{--accent:var(--teal);--accent-alpha:var(--teal-alpha);}
+
+  .tc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+
+  .tc-icon-wrap{
+    width:44px;height:44px;border-radius:12px;background:var(--accent-alpha);border:1px solid var(--accent-alpha);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--accent);
+  }
+  .tc-icon-wrap svg{width:22px;height:22px;}
+
+  .tc-done{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--green);background:var(--green-alpha);border:1px solid var(--green-alpha);border-radius:20px;padding:5px 10px;white-space:nowrap;font-weight:600;}
+  .tc-diff{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.6px;color:var(--text-dimmer);border:1px solid var(--border);border-radius:20px;padding:5px 10px;white-space:nowrap;}
+  .tc-diff.diff-hard{color:var(--violet);border-color:var(--glow-2);}
+  .tc-diff.diff-medium{color:var(--amber);border-color:var(--amber-alpha);}
+  .tc-diff.diff-easy{color:var(--green);border-color:var(--green-alpha);}
+
+  .tc-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin:14px 0 4px;}
+  .tc-sub{font-size:13px;color:var(--text-dimmer);margin:0 0 16px;line-height:1.5;}
+
+  .tc-meta{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dimmer);
+    background:var(--panel-strong);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:11px 14px;
+  }
+  .tc-meta b{color:var(--text-dim);font-weight:600;}
+  .tc-qs{display:inline-flex;align-items:center;gap:6px;}
+  .tc-qs .ic{width:12px;height:12px;}
+  .tc-go{
+    display:inline-flex;align-items:center;gap:5px;color:var(--accent, var(--blue));font-weight:600;
+  }
+  .tc-go .ic{width:13px;height:13px;transition:transform .2s var(--ease);}
+  .topic-card:hover .tc-go .ic{transform:translateX(3px);}
+
+  /* ============================================ */
+  /* LEADERBOARD CTA BANNER                        */
+  /* ============================================ */
+  .cta-banner{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    margin-top:36px;padding:24px 28px;border-radius:16px;
+    background:var(--panel);border:1px solid var(--border);
+  }
+  .cta-left{display:flex;align-items:center;gap:18px;}
+  .cta-trophy{
+    width:48px;height:48px;border-radius:12px;flex-shrink:0;
+    background:var(--glow-2);border:1px solid var(--violet);color:var(--violet);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .cta-trophy svg{width:22px;height:22px;}
+  .cta-left h3{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin:0 0 4px;}
+  .cta-left p{margin:0;font-size:13.5px;color:var(--text-dim);}
+  .cta-btn{
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+    padding:12px 22px;border-radius:12px;
+    background:var(--glow-2);border:1px solid var(--violet);color:var(--violet);
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;
+    text-decoration:none;transition:background .2s ease,transform .2s ease;
+  }
+  .cta-btn:hover{background:var(--violet);color:#0b0a16;transform:translateY(-2px);}
+  .cta-btn .ic{width:14px;height:14px;}
+  /* ============================================ */
+  /* END LEADERBOARD BANNER                        */
+  /* ============================================ */
+
+  @media (max-width:768px){
+    .page-content{padding:0 18px 70px;}
+    .filter-row{justify-content:flex-start;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .topic-card, .cta-btn, .exit-btn, .theme-toggle{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- HEADER / NAV — unchanged                      -->
+<!-- ============================================ -->
+<nav class="nav">
+  <div class="wrap">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <span class="mark">
+          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="30" cy="28" r="22"/>
+            <circle cx="12" cy="10" r="7"/>
+            <circle cx="48" cy="10" r="7"/>
+            <circle cx="22" cy="25" r="4.5"/>
+            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <circle cx="38" cy="25" r="4.5"/>
+            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
+            <path d="M27 33 L30 37 L33 33"/>
+            <path d="M26 38 Q30 43 34 38"/>
+            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
+            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
+          </svg>
+        </span>
+        <span class="logo-text">Shoruto</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#why"></a>
+        <a href="index.html#trending"></a>
+        <a href="index.html#subjects"></a>
+        <a href="blog.html"></a>
+        <a href="index.html#ai"></a>
+        <a href="index.html#faq"></a>
+      </div>
+      <div class="nav-cta">
+        <button class="exit-btn" onclick="goBack()">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+          <span>Exit</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="sun-icon">☀️</span>
+          <span class="moon-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- ============================================ -->
+
+<main class="page-content">
+
+  <div class="crumb">
+    <a href="index.html">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+    </a>
+    <span class="sep">›</span>
+    <a href="index.html">Home</a>
+    <span class="sep">›</span>
+    <span class="current">Challenge Friends</span>
+  </div>
+
+  <div class="page-head">
+    <span class="eyebrow">
+      <svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 21v-1a5 5 0 013.6-4.8"/></svg>
+      MULTIPLAYER · DAILY QUIZ
+      <span class="dot"></span>
+    </span>
+    <h1>Challenge <span class="grad-word">Friends</span></h1>
+    <p class="lede">Pick a topic below, then challenge a friend to it — same questions, same clock, for both of you.</p>
+
+    <div class="stats-row">
+      <div class="stat-pill"><span class="num" id="statTopics">18</span>&nbsp;<span class="lbl">Topics</span></div>
+      <div class="stat-pill"><span class="num" id="statQs">180</span>&nbsp;<span class="lbl">Questions</span></div>
+      <div class="stat-pill"><span class="num" id="statDone">3</span>&nbsp;<span class="lbl">Completed</span></div>
+    </div>
+  </div>
+
+  <div class="filter-row">
+    <div class="filter-select-wrap">
+      <select class="filter-select" id="difficultyFilter">
+        <option value="all">All Topics</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+    <button class="completed-toggle" id="completedToggle" type="button">
+      <span class="sw"></span> Completed
+    </button>
+  </div>
+
+  <div class="topic-slider-wrap" id="topicSliderWrap">
+    <div class="slider-nav">
+      <button class="slider-nav-btn" id="sliderPrev" type="button" aria-label="Scroll left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <button class="slider-nav-btn" id="sliderNext" type="button" aria-label="Scroll right">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+    <div class="topic-slider-track" id="topicSlider"></div>
+  </div>
+
+  <div class="topic-grid" id="topicGrid"></div>
+
+  <div class="cta-banner">
+    <div class="cta-left">
+      <span class="cta-trophy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M6 4h12v3a6 6 0 01-12 0V4z"/><path d="M6 5H3v1a4 4 0 004 4M18 5h3v1a4 4 0 01-4 4"/></svg>
+      </span>
+      <div>
+        <h3>Compete. Learn. Climb the leaderboard.</h3>
+        <p>Track your progress and see how you rank.</p>
+      </div>
+    </div>
+    <a href="/leaderboard" class="cta-btn">
+      View Leaderboard
+      <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <div class="footer-link" style="margin-top:40px;padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <a href="index.html" style="color:var(--text-dim);text-decoration:none;font-size:14px;display:flex;align-items:center;gap:6px;">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+      Back to home
+    </a>
+    <span style="color:var(--text-dimmer);font-size:12px;">&copy; 2026 Shoruto</span>
+  </div>
+
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+    // ---- theme toggle ----
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function () {
+        if (typeof toggleTheme === 'function') {
+          toggleTheme();
+        } else {
+          var html = document.documentElement;
+          var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+          html.setAttribute('data-theme', next);
+        }
+      });
+    }
+
+    // ============================================
+    // TOPIC DATA — every topic fixed at 10 Qs
+    // ============================================
+    var QS_PER_TOPIC = 10;
+
+    var TOPICS = [
+      { slug:'oceans',          title:'Oceans',                 sub:'The five great oceans and what makes each one distinct.',                icon:'ocean',       accent:'blue',   diff:'Medium' },
+      { slug:'seas',            title:'Seas',                   sub:'Marginal and enclosed seas, and how they differ from oceans.',            icon:'sea',         accent:'teal',   diff:'Easy' },
+      { slug:'straits',         title:'Straits',                sub:'Narrow passages that link two larger bodies of water.',                   icon:'strait',      accent:'violet', diff:'Hard' },
+      { slug:'gulfs',           title:'Gulfs',                  sub:'Large inlets where the sea cuts deep into the coastline.',                icon:'gulf',        accent:'amber',  diff:'Medium' },
+      { slug:'bays',            title:'Bays',                   sub:'Coastal recesses, smaller and gentler than a gulf.',                      icon:'bay',         accent:'teal',   diff:'Easy' },
+      { slug:'rivers',          title:'Rivers',                 sub:'Major river systems, basins, and the cities built on them.',              icon:'river',       accent:'blue',   diff:'Medium' },
+      { slug:'lakes',           title:'Lakes',                  sub:'Freshwater, saline, and crater lakes around the world.',                  icon:'lake',        accent:'ice',    diff:'Easy' },
+      { slug:'mountain-ranges', title:'Mountain Ranges',        sub:'The great ranges that shape continents and climates.',                    icon:'range',       accent:'slate',  diff:'Medium' },
+      { slug:'peaks',           title:'Peaks',                  sub:'The highest summit on every continent, and how they were measured.',      icon:'peak',        accent:'slate',  diff:'Hard' },
+      { slug:'volcanoes',       title:'Volcanoes',              sub:'Active, dormant, and extinct volcanic systems worldwide.',                icon:'volcano',     accent:'amber',  diff:'Hard' },
+      { slug:'deserts',         title:'Deserts',                sub:'Hot and cold deserts, and the life that survives in them.',               icon:'desert',      accent:'sand',   diff:'Medium' },
+      { slug:'forests',         title:'Forests & Rainforests',  sub:'The biomes that hold most of the planet\u2019s biodiversity.',            icon:'forest',      accent:'green',  diff:'Medium' },
+      { slug:'glaciers',        title:'Glaciers',               sub:'Ice sheets, fjords, and the slow rivers of ice that carved them.',        icon:'glacier',     accent:'ice',    diff:'Hard' },
+      { slug:'islands',         title:'Islands',                sub:'Volcanic, coral, and continental islands, and how each forms.',           icon:'island',      accent:'teal',   diff:'Easy' },
+      { slug:'archipelagos',    title:'Archipelagos',           sub:'Island chains, and the nations built across them.',                       icon:'archipelago', accent:'teal',   diff:'Medium' },
+      { slug:'waterfalls',      title:'Waterfalls',             sub:'The tallest and most powerful falls on Earth.',                           icon:'waterfall',   accent:'blue',   diff:'Easy' },
+      { slug:'canals',          title:'Canals',                 sub:'Man-made waterways that rewrote global trade routes.',                    icon:'canal',       accent:'violet', diff:'Medium' },
+      { slug:'wind-belts',      title:'Major Wind Belts',       sub:'Global wind systems and the pressure belts that drive them.',             icon:'wind',        accent:'violet', diff:'Hard' }
+    ];
+
+    // ============================================
+    // COMPLETION CACHE (localStorage)
+    // A topic only shows "Done" once the user has
+    // actually opened it — nothing is done up front.
+    // ============================================
+    var CACHE_KEY = 'shoruto_completed_topics';
+
+    function getCompleted() {
+      try {
+        var raw = localStorage.getItem(CACHE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) { return []; }
+    }
+    function markCompleted(slug) {
+      try {
+        var list = getCompleted();
+        if (list.indexOf(slug) === -1) {
+          list.push(slug);
+          localStorage.setItem(CACHE_KEY, JSON.stringify(list));
+        }
+      } catch (e) {}
+    }
+
+    var ICONS = {
+      ocean:       '<path d="M2 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0"/><path d="M2 13c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".6"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".35"/>',
+      sea:         '<circle cx="18" cy="5" r="2.2"/><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4-2 2 0" opacity=".5"/>',
+      strait:      '<path d="M2 18l4.5-9 4.5 9z"/><path d="M13 18l4.5-9 4.5 9z"/><path d="M10.3 12.6l1.6 1.4-1.6 1.4" opacity=".7"/>',
+      gulf:        '<path d="M4 4c8 1 8 15 0 16"/><path d="M8 9c2 .3 3 1.3 3 3.5S10 15.7 8 16" opacity=".5"/>',
+      bay:         '<path d="M5 3c9 1 9 17 0 18"/><path d="M8.5 9c1.3.2 2 1 2 3.5s-.7 3.3-2 3.5" opacity=".5"/>',
+      river:       '<path d="M8 2c5 3-4 5 1 8s-4 5 1 8-4 3 1 4"/>',
+      lake:        '<ellipse cx="12" cy="13" rx="8" ry="5"/><path d="M8 13c1.3-1 2.7-1 4 0s2.7 1 4 0" opacity=".6"/>',
+      range:       '<path d="M2 18l4.5-8 3.5 5 2.5-4 3 4 2.5-6 4 9z"/>',
+      peak:        '<path d="M12 3l8.5 15h-17z"/><path d="M9 10.5l3-3 3 3-1.2 1.1-1.8-1.6-1.8 1.6z" fill="currentColor" stroke="none" opacity=".9"/>',
+      volcano:     '<path d="M4 19l6-12.5 2 4 2-4 6 12.5z"/><path d="M12 6.2c-1-.9-1-1.9-.1-2.9" opacity=".65"/><path d="M14.2 5.2c1-.9 1-1.9.2-2.9" opacity=".4"/>',
+      desert:      '<circle cx="18" cy="5" r="2"/><path d="M2 16.5c3-3.5 5-1.5 7-3.5s4-1 6 1 4 1 7-2"/><path d="M2 20c3-3 5-1 7-3s4-1 6 1 4 1 7-2" opacity=".5"/>',
+      forest:      '<path d="M7 3.5l3 4.5H4z"/><path d="M7 7.5l3 4.5H4z"/><path d="M6.4 12v4.5"/><path d="M16.5 2l3 4.5h-6z"/><path d="M16.5 6l3 4.5h-6z"/><path d="M16 10.5v6"/>',
+      glacier:     '<path d="M12 2v20"/><path d="M4 7.5l16 9"/><path d="M4 16.5l16-9"/>',
+      island:      '<ellipse cx="12" cy="18.5" rx="8" ry="2.2"/><path d="M12 17c0-6 1-9.5 4-12"/><path d="M16 5c-2.2-.3-3.4.6-3.4.6s2.1.4 3.4-.6z" fill="currentColor" stroke="none" opacity=".8"/>',
+      archipelago: '<ellipse cx="5.5" cy="16" rx="3" ry="1.3"/><ellipse cx="13" cy="18" rx="4" ry="1.6"/><ellipse cx="19.5" cy="13.5" rx="2.3" ry="1"/>',
+      waterfall:   '<path d="M3.5 6h17"/><path d="M7 6v13"/><path d="M12 6v13" opacity=".6"/><path d="M17 6v13" opacity=".35"/>',
+      canal:       '<path d="M3.5 9h17"/><path d="M3.5 15h17" opacity=".5"/><path d="M9 9c0-3 6-3 6 0" opacity=".8"/>',
+      wind:        '<path d="M3 8.5c4.5-4 10-2 10 1.8S9 14 7 11"/><path d="M3 14.5c6.5-3 15-1 15 4.2S11 24 8 19.5" opacity=".6"/>'
+    };
+
+    function svgIcon(type) {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + ICONS[type] + '</svg>';
+    }
+
+    var grid = document.getElementById('topicGrid');
+    var slider = document.getElementById('topicSlider');
+    var sliderWrap = document.getElementById('topicSliderWrap');
+
+    function cardHTML(t, done) {
+      var badge = done
+        ? '<span class="tc-done">\u2713 Done</span>'
+        : '<span class="tc-diff diff-' + t.diff.toLowerCase() + '">' + t.diff + '</span>';
+      return ''
+        + '<a href="wiki/' + t.slug + '.html" class="topic-card" data-slug="' + t.slug + '" data-accent="' + t.accent + '" data-diff="' + t.diff.toLowerCase() + '" data-done="' + (done ? '1' : '0') + '">'
+        +   '<div class="tc-top">'
+        +     '<div class="tc-icon-wrap">' + svgIcon(t.icon) + '</div>'
+        +     badge
+        +   '</div>'
+        +   '<div class="tc-title">' + t.title + '</div>'
+        +   '<p class="tc-sub">' + t.sub + '</p>'
+        +   '<div class="tc-meta">'
+        +     '<span class="tc-qs"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><b>' + QS_PER_TOPIC + '</b> Qs \u00b7 ~' + Math.ceil(QS_PER_TOPIC * 0.6) + ' min</span>'
+        +     '<span class="tc-go">Challenge<svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>'
+        +   '</div>'
+        + '</a>';
+    }
+
+    function renderCards() {
+      var completed = getCompleted();
+      var html = '';
+      TOPICS.forEach(function (t) {
+        html += cardHTML(t, completed.indexOf(t.slug) !== -1);
+      });
+      grid.innerHTML = html;
+      slider.innerHTML = html;
+
+      // header stats derived from data + live cache
+      var statTopicsEl = document.getElementById('statTopics');
+      var statQsEl = document.getElementById('statQs');
+      var statDoneEl = document.getElementById('statDone');
+      if (statTopicsEl) statTopicsEl.textContent = TOPICS.length;
+      if (statQsEl) statQsEl.textContent = TOPICS.length * QS_PER_TOPIC;
+      if (statDoneEl) statDoneEl.textContent = completed.length;
+
+      revealCards();
+    }
+
+    // ---- click a card -> cache it as completed (only shows Done after opening) ----
+    document.addEventListener('click', function (e) {
+      var card = e.target.closest ? e.target.closest('.topic-card') : null;
+      if (card) markCompleted(card.getAttribute('data-slug'));
+    });
+
+    // ---- scroll-reveal for cards (respects reduced motion) ----
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function revealCards() {
+      if (reduceMotion) {
+        document.querySelectorAll('.topic-card').forEach(function (c) { c.classList.add('in-view'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      document.querySelectorAll('.topic-card:not(.in-view)').forEach(function (c) { io.observe(c); });
+    }
+
+    renderCards();
+
+    // ---- filters: difficulty dropdown + completed toggle ----
+    var diffSelect = document.getElementById('difficultyFilter');
+    var doneToggle = document.getElementById('completedToggle');
+    var doneActive = false;
+
+    function applyFilters() {
+      var diff = diffSelect.value;
+      var showSlider = diff === 'all';
+
+      sliderWrap.classList.toggle('active', showSlider);
+      grid.classList.toggle('hidden', showSlider);
+
+      document.querySelectorAll('.topic-card').forEach(function (card) {
+        var matchesDiff = diff === 'all' || card.getAttribute('data-diff') === diff;
+        var matchesDone = !doneActive || card.getAttribute('data-done') === '1';
+        card.classList.toggle('filtered-out', !(matchesDiff && matchesDone));
+      });
+    }
+
+    diffSelect.addEventListener('change', applyFilters);
+    doneToggle.addEventListener('click', function () {
+      doneActive = !doneActive;
+      doneToggle.classList.toggle('active', doneActive);
+      applyFilters();
+    });
+
+    // ---- slider nav buttons ----
+    var sliderPrev = document.getElementById('sliderPrev');
+    var sliderNext = document.getElementById('sliderNext');
+    function scrollSlider(dir) {
+      var card = slider.querySelector('.topic-card');
+      var step = card ? (card.offsetWidth + 18) * 2 : 320;
+      slider.scrollBy({ left: dir * step, behavior: 'smooth' });
+    }
+    sliderPrev.addEventListener('click', function () { scrollSlider(-1); });
+    sliderNext.addEventListener('click', function () { scrollSlider(1); });
+
+    applyFilters();
+  });
+
+  function goBack() {
+    if (document.referrer && document.referrer.includes(window.location.host)) {
+      history.back();
+    } else {
+      window.location.href = 'index.html';
+    }
+  }
+</script>
+
+</body>
+</html>
