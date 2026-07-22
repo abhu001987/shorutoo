@@ -68,9 +68,20 @@
   /* ---------- Header ---------- */
   header{
     display:flex; align-items:center; justify-content:space-between; gap:16px;
-    padding: 16px clamp(16px,2.4vw,36px);
-    border-bottom: 1px solid var(--line);
+    padding: 14px 20px;
+    border-radius: 22px;
+    border: 1px solid rgba(237,230,211,0.14);
+    background: rgba(27,47,63,0.5);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
     flex-wrap:wrap;
+    pointer-events:auto;
+  }
+  .site-header-fixed{
+    position: fixed; top:0; left:0; right:0; z-index:950;
+    padding: 16px clamp(16px,2.4vw,36px) 0;
+    pointer-events:none;
   }
   .brand{ display:flex; align-items:center; gap:12px; }
   .brand-mark{ width:36px; height:36px; flex-shrink:0; }
@@ -129,14 +140,22 @@
   /* Expandable search panel — sits below the header, toggled by the search icon */
   .search-panel{
     max-height:0; opacity:0; overflow:hidden;
-    padding:0 clamp(16px,2.4vw,36px);
-    border-bottom:1px solid transparent;
-    transition: max-height .32s ease, opacity .24s ease, padding .32s ease, border-color .24s ease;
+    margin: 10px 0 0;
+    padding:0 18px;
+    border-radius:18px;
+    border:1px solid transparent;
+    background: rgba(27,47,63,0);
+    pointer-events:auto;
+    transition: max-height .32s ease, opacity .24s ease, padding .32s ease, border-color .24s ease, background .24s ease, box-shadow .24s ease;
   }
   .search-panel.open{
     max-height:96px; opacity:1;
-    padding:14px clamp(16px,2.4vw,36px) 18px;
-    border-bottom:1px solid var(--line);
+    padding:14px 18px 18px;
+    border:1px solid rgba(237,230,211,0.14);
+    background: rgba(27,47,63,0.5);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
   .search-panel .search-wrap{ max-width:640px; margin:0 auto; order:initial; }
 
@@ -412,6 +431,7 @@
 </head>
 <body>
 
+<div class="site-header-fixed" id="siteHeaderFixed">
 <header>
   <div class="brand">
     <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
@@ -441,6 +461,8 @@
     <div class="search-dropdown" id="searchDropdown"></div>
   </div>
 </div>
+</div>
+<div id="headerSpacer"></div>
 
 <div class="layout">
 
@@ -920,6 +942,14 @@ document.addEventListener('keydown', e => {
 });
 
 /* ---------- Init ---------- */
+function syncHeaderSpacer(){
+  const header = document.querySelector('.site-header-fixed header');
+  const spacer = document.getElementById('headerSpacer');
+  if(header && spacer){ spacer.style.height = (header.getBoundingClientRect().height + 32) + 'px'; }
+}
+window.addEventListener('resize', syncHeaderSpacer);
+window.addEventListener('load', syncHeaderSpacer);
+syncHeaderSpacer();
 renderCollections();
 renderQuickBar();
 renderTopicsGrid();
