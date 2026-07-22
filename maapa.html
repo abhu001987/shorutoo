@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terra Prep — Chart India. Crack the exam.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --navy: #12202C;
+    --navy-soft: #1B2F3F;
+    --navy-softer: #223D4F;
+    --parchment: #E7DEC7;
+    --brass: #C9974B;
+    --brass-bright: #E3B368;
+    --moss: #6B8A6D;
+    --rust: #A6503B;
+    --ink-text: #EDE6D3;
+    --muted: #93A0A8;
+    --muted-dark: #6B7981;
+    --line: rgba(237,230,211,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  html{ overflow-x:hidden; }
+  body{
+    background: var(--navy);
+    color: var(--ink-text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    width:100%;
+  }
+  img,svg{ max-width:100%; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- Header ---------- */
+  header{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding: 16px clamp(14px,4vw,32px);
+    border-bottom: 1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{ width:36px; height:36px; flex-shrink:0; }
+  .brand-text .name{ font-family:'Fraunces',serif; font-weight:600; font-size:18px; letter-spacing:0.01em; }
+  .brand-text .tag{ font-size:10.5px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
+
+  .search-wrap{
+    flex:1 1 260px; max-width:460px;
+    display:flex; align-items:center; gap:10px;
+    background: var(--navy-soft);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 14px;
+    order:3;
+  }
+  .search-wrap input{
+    background:none; border:none; outline:none; color:var(--ink-text);
+    font-family:'Inter',sans-serif; font-size:13.5px; width:100%; min-width:0;
+  }
+  .search-wrap input::placeholder{ color: var(--muted-dark); }
+  .search-wrap svg{ flex-shrink:0; opacity:0.6; }
+
+  .header-right{ display:flex; align-items:center; gap:14px; order:2; margin-left:auto; }
+  .streak{
+    display:flex; align-items:center; gap:8px;
+    background: linear-gradient(135deg, rgba(166,80,59,0.25), rgba(201,151,75,0.18));
+    border:1px solid rgba(201,151,75,0.35);
+    padding:7px 12px; border-radius:10px;
+  }
+  .streak .n{ font-family:'Fraunces',serif; font-weight:600; font-size:14px; color: var(--brass-bright); white-space:nowrap; }
+  .streak .l{ font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+  .avatar{
+    width:34px; height:34px; border-radius:50%; flex-shrink:0;
+    background: linear-gradient(135deg,#6B8A6D,#3F5A41);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:13px;
+    border:1px solid var(--line);
+  }
+  @media (max-width:560px){
+    .streak .l{ display:none; }
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns: 360px 1fr 320px;
+    gap: 20px;
+    padding: 24px clamp(14px,4vw,32px) 10px;
+    align-items:start;
+    max-width:1440px;
+    margin:0 auto;
+  }
+  @media (max-width: 1180px){
+    .layout{ grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Left panel ---------- */
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    background: rgba(201,151,75,0.12);
+    border:1px solid rgba(201,151,75,0.3);
+    color: var(--brass-bright);
+    padding:5px 12px; border-radius:20px;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  h1.hero{
+    font-family:'Fraunces',serif; font-weight:600;
+    font-size: clamp(28px, 4.6vw, 38px); line-height:1.14; letter-spacing:-0.01em;
+    margin:0 0 14px;
+  }
+  h1.hero em{ font-style:italic; color: var(--brass-bright); }
+  .hero-sub{ color: var(--muted); font-size:14.5px; line-height:1.6; margin-bottom:22px; max-width:38ch; }
+
+  .stat-row{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:26px;
+  }
+  .stat-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; min-width:0;
+  }
+  .stat-card .v{ font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--parchment); }
+  .stat-card .k{ font-size:11px; color:var(--muted); margin-top:2px; }
+
+  .section-label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted-dark);
+    margin: 4px 0 12px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+  .collections{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:9px;
+  }
+  @media (max-width:420px){
+    .collections{ grid-template-columns:repeat(3,1fr); }
+  }
+  .coll-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
+    padding:12px 6px; text-align:center; transition: border-color .15s, transform .15s;
+    min-width:0;
+  }
+  .coll-card:hover{ border-color: var(--brass); transform: translateY(-2px); }
+  .coll-card .icon{ font-size:18px; margin-bottom:6px; display:block; }
+  .coll-card .cname{ font-size:11.5px; font-weight:500; color:var(--parchment); overflow-wrap:break-word; }
+  .coll-card .ccount{ font-size:10px; color:var(--muted-dark); font-family:'IBM Plex Mono',monospace; }
+  .coll-more{
+    grid-column: 1/-1;
+    text-align:center; padding:10px; font-size:12px; color:var(--brass-bright);
+    border:1px dashed var(--line); border-radius:10px; margin-top:2px;
+  }
+
+  .level-card{
+    margin-top:24px;
+    background: linear-gradient(135deg, var(--navy-soft), var(--navy-softer));
+    border:1px solid var(--line); border-radius:12px; padding:16px;
+  }
+  .level-card .top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .level-card .top .t{ font-family:'Fraunces',serif; font-size:14px; font-weight:600; }
+  .xp-bar{ height:6px; border-radius:4px; background:rgba(237,230,211,0.1); overflow:hidden; }
+  .xp-fill{ height:100%; background: linear-gradient(90deg, var(--brass), var(--brass-bright)); width:62%; }
+  .xp-label{ font-size:10.5px; color:var(--muted-dark); margin-top:6px; font-family:'IBM Plex Mono',monospace; }
+
+  /* ---------- Map panel ---------- */
+  .map-panel{
+    background: var(--navy-soft);
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:hidden;
+  }
+  .map-stage{
+    position:relative;
+    aspect-ratio: 480 / 600;
+    background: #0F2029;
+    overflow:hidden;
+  }
+  .map-caption{
+    position:absolute; top:16px; left:18px; font-size:10.5px; color:var(--parchment);
+    letter-spacing:0.08em; text-transform:uppercase; z-index:650;
+    background: rgba(18,32,44,0.8); padding:4px 10px; border-radius:6px;
+    pointer-events:none; border:1px solid var(--line);
+  }
+  #leafletMap{ position:absolute; inset:0; width:100%; height:100%; z-index:1; background:#EFE9DA; }
+
+  /* dot-matrix texture laid over the whole real map, tying it to the brand */
+  .dot-overlay{
+    position:absolute; inset:0; z-index:410; pointer-events:none;
+    mix-blend-mode:multiply; opacity:0.55;
+    background-image: radial-gradient(circle at center, rgba(18,32,44,0.55) 0.9px, transparent 0.9px);
+    background-size: 6px 6px;
+  }
+  .dot-overlay::after{
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(227,179,104,0.18), transparent 60%);
+    mix-blend-mode:soft-light;
+  }
+
+  /* Custom brass diamond marker (reused for every location, India or world) */
+  .leaflet-pin{ display:flex; flex-direction:column; align-items:center; }
+  .leaflet-pin .dot{
+    width:24px; height:24px; border-radius:50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--brass);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.45);
+    border: 2px solid rgba(18,32,44,0.65);
+    transition: transform .15s, background .15s;
+  }
+  .leaflet-pin .dot span{ transform: rotate(45deg); font-size:11px; }
+  .leaflet-pin.active .dot{ background: var(--rust); transform: rotate(-45deg) scale(1.15); }
+
+  .compass{
+    position:absolute; bottom:16px; right:16px; width:48px; height:48px; z-index:650;
+    animation: spin 70s linear infinite; opacity:0.9; pointer-events:none;
+  }
+  @keyframes spin{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
+
+  /* Restyle Leaflet's own zoom control to match the brass theme */
+  .leaflet-control-zoom{ border:none !important; margin:16px !important; }
+  .leaflet-control-zoom a{
+    width:30px !important; height:30px !important; line-height:30px !important;
+    background: var(--navy-soft) !important; border:1px solid var(--line) !important;
+    color: var(--parchment) !important;
+  }
+  .leaflet-control-zoom a:hover{ border-color: var(--brass) !important; }
+  .leaflet-control-attribution{
+    background: rgba(18,32,44,0.75) !important; color: var(--muted) !important;
+    font-size:9.5px !important;
+  }
+  .leaflet-control-attribution a{ color: var(--brass-bright) !important; }
+  .leaflet-popup-content-wrapper{ background: var(--navy-soft); color: var(--ink-text); border-radius:10px; }
+  .leaflet-popup-tip{ background: var(--navy-soft); }
+  .leaflet-popup-content{ font-family:'Inter',sans-serif; font-size:12.5px; margin:10px 12px; }
+
+  .quick-bar{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:680px){
+    .quick-bar{ grid-template-columns:repeat(2,1fr); }
+  }
+  .quick-item{
+    display:flex; align-items:center; gap:10px; padding:14px 14px;
+    border-right:1px solid var(--line); border-bottom:1px solid var(--line);
+    min-width:0;
+  }
+  .quick-item:nth-child(4){ border-right:none; }
+  @media (max-width:680px){
+    .quick-item:nth-child(2){ border-right:none; }
+    .quick-item:nth-child(3), .quick-item:nth-child(4){ border-bottom:none; }
+  }
+  .quick-item .qi{ font-size:16px; flex-shrink:0; }
+  .quick-item .qt{ font-size:12.5px; font-weight:600; color:var(--parchment); }
+  .quick-item .qs{ font-size:10.5px; color:var(--muted-dark); }
+
+  /* ---------- Right sidebar ---------- */
+  .detail-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden;
+  }
+  .detail-banner{
+    height:100px; position:relative;
+    display:flex; align-items:flex-end; padding:12px 16px;
+  }
+  .detail-banner .frequently{
+    position:absolute; top:10px; right:10px;
+    background: rgba(18,32,44,0.55); color: var(--brass-bright);
+    font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:4px 8px; border-radius:6px; border:1px solid rgba(201,151,75,0.4);
+  }
+  .detail-body{ padding:16px; }
+  .detail-name{ font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
+  .detail-region{ font-size:12px; color:var(--muted); margin-top:2px; }
+  .detail-coords{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--brass-bright); margin-top:6px; }
+
+  .chip-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+  .chip{
+    font-size:11px; padding:5px 10px; border-radius:20px;
+    background: rgba(107,138,109,0.16); color: var(--parchment);
+    border:1px solid rgba(107,138,109,0.35);
+  }
+
+  .learn-list{ margin-top:16px; display:flex; flex-direction:column; gap:6px; }
+  .learn-item{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:10px 12px; border-radius:9px; background: rgba(237,230,211,0.03);
+    border:1px solid var(--line);
+    transition: border-color .15s;
+  }
+  .learn-item:hover{ border-color: var(--brass); }
+  .learn-item .li-l{ display:flex; align-items:center; gap:10px; min-width:0; }
+  .learn-item .li-icon{ font-size:15px; flex-shrink:0; }
+  .learn-item .li-t{ font-size:12.5px; font-weight:500; }
+  .learn-item .li-s{ font-size:10.5px; color:var(--muted-dark); }
+  .learn-item .arrow{ color:var(--muted-dark); flex-shrink:0; }
+
+  .cta-btn{
+    margin-top:16px; width:100%; padding:12px; border-radius:10px; border:none;
+    background: linear-gradient(135deg, var(--brass), var(--rust));
+    color: #FBF6EA; font-weight:600; font-size:13.5px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    margin-top:32px;
+    border-top:1px solid var(--line);
+    padding: 36px clamp(14px,4vw,32px) 26px;
+  }
+  .footer-grid{
+    max-width:1440px; margin:0 auto;
+    display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap:28px;
+  }
+  @media (max-width:860px){
+    .footer-grid{ grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width:480px){
+    .footer-grid{ grid-template-columns: 1fr; }
+  }
+  .footer-brand{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .footer-brand .name{ font-family:'Fraunces',serif; font-weight:600; font-size:16px; }
+  .footer-about{ font-size:12.5px; color:var(--muted); line-height:1.6; max-width:32ch; }
+  .footer-col h4{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted-dark);
+    margin:0 0 12px; font-weight:600;
+  }
+  .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
+  .footer-col a{ font-size:13px; color:var(--parchment); opacity:0.85; }
+  .footer-col a:hover{ color:var(--brass-bright); opacity:1; }
+  .footer-bottom{
+    max-width:1440px; margin:28px auto 0;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+    padding-top:20px; border-top:1px solid var(--line);
+    font-size:11.5px; color:var(--muted-dark);
+  }
+  .footer-social{ display:flex; gap:10px; }
+  .footer-social a{
+    width:30px; height:30px; border-radius:8px; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:13px;
+  }
+  .footer-social a:hover{ border-color:var(--brass); color:var(--brass-bright); }
+
+  ::selection{ background: var(--brass); color: var(--navy); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#C9974B" stroke-width="1.6"/>
+      <path d="M20 5 L23 18 L20 20 L17 18 Z" fill="#E3B368"/>
+      <path d="M20 35 L23 22 L20 20 L17 22 Z" fill="#6B7981"/>
+      <circle cx="20" cy="20" r="2.4" fill="#E7DEC7"/>
+    </svg>
+    <div class="brand-text">
+      <div class="name">Terra Prep</div>
+      <div class="tag">Chart India · Crack the exam</div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93A0A8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+    <input type="text" placeholder="Search any location, river, mountain, place…" />
+  </div>
+
+  <div class="header-right">
+    <div class="streak">
+      <span style="font-size:16px;">🔥</span>
+      <div>
+        <div class="n">9 Day Streak</div>
+        <div class="l">Keep it up</div>
+      </div>
+    </div>
+    <div class="avatar">RA</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="eyebrow">Explore India</div>
+    <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
+    <p class="hero-sub">Tap any location on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC geography.</p>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="v">4,800+</div><div class="k">Locations mapped</div></div>
+      <div class="stat-card"><div class="v">11,500+</div><div class="k">Practice questions</div></div>
+      <div class="stat-card"><div class="v">30+</div><div class="k">Topic categories</div></div>
+      <div class="stat-card"><div class="v">100%</div><div class="k">Syllabus aligned</div></div>
+    </div>
+
+    <div class="section-label">Popular collections</div>
+    <div class="collections">
+      <div class="coll-card"><span class="icon">🏞️</span><div class="cname">Rivers &amp; Dams</div><div class="ccount">124</div></div>
+      <div class="coll-card"><span class="icon">⛰️</span><div class="cname">Mountains</div><div class="ccount">89</div></div>
+      <div class="coll-card"><span class="icon">🌳</span><div class="cname">National Parks</div><div class="ccount">71</div></div>
+      <div class="coll-card"><span class="icon">⚓</span><div class="cname">Ports</div><div class="ccount">16</div></div>
+      <div class="coll-card"><span class="icon">🏛️</span><div class="cname">UNESCO Sites</div><div class="ccount">41</div></div>
+      <div class="coll-card"><span class="icon">🚂</span><div class="cname">Rail Zones</div><div class="ccount">18</div></div>
+      <div class="coll-card"><span class="icon">🌊</span><div class="cname">Seas &amp; Gulfs</div><div class="ccount">21</div></div>
+      <div class="coll-card"><span class="icon">🏭</span><div class="cname">Industries</div><div class="ccount">37</div></div>
+      <div class="coll-more">View all 30+ topics →</div>
+    </div>
+
+    <div class="level-card">
+      <div class="top">
+        <div class="t">Explorer · Level 4</div>
+        <span class="icon">🧭</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+      <div class="xp-label">1,240 / 2,000 XP</div>
+    </div>
+  </div>
+
+  <!-- MAP PANEL -->
+  <div class="map-panel" id="mapPanel">
+    <div class="map-stage">
+      <div class="map-caption">World Geography · Key Locations</div>
+
+      <div id="leafletMap"></div>
+      <div class="dot-overlay"></div>
+
+      <svg class="compass" viewBox="0 0 60 60" fill="none">
+        <circle cx="30" cy="30" r="27" stroke="#C9974B" stroke-width="1"/>
+        <path d="M30 6 L34 30 L30 30 L26 30 Z" fill="#E3B368"/>
+        <path d="M30 54 L34 30 L30 30 L26 30 Z" fill="#6B7981"/>
+        <path d="M6 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
+        <path d="M54 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
+        <text x="30" y="12" text-anchor="middle" fill="#E7DEC7" font-size="6" font-family="IBM Plex Mono">N</text>
+      </svg>
+    </div>
+
+    <div class="quick-bar">
+      <div class="quick-item"><span class="qi">🎯</span><div><div class="qt">Daily Challenge</div><div class="qs">10 points</div></div></div>
+      <div class="quick-item"><span class="qi">🎲</span><div><div class="qt">Random Place</div><div class="qs">Test yourself</div></div></div>
+      <div class="quick-item"><span class="qi">📊</span><div><div class="qt">My Progress</div><div class="qs">Track journey</div></div></div>
+      <div class="quick-item"><span class="qi">🔖</span><div><div class="qt">Saved Places</div><div class="qs">9 locations</div></div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT DETAIL PANEL -->
+  <div class="right-panel">
+    <div class="detail-card" id="detailCard"></div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
+          <circle cx="20" cy="20" r="18" stroke="#C9974B" stroke-width="1.6"/>
+          <path d="M20 5 L23 18 L20 20 L17 18 Z" fill="#E3B368"/>
+          <path d="M20 35 L23 22 L20 20 L17 22 Z" fill="#6B7981"/>
+          <circle cx="20" cy="20" r="2.4" fill="#E7DEC7"/>
+        </svg>
+        <div class="name">Terra Prep</div>
+      </div>
+      <p class="footer-about">A map-first way to learn India's geography — built for exam aspirants who'd rather explore a place than memorize a list.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#">Map home</a></li>
+        <li><a href="#">Current affairs</a></li>
+        <li><a href="#">Practice questions</a></li>
+        <li><a href="#">Collections</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Account</h4>
+      <ul>
+        <li><a href="#">Bookmarks</a></li>
+        <li><a href="#">Progress</a></li>
+        <li><a href="#">Leaderboards</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help centre</a></li>
+        <li><a href="#">Contact us</a></li>
+        <li><a href="#">Privacy policy</a></li>
+        <li><a href="#">Terms of use</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Terra Prep. Built for aspirants, not algorithms.</span>
+    <div class="footer-social">
+      <a href="#" aria-label="Instagram">📷</a>
+      <a href="#" aria-label="YouTube">▶️</a>
+      <a href="#" aria-label="Twitter">🐦</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const LOCATIONS = {
+  karakoram: {
+    name:"Karakoram Range", region:"Jammu & Kashmir / Ladakh", coords:"35.86°N, 76.55°E",
+    banner:"linear-gradient(135deg,#5C7A8A,#2C4250)", freq:false,
+    topics:["Glaciers","K2","Himalayan Systems"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","18 Cards"]]
+  },
+  thar: {
+    name:"Thar Desert", region:"Rajasthan", coords:"27.0°N, 71.0°E",
+    banner:"linear-gradient(135deg,#C9A968,#8A6B3E)", freq:true,
+    topics:["Arid Climate","Desert National Park","Sand Dunes"],
+    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","14 Questions"],["📰","Current Affairs","5 Articles"],["🗂️","Flashcards","22 Cards"]]
+  },
+  kandla: {
+    name:"Kandla Port", region:"Gujarat", coords:"23.03°N, 70.22°E",
+    banner:"linear-gradient(135deg,#3E6B7A,#20323C)", freq:false,
+    topics:["Major Ports","Gulf of Kutch","Trade Routes"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","7 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","10 Cards"]]
+  },
+  ganga: {
+    name:"Ganga River System", region:"Uttarakhand → West Bengal", coords:"25.31°N, 83.01°E",
+    banner:"linear-gradient(135deg,#4C7A8F,#22414F)", freq:true,
+    topics:["River Systems","Tributaries","Delta Formation"],
+    practice:[["🗺️","Map Practice","8 Questions"],["📄","Previous Year Qs","16 Questions"],["📰","Current Affairs","6 Articles"],["🗂️","Flashcards","30 Cards"]]
+  },
+  khajuraho: {
+    name:"Khajuraho", region:"Madhya Pradesh", coords:"24.85°N, 79.93°E",
+    banner:"linear-gradient(135deg,#B58A4E,#6E4E28)", freq:false,
+    topics:["UNESCO Site","Chandela Dynasty","Temple Architecture"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","8 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","15 Cards"]]
+  },
+  kaziranga: {
+    name:"Kaziranga National Park", region:"Assam, India", coords:"26.58°N, 93.17°E",
+    banner:"linear-gradient(135deg,#5C7A5E,#33472F)", freq:true,
+    topics:["National Parks","Assam","Biodiversity","Wildlife Conservation"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","12 Questions"],["📰","Current Affairs","8 Articles"],["🗂️","Flashcards","25 Cards"]]
+  },
+  chilika: {
+    name:"Chilika Lake", region:"Odisha", coords:"19.7°N, 85.42°E",
+    banner:"linear-gradient(135deg,#4E7A87,#22434B)", freq:false,
+    topics:["Ramsar Site","Lagoons","Migratory Birds"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","16 Cards"]]
+  },
+  hampi: {
+    name:"Hampi", region:"Karnataka", coords:"15.34°N, 76.46°E",
+    banner:"linear-gradient(135deg,#A65C42,#5C2E1E)", freq:false,
+    topics:["Historical Site","Vijayanagara Empire","UNESCO"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","19 Cards"]]
+  },
+  ghats: {
+    name:"Western Ghats", region:"Maharashtra → Kerala", coords:"11.5°N, 76.5°E",
+    banner:"linear-gradient(135deg,#4E7A55,#26402A)", freq:true,
+    topics:["Biodiversity Hotspot","Escarpment","Endemic Species"],
+    practice:[["🗺️","Map Practice","7 Questions"],["📄","Previous Year Qs","13 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","21 Cards"]]
+  },
+  kanyakumari: {
+    name:"Kanyakumari", region:"Tamil Nadu", coords:"8.08°N, 77.54°E",
+    banner:"linear-gradient(135deg,#4C6E8A,#20344A)", freq:false,
+    topics:["Land's End","Confluence of Seas","Coastal Geography"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","6 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","12 Cards"]]
+  }
+};
+
+function renderDetail(key){
+  const d = LOCATIONS[key];
+  const card = document.getElementById('detailCard');
+  card.innerHTML = `
+    <div class="detail-banner" style="background:${d.banner}">
+      ${d.freq ? '<div class="frequently">Frequently Asked</div>' : ''}
+    </div>
+    <div class="detail-body">
+      <div class="detail-name">${d.name}</div>
+      <div class="detail-region">${d.region}</div>
+      <div class="detail-coords">${d.coords}</div>
+      <div class="chip-row">${d.topics.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      <div class="section-label" style="margin-top:18px;">Practice &amp; learn</div>
+      <div class="learn-list">
+        ${d.practice.map(p=>`
+          <div class="learn-item">
+            <div class="li-l"><span class="li-icon">${p[0]}</span><div><div class="li-t">${p[1]}</div><div class="li-s">${p[2]}</div></div></div>
+            <span class="arrow">›</span>
+          </div>`).join('')}
+      </div>
+      <button class="cta-btn">🚀 Start learning</button>
+    </div>
+  `;
+}
+
+/* ---------- Dot-matrix India map ---------- */
+const INDIA_PATH_D = "M185,8 L220,25 L255,45 L290,55 L320,60 L365,68 L385,78 L400,95 L430,100 L455,90 L458,130 L430,150 L415,175 L395,195 L375,175 L365,155 L345,140 L340,165 L355,195 L345,215 L330,250 L320,290 L330,330 L322,370 L310,410 L295,450 L275,490 L255,530 L230,570 L205,590 L185,565 L175,520 L170,480 L165,440 L168,400 L160,360 L150,320 L140,290 L110,280 L75,300 L60,275 L85,255 L70,235 L40,220 L55,195 L90,190 L110,160 L100,120 L120,85 L140,55 L165,30 Z";
+const VBW = 480, VBH = 620;
+
+function lerp(a,b,t){ return a + (b-a)*t; }
+function lerpColor(c1,c2,t){
+  return [ lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t) ];
+}
+// Elevation-style palette: cool Himalayan blue-grey (north) -> warm brass plains -> moss peninsula (south)
+const STOPS = [
+  { t:0.00, c:[122,168,189] },  // Himalaya haze
+  { t:0.28, c:[227,179,104] },  // brass plains
+  { t:0.55, c:[201,169,104] },  // warm plateau
+  { t:0.80, c:[139,157,110] },  // deccan green
+  { t:1.00, c:[107,138,109] }   // moss south
+];
+function colorAt(t){
+  for(let i=0;i<STOPS.length-1;i++){
+    if(t>=STOPS[i].t && t<=STOPS[i+1].t){
+      const localT = (t-STOPS[i].t)/(STOPS[i+1].t-STOPS[i].t);
+      return lerpColor(STOPS[i].c, STOPS[i+1].c, localT);
+    }
+  }
+  return STOPS[STOPS.length-1].c;
+}
+
+function drawIndiaCanvas(){
+  const canvas = document.getElementById('indiaCanvas');
+  if(!canvas) return;
+  const stage = canvas.parentElement;
+  const rect = stage.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  if(rect.width < 10 || rect.height < 10) return;
+
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const scaleX = (rect.width / VBW) * dpr;
+  const scaleY = (rect.height / VBH) * dpr;
+  ctx.setTransform(scaleX, 0, 0, scaleY, 0, 0);
+
+  const path = new Path2D(INDIA_PATH_D);
+  const step = 6.4;
+  const armLen = 1.5;
+
+  ctx.lineCap = 'round';
+  ctx.shadowColor = 'rgba(227,179,104,0.35)';
+  ctx.shadowBlur = 2.2;
+
+  for(let vy = 4; vy <= VBH; vy += step){
+    const t = vy / VBH;
+    const rowJitterOffset = ((vy/step) % 2 === 0) ? 0 : step/2; // brick offset for denser, organic packing
+    for(let vx = 4 - rowJitterOffset; vx <= VBW; vx += step){
+      if(!ctx.isPointInPath(path, vx, vy)) continue;
+      const jitter = 0.72 + Math.random()*0.5;
+      const [r,g,b] = colorAt(t);
+      ctx.strokeStyle = `rgba(${r|0},${g|0},${b|0},${Math.min(1,0.55*jitter+0.25)})`;
+      ctx.lineWidth = 1.15;
+      ctx.beginPath();
+      ctx.moveTo(vx-armLen, vy);
+      ctx.lineTo(vx+armLen, vy);
+      ctx.moveTo(vx, vy-armLen);
+      ctx.lineTo(vx, vy+armLen);
+      ctx.stroke();
+    }
+  }
+  ctx.shadowBlur = 0;
+}
+
+let resizeRAF;
+new ResizeObserver(()=>{
+  cancelAnimationFrame(resizeRAF);
+  resizeRAF = requestAnimationFrame(drawIndiaCanvas);
+}).observe(document.querySelector('.map-stage'));
+
+window.addEventListener('load', drawIndiaCanvas);
+drawIndiaCanvas();
+
+document.querySelectorAll('.pin').forEach(pin=>{
+  pin.addEventListener('click', ()=>{
+    document.querySelectorAll('.pin').forEach(p=>p.classList.remove('active'));
+    pin.classList.add('active');
+    renderDetail(pin.dataset.loc);
+  });
+});
+
+renderDetail('kaziranga');
+</script>
+
+</body>
+</html>
