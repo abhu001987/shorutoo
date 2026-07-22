@@ -1,1667 +1,520 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Shoruto — Daily Mock Tests for Current Affairs & GS, Speak or Write</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Daily mock tests on trending current affairs, history, polity, economics, environment, geography, science, society, international relations and government schemes. Speak or write your answer and get instant AI evaluation.">
-  <link rel="icon" href="/icon-192.png" type="image/png">
-  <!-- Theme: set instantly, before any CSS loads -->
-  <script>
-    (function() {
-      try {
-        var theme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {}
-    })();
-  </script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terra Prep — Chart India. Crack the exam.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #12202C;
+    --navy-soft: #1B2F3F;
+    --navy-softer: #223D4F;
+    --parchment: #E7DEC7;
+    --parchment-dim: #D9CEB2;
+    --brass: #C9974B;
+    --brass-bright: #E3B368;
+    --moss: #6B8A6D;
+    --rust: #A6503B;
+    --ink-text: #EDE6D3;
+    --muted: #93A0A8;
+    --muted-dark: #6B7981;
+    --line: rgba(237,230,211,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--navy);
+    color: var(--ink-text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  .display{ font-family:'Fraunces',serif; }
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
 
-  <!-- Shared CSS & JS (theme) -->
-  <link rel="stylesheet" href="theme.css" />
-  <script src="theme.js"></script>
+  /* ---------- Header ---------- */
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{ width:38px; height:38px; }
+  .brand-text .name{ font-family:'Fraunces',serif; font-weight:600; font-size:19px; letter-spacing:0.01em; }
+  .brand-text .tag{ font-size:11px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
 
-  <!-- Animated subject-card icons -->
-  <style>
-    .subject-tile .icon-box {
-      perspective: 700px;
-      position: relative;
-      overflow: visible;
-    }
-    .subject-tile .icon-box svg {
-      transform-style: preserve-3d;
-      width: 26px;
-      height: 26px;
-    }
+  .search-wrap{
+    flex:1; max-width:460px; margin:0 40px;
+    display:flex; align-items:center; gap:10px;
+    background: var(--navy-soft);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 14px;
+  }
+  .search-wrap input{
+    background:none; border:none; outline:none; color:var(--ink-text);
+    font-family:'Inter',sans-serif; font-size:13.5px; width:100%;
+  }
+  .search-wrap input::placeholder{ color: var(--muted-dark); }
+  .search-wrap svg{ flex-shrink:0; opacity:0.6; }
 
-    /* colour accents per subject — kept subtle */
-    .box-history   { color: #E8C468; background: rgba(232,196,104,0.12) !important; }
-    .box-polity    { color: #9F7AFF; background: rgba(159,122,255,0.12) !important; }
-    .box-economics { color: #5B7FFF; background: rgba(91,127,255,0.12) !important; }
-    .box-environment { color: #34D399; background: rgba(52,211,153,0.12) !important; }
-    .box-geography { color: #38BDF8; background: rgba(56,189,248,0.12) !important; }
-    .box-science   { color: #F472B6; background: rgba(244,114,182,0.12) !important; }
-    .box-ir        { color: #FB923C; background: rgba(251,146,60,0.12) !important; }
-    .box-schemes   { color: #2DD4BF; background: rgba(45,212,191,0.12) !important; }
+  .header-right{ display:flex; align-items:center; gap:16px; }
+  .streak{
+    display:flex; align-items:center; gap:8px;
+    background: linear-gradient(135deg, rgba(166,80,59,0.25), rgba(201,151,75,0.18));
+    border:1px solid rgba(201,151,75,0.35);
+    padding:8px 14px; border-radius:10px;
+  }
+  .streak .n{ font-family:'Fraunces',serif; font-weight:600; font-size:15px; color: var(--brass-bright); }
+  .streak .l{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+  .avatar{
+    width:36px; height:36px; border-radius:50%;
+    background: linear-gradient(135deg,#6B8A6D,#3F5A41);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:14px;
+    border:1px solid var(--line);
+  }
 
-    /* History — Taj Mahal, gentle 3D tilt/float */
-    @keyframes tajFloat {
-      0%, 100% { transform: translateY(0) rotateY(0deg); }
-      50%      { transform: translateY(-3px) rotateY(14deg); }
-    }
-    .icon-history { animation: tajFloat 4s ease-in-out infinite; transform-origin: center bottom; }
+  /* ---------- Layout ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns: 380px 1fr 340px;
+    gap: 22px;
+    padding: 26px 32px 40px;
+    align-items:start;
+  }
+  @media (max-width: 1180px){
+    .layout{ grid-template-columns: 1fr; }
+  }
 
-    /* Geography — planet with orbiting ring */
-    @keyframes ringSpin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    .icon-geo-ring { animation: ringSpin 5s linear infinite; transform-origin: 12px 12px; }
-    @keyframes planetSpin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(-360deg); }
-    }
-    .icon-geo-globe { animation: planetSpin 9s linear infinite; transform-origin: 12px 12px; }
+  /* ---------- Left panel ---------- */
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    background: rgba(201,151,75,0.12);
+    border:1px solid rgba(201,151,75,0.3);
+    color: var(--brass-bright);
+    padding:5px 12px; border-radius:20px;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  h1.hero{
+    font-family:'Fraunces',serif; font-weight:600;
+    font-size:38px; line-height:1.12; letter-spacing:-0.01em;
+    margin:0 0 14px;
+  }
+  h1.hero em{ font-style:italic; color: var(--brass-bright); }
+  .hero-sub{ color: var(--muted); font-size:14.5px; line-height:1.6; margin-bottom:22px; max-width:34ch; }
 
-    /* Environment — trees swaying like wind */
-    @keyframes sway {
-      0%, 100% { transform: rotate(-5deg); }
-      50%      { transform: rotate(5deg); }
-    }
-    .icon-tree { transform-origin: 12px 20px; animation: sway 3s ease-in-out infinite; }
-    .icon-tree.t2 { animation-delay: 0.4s; }
+  .stat-row{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:26px;
+  }
+  .stat-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px;
+  }
+  .stat-card .v{ font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--parchment); }
+  .stat-card .k{ font-size:11px; color:var(--muted); margin-top:2px; }
 
-    /* Economics — bars growing/pulsing like a live graph */
-    @keyframes barGrow {
-      0%, 100% { transform: scaleY(0.55); }
-      50%      { transform: scaleY(1); }
-    }
-    .icon-bar { transform-box: fill-box; transform-origin: bottom; animation: barGrow 1.8s ease-in-out infinite; }
-    .icon-bar.b2 { animation-delay: 0.25s; }
-    .icon-bar.b3 { animation-delay: 0.5s; }
+  .section-label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted-dark);
+    margin: 4px 0 12px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label::after{ content:''; flex:1; height:1px; background:var(--line); }
 
-    /* Polity — scales of justice, gentle swing */
-    @keyframes scaleSwing {
-      0%, 100% { transform: rotate(-7deg); }
-      50%      { transform: rotate(7deg); }
-    }
-    .icon-scale-beam { transform-box: fill-box; transform-origin: center; animation: scaleSwing 3s ease-in-out infinite; }
+  .collections{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:9px;
+  }
+  .coll-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
+    padding:12px 8px; text-align:center; transition: border-color .15s, transform .15s;
+  }
+  .coll-card:hover{ border-color: var(--brass); transform: translateY(-2px); }
+  .coll-card .icon{ font-size:18px; margin-bottom:6px; display:block; }
+  .coll-card .cname{ font-size:12px; font-weight:500; color:var(--parchment); }
+  .coll-card .ccount{ font-size:10.5px; color:var(--muted-dark); font-family:'IBM Plex Mono',monospace; }
+  .coll-more{
+    grid-column: span 4;
+    text-align:center; padding:10px; font-size:12px; color:var(--brass-bright);
+    border:1px dashed var(--line); border-radius:10px; margin-top:2px;
+  }
 
-    /* Science — neurons pulsing */
-    @keyframes neuronPulse {
-      0%, 100% { opacity: 0.45; transform: scale(0.85); }
-      50%      { opacity: 1; transform: scale(1.15); }
-    }
-    .icon-neuron-dot { transform-box: fill-box; transform-origin: center; animation: neuronPulse 1.8s ease-in-out infinite; }
-    .icon-neuron-dot.n2 { animation-delay: 0.3s; }
-    .icon-neuron-dot.n3 { animation-delay: 0.6s; }
-    .icon-neuron-dot.n4 { animation-delay: 0.9s; }
-    .icon-neuron-dot.n5 { animation-delay: 1.2s; }
+  .level-card{
+    margin-top:24px;
+    background: linear-gradient(135deg, var(--navy-soft), var(--navy-softer));
+    border:1px solid var(--line); border-radius:12px; padding:16px;
+  }
+  .level-card .top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .level-card .top .t{ font-family:'Fraunces',serif; font-size:14px; font-weight:600; }
+  .level-card .top .icon{ font-size:16px; }
+  .xp-bar{ height:6px; border-radius:4px; background:rgba(237,230,211,0.1); overflow:hidden; }
+  .xp-fill{ height:100%; background: linear-gradient(90deg, var(--brass), var(--brass-bright)); width:62%; }
+  .xp-label{ font-size:10.5px; color:var(--muted-dark); margin-top:6px; font-family:'IBM Plex Mono',monospace; }
 
-    /* International Relations — flags rotating around a center axis (3D carousel) */
-    @keyframes flagsRotate {
-      from { transform: rotateY(0deg); }
-      to   { transform: rotateY(360deg); }
-    }
-    .icon-flag-wrap { animation: flagsRotate 6s linear infinite; transform-origin: 12px 12px; }
+  /* ---------- Map panel ---------- */
+  .map-panel{
+    position:relative;
+    background: radial-gradient(ellipse at 30% 20%, #16394A 0%, #0F2029 70%);
+    border:1px solid var(--line);
+    border-radius:16px;
+    min-height:640px;
+    overflow:hidden;
+  }
+  .map-panel::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(237,230,211,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(237,230,211,0.035) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events:none;
+  }
+  .map-caption{
+    position:absolute; top:18px; left:22px; font-size:11px; color:var(--muted-dark);
+    letter-spacing:0.08em; text-transform:uppercase; z-index:3;
+  }
+  .india-svg{ position:absolute; inset:0; width:100%; height:100%; z-index:1; }
+  .india-shape{
+    fill: url(#terrainGradient);
+    stroke: rgba(201,151,75,0.55);
+    stroke-width:1.4;
+  }
 
-    /* Government Schemes — building with pulsing cross (bank + hospital) */
-    @keyframes crossPulse {
-      0%, 100% { opacity: 0.55; transform: scale(0.9); }
-      50%      { opacity: 1; transform: scale(1.15); }
-    }
-    .icon-cross { transform-box: fill-box; transform-origin: center; animation: crossPulse 2s ease-in-out infinite; }
+  .pin{
+    position:absolute; transform: translate(-50%,-100%);
+    z-index:4; display:flex; flex-direction:column; align-items:center;
+    background:none; border:none; padding:0;
+  }
+  .pin .dot{
+    width:28px; height:28px; border-radius:50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--brass);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    border: 2px solid rgba(18,32,44,0.6);
+    transition: transform .18s, background .18s;
+  }
+  .pin .dot span{ transform: rotate(45deg); font-size:12px; }
+  .pin.active .dot, .pin:hover .dot{ background: var(--rust); transform: rotate(-45deg) scale(1.12); }
+  .pin .label{
+    margin-top:4px; font-size:10.5px; white-space:nowrap;
+    background: rgba(18,32,44,0.85); padding:2px 7px; border-radius:5px;
+    color: var(--parchment); border:1px solid var(--line);
+    opacity:0; transition:opacity .15s; pointer-events:none;
+  }
+  .pin:hover .label, .pin.active .label{ opacity:1; }
 
-    @media (prefers-reduced-motion: reduce) {
-      .icon-history, .icon-geo-ring, .icon-geo-globe, .icon-tree, .icon-bar,
-      .icon-scale-beam, .icon-neuron-dot, .icon-flag-wrap, .icon-cross {
-        animation: none !important;
-      }
-    }
+  .compass{
+    position:absolute; bottom:20px; right:22px; width:64px; height:64px; z-index:3;
+    animation: spin 60s linear infinite;
+    opacity:0.85;
+  }
+  @keyframes spin{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
 
-    /* ===== Glassmorphism ticker strip with per-word glow ===== */
-    .strip {
-      position: relative;
-      overflow: hidden;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(16px) saturate(140%);
-      -webkit-backdrop-filter: blur(16px) saturate(140%);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
-    }
-    [data-theme="light"] .strip {
-      background: rgba(255,255,255,0.45);
-      border-top: 1px solid rgba(11,26,51,0.06);
-      border-bottom: 1px solid rgba(11,26,51,0.06);
-      box-shadow: 0 8px 32px rgba(11,26,51,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
-    }
+  .zoom-ctrl{
+    position:absolute; top:20px; right:20px; z-index:3;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .zoom-ctrl button{
+    width:32px; height:32px; border-radius:8px;
+    background: var(--navy-soft); border:1px solid var(--line);
+    color: var(--parchment); font-size:16px; line-height:1;
+  }
+  .zoom-ctrl button:hover{ border-color: var(--brass); }
 
-    .strip-word {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-dim, #7a8096);
-      animation: wordLight 16.5s ease-in-out infinite;
-      animation-delay: var(--d, 0s);
-    }
-    .strip-word svg {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+  .quick-bar{
+    position:absolute; bottom:0; left:0; right:0; z-index:3;
+    display:flex; gap:0; border-top:1px solid var(--line);
+    background: rgba(18,32,44,0.75); backdrop-filter: blur(6px);
+  }
+  .quick-item{
+    flex:1; display:flex; align-items:center; gap:10px; padding:14px 16px;
+    border-right:1px solid var(--line);
+  }
+  .quick-item:last-child{ border-right:none; }
+  .quick-item .qi{ font-size:16px; }
+  .quick-item .qt{ font-size:12.5px; font-weight:600; color:var(--parchment); }
+  .quick-item .qs{ font-size:10.5px; color:var(--muted-dark); }
 
-    @keyframes wordLight {
-      0%, 4%    { color: var(--text-dim, #7a8096); filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
-      7%        { color: var(--clr); filter: drop-shadow(0 0 6px var(--clr)); }
-      11%       { color: var(--clr); filter: drop-shadow(0 0 4px var(--clr)); }
-      15%, 100% { color: var(--text-dim, #7a8096); filter: drop-shadow(0 0 0 rgba(0,0,0,0)); }
-    }
+  /* ---------- Right sidebar ---------- */
+  .detail-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden;
+  }
+  .detail-banner{
+    height:110px; position:relative;
+    display:flex; align-items:flex-end; padding:12px 16px;
+  }
+  .detail-banner .frequently{
+    position:absolute; top:10px; right:10px;
+    background: rgba(18,32,44,0.55); color: var(--brass-bright);
+    font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:4px 8px; border-radius:6px; border:1px solid rgba(201,151,75,0.4);
+  }
+  .detail-body{ padding:16px; }
+  .detail-name{ font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
+  .detail-region{ font-size:12px; color:var(--muted); margin-top:2px; }
+  .detail-coords{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--brass-bright); margin-top:6px; }
 
-    @media (prefers-reduced-motion: reduce) {
-      .strip-word { animation: none; }
-    }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+  .chip{
+    font-size:11px; padding:5px 10px; border-radius:20px;
+    background: rgba(107,138,109,0.16); color: var(--parchment);
+    border:1px solid rgba(107,138,109,0.35);
+  }
 
-    /* =========================================================
-       FIX: mock-card typed transcript must not resize the card.
-       The typing animation was changing .mock-transcript's height
-       every keystroke, which pushed the whole hero (and the page
-       below it) up/down on mobile. Locking the transcript to a
-       fixed, scrollable box removes that reflow completely while
-       keeping the exact same typing animation/JS behaviour.
-       ========================================================= */
-    .mock-transcript {
-      display: flex;
-      flex-direction: column;
-    }
-    .mock-typed {
-      display: block;
-      height: clamp(78px, 22vw, 96px);
-      max-height: clamp(78px, 22vw, 96px);
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .mock-typed::-webkit-scrollbar { width: 0; height: 0; display: none; }
-    .mock-card, .mock-body, .mock-meters { contain: layout; }
+  .learn-list{ margin-top:16px; display:flex; flex-direction:column; gap:6px; }
+  .learn-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 12px; border-radius:9px; background: rgba(237,230,211,0.03);
+    border:1px solid var(--line);
+    transition: border-color .15s;
+  }
+  .learn-item:hover{ border-color: var(--brass); }
+  .learn-item .li-l{ display:flex; align-items:center; gap:10px; }
+  .learn-item .li-icon{ font-size:15px; }
+  .learn-item .li-t{ font-size:12.5px; font-weight:500; }
+  .learn-item .li-s{ font-size:10.5px; color:var(--muted-dark); }
+  .learn-item .arrow{ color:var(--muted-dark); }
 
-    /* =========================================================
-       Section rhythm normalization — consistent vertical gaps
-       so sections don't feel randomly tight/loose next to each
-       other. Doesn't touch the header/nav.
-       ========================================================= */
-    .section { padding-top: 64px; padding-bottom: 64px; }
-    .section-sm { padding-top: 32px; padding-bottom: 32px; }
-    .section-flush-top { padding-top: 0; }
-    .section-tight-top { padding-top: 32px; }
-    @media (max-width: 720px) {
-      .section { padding-top: 44px; padding-bottom: 44px; }
-      .section-sm { padding-top: 24px; padding-bottom: 24px; }
-      .section-tight-top { padding-top: 24px; }
-    }
+  .cta-btn{
+    margin-top:16px; width:100%; padding:12px; border-radius:10px; border:none;
+    background: linear-gradient(135deg, var(--brass), var(--rust));
+    color: #FBF6EA; font-weight:600; font-size:13.5px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
 
-    /* =========================================================
-       CONNECT — floating brand icon (bottom-right).
-       Uses the Shoruto logo mark so the floating button reads as
-       "chat with Shoruto / the community" rather than a generic bot.
-       ========================================================= */
-    .connect-fab {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 999;
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(145deg, rgba(91,127,255,0.22), rgba(159,122,255,0.22));
-      backdrop-filter: blur(14px) saturate(140%);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
-      border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: 0 10px 30px rgba(20,20,40,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
-      cursor: pointer;
-      text-decoration: none;
-      perspective: 600px;
-    }
-    [data-theme="light"] .connect-fab {
-      background: linear-gradient(145deg, rgba(91,127,255,0.16), rgba(159,122,255,0.16));
-      border: 1px solid rgba(11,26,51,0.08);
-      box-shadow: 0 10px 30px rgba(11,26,51,0.14), inset 0 1px 0 rgba(255,255,255,0.6);
-    }
-    .connect-fab .ring {
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(91,127,255,0.45);
-      animation: connectPulse 2.4s ease-out infinite;
-    }
-    .connect-fab .ring2 { animation-delay: 0.9s; border-color: rgba(159,122,255,0.35); }
-    @keyframes connectPulse {
-      0%   { transform: scale(0.85); opacity: 0.9; }
-      80%  { transform: scale(1.35); opacity: 0; }
-      100% { transform: scale(1.35); opacity: 0; }
-    }
-    .connect-fab svg {
-       width: 34px;
-       height: 34px;
-   }
-     
-    .connect-fab .tip {
-      position: absolute;
-      right: 74px;
-      bottom: 18px;
-      padding: 7px 12px;
-      border-radius: 10px;
-      background: var(--card, rgba(15,17,26,0.92));
-      border: 1px solid var(--border, rgba(255,255,255,0.1));
-      font: 500 12.5px/1 'Inter', sans-serif;
-      color: var(--text, #eef1fb);
-      white-space: nowrap;
-      opacity: 0;
-      transform: translateX(6px);
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      pointer-events: none;
-    }
-    @media (hover: hover) and (pointer: fine) {
-  .connect-fab:hover .tip { opacity: 1; transform: translateX(0); }
-  .connect-fab:hover svg { animation-play-state: paused; }
-    }
-    
-    /* =========================================================
-       PLAY & LEARN — study-game hero + slider (Match the Strait /
-       Seas / Volcano / Currents / History). Redesigned to lead with
-       a proper two-column hero (headline+copy left, illustrated
-       route map right) instead of dropping straight into cards,
-       matching the reference layout: an adventure-map graphic with
-       connected waypoints for each game.
-
-       UPDATE: the boxed/bordered card that used to sit around the
-       route map has been removed — the animation now sits directly
-       on the page background so it blends with the surrounding UI
-       instead of looking like a separate panel. Height reduced, and
-       a History node/game-card has been added alongside the
-       existing four.
-       ========================================================= */
-    .games-section { position: relative; }
-
-    .games-hero {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 40px;
-      align-items: center;
-      margin-bottom: 36px;
-    }
-    .games-hero-copy h2 {
-      font-size: clamp(1.7rem, 2.4vw, 2.15rem);
-      line-height: 1.18;
-      margin-bottom: 14px;
-    }
-    .games-hero-copy .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .games-hero-copy p { max-width: 480px; }
-
-    /* Route-map area — no card box, no border, no background panel.
-       Just the dotted backdrop + path + floating nodes sitting on
-       the page. Height reduced vs. the old boxed version. */
-    .games-map-card {
-      position: relative;
-      width: 100%;
-      max-width: 560px;
-      aspect-ratio: 16/7.5;
-      margin-left: auto;
-      padding: 10px 10px;
-    }
-    .route-panel-bg {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    .route-bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      overflow: visible;
-      color: var(--text-dim, #7a8096);
-    }
-    .route-path {
-      stroke: url(#routeStroke);
-      animation: routeFlow 2.4s linear infinite;
-    }
-    @keyframes routeFlow {
-      0%   { stroke-dashoffset: 0; }
-      100% { stroke-dashoffset: -22; }
-    }
-
-    .route-node {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: inherit;
-      transform: translate(-50%,-50%);
-      animation: nodeBob 5s ease-in-out infinite;
-    }
-    .route-node.rn1 { left: 8%;  top: 46%; animation-duration: 4.6s; }
-    .route-node.rn2 { left: 28%; top: 72%; animation-duration: 5.2s; animation-delay: 0.3s; }
-    .route-node.rn3 { left: 50%; top: 40%; animation-duration: 5s;   animation-delay: 0.6s; }
-    .route-node.rn4 { left: 72%; top: 68%; animation-duration: 5.6s; animation-delay: 0.9s; }
-    .route-node.rn5 { left: 92%; top: 30%; animation-duration: 5.8s; animation-delay: 1.2s; }
-    @keyframes nodeBob {
-      0%, 100% { margin-top: 0; }
-      50%      { margin-top: -9px; }
-    }
-
-    .route-ring {
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 1.5px solid var(--nc);
-      opacity: 0;
-      animation: routeRingPulse 2.6s ease-out infinite;
-    }
-    @keyframes routeRingPulse {
-      0%   { transform: scale(0.85); opacity: 0.7; }
-      75%  { transform: scale(1.45); opacity: 0; }
-      100% { transform: scale(1.45); opacity: 0; }
-    }
-
-    .route-icon {
-      position: relative;
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: color-mix(in srgb, var(--nc) 16%, var(--bg, #0d1220));
-      border: 1.5px solid var(--nc);
-      color: var(--nc);
-      box-shadow: 0 0 18px color-mix(in srgb, var(--nc) 35%, transparent);
-    }
-    .route-icon svg { width: 20px; height: 20px; }
-    .route-label {
-      font: 600 12px/1.3 'Inter', sans-serif;
-      text-align: center;
-      color: var(--text, #eef1fb);
-      white-space: nowrap;
-    }
-
-    @media (max-width: 860px) {
-      .games-map-card { padding: 8px; aspect-ratio: 4/3.1; max-width: 420px; margin: 0 auto; }
-      .route-node.rn1 { left: 10%; top: 42%; }
-      .route-node.rn2 { left: 30%; top: 74%; }
-      .route-node.rn3 { left: 52%; top: 36%; }
-      .route-node.rn4 { left: 74%; top: 70%; }
-      .route-node.rn5 { left: 92%; top: 26%; }
-      .route-label { font-size: 11px; }
-      .route-icon { width: 38px; height: 38px; }
-      .route-icon svg { width: 17px; height: 17px; }
-    }
-
-    .games-slider-wrap {
-      position: relative;
-      overflow: hidden;
-    }
-    .games-track {
-      display: flex;
-      gap: 22px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      padding: 6px 6px 18px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .games-track::-webkit-scrollbar { display: none; }
-    .game-card {
-      position: relative;
-      flex: 0 0 auto;
-      width: 250px;
-      scroll-snap-align: start;
-      border-radius: 18px;
-      padding: 22px 20px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border, rgba(255,255,255,0.09));
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      opacity: 0;
-      transform: translateY(26px) scale(0.96);
-      transition: transform 0.55s cubic-bezier(.2,.7,.2,1), opacity 0.55s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    [data-theme="light"] .game-card { background: rgba(255,255,255,0.55); }
-    .game-card { --accent: #7C9BFF; }
-    .game-card.visible { opacity: 1; transform: translateY(0) scale(1); }
-    .game-card:hover {
-      transform: translateY(-6px) scale(1.015);
-      border-color: var(--accent);
-      box-shadow: 0 18px 40px rgba(20,20,45,0.22);
-    }
-    .game-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 500px;
-    }
-    .game-icon svg { width: 24px; height: 24px; transform-style: preserve-3d; }
-    .game-card h5 { font: 600 16.5px 'Space Grotesk', sans-serif; margin: 0; }
-    .game-card p { font: 400 13.5px/1.5 'Inter', sans-serif; color: var(--text-dim); margin: 0; flex: 1; }
-    .game-card .game-tag {
-      align-self: flex-start;
-      font: 600 11px 'Inter', sans-serif;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: rgba(91,127,255,0.12);
-      color: #7C9BFF;
-    }
-    .game-card .game-play {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font: 600 13px 'Inter', sans-serif;
-      color: var(--accent);
-    }
-    .game-card .game-play svg { width: 14px; height: 14px; transition: transform 0.25s ease; stroke: var(--accent); }
-    .game-card:hover .game-play svg { transform: translateX(4px); }
-
-    /* per-game animated glyphs, sharing one visual family (route / link motion) */
-    @keyframes straitFlow {
-      0%, 100% { stroke-dashoffset: 0; }
-      100%     { stroke-dashoffset: -24; }
-    }
-    .icon-strait-path { stroke-dasharray: 4 4; animation: straitFlow 2.2s linear infinite; }
-
-    @keyframes seaWave {
-      0%, 100% { transform: translateX(0); }
-      50%      { transform: translateX(3px); }
-    }
-    .icon-sea-wave { animation: seaWave 2.6s ease-in-out infinite; }
-    .icon-sea-wave.w2 { animation-delay: 0.3s; }
-
-    @keyframes volcanoPuff {
-      0%, 100% { opacity: 0.35; transform: translateY(0) scale(0.9); }
-      50%      { opacity: 0.9; transform: translateY(-3px) scale(1.1); }
-    }
-    .icon-volcano-puff { transform-box: fill-box; transform-origin: center; animation: volcanoPuff 1.9s ease-in-out infinite; }
-    .icon-volcano-puff.p2 { animation-delay: 0.4s; }
-
-    @keyframes currentSpin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    .icon-current-ring { animation: currentSpin 4s linear infinite; transform-origin: 12px 12px; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .icon-strait-path, .icon-sea-wave, .icon-volcano-puff, .icon-current-ring, .game-card,
-      .route-ring, .route-node, .route-path {
-        animation: none !important;
-        transition: none !important;
-      }
-      .game-card { opacity: 1; transform: none; }
-    }
-
-    .games-controls {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 4px;
-    }
-    .games-arrows { display: flex; gap: 10px; }
-
-    @media (max-width: 860px) {
-      .games-hero { grid-template-columns: 1fr; gap: 28px; }
-    }
-  </style>
+  ::selection{ background: var(--brass); color: var(--navy); }
+</style>
 </head>
 <body>
 
-<!-- NAV - Modern Rounded -->
-<nav class="nav">
-  <div class="wrap">
-    <div class="nav-inner">
-      <a href="index.html" class="logo">
-        <span class="mark">
-          <svg viewBox="0 0 60 60" fill="none" stroke="#5B7FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="30" cy="28" r="22"/>
-            <circle cx="12" cy="10" r="7"/>
-            <circle cx="48" cy="10" r="7"/>
-            <circle cx="22" cy="25" r="4.5"/>
-            <circle cx="22" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <circle cx="38" cy="25" r="4.5"/>
-            <circle cx="38" cy="25" r="1.5" fill="#5B7FFF" fill-opacity="0.6"/>
-            <path d="M27 33 L30 37 L33 33"/>
-            <path d="M26 38 Q30 43 34 38"/>
-            <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-            <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-          </svg>
-        </span>
-        <span>Shoruto</span>
-      </a>
-      <div class="nav-links">
-        <a href="#why">Why Shoruto</a>
-        <a href="#trending">Trending</a>
-        <a href="#subjects">Subjects</a>
-        <a href="#blog">Blog</a>
-        <a href="#ai">AI Evaluation</a>
-        <a href="#faq">FAQ</a>
-      </div>
-      <div class="nav-cta">
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <span class="sun-icon">☀️</span>
-          <span class="moon-icon">🌙</span>
-        </button>
-      </div>
+<header>
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#C9974B" stroke-width="1.6"/>
+      <path d="M20 5 L23 18 L20 20 L17 18 Z" fill="#E3B368"/>
+      <path d="M20 35 L23 22 L20 20 L17 22 Z" fill="#6B7981"/>
+      <circle cx="20" cy="20" r="2.4" fill="#E7DEC7"/>
+    </svg>
+    <div class="brand-text">
+      <div class="name">Terra Prep</div>
+      <div class="tag">Chart India · Crack the exam</div>
     </div>
   </div>
-</nav>
 
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-bg-glow"></div>
-  <canvas id="particleCanvas"></canvas>
-  <div class="wrap hero-grid">
-    <div class="hero-copy">
-      <span class="eyebrow"><span class="dot"></span>Daily Mock Tests · Speak or Write · Available 24/7</span>
-      <h1>Answer today's question like you've already <span class="accent">written it 50 times.</span></h1>
-      <p>Daily mock tests on trending current affairs and the full GS syllabus — Polity, Economy, History, Environment, Geography, Science, Society, International Relations and Government Schemes. Speak or type your answer and get evaluated instantly.</p>
-      <div class="hero-actions">
-        <a href="#trending" class="btn btn-primary">Start Today's Mock Test
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-        </a>
-        <a href="/checkup" class="btn btn-ghost">⚔️ Challenge Friend</a>
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93A0A8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+    <input type="text" placeholder="Search any location, river, mountain, place…" />
+  </div>
+
+  <div class="header-right">
+    <div class="streak">
+      <span style="font-size:16px;">🔥</span>
+      <div>
+        <div class="n">9 Day Streak</div>
+        <div class="l">Keep it up</div>
       </div>
     </div>
-    <div class="tilt-stage">
-      <div class="mock-card" id="mockCard">
-        <div class="mock-topbar">
-          <div class="mock-dots"><span></span><span></span><span></span></div>
-          <div class="mock-live"><span class="pulse"></span>LIVE MOCK TEST</div>
-        </div>
-        <div class="mock-body">
-          <div class="mock-avatar"></div>
-          <div class="mock-transcript">
-            <div class="mock-q">Q4 · Trending: Discuss the objectives of Jal Jeevan Mission.</div>
-            <div class="mock-typed" id="typedText"><span class="cursor"></span></div>
-          </div>
-        </div>
-        <div class="mock-meters">
-          <div class="meter"><div class="l">Knowledge</div><div class="bar"><i style="background:var(--blue); width:0%" data-w="82"></i></div></div>
-          <div class="meter"><div class="l">Confidence</div><div class="bar"><i style="background:var(--mint); width:0%" data-w="71"></i></div></div>
-          <div class="meter"><div class="l">Structure</div><div class="bar"><i style="background:var(--violet); width:0%" data-w="64"></i></div></div>
-        </div>
-        <div class="float-badge b1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-          Score improved +18%
-        </div>
-        <div class="float-badge b2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M4 22c0-4 3.5-6 8-6s8 2 8 6"/></svg>
-          12,400 aspirants practicing
-        </div>
-      </div>
-    </div>
+    <div class="avatar">RA</div>
   </div>
 </header>
 
-<div class="strip">
-  <span class="strip-word" style="--clr:#60A5FA; --d:0s;">
-    <svg viewBox="0 0 24 24"><path d="M4 11a8 8 0 0116 0"/><path d="M7 11a5 5 0 0110 0"/><circle cx="12" cy="15" r="2" fill="currentColor" stroke="none"/></svg>
-    COVERING
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#2DD4BF; --d:1.5s;">
-    <svg viewBox="0 0 24 24"><rect x="3" y="5" width="14" height="16" rx="1"/><path d="M17 9h4v10a2 2 0 01-2 2H7"/><line x1="6" y1="9" x2="12" y2="9"/><line x1="6" y1="13" x2="14" y2="13"/><line x1="6" y1="16" x2="14" y2="16"/></svg>
-    DAILY CURRENT AFFAIRS
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#A78BFA; --d:3s;">
-    <svg viewBox="0 0 24 24"><path d="M4 21h16M4 21V10L12 4l8 6v11M8 21v-7M12 21v-7M16 21v-7"/></svg>
-    POLITY
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#FBBF24; --d:4.5s;">
-    <svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="4" y2="12"/><line x1="10" y1="20" x2="10" y2="6"/><line x1="16" y1="20" x2="16" y2="14"/><line x1="20" y1="20" x2="4" y2="20"/></svg>
-    ECONOMICS
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#FB923C; --d:6s;">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-    HISTORY
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#4ADE80; --d:7.5s;">
-    <svg viewBox="0 0 24 24"><path d="M5 21c0-9 6-15 15-15-1 9-6 15-15 15z"/><path d="M5 21c3-4 7-8 15-15"/></svg>
-    ENVIRONMENT
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#38BDF8; --d:9s;">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18 14 14 0 010-18z"/></svg>
-    GEOGRAPHY
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#F472B6; --d:10.5s;">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><ellipse cx="12" cy="12" rx="9" ry="4"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(120 12 12)"/></svg>
-    SCIENCE
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#F87171; --d:12s;">
-    <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M2 21v-1a6 6 0 016-6h2a6 6 0 016 6v1"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 21v-1a5 5 0 013.6-4.8"/></svg>
-    SOCIETY
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#FACC15; --d:13.5s;">
-    <svg viewBox="0 0 24 24"><line x1="5" y1="3" x2="5" y2="21"/><path d="M5 4h13l-3 4 3 4H5"/></svg>
-    INTERNATIONAL RELATIONS
-  </span><span>·</span>
-  <span class="strip-word" style="--clr:#22D3EE; --d:15s;">
-    <svg viewBox="0 0 24 24"><path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/></svg>
-    SCHEMES
-  </span>
+<div class="layout">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="eyebrow">Explore India</div>
+    <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
+    <p class="hero-sub">Tap any location on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC geography.</p>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="v">4,800+</div><div class="k">Locations mapped</div></div>
+      <div class="stat-card"><div class="v">11,500+</div><div class="k">Practice questions</div></div>
+      <div class="stat-card"><div class="v">30+</div><div class="k">Topic categories</div></div>
+      <div class="stat-card"><div class="v">100%</div><div class="k">Syllabus aligned</div></div>
+    </div>
+
+    <div class="section-label">Popular collections</div>
+    <div class="collections">
+      <div class="coll-card"><span class="icon">🏞️</span><div class="cname">Rivers &amp; Dams</div><div class="ccount">124</div></div>
+      <div class="coll-card"><span class="icon">⛰️</span><div class="cname">Mountains</div><div class="ccount">89</div></div>
+      <div class="coll-card"><span class="icon">🌳</span><div class="cname">National Parks</div><div class="ccount">71</div></div>
+      <div class="coll-card"><span class="icon">⚓</span><div class="cname">Ports</div><div class="ccount">16</div></div>
+      <div class="coll-card"><span class="icon">🏛️</span><div class="cname">UNESCO Sites</div><div class="ccount">41</div></div>
+      <div class="coll-card"><span class="icon">🚂</span><div class="cname">Rail Zones</div><div class="ccount">18</div></div>
+      <div class="coll-card"><span class="icon">🌊</span><div class="cname">Seas &amp; Gulfs</div><div class="ccount">21</div></div>
+      <div class="coll-card"><span class="icon">🏭</span><div class="cname">Industries</div><div class="ccount">37</div></div>
+      <div class="coll-more">View all 30+ topics →</div>
+    </div>
+
+    <div class="level-card">
+      <div class="top">
+        <div class="t">Explorer · Level 4</div>
+        <span class="icon">🧭</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+      <div class="xp-label">1,240 / 2,000 XP</div>
+    </div>
+  </div>
+
+  <!-- MAP PANEL -->
+  <div class="map-panel" id="mapPanel">
+    <div class="map-caption">Physical &amp; political · India</div>
+
+    <svg class="india-svg" viewBox="0 0 500 700" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="terrainGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8FA88E"/>
+          <stop offset="35%" stop-color="#B7B078"/>
+          <stop offset="65%" stop-color="#C9A968"/>
+          <stop offset="100%" stop-color="#89A6A0"/>
+        </linearGradient>
+      </defs>
+      <path class="india-shape" d="M230,18 L268,10 L300,32 L335,55 L372,58 L405,78 L432,95 L468,108 L520,118 L556,138 L540,168 L516,178 L528,208 L500,222 L476,214 L462,238 L482,262 L456,278 L432,270 L420,296 L448,318 L432,352 L420,398 L412,438 L400,470 L406,506 L392,540 L378,568 L358,596 L338,624 L318,608 L306,580 L288,600 L270,584 L262,548 L242,520 L252,486 L232,452 L214,420 L206,382 L188,358 L166,338 L150,318 L160,286 L138,268 L146,236 L172,246 L178,214 L158,196 L168,160 L192,132 L188,100 L210,80 L206,48 Z" />
+    </svg>
+
+    <button class="pin" style="left:33%; top:6%;" data-loc="karakoram"><span class="dot"><span>⛰️</span></span><span class="label">Karakoram Range</span></button>
+    <button class="pin" style="left:22%; top:33%;" data-loc="thar"><span class="dot"><span>🏜️</span></span><span class="label">Thar Desert</span></button>
+    <button class="pin" style="left:20%; top:47%;" data-loc="kandla"><span class="dot"><span>⚓</span></span><span class="label">Kandla Port</span></button>
+    <button class="pin" style="left:46%; top:30%;" data-loc="ganga"><span class="dot"><span>🌊</span></span><span class="label">Ganga River System</span></button>
+    <button class="pin" style="left:47%; top:45%;" data-loc="khajuraho"><span class="dot"><span>🏛️</span></span><span class="label">Khajuraho</span></button>
+    <button class="pin active" style="left:79%; top:23%;" data-loc="kaziranga"><span class="dot"><span>🦏</span></span><span class="label">Kaziranga N.P.</span></button>
+    <button class="pin" style="left:58%; top:56%;" data-loc="chilika"><span class="dot"><span>🦩</span></span><span class="label">Chilika Lake</span></button>
+    <button class="pin" style="left:34%; top:70%;" data-loc="hampi"><span class="dot"><span>🏯</span></span><span class="label">Hampi</span></button>
+    <button class="pin" style="left:33%; top:78%;" data-loc="ghats"><span class="dot"><span>🌲</span></span><span class="label">Western Ghats</span></button>
+    <button class="pin" style="left:41%; top:93%;" data-loc="kanyakumari"><span class="dot"><span>🏝️</span></span><span class="label">Kanyakumari</span></button>
+
+    <svg class="compass" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="27" stroke="#C9974B" stroke-width="1"/>
+      <path d="M30 6 L34 30 L30 30 L26 30 Z" fill="#E3B368"/>
+      <path d="M30 54 L34 30 L30 30 L26 30 Z" fill="#6B7981"/>
+      <path d="M6 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
+      <path d="M54 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
+      <text x="30" y="12" text-anchor="middle" fill="#E7DEC7" font-size="6" font-family="IBM Plex Mono">N</text>
+    </svg>
+
+    <div class="zoom-ctrl">
+      <button>+</button>
+      <button>−</button>
+    </div>
+
+    <div class="quick-bar">
+      <div class="quick-item"><span class="qi">🎯</span><div><div class="qt">Daily Challenge</div><div class="qs">10 points</div></div></div>
+      <div class="quick-item"><span class="qi">🎲</span><div><div class="qt">Random Place</div><div class="qs">Test yourself</div></div></div>
+      <div class="quick-item"><span class="qi">📊</span><div><div class="qt">My Progress</div><div class="qs">Track journey</div></div></div>
+      <div class="quick-item"><span class="qi">🔖</span><div><div class="qt">Saved Places</div><div class="qs">9 locations</div></div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT DETAIL PANEL -->
+  <div class="right-panel">
+    <div class="detail-card" id="detailCard"></div>
+  </div>
+
 </div>
 
-<!-- TRENDING -->
-<section class="section" id="trending">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow"><span class="dot"></span>Updated Daily</span>
-      <h2>Trending right now — jump straight in.</h2>
-      <p>Whatever's in the news this week becomes a question. Pick one and start answering — no setup, no scrolling.</p>
-    </div>
-    <div class="trend-grid" id="trendGrid">
-      <a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>Jal Jeevan Mission</h5><span class="tag">Govt Scheme</span></a>
-<a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>PM Vishwakarma Yojana</h5><span class="tag">Govt Scheme</span></a>
-<a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>India–Middle East–Europe Corridor</h5><span class="tag">International Relations</span></a>
-<a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>RBI Monetary Policy Update</h5><span class="tag">Economics</span></a>
-<a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>One Nation One Election</h5><span class="tag">Polity</span></a>
-<a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>COP Climate Summit Outcomes</h5><span class="tag">Environment</span></a>
-<a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>Chandrayaan &amp; ISRO Missions</h5><span class="tag">Science &amp; Tech</span></a>
-<a href="/aiblog" class="trend-tile"><span class="trend-live"></span><h5>Smart Cities Mission</h5><span class="tag">Govt Scheme</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- PLAY & LEARN — study-game challenges (not trivia games, matching/geography-style drills) -->
-<section class="section games-section" id="play-learn">
-  <div class="wrap">
-
-    <div class="games-hero">
-      <div class="games-hero-copy">
-        <span class="eyebrow"><span class="dot"></span>Play &amp; Learn</span>
-        <h2>Challenge a friend — with a map, not a mic.</h2>
-        <p>Quick study drills you play solo or against a friend: match straits to the seas they connect, place volcanoes, trace currents, walk a history timeline. Same syllabus, five minutes, a leaderboard at the end.</p>
-      </div>
-
-      <div class="games-map-card">
-        <!-- Faint dotted world-map texture, sitting straight on the
-             page background — no card box around it. -->
-        <div class="route-panel-bg">
-          <svg class="route-bg" viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-              <pattern id="routeDots" width="15" height="15" patternUnits="userSpaceOnUse">
-                <circle cx="1.3" cy="1.3" r="1.1" fill="currentColor"/>
-              </pattern>
-              <radialGradient id="routeDotFade" cx="50%" cy="55%" r="65%">
-                <stop offset="0%" stop-color="#fff" stop-opacity="0.4"/>
-                <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-              </radialGradient>
-              <mask id="routeDotMask">
-                <rect x="0" y="0" width="560" height="260" fill="url(#routeDotFade)"/>
-              </mask>
-            </defs>
-            <rect x="0" y="0" width="560" height="260" fill="url(#routeDots)" mask="url(#routeDotMask)"/>
-          </svg>
-        </div>
-
-        <!-- Single dashed route running through all five games, animated
-             so the dashes flow along it. -->
-        <svg class="route-bg" viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="routeStroke" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stop-color="#38BDF8"/>
-              <stop offset="25%" stop-color="#2DD4BF"/>
-              <stop offset="50%" stop-color="#FB923C"/>
-              <stop offset="75%" stop-color="#34D399"/>
-              <stop offset="100%" stop-color="#E8C468"/>
-            </linearGradient>
-          </defs>
-          <path class="route-path" d="M46,120 C90,150 130,182 158,187 C195,192 210,145 260,120 C300,100 330,150 360,168 C400,190 430,150 462,110 C485,80 500,95 515,78"
-                fill="none" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 11"/>
-        </svg>
-
-        <!-- Node 1: Match Straits -->
-        <a href="/games/match-the-strait" class="route-node rn1" style="--nc:#38BDF8;">
-          <span class="route-ring"></span>
-          <span class="route-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3.5c3.6 4.3 6 7.3 6 10.2a6 6 0 01-12 0c0-2.9 2.4-5.9 6-10.2z" fill="currentColor" fill-opacity="0.9" stroke="none"/>
-              <path d="M6 18.5c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5"/>
-              <path d="M6 21c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5" opacity="0.5"/>
-            </svg>
-          </span>
-          <span class="route-label">Match<br>Straits</span>
-        </a>
-
-        <!-- Node 2: Place the Seas -->
-        <a href="/games/seas" class="route-node rn2" style="--nc:#2DD4BF;">
-          <span class="route-ring"></span>
-          <span class="route-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3.5c3.6 4.3 6 7.3 6 10.2a6 6 0 01-12 0c0-2.9 2.4-5.9 6-10.2z" fill="currentColor" fill-opacity="0.9" stroke="none"/>
-              <path d="M6 18.5c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5"/>
-              <path d="M6 21c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0" stroke-width="1.5" opacity="0.5"/>
-            </svg>
-          </span>
-          <span class="route-label">Place<br>Seas</span>
-        </a>
-
-        <!-- Node 3: Volcano Belt -->
-        <a href="/games/volcano" class="route-node rn3" style="--nc:#FB923C;">
-          <span class="route-ring"></span>
-          <span class="route-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 20l6.5-14L18 20"/>
-              <path d="M9 20l2.5-5.5L14 20"/>
-              <circle class="icon-volcano-puff p1" cx="11.5" cy="5.5" r="1" fill="currentColor" stroke="none"/>
-              <circle class="icon-volcano-puff p2" cx="14" cy="4.2" r="0.8" fill="currentColor" stroke="none"/>
-            </svg>
-          </span>
-          <span class="route-label">Volcano<br>Belt</span>
-        </a>
-
-        <!-- Node 4: Trace Currents -->
-        <a href="/games/currents" class="route-node rn4" style="--nc:#34D399;">
-          <span class="route-ring"></span>
-          <span class="route-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 19l5.5-11 3.5 5.5L16 8l5 11z"/>
-            </svg>
-          </span>
-          <span class="route-label">Trace<br>Currents</span>
-        </a>
-
-        <!-- Node 5: History Timeline -->
-        <a href="/games/history-timeline" class="route-node rn5" style="--nc:#E8C468;">
-          <span class="route-ring"></span>
-          <span class="route-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2.5c-1.6 2-1.6 4.2 0 5.8 1.6-1.6 1.6-3.8 0-5.8z" fill="currentColor" opacity="0.55" stroke="none"/>
-              <rect x="10.4" y="8" width="3.2" height="3.5" fill="currentColor" opacity="0.35" stroke="none"/>
-              <path d="M4.5 20.5V12l1.7-2 1.7 2v8.5M16.1 20.5V12l1.7-2 1.7 2v8.5"/>
-              <rect x="7.5" y="11.5" width="9" height="9" rx="1"/>
-              <path d="M2 20.5h20"/>
-            </svg>
-          </span>
-          <span class="route-label">History<br>Timeline</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="games-slider-wrap">
-      <div class="games-track" id="gamesTrack">
-
-        <!-- Backlink target: /games/match-the-strait -->
-        <a href="/games/match-the-strait" class="game-card" style="--accent:#38BDF8;">
-          <div class="game-icon box-geography">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 12c3-4 6 4 9 0s6-4 9 0" class="icon-strait-path"/>
-              <circle cx="4" cy="12" r="1.4" fill="currentColor" stroke="none"/>
-              <circle cx="20" cy="12" r="1.4" fill="currentColor" stroke="none"/>
-            </svg>
-          </div>
-          <span class="game-tag">Geography</span>
-          <h5>Match the Strait</h5>
-          <p>Drag each strait to the two seas or oceans it joins — Malacca, Hormuz, Gibraltar and more.</p>
-          <span class="game-play">Play now
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </span>
-        </a>
-
-        <!-- Backlink target: /games/seas -->
-        <a href="/games/seas" class="game-card" style="--accent:#2DD4BF;">
-          <div class="game-icon box-geography">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 15c2-2 4 2 6 0s4-2 6 0 4-2 6 0" class="icon-sea-wave w1"/>
-              <path d="M2 19c2-2 4 2 6 0s4-2 6 0 4-2 6 0" class="icon-sea-wave w2"/>
-              <path d="M12 4v7" opacity="0.5"/>
-            </svg>
-          </div>
-          <span class="game-tag">Geography</span>
-          <h5>Place the Seas</h5>
-          <p>Drop each sea onto the map where it belongs — build a working mental atlas as you go.</p>
-          <span class="game-play">Play now
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </span>
-        </a>
-
-        <!-- Backlink target: /games/volcano -->
-        <a href="/games/volcano" class="game-card" style="--accent:#FB923C;">
-          <div class="game-icon box-history">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 20l6-13 2 4 2-4 6 13z"/>
-              <circle class="icon-volcano-puff p1" cx="10" cy="6" r="1.3" fill="currentColor" stroke="none"/>
-              <circle class="icon-volcano-puff p2" cx="13" cy="4.5" r="1" fill="currentColor" stroke="none"/>
-            </svg>
-          </div>
-          <span class="game-tag">Geography</span>
-          <h5>Volcano Belt</h5>
-          <p>Place active volcanoes along the Ring of Fire and other belts before the clock runs out.</p>
-          <span class="game-play">Play now
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </span>
-        </a>
-
-        <!-- Backlink target: /games/currents -->
-        <a href="/games/currents" class="game-card" style="--accent:#9F7AFF;">
-          <div class="game-icon box-environment">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-              <circle class="icon-current-ring" cx="12" cy="12" r="8" stroke-dasharray="6 5"/>
-              <path d="M9 12a3 3 0 106 0" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <span class="game-tag">Geography</span>
-          <h5>Trace the Currents</h5>
-          <p>Follow ocean currents from origin to influence — warm, cold, and why they matter for climate.</p>
-          <span class="game-play">Play now
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </span>
-        </a>
-
-        <!-- Backlink target: /games/history-timeline -->
-        <a href="/games/history-timeline" class="game-card" style="--accent:#E8C468;">
-          <div class="game-icon box-history">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2.5c-1.6 2-1.6 4.2 0 5.8 1.6-1.6 1.6-3.8 0-5.8z" fill="currentColor" opacity="0.55" stroke="none"/>
-              <rect x="10.4" y="8" width="3.2" height="3.5" fill="currentColor" opacity="0.35" stroke="none"/>
-              <path d="M4.5 20.5V12l1.7-2 1.7 2v8.5M16.1 20.5V12l1.7-2 1.7 2v8.5"/>
-              <rect x="7.5" y="11.5" width="9" height="9" rx="1"/>
-              <path d="M2 20.5h20"/>
-            </svg>
-          </div>
-          <span class="game-tag">History</span>
-          <h5>History Timeline</h5>
-          <p>Drag key events onto the timeline in the right order — from ancient dynasties to independence.</p>
-          <span class="game-play">Play now
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </span>
-        </a>
-
-      </div>
-    </div>
-
-    <div class="games-controls">
-      <!-- Backlink target: /games -->
-      <a href="/games" class="blog-see-all">See more study games
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-      <div class="games-arrows">
-        <button class="blog-arrow" id="gamesPrevBtn" aria-label="Previous game">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button class="blog-arrow" id="gamesNextBtn" aria-label="Next game">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY -->
-<section class="section section-tight-top" id="why">
-  <div class="wrap">
-    <div class="section-head center" style="margin:0 auto 40px;">
-      <span class="eyebrow">Why Shoruto</span>
-      <h2>Reading current affairs isn't the same as answering on it.</h2>
-      <p>Shoruto hands you a mic and a clock — speak or write your answer under real time pressure, and get evaluated instantly, so the exam day doesn't feel like the first time you've said it out loud.</p>
-    </div>
-    <div class="grid-4">
-      <div class="card">
-        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4M8 22h8"/></svg></div>
-        <h4>Freedom to speak</h4>
-        <p>Answer out loud in your own words and build the confidence to say it the same way in the exam hall or viva.</p>
-      </div>
-      <div class="card">
-        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h8l-1 8 10-12h-8l1-8z"/></svg></div>
-        <h4>Instant AI evaluation</h4>
-        <p>Get scored on knowledge, structure, confidence and vocabulary — right after you answer.</p>
-      </div>
-      <div class="card">
-        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
-        <h4>See yourself improve</h4>
-        <p>Every session is logged. Watch your score climb across attempts, not just once.</p>
-      </div>
-      <div class="card">
-        <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15z"/></svg></div>
-        <h4>One topic library</h4>
-        <p>Every scheme, department and topic in one place — learn it, then get asked about it.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SUBJECTS -->
-<section class="section section-tight-top" id="subjects">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Subjects We Cover</span>
-      <h2>Every subject the exam actually asks from.</h2>
-      <p>Daily current affairs plus the full static GS syllabus — practice by subject, not by guesswork.</p>
-    </div>
-    <div class="cat-grid" id="subjectGrid">
-
-      <!-- History — Taj Mahal -->
-      <a href="/history" class="cat-tile subject-tile">
-        <div class="icon-box box-history">
-          <svg class="icon-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2.5c-1.6 2-1.6 4.2 0 5.8 1.6-1.6 1.6-3.8 0-5.8z" fill="currentColor" opacity="0.55"/>
-            <rect x="10.4" y="8" width="3.2" height="3.5" fill="currentColor" opacity="0.35"/>
-            <path d="M4.5 20.5V12l1.7-2 1.7 2v8.5M16.1 20.5V12l1.7-2 1.7 2v8.5"/>
-            <rect x="7.5" y="11.5" width="9" height="9" rx="1"/>
-            <path d="M2 20.5h20"/>
-          </svg>
-        </div>
-        <h5>History</h5>
-        <span class="tag">GS Paper 1</span>
-      </a>
-
-      <!-- Polity — Scales of Justice -->
-      <a href="/polity" class="cat-tile subject-tile">
-        <div class="icon-box box-polity">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="3" x2="12" y2="20"/>
-            <g class="icon-scale-beam">
-              <line x1="4" y1="7" x2="20" y2="7"/>
-              <path d="M4 7l-2.4 5a2.7 2.7 0 005.4 0z" fill="currentColor" opacity="0.3"/>
-              <path d="M20 7l2.4 5a2.7 2.7 0 01-5.4 0z" fill="currentColor" opacity="0.3"/>
-            </g>
-            <path d="M8 20.5h8"/>
-          </svg>
-        </div>
-        <h5>Polity</h5>
-        <span class="tag">GS Paper 2</span>
-      </a>
-
-      <!-- Economics — live bar graph -->
-      <a href="/economics" class="cat-tile subject-tile">
-        <div class="icon-box box-economics">
-          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-            <rect class="icon-bar b1" x="4" y="11" width="4" height="9" rx="1"/>
-            <rect class="icon-bar b2" x="10" y="6" width="4" height="14" rx="1"/>
-            <rect class="icon-bar b3" x="16" y="13" width="4" height="7" rx="1"/>
-          </svg>
-        </div>
-        <h5>Economics</h5>
-        <span class="tag">GS Paper 3</span>
-      </a>
-
-      <!-- Environment — swaying trees -->
-      <a href="/environment" class="cat-tile subject-tile">
-        <div class="icon-box box-environment">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <g class="icon-tree t1">
-              <path d="M8 3.5l3 4.5H9.5l2.4 3.6H9.5L11.5 15" fill="currentColor" fill-opacity="0.35"/>
-              <line x1="8" y1="15" x2="8" y2="20.5"/>
-            </g>
-            <g class="icon-tree t2">
-              <path d="M16 6l2.4 3.6h-1.9l1.9 2.9h-1.9L18 15.5" fill="currentColor" fill-opacity="0.25"/>
-              <line x1="16" y1="15.5" x2="16" y2="20.5"/>
-            </g>
-            <line x1="3" y1="20.5" x2="21" y2="20.5"/>
-          </svg>
-        </div>
-        <h5>Environment</h5>
-        <span class="tag">GS Paper 3</span>
-      </a>
-
-      <!-- Geography — planet with orbit ring -->
-      <a href="/geography" class="cat-tile subject-tile">
-        <div class="icon-box box-geography">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-            <g class="icon-geo-globe">
-              <circle cx="12" cy="12" r="6"/>
-              <path d="M6 12h12M12 6a9 9 0 010 12 9 9 0 010-12z"/>
-            </g>
-            <ellipse class="icon-geo-ring" cx="12" cy="12" rx="10.5" ry="3.4"/>
-          </svg>
-        </div>
-        <h5>Geography</h5>
-        <span class="tag">GS Paper 1</span>
-      </a>
-
-      <!-- Science & Technology — pulsing neuron network -->
-      <a href="/science" class="cat-tile subject-tile">
-        <div class="icon-box box-science">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-            <line x1="6" y1="6" x2="12" y2="12"/>
-            <line x1="18" y1="6" x2="12" y2="12"/>
-            <line x1="6" y1="18" x2="12" y2="12"/>
-            <line x1="18" y1="18" x2="12" y2="12"/>
-            <circle class="icon-neuron-dot n5" cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
-            <circle class="icon-neuron-dot n1" cx="6" cy="6" r="1.8" fill="currentColor" stroke="none"/>
-            <circle class="icon-neuron-dot n2" cx="18" cy="6" r="1.8" fill="currentColor" stroke="none"/>
-            <circle class="icon-neuron-dot n3" cx="6" cy="18" r="1.8" fill="currentColor" stroke="none"/>
-            <circle class="icon-neuron-dot n4" cx="18" cy="18" r="1.8" fill="currentColor" stroke="none"/>
-          </svg>
-        </div>
-        <h5>Science &amp; Technology</h5>
-        <span class="tag">GS Paper 3</span>
-      </a>
-
-      <!-- International Relations — flags rotating -->
-      <a href="/ir" class="cat-tile subject-tile">
-        <div class="icon-box box-ir">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-            <g class="icon-flag-wrap">
-              <line x1="5" y1="4" x2="5" y2="20"/>
-              <rect x="5" y="4" width="6" height="4" fill="currentColor" fill-opacity="0.85" stroke="none"/>
-              <line x1="12" y1="8" x2="12" y2="20"/>
-              <rect x="12" y="8" width="6" height="4" fill="currentColor" fill-opacity="0.55" stroke="none"/>
-              <line x1="19" y1="4" x2="19" y2="20" opacity="0.6"/>
-            </g>
-          </svg>
-        </div>
-        <h5>International Relations</h5>
-        <span class="tag">GS Paper 2</span>
-      </a>
-
-      <!-- Government Schemes — bank/hospital hybrid, pulsing cross -->
-      <a href="/scheme" class="cat-tile subject-tile">
-        <div class="icon-box box-schemes">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 21h18M4 21V9l8-6 8 6v12M9 21v-6h6v6"/>
-            <g class="icon-cross">
-              <line x1="12" y1="3.5" x2="12" y2="7.5"/>
-              <line x1="10" y1="5.5" x2="14" y2="5.5"/>
-            </g>
-          </svg>
-        </div>
-        <h5>Government Schemes</h5>
-        <span class="tag">Current Affairs</span>
-      </a>
-
-    </div>
-  </div>
-</section>
-
-<!-- BLOG -->
-<section class="section section-tight-top" id="blog" style="padding-bottom: 48px;">
-  <div class="wrap">
-    <div class="blog-head-row">
-      <div class="section-head" style="margin-bottom:0;">
-        <span class="eyebrow">From the Blog</span>
-        <h2>Learn while you practice.</h2>
-        <p>Short reads on answer structure, current affairs, and staying consistent.</p>
-      </div>
-      <a href="blog.html" class="blog-see-all">See all
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-
-    <div class="blog-slider" id="blogSlider">
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#3E7BFA,#1a3a8f);">
-          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-          <span class="blog-free-badge">FREE</span>
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">Answer Writing</span>
-          <h5>How to Structure a Mains-Style Answer in 200 Words</h5>
-          <p>Intro, body, conclusion — the framework that keeps your answer readable under time pressure.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#8B7CFF,#3E2A8F);">
-          <img src="https://plus.unsplash.com/premium_photo-1661964303354-f0496d6d6e0b?q=80&w=1320&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">Current Affairs</span>
-          <h5>This Week in Current Affairs: Schemes You Shouldn't Miss</h5>
-          <p>A quick roundup of the government schemes that made headlines this week.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#34D399,#0d6b48);">
-          <img src="https://images.unsplash.com/photo-1605694554119-f980114426bf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-          <span class="blog-free-badge">FREE</span>
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">Confidence</span>
-          <h5>Beating Mic Fear: Why Speaking Your Answers Works</h5>
-          <p>The science behind why saying your answer out loud builds recall faster than re-reading notes.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#FFB84D,#8a5a00);">
-          <img src="https://images.unsplash.com/photo-1745866412504-d92c037de4e8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">Polity</span>
-          <h5>Polity Simplified: The History Behind Article 370</h5>
-          <p>A quick, exam-ready timeline of one of the most frequently asked topics in GS Paper 2.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#3E7BFA,#0f2d70);">
-          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">Economics</span>
-          <h5>Reading the Economic Survey in 10 Minutes</h5>
-          <p>The charts and numbers examiners actually expect you to quote from memory.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#34D399,#166a4a);">
-          <img src="https://plus.unsplash.com/premium_photo-1661964303354-f0496d6d6e0b?q=80&w=1320&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">Environment</span>
-          <h5>Environment &amp; Ecology: The Ramsar Sites You Must Know</h5>
-          <p>Every wetland site that's shown up in the last three years of current affairs.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#8B7CFF,#4a2f99);">
-          <img src="https://images.unsplash.com/photo-1605694554119-f980114426bf?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">International Relations</span>
-          <h5>India's Foreign Policy Shifts: A Quick Primer</h5>
-          <p>The three relationships every aspirant should be able to speak on confidently.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-
-      <div class="blog-card">
-        <div class="blog-thumb" style="background:linear-gradient(135deg,#FFB84D,#7a4a00);">
-          <img src="https://images.unsplash.com/photo-1745866412504-d92c037de4e8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="blog thumb" loading="lazy">
-          <span class="blog-free-badge">FREE</span>
-        </div>
-        <div class="blog-body">
-          <span class="blog-tag">Study Tips</span>
-          <h5>Daily Habit Stack: 20 Minutes a Day for GS Prep</h5>
-          <p>The small daily routine that compounds into serious answer-writing improvement.</p>
-          <a href="/black" class="blog-read">Read More</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="blog-controls">
-      <button class="blog-arrow" id="blogPrevBtn" aria-label="Previous">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <button class="blog-arrow" id="blogNextBtn" aria-label="Next">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- AI EVALUATION -->
-<section class="section section-flush-top" id="ai">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">AI Features</span>
-      <h2>It doesn't just check keywords. It listens.</h2>
-      <p>Shoruto's evaluation model reads your answer the way a real evaluator would — structure, confidence, and completeness, not just whether you said the right word.</p>
-    </div>
-    <div class="eval-panel">
-      <div class="eval-bars">
-        <div class="eval-row"><span class="label">Knowledge</span><div class="track"><i data-w="82"></i></div><span class="val">82%</span></div>
-        <div class="eval-row"><span class="label">Confidence</span><div class="track"><i data-w="71"></i></div><span class="val">71%</span></div>
-        <div class="eval-row"><span class="label">Communication</span><div class="track"><i data-w="76"></i></div><span class="val">76%</span></div>
-        <div class="eval-row"><span class="label">Vocabulary</span><div class="track"><i data-w="68"></i></div><span class="val">68%</span></div>
-        <div class="eval-row"><span class="label">Answer Structure</span><div class="track"><i data-w="64"></i></div><span class="val">64%</span></div>
-        <div class="eval-row"><span class="label">Keyword Coverage</span><div class="track"><i data-w="88"></i></div><span class="val">88%</span></div>
-      </div>
-      <div class="feedback-sample">
-        <span class="tag-label">Sample AI Feedback</span>
-        <div class="user-ans">"Jal Jeevan Mission provides water."</div>
-        <div class="ai-fb">You covered the <b>basic objective</b> but missed <b>rural household coverage</b>, <b>sustainability</b>, and <b>community participation</b>. Try explaining the purpose before jumping to benefits.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="section section-sm section-tight-top">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat"><div class="n" data-target="12400">0</div><div class="l">Mock tests attempted</div></div>
-      <div class="stat"><div class="n" data-target="94" data-suffix="%">0</div><div class="l">Report improved confidence</div></div>
-      <div class="stat"><div class="n" data-target="40" data-suffix="+">0</div><div class="l">Subjects &amp; trending topics</div></div>
-      <div class="stat"><div class="n" data-target="48" data-decimal="10">0</div><div class="l">Average rating out of 5</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- DEMO -->
-<section class="section section-flush-top" id="demo">
-  <div class="wrap">
-    <div class="section-head center" style="margin:0 auto 32px;">
-      <span class="eyebrow">See it in action</span>
-      <h2>Two minutes. One real practice session.</h2>
-    </div>
-    <div style="position:relative; width:100%; aspect-ratio:16/9; border-radius:20px; overflow:hidden; border:1px solid var(--border);">
-      <iframe 
-        width="100%" 
-        height="100%" 
-        src="https://www.youtube.com/embed/ZuvM9ddlRb0" 
-        title="Shoruto Demo - Mock Test Walkthrough" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        style="position:absolute; top:0; left:0; width:100%; height:100%;"
-      ></iframe>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<section class="section section-flush-top" id="testimonials">
-  <div class="wrap">
-    <div class="section-head center" style="margin:0 auto 40px;">
-      <span class="eyebrow">Testimonials</span>
-      <h2>Illustrative feedback — swap in real user quotes</h2>
-    </div>
-    <div class="grid-3">
-      <div class="t-card">
-        <div class="stars">★★★★★</div>
-        <p class="quote">"Speaking my answers daily made writing them in the actual SSC mains feel like round two, not round one."</p>
-        <div class="t-person"><div class="t-avatar">A</div><div><div class="name">Ananya</div><div class="role">SSC Aspirant</div></div></div>
-      </div>
-      <div class="t-card">
-        <div class="stars">★★★★★</div>
-        <p class="quote">"Seeing my score go from 45% to 81% across attempts is what kept me coming back daily."</p>
-        <div class="t-person"><div class="t-avatar">R</div><div><div class="name">Rahul</div><div class="role">Banking Aspirant</div></div></div>
-      </div>
-      <div class="t-card">
-        <div class="stars">★★★★☆</div>
-        <p class="quote">"The AI feedback on structure was more specific than anything my offline coaching gave me."</p>
-        <div class="t-person"><div class="t-avatar">P</div><div><div class="name">Priya</div><div class="role">UPSC Aspirant</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section section-flush-top" id="faq">
-  <div class="wrap" style="max-width:760px;">
-    <div class="section-head center" style="margin:0 auto 20px;">
-      <span class="eyebrow">FAQ</span>
-      <h2>Questions, answered.</h2>
-    </div>
-    <div class="faq-list">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Is the AI evaluation actually accurate?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="faq-a"><p>It's indicative, not exam-certified — built to help you practice structure and coverage, not to replace a real evaluator's judgement.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Do I need to speak, or can I type my answers?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="faq-a"><p>Both work. Voice input is recommended since it builds the confidence to speak the answer aloud, but typing is fully supported.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Is Shoruto free to use?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="faq-a"><p>Core practice sessions are free. Premium adds unlimited mock tests, deeper voice analysis, and personalized study plans.</p></div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Which browser works best?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></div>
-        <div class="faq-a"><p>Chrome gives the most reliable voice recognition. Other browsers work for typed answers.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="section section-sm section-flush-top" style="padding-bottom: 48px;">
-  <div class="wrap">
-    <div class="cta-band">
-      <span class="eyebrow" style="margin-bottom:14px;"><span class="dot"></span>Ready when you are</span>
-      <h2>Your next answer shouldn't be your first attempt.</h2>
-      <p>Start a free mock test and get evaluated in the next 5 minutes.</p>
-      <a href="#trending" class="btn btn-primary">Attempt Today's Mock Test
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-col">
-        <a href="index.html" class="logo" style="gap:0; font-size:20px;">Shoruto</a>
-        <p style="color:var(--text-dim); font-size:13.5px; margin-top:12px; max-width:280px;">Your daily mock test and answer-writing partner — speak or write on trending current affairs and GS topics, get evaluated instantly, and build real exam confidence.</p>
-      </div>
-      <div class="foot-col">
-        <h6>Product</h6>
-        <ul>
-          <li><a href="#trending">Trending</a></li>
-          <li><a href="#subjects">Subjects</a></li>
-          <li><a href="#ai">AI Evaluation</a></li>
-        </ul>
-      </div>
-      <div class="foot-col">
-        <h6>Company</h6>
-        <ul>
-          <li><a href="/aboutus">About</a></li>
-          <li><a href="/contact">Contact</a></li>
-        </ul>
-      </div>
-      <div class="foot-col">
-        <h6>Legal</h6>
-        <ul>
-          <li><a href="/privacy">Privacy Policy</a></li>
-          <li><a href="/terms">Terms of Service</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>© 2026 Shoruto. All rights reserved.</span>
-      <span>Built for aspirants, by aspirants.</span>
-    </div>
-  </div>
-</footer>
-
-<!-- CONNECT — floating brand entry point, now using the Shoruto logo mark -->
-<a href="https://chat.shoruto.com" class="connect-fab" aria-label="Connect and chat with other aspirants">
-  <span class="ring"></span>
-  <span class="ring ring2"></span>
-  <svg viewBox="0 0 60 60" fill="none" stroke="#7C9BFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="30" cy="28" r="22"/>
-    <circle cx="12" cy="10" r="7"/>
-    <circle cx="48" cy="10" r="7"/>
-    <circle cx="22" cy="25" r="4.5"/>
-    <circle cx="22" cy="25" r="1.5" fill="#7C9BFF" fill-opacity="0.7" stroke="none"/>
-    <circle cx="38" cy="25" r="4.5"/>
-    <circle cx="38" cy="25" r="1.5" fill="#7C9BFF" fill-opacity="0.7" stroke="none"/>
-    <path d="M27 33 L30 37 L33 33"/>
-    <path d="M26 38 Q30 43 34 38"/>
-    <path d="M14 32 L16 35" stroke-dasharray="2 2" opacity="0.5"/>
-    <path d="M46 32 L44 35" stroke-dasharray="2 2" opacity="0.5"/>
-  </svg>
-  <span class="tip">Connect &amp; chat with aspirants</span>
-</a>
-
 <script>
-  /* ===== FAQ ===== */
-  function toggleFaq(el) {
-    const item = el.parentElement;
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
+const LOCATIONS = {
+  karakoram: {
+    name:"Karakoram Range", region:"Jammu & Kashmir / Ladakh", coords:"35.86°N, 76.55°E",
+    banner:"linear-gradient(135deg,#5C7A8A,#2C4250)", freq:false,
+    topics:["Glaciers","K2","Himalayan Systems"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","18 Cards"]]
+  },
+  thar: {
+    name:"Thar Desert", region:"Rajasthan", coords:"27.0°N, 71.0°E",
+    banner:"linear-gradient(135deg,#C9A968,#8A6B3E)", freq:true,
+    topics:["Arid Climate","Desert National Park","Sand Dunes"],
+    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","14 Questions"],["📰","Current Affairs","5 Articles"],["🗂️","Flashcards","22 Cards"]]
+  },
+  kandla: {
+    name:"Kandla Port", region:"Gujarat", coords:"23.03°N, 70.22°E",
+    banner:"linear-gradient(135deg,#3E6B7A,#20323C)", freq:false,
+    topics:["Major Ports","Gulf of Kutch","Trade Routes"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","7 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","10 Cards"]]
+  },
+  ganga: {
+    name:"Ganga River System", region:"Uttarakhand → West Bengal", coords:"25.31°N, 83.01°E",
+    banner:"linear-gradient(135deg,#4C7A8F,#22414F)", freq:true,
+    topics:["River Systems","Tributaries","Delta Formation"],
+    practice:[["🗺️","Map Practice","8 Questions"],["📄","Previous Year Qs","16 Questions"],["📰","Current Affairs","6 Articles"],["🗂️","Flashcards","30 Cards"]]
+  },
+  khajuraho: {
+    name:"Khajuraho", region:"Madhya Pradesh", coords:"24.85°N, 79.93°E",
+    banner:"linear-gradient(135deg,#B58A4E,#6E4E28)", freq:false,
+    topics:["UNESCO Site","Chandela Dynasty","Temple Architecture"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","8 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","15 Cards"]]
+  },
+  kaziranga: {
+    name:"Kaziranga National Park", region:"Assam, India", coords:"26.58°N, 93.17°E",
+    banner:"linear-gradient(135deg,#5C7A5E,#33472F)", freq:true,
+    topics:["National Parks","Assam","Biodiversity","Wildlife Conservation"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","12 Questions"],["📰","Current Affairs","8 Articles"],["🗂️","Flashcards","25 Cards"]]
+  },
+  chilika: {
+    name:"Chilika Lake", region:"Odisha", coords:"19.7°N, 85.42°E",
+    banner:"linear-gradient(135deg,#4E7A87,#22434B)", freq:false,
+    topics:["Ramsar Site","Lagoons","Migratory Birds"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","16 Cards"]]
+  },
+  hampi: {
+    name:"Hampi", region:"Karnataka", coords:"15.34°N, 76.46°E",
+    banner:"linear-gradient(135deg,#A65C42,#5C2E1E)", freq:false,
+    topics:["Historical Site","Vijayanagara Empire","UNESCO"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","19 Cards"]]
+  },
+  ghats: {
+    name:"Western Ghats", region:"Maharashtra → Kerala", coords:"11.5°N, 76.5°E",
+    banner:"linear-gradient(135deg,#4E7A55,#26402A)", freq:true,
+    topics:["Biodiversity Hotspot","Escarpment","Endemic Species"],
+    practice:[["🗺️","Map Practice","7 Questions"],["📄","Previous Year Qs","13 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","21 Cards"]]
+  },
+  kanyakumari: {
+    name:"Kanyakumari", region:"Tamil Nadu", coords:"8.08°N, 77.54°E",
+    banner:"linear-gradient(135deg,#4C6E8A,#20344A)", freq:false,
+    topics:["Land's End","Confluence of Seas","Coastal Geography"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","6 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","12 Cards"]]
   }
+};
 
-  /* ===== Theme toggle button ===== */
-  document.addEventListener('DOMContentLoaded', function() {
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-      themeToggle.addEventListener('click', toggleTheme);
-    }
+function renderDetail(key){
+  const d = LOCATIONS[key];
+  const card = document.getElementById('detailCard');
+  card.innerHTML = `
+    <div class="detail-banner" style="background:${d.banner}">
+      ${d.freq ? '<div class="frequently">Frequently Asked</div>' : ''}
+    </div>
+    <div class="detail-body">
+      <div class="detail-name">${d.name}</div>
+      <div class="detail-region">${d.region}</div>
+      <div class="detail-coords">${d.coords}</div>
+      <div class="chip-row">${d.topics.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      <div class="section-label" style="margin-top:18px;">Practice &amp; learn</div>
+      <div class="learn-list">
+        ${d.practice.map(p=>`
+          <div class="learn-item">
+            <div class="li-l"><span class="li-icon">${p[0]}</span><div><div class="li-t">${p[1]}</div><div class="li-s">${p[2]}</div></div></div>
+            <span class="arrow">›</span>
+          </div>`).join('')}
+      </div>
+      <button class="cta-btn">🚀 Start learning</button>
+    </div>
+  `;
+}
+
+document.querySelectorAll('.pin').forEach(pin=>{
+  pin.addEventListener('click', ()=>{
+    document.querySelectorAll('.pin').forEach(p=>p.classList.remove('active'));
+    pin.classList.add('active');
+    renderDetail(pin.dataset.loc);
   });
+});
 
-  /* ===== Blog slider ===== */
-  (function() {
-    const slider = document.getElementById('blogSlider');
-    if (!slider) return;
-    let cards = [...slider.querySelectorAll('.blog-card')];
-    let GAP = 190;
-
-    function computeGap() {
-      const w = cards[0] ? cards[0].offsetWidth : 260;
-      GAP = Math.round(w * 0.72);
-    }
-
-    function updateCards() {
-      cards.forEach((card, index) => {
-        let pos = index;
-        if (pos > cards.length / 2) pos -= cards.length;
-        const active = index === 0;
-        card.classList.toggle('active', active);
-        const scale = active ? 1.06 : 0.86;
-        const y = active ? -14 : (pos % 2 ? 10 : -10);
-        const rotate = active ? 0 : (pos % 2 ? 2 : -2);
-        card.style.transform =
-          `translate(-50%,-50%) translateX(${pos * GAP}px) translateY(${y}px) scale(${scale}) rotate(${rotate}deg)`;
-        card.style.zIndex = 100 - Math.abs(pos);
-        card.style.opacity = Math.abs(pos) > 3 ? 0 : 1;
-        card.style.pointerEvents = Math.abs(pos) > 3 ? 'none' : 'auto';
-      });
-    }
-
-    function next() { cards.push(cards.shift()); updateCards(); }
-    function prev() { cards.unshift(cards.pop()); updateCards(); }
-
-    document.getElementById('blogNextBtn').addEventListener('click', next);
-    document.getElementById('blogPrevBtn').addEventListener('click', prev);
-
-    cards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        const index = cards.indexOf(card);
-        if (index === 0) return;
-        e.preventDefault();
-        for (let i = 0; i < index; i++) { cards.push(cards.shift()); }
-        updateCards();
-      });
-    });
-
-    let touchStartX = 0;
-    slider.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    slider.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); }
-    }, { passive: true });
-
-    window.addEventListener('resize', () => { computeGap(); updateCards(); });
-    computeGap();
-    updateCards();
-  })();
-
-  /* ===== Games slider (Play & Learn) — simple snap-scroll track ===== */
-  (function() {
-    const track = document.getElementById('gamesTrack');
-    if (!track) return;
-    const prevBtn = document.getElementById('gamesPrevBtn');
-    const nextBtn = document.getElementById('gamesNextBtn');
-
-    function step() {
-      const c = track.querySelector('.game-card');
-      return c ? c.offsetWidth + 22 : 270; // card width + gap
-    }
-    nextBtn.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
-    prevBtn.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-
-    // stagger-reveal the game cards, same pattern as subject/trend tiles
-    const gCards = track.querySelectorAll('.game-card');
-    const gObs = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const idx = Array.from(gCards).indexOf(entry.target);
-          entry.target.style.transitionDelay = (idx % 4) * 90 + 'ms';
-          entry.target.classList.add('visible');
-          gObs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
-    gCards.forEach(el => gObs.observe(el));
-  })();
-
-  /* ===== Scroll reveal ===== */
-  function revealGrid(selector) {
-    const items = document.querySelectorAll(selector);
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const idx = Array.from(items).indexOf(entry.target);
-          entry.target.style.transitionDelay = (idx % 4) * 70 + 'ms';
-          entry.target.classList.add('visible');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    items.forEach(el => obs.observe(el));
-  }
-  revealGrid('.subject-tile');
-  revealGrid('.trend-tile');
-
-  /* ===== Animated stats ===== */
-  const statEls = document.querySelectorAll('.stat .n');
-  const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const el = entry.target;
-        const target = parseFloat(el.dataset.target);
-        const decimals = el.dataset.decimal ? 1 : 0;
-        const suffix = el.dataset.suffix || (el.dataset.decimal ? '/5' : '');
-        const realTarget = el.dataset.decimal ? target / 10 : target;
-        let cur = 0;
-        const steps = 50;
-        const inc = realTarget / steps;
-        const timer = setInterval(() => {
-          cur += inc;
-          if (cur >= realTarget) { cur = realTarget; clearInterval(timer); }
-          el.textContent = (decimals ? cur.toFixed(1) : Math.round(cur).toLocaleString()) + suffix;
-        }, 24);
-        statObserver.unobserve(el);
-      }
-    });
-  }, { threshold: 0.4 });
-  statEls.forEach(el => statObserver.observe(el));
-
-  /* ===== Eval bars ===== */
-  const evalBars = document.querySelectorAll('.eval-row .track i, .meter .bar i');
-  const barObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const i = entry.target;
-        i.style.width = (i.dataset.w || 0) + '%';
-        barObserver.unobserve(i);
-      }
-    });
-  }, { threshold: 0.3 });
-  evalBars.forEach(i => barObserver.observe(i));
-
-  /* ===== Hero typing (fixed-height, scrollable box — no page reflow) ===== */
-  const sampleAnswer = "Jal Jeevan Mission aims to provide safe, functional tap water to every rural household by 2028, focusing on sustainability and community-led management...";
-  const typedEl = document.getElementById('typedText');
-  let ti = 0;
-  function typeLoop() {
-    if (ti <= sampleAnswer.length) {
-      typedEl.innerHTML = sampleAnswer.slice(0, ti) + '<span class="cursor"></span>';
-      typedEl.scrollTop = typedEl.scrollHeight;
-      ti++;
-      setTimeout(typeLoop, 28);
-    } else {
-      setTimeout(() => { ti = 0; typeLoop(); }, 2200);
-    }
-  }
-  typeLoop();
-
-  /* ===== 3D tilt ===== */
-  const stage = document.querySelector('.tilt-stage');
-  const card = document.getElementById('mockCard');
-  if (stage && window.matchMedia('(pointer:fine)').matches) {
-    stage.addEventListener('mousemove', (e) => {
-      const r = stage.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5;
-      const py = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `rotateY(${-10 + px * 14}deg) rotateX(${6 - py * 14}deg)`;
-    });
-    stage.addEventListener('mouseleave', () => {
-      card.style.transform = 'rotateY(-10deg) rotateX(6deg)';
-    });
-  }
-
-  /* ===== Particles ===== */
-  (function() {
-    const canvas = document.getElementById('particleCanvas');
-    if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const ctx = canvas.getContext('2d');
-    let w, h, particles = [];
-    
-    function getColors() {
-      const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-      if (theme === 'light') {
-        return { stroke: '37, 99, 235', fill: '37, 99, 235' };
-      }
-      return { stroke: '62, 123, 250', fill: '106, 163, 255' };
-    }
-    
-    function resize() {
-      w = canvas.width = canvas.offsetWidth;
-      h = canvas.height = canvas.offsetHeight;
-    }
-    function init() {
-      resize();
-      const count = Math.min(60, Math.floor(w / 22));
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3
-      }));
-    }
-    function tick() {
-      ctx.clearRect(0, 0, w, h);
-      const colors = getColors();
-      particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
-      });
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j];
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          if (d < 120) {
-            ctx.strokeStyle = `rgba(${colors.stroke}, ${0.12 * (1 - d / 120)})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-          }
-        }
-        ctx.fillStyle = `rgba(${colors.fill}, 0.3)`;
-        ctx.beginPath(); ctx.arc(particles[i].x, particles[i].y, 1.6, 0, 7); ctx.fill();
-      }
-      requestAnimationFrame(tick);
-    }
-    window.addEventListener('resize', init);
-    init();
-    tick();
-    
-    // Re-init on theme change
-    const observer = new MutationObserver(() => {
-      // Colors will update on next frame
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  })();
+renderDetail('kaziranga');
 </script>
 
 </body>
