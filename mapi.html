@@ -192,17 +192,7 @@
     position:absolute; top:16px; left:18px; font-size:10.5px; color:var(--muted-dark);
     letter-spacing:0.08em; text-transform:uppercase; z-index:3;
   }
-  .india-svg{ position:absolute; inset:0; width:100%; height:100%; z-index:1; }
-  .india-shape{
-    fill: url(#terrainGradient);
-    stroke: rgba(201,151,75,0.6);
-    stroke-width:1.6;
-    stroke-linejoin:round;
-    filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45));
-  }
-  .india-shape-under{
-    fill: rgba(0,0,0,0.28);
-  }
+  .india-canvas{ position:absolute; inset:0; width:100%; height:100%; z-index:1; display:block; }
 
   .pin{
     position:absolute; transform: translate(-50%,-100%);
@@ -437,17 +427,7 @@
     <div class="map-stage">
       <div class="map-caption">Physical &amp; political · India</div>
 
-      <svg class="india-svg" viewBox="0 0 480 620" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="terrainGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#8FA88E"/>
-            <stop offset="30%" stop-color="#AFAE7E"/>
-            <stop offset="60%" stop-color="#C9A968"/>
-            <stop offset="100%" stop-color="#7FA39C"/>
-          </linearGradient>
-        </defs>
-        <path class="india-shape" d="M185,8 L220,25 L255,45 L290,55 L320,60 L365,68 L385,78 L400,95 L430,100 L455,90 L458,130 L430,150 L415,175 L395,195 L375,175 L365,155 L345,140 L340,165 L355,195 L345,215 L330,250 L320,290 L330,330 L322,370 L310,410 L295,450 L275,490 L255,530 L230,570 L205,590 L185,565 L175,520 L170,480 L165,440 L168,400 L160,360 L150,320 L140,290 L110,280 L75,300 L60,275 L85,255 L70,235 L40,220 L55,195 L90,190 L110,160 L100,120 L120,85 L140,55 L165,30 Z" />
-      </svg>
+      <canvas class="india-canvas" id="indiaCanvas"></canvas>
 
       <button class="pin" style="left:45.8%; top:4%;" data-loc="karakoram"><span class="dot"><span>⛰️</span></span><span class="label">Karakoram Range</span></button>
       <button class="pin" style="left:20.8%; top:19.4%;" data-loc="thar"><span class="dot"><span>🏜️</span></span><span class="label">Thar Desert</span></button>
@@ -630,6 +610,87 @@ function renderDetail(key){
     </div>
   `;
 }
+
+/* ---------- Dot-matrix India map ---------- */
+const INDIA_PATH_D = "M185,8 L220,25 L255,45 L290,55 L320,60 L365,68 L385,78 L400,95 L430,100 L455,90 L458,130 L430,150 L415,175 L395,195 L375,175 L365,155 L345,140 L340,165 L355,195 L345,215 L330,250 L320,290 L330,330 L322,370 L310,410 L295,450 L275,490 L255,530 L230,570 L205,590 L185,565 L175,520 L170,480 L165,440 L168,400 L160,360 L150,320 L140,290 L110,280 L75,300 L60,275 L85,255 L70,235 L40,220 L55,195 L90,190 L110,160 L100,120 L120,85 L140,55 L165,30 Z";
+const VBW = 480, VBH = 620;
+
+function lerp(a,b,t){ return a + (b-a)*t; }
+function lerpColor(c1,c2,t){
+  return [ lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t) ];
+}
+// Elevation-style palette: cool Himalayan blue-grey (north) -> warm brass plains -> moss peninsula (south)
+const STOPS = [
+  { t:0.00, c:[122,168,189] },  // Himalaya haze
+  { t:0.28, c:[227,179,104] },  // brass plains
+  { t:0.55, c:[201,169,104] },  // warm plateau
+  { t:0.80, c:[139,157,110] },  // deccan green
+  { t:1.00, c:[107,138,109] }   // moss south
+];
+function colorAt(t){
+  for(let i=0;i<STOPS.length-1;i++){
+    if(t>=STOPS[i].t && t<=STOPS[i+1].t){
+      const localT = (t-STOPS[i].t)/(STOPS[i+1].t-STOPS[i].t);
+      return lerpColor(STOPS[i].c, STOPS[i+1].c, localT);
+    }
+  }
+  return STOPS[STOPS.length-1].c;
+}
+
+function drawIndiaCanvas(){
+  const canvas = document.getElementById('indiaCanvas');
+  if(!canvas) return;
+  const stage = canvas.parentElement;
+  const rect = stage.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  if(rect.width < 10 || rect.height < 10) return;
+
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const scaleX = (rect.width / VBW) * dpr;
+  const scaleY = (rect.height / VBH) * dpr;
+  ctx.setTransform(scaleX, 0, 0, scaleY, 0, 0);
+
+  const path = new Path2D(INDIA_PATH_D);
+  const step = 6.4;
+  const armLen = 1.5;
+
+  ctx.lineCap = 'round';
+  ctx.shadowColor = 'rgba(227,179,104,0.35)';
+  ctx.shadowBlur = 2.2;
+
+  for(let vy = 4; vy <= VBH; vy += step){
+    const t = vy / VBH;
+    const rowJitterOffset = ((vy/step) % 2 === 0) ? 0 : step/2; // brick offset for denser, organic packing
+    for(let vx = 4 - rowJitterOffset; vx <= VBW; vx += step){
+      if(!ctx.isPointInPath(path, vx, vy)) continue;
+      const jitter = 0.72 + Math.random()*0.5;
+      const [r,g,b] = colorAt(t);
+      ctx.strokeStyle = `rgba(${r|0},${g|0},${b|0},${Math.min(1,0.55*jitter+0.25)})`;
+      ctx.lineWidth = 1.15;
+      ctx.beginPath();
+      ctx.moveTo(vx-armLen, vy);
+      ctx.lineTo(vx+armLen, vy);
+      ctx.moveTo(vx, vy-armLen);
+      ctx.lineTo(vx, vy+armLen);
+      ctx.stroke();
+    }
+  }
+  ctx.shadowBlur = 0;
+}
+
+let resizeRAF;
+new ResizeObserver(()=>{
+  cancelAnimationFrame(resizeRAF);
+  resizeRAF = requestAnimationFrame(drawIndiaCanvas);
+}).observe(document.querySelector('.map-stage'));
+
+window.addEventListener('load', drawIndiaCanvas);
+drawIndiaCanvas();
 
 document.querySelectorAll('.pin').forEach(pin=>{
   pin.addEventListener('click', ()=>{
