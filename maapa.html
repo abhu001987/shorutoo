@@ -260,19 +260,19 @@
   /* ---------- Map panel ---------- */
   .map-panel{ background: var(--navy-soft); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
   .map-stage{
-    position:relative; aspect-ratio: 4 / 3; max-height:520px;
+    position:relative; width:100%;
+    height: clamp(320px, 42vw, 520px);
     background: radial-gradient(ellipse at 28% 18%, #16394A 0%, #0F2029 72%);
     overflow:hidden;
   }
-  @media (max-width:1180px){ .map-stage{ aspect-ratio: 16 / 11; max-height:460px; } }
-  @media (max-width:640px){ .map-stage{ aspect-ratio: 4 / 3.6; max-height:420px; } }
+  @media (max-width:1180px){ .map-stage{ height: clamp(320px, 52vw, 460px); } }
+  @media (max-width:640px){ .map-stage{ height: clamp(280px, 78vw, 400px); } }
   .map-caption{
     position:absolute; top:16px; left:18px; font-size:10.5px; color:var(--muted-dark);
     letter-spacing:0.08em; text-transform:uppercase; z-index:650;
     background: rgba(18,32,44,0.55); padding:4px 9px; border-radius:6px; border:1px solid var(--line);
   }
   #worldMap{ position:absolute; inset:0; width:100%; height:100%; z-index:1; background:var(--navy); }
-  .dot-overlay{ position:absolute; inset:0; width:100%; height:100%; z-index:410; pointer-events:none; mix-blend-mode:color-dodge; opacity:0.55; }
 
   .leaflet-baseTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(0.82) saturate(0.55) contrast(0.98); }
   .leaflet-labelTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(1.35) saturate(0.35) contrast(0.85); opacity:0.9; }
@@ -484,7 +484,6 @@
     <div class="map-stage">
       <div class="map-caption">Physical &amp; political · World</div>
       <div id="worldMap"></div>
-      <canvas class="dot-overlay" id="dotOverlay"></canvas>
 
       <svg class="compass" viewBox="0 0 60 60" fill="none">
         <circle cx="30" cy="30" r="27" stroke="#C9974B" stroke-width="1"/>
@@ -772,51 +771,6 @@ function renderDetail(key){
   `;
 }
 
-/* ---------- Decorative dot-matrix tint ---------- */
-const STOPS = [
-  { t:0.00, c:[122,168,189] }, { t:0.28, c:[227,179,104] }, { t:0.55, c:[201,169,104] },
-  { t:0.80, c:[139,157,110] }, { t:1.00, c:[107,138,109] }
-];
-function lerp(a,b,t){ return a + (b-a)*t; }
-function lerpColor(c1,c2,t){ return [lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t)]; }
-function colorAt(t){
-  for(let i=0;i<STOPS.length-1;i++){
-    if(t>=STOPS[i].t && t<=STOPS[i+1].t){
-      const localT = (t-STOPS[i].t)/(STOPS[i+1].t-STOPS[i].t);
-      return lerpColor(STOPS[i].c, STOPS[i+1].c, localT);
-    }
-  }
-  return STOPS[STOPS.length-1].c;
-}
-function drawDotOverlay(){
-  const canvas = document.getElementById('dotOverlay');
-  const stage = canvas.parentElement;
-  const rect = stage.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  if(rect.width < 10 || rect.height < 10) return;
-  canvas.width = Math.round(rect.width * dpr);
-  canvas.height = Math.round(rect.height * dpr);
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const step = 13 * dpr;
-  const armLen = 1.5 * dpr;
-  ctx.lineCap = 'round';
-  for(let y = step/2; y <= canvas.height; y += step){
-    const t = y / canvas.height;
-    const rowOffset = ((y/step) % 2 === 0) ? 0 : step/2;
-    for(let x = step/2 - rowOffset; x <= canvas.width; x += step){
-      const jitter = 0.65 + Math.random()*0.5;
-      const [r,g,b] = colorAt(t);
-      ctx.strokeStyle = `rgba(${r|0},${g|0},${b|0},${Math.min(1,0.4*jitter+0.15)})`;
-      ctx.lineWidth = 1.1 * dpr;
-      ctx.beginPath();
-      ctx.moveTo(x-armLen, y); ctx.lineTo(x+armLen, y);
-      ctx.moveTo(x, y-armLen); ctx.lineTo(x, y+armLen);
-      ctx.stroke();
-    }
-  }
-}
-
 /* ---------- Leaflet world map ---------- */
 const map = L.map('worldMap', {
   center:[18, 20], zoom:2, minZoom:2, maxZoom:18,
@@ -875,7 +829,7 @@ document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut()
 let resizeRAF;
 new ResizeObserver(()=>{
   cancelAnimationFrame(resizeRAF);
-  resizeRAF = requestAnimationFrame(()=>{ map.invalidateSize(); drawDotOverlay(); });
+  resizeRAF = requestAnimationFrame(()=>{ map.invalidateSize(); });
 }).observe(document.querySelector('.map-stage'));
 
 /* ---------- Live search: locations + topics ---------- */
@@ -969,8 +923,8 @@ document.addEventListener('keydown', e => {
 renderCollections();
 renderQuickBar();
 renderTopicsGrid();
-window.addEventListener('load', () => { map.invalidateSize(); drawDotOverlay(); });
-setTimeout(() => { map.invalidateSize(); drawDotOverlay(); }, 300);
+window.addEventListener('load', () => { map.invalidateSize(); });
+setTimeout(() => { map.invalidateSize(); }, 300);
 setActive('tajmahal');
 </script>
 
