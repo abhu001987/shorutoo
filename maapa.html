@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Terra Prep — Chart India. Crack the exam.</title>
+<title>Terra Prep — Chart the World. Crack the exam.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   :root{
     --navy: #12202C;
@@ -178,67 +177,75 @@
   .map-stage{
     position:relative;
     aspect-ratio: 480 / 600;
-    background: #0F2029;
+    background: radial-gradient(ellipse at 28% 18%, #16394A 0%, #0F2029 72%);
     overflow:hidden;
   }
   .map-caption{
-    position:absolute; top:16px; left:18px; font-size:10.5px; color:var(--parchment);
+    position:absolute; top:16px; left:18px; font-size:10.5px; color:var(--muted-dark);
     letter-spacing:0.08em; text-transform:uppercase; z-index:650;
-    background: rgba(18,32,44,0.8); padding:4px 10px; border-radius:6px;
-    pointer-events:none; border:1px solid var(--line);
-  }
-  #leafletMap{ position:absolute; inset:0; width:100%; height:100%; z-index:1; background:#EFE9DA; }
-
-  /* dot-matrix texture laid over the whole real map, tying it to the brand */
-  .dot-overlay{
-    position:absolute; inset:0; z-index:410; pointer-events:none;
-    mix-blend-mode:multiply; opacity:0.55;
-    background-image: radial-gradient(circle at center, rgba(18,32,44,0.55) 0.9px, transparent 0.9px);
-    background-size: 6px 6px;
-  }
-  .dot-overlay::after{
-    content:'';
-    position:absolute; inset:0;
-    background: radial-gradient(ellipse at 30% 20%, rgba(227,179,104,0.18), transparent 60%);
-    mix-blend-mode:soft-light;
+    background: rgba(18,32,44,0.55); padding:4px 9px; border-radius:6px;
+    border:1px solid var(--line);
   }
 
-  /* Custom brass diamond marker (reused for every location, India or world) */
-  .leaflet-pin{ display:flex; flex-direction:column; align-items:center; }
-  .leaflet-pin .dot{
-    width:24px; height:24px; border-radius:50% 50% 50% 0;
+  #worldMap{ position:absolute; inset:0; width:100%; height:100%; z-index:1; background:var(--navy); }
+  .dot-overlay{ position:absolute; inset:0; width:100%; height:100%; z-index:410; pointer-events:none; mix-blend-mode:color-dodge; opacity:0.55; }
+
+  /* Recolor the light Carto basemap into the Terra Prep navy/brass palette */
+  .leaflet-baseTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(0.82) saturate(0.55) contrast(0.98); }
+  .leaflet-labelTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(1.35) saturate(0.35) contrast(0.85); opacity:0.9; }
+  .leaflet-container{ background: var(--navy); font-family:'Inter',sans-serif; }
+  .leaflet-control-attribution{
+    background: rgba(18,32,44,0.7) !important; color:var(--muted-dark) !important;
+    font-size:9.5px !important; backdrop-filter: blur(2px);
+  }
+  .leaflet-control-attribution a{ color:var(--brass-bright) !important; }
+  .india-outline{ pointer-events:none; }
+
+  /* Pins reused for Leaflet divIcon markers */
+  .pin{
+    display:flex; flex-direction:column; align-items:center;
+    background:none; border:none; padding:0; cursor:pointer;
+  }
+  .pin .dot{
+    width:26px; height:26px; border-radius:50% 50% 50% 0;
     transform: rotate(-45deg);
     background: var(--brass);
     display:flex; align-items:center; justify-content:center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.45);
-    border: 2px solid rgba(18,32,44,0.65);
-    transition: transform .15s, background .15s;
+    border: 2px solid rgba(18,32,44,0.6);
+    transition: transform .18s, background .18s;
   }
-  .leaflet-pin .dot span{ transform: rotate(45deg); font-size:11px; }
-  .leaflet-pin.active .dot{ background: var(--rust); transform: rotate(-45deg) scale(1.15); }
+  .pin .dot span{ transform: rotate(45deg); font-size:11px; }
+  .pin.active .dot, .pin:hover .dot{ background: var(--rust); transform: rotate(-45deg) scale(1.12); }
+  .pin .label{
+    margin-top:4px; font-size:10px; white-space:nowrap;
+    background: rgba(18,32,44,0.9); padding:2px 7px; border-radius:5px;
+    color: var(--parchment); border:1px solid var(--line);
+    opacity:0; transition:opacity .15s; pointer-events:none;
+  }
+  .pin:hover .label, .pin.active .label{ opacity:1; }
+  @media (max-width:640px){
+    .pin .dot{ width:22px; height:22px; }
+    .pin .dot span{ font-size:10px; }
+  }
 
   .compass{
-    position:absolute; bottom:16px; right:16px; width:48px; height:48px; z-index:650;
-    animation: spin 70s linear infinite; opacity:0.9; pointer-events:none;
+    position:absolute; bottom:16px; right:16px; width:52px; height:52px; z-index:640;
+    animation: spin 60s linear infinite;
+    opacity:0.85; pointer-events:none;
   }
   @keyframes spin{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
 
-  /* Restyle Leaflet's own zoom control to match the brass theme */
-  .leaflet-control-zoom{ border:none !important; margin:16px !important; }
-  .leaflet-control-zoom a{
-    width:30px !important; height:30px !important; line-height:30px !important;
-    background: var(--navy-soft) !important; border:1px solid var(--line) !important;
-    color: var(--parchment) !important;
+  .zoom-ctrl{
+    position:absolute; top:16px; right:16px; z-index:650;
+    display:flex; flex-direction:column; gap:6px;
   }
-  .leaflet-control-zoom a:hover{ border-color: var(--brass) !important; }
-  .leaflet-control-attribution{
-    background: rgba(18,32,44,0.75) !important; color: var(--muted) !important;
-    font-size:9.5px !important;
+  .zoom-ctrl button{
+    width:30px; height:30px; border-radius:8px;
+    background: var(--navy-soft); border:1px solid var(--line);
+    color: var(--parchment); font-size:15px; line-height:1;
   }
-  .leaflet-control-attribution a{ color: var(--brass-bright) !important; }
-  .leaflet-popup-content-wrapper{ background: var(--navy-soft); color: var(--ink-text); border-radius:10px; }
-  .leaflet-popup-tip{ background: var(--navy-soft); }
-  .leaflet-popup-content{ font-family:'Inter',sans-serif; font-size:12.5px; margin:10px 12px; }
+  .zoom-ctrl button:hover{ border-color: var(--brass); }
 
   .quick-bar{
     display:grid; grid-template-columns:repeat(4,1fr);
@@ -363,7 +370,7 @@
     </svg>
     <div class="brand-text">
       <div class="name">Terra Prep</div>
-      <div class="tag">Chart India · Crack the exam</div>
+      <div class="tag">Chart the world · Crack the exam</div>
     </div>
   </div>
 
@@ -388,9 +395,9 @@
 
   <!-- LEFT PANEL -->
   <div class="left-panel">
-    <div class="eyebrow">Explore India</div>
+    <div class="eyebrow">Explore the world</div>
     <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
-    <p class="hero-sub">Tap any location on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC geography.</p>
+    <p class="hero-sub">Tap any landmark on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC world geography.</p>
 
     <div class="stat-row">
       <div class="stat-card"><div class="v">4,800+</div><div class="k">Locations mapped</div></div>
@@ -405,8 +412,8 @@
       <div class="coll-card"><span class="icon">⛰️</span><div class="cname">Mountains</div><div class="ccount">89</div></div>
       <div class="coll-card"><span class="icon">🌳</span><div class="cname">National Parks</div><div class="ccount">71</div></div>
       <div class="coll-card"><span class="icon">⚓</span><div class="cname">Ports</div><div class="ccount">16</div></div>
-      <div class="coll-card"><span class="icon">🏛️</span><div class="cname">UNESCO Sites</div><div class="ccount">41</div></div>
-      <div class="coll-card"><span class="icon">🚂</span><div class="cname">Rail Zones</div><div class="ccount">18</div></div>
+      <div class="coll-card"><span class="icon">🏛️</span><div class="cname">World Heritage</div><div class="ccount">41</div></div>
+      <div class="coll-card"><span class="icon">🚂</span><div class="cname">Trade Routes</div><div class="ccount">18</div></div>
       <div class="coll-card"><span class="icon">🌊</span><div class="cname">Seas &amp; Gulfs</div><div class="ccount">21</div></div>
       <div class="coll-card"><span class="icon">🏭</span><div class="cname">Industries</div><div class="ccount">37</div></div>
       <div class="coll-more">View all 30+ topics →</div>
@@ -425,10 +432,10 @@
   <!-- MAP PANEL -->
   <div class="map-panel" id="mapPanel">
     <div class="map-stage">
-      <div class="map-caption">World Geography · Key Locations</div>
+      <div class="map-caption">Physical &amp; political · World</div>
 
-      <div id="leafletMap"></div>
-      <div class="dot-overlay"></div>
+      <div id="worldMap"></div>
+      <canvas class="dot-overlay" id="dotOverlay"></canvas>
 
       <svg class="compass" viewBox="0 0 60 60" fill="none">
         <circle cx="30" cy="30" r="27" stroke="#C9974B" stroke-width="1"/>
@@ -438,6 +445,11 @@
         <path d="M54 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
         <text x="30" y="12" text-anchor="middle" fill="#E7DEC7" font-size="6" font-family="IBM Plex Mono">N</text>
       </svg>
+
+      <div class="zoom-ctrl">
+        <button id="zoomIn">+</button>
+        <button id="zoomOut">−</button>
+      </div>
     </div>
 
     <div class="quick-bar">
@@ -467,7 +479,7 @@
         </svg>
         <div class="name">Terra Prep</div>
       </div>
-      <p class="footer-about">A map-first way to learn India's geography — built for exam aspirants who'd rather explore a place than memorize a list.</p>
+      <p class="footer-about">A map-first way to learn world geography — built for exam aspirants who'd rather explore a place than memorize a list.</p>
     </div>
     <div class="footer-col">
       <h4>Explore</h4>
@@ -507,67 +519,81 @@
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
+/* ---------- World landmark data (replaces the old India-only pins) ---------- */
 const LOCATIONS = {
-  karakoram: {
-    name:"Karakoram Range", region:"Jammu & Kashmir / Ladakh", coords:"35.86°N, 76.55°E",
-    banner:"linear-gradient(135deg,#5C7A8A,#2C4250)", freq:false,
-    topics:["Glaciers","K2","Himalayan Systems"],
-    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","18 Cards"]]
-  },
-  thar: {
-    name:"Thar Desert", region:"Rajasthan", coords:"27.0°N, 71.0°E",
-    banner:"linear-gradient(135deg,#C9A968,#8A6B3E)", freq:true,
-    topics:["Arid Climate","Desert National Park","Sand Dunes"],
-    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","14 Questions"],["📰","Current Affairs","5 Articles"],["🗂️","Flashcards","22 Cards"]]
-  },
-  kandla: {
-    name:"Kandla Port", region:"Gujarat", coords:"23.03°N, 70.22°E",
-    banner:"linear-gradient(135deg,#3E6B7A,#20323C)", freq:false,
-    topics:["Major Ports","Gulf of Kutch","Trade Routes"],
-    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","7 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","10 Cards"]]
-  },
-  ganga: {
-    name:"Ganga River System", region:"Uttarakhand → West Bengal", coords:"25.31°N, 83.01°E",
+  eiffel: {
+    name:"Eiffel Tower", region:"Paris, France", lat:48.8584, lng:2.2945, coords:"48.86°N, 2.29°E", icon:"🗼",
     banner:"linear-gradient(135deg,#4C7A8F,#22414F)", freq:true,
-    topics:["River Systems","Tributaries","Delta Formation"],
-    practice:[["🗺️","Map Practice","8 Questions"],["📄","Previous Year Qs","16 Questions"],["📰","Current Affairs","6 Articles"],["🗂️","Flashcards","30 Cards"]]
+    topics:["Landmark Structures","Iron Architecture","World Capitals"],
+    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","14 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","20 Cards"]]
   },
-  khajuraho: {
-    name:"Khajuraho", region:"Madhya Pradesh", coords:"24.85°N, 79.93°E",
-    banner:"linear-gradient(135deg,#B58A4E,#6E4E28)", freq:false,
-    topics:["UNESCO Site","Chandela Dynasty","Temple Architecture"],
-    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","8 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","15 Cards"]]
+  greatwall: {
+    name:"Great Wall of China", region:"Beijing, China", lat:40.4319, lng:116.5704, coords:"40.43°N, 116.57°E", icon:"🏯",
+    banner:"linear-gradient(135deg,#A6503B,#5C2E1E)", freq:true,
+    topics:["Fortifications","Ancient Trade Routes","World Heritage"],
+    practice:[["🗺️","Map Practice","7 Questions"],["📄","Previous Year Qs","15 Questions"],["📰","Current Affairs","5 Articles"],["🗂️","Flashcards","24 Cards"]]
   },
-  kaziranga: {
-    name:"Kaziranga National Park", region:"Assam, India", coords:"26.58°N, 93.17°E",
-    banner:"linear-gradient(135deg,#5C7A5E,#33472F)", freq:true,
-    topics:["National Parks","Assam","Biodiversity","Wildlife Conservation"],
-    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","12 Questions"],["📰","Current Affairs","8 Articles"],["🗂️","Flashcards","25 Cards"]]
+  giza: {
+    name:"Pyramids of Giza", region:"Giza, Egypt", lat:29.9792, lng:31.1342, coords:"29.98°N, 31.13°E", icon:"🏛️",
+    banner:"linear-gradient(135deg,#C9A968,#8A6B3E)", freq:true,
+    topics:["Ancient Civilizations","Desert Landforms","World Heritage"],
+    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","12 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","18 Cards"]]
   },
-  chilika: {
-    name:"Chilika Lake", region:"Odisha", coords:"19.7°N, 85.42°E",
+  liberty: {
+    name:"Statue of Liberty", region:"New York, USA", lat:40.6892, lng:-74.0445, coords:"40.69°N, 74.04°W", icon:"🗽",
+    banner:"linear-gradient(135deg,#5C7A8A,#2C4250)", freq:false,
+    topics:["Monuments","Harbours &amp; Ports","Migration History"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","15 Cards"]]
+  },
+  tajmahal: {
+    name:"Taj Mahal", region:"Agra, India", lat:27.1751, lng:78.0421, coords:"27.18°N, 78.04°E", icon:"🕌",
+    banner:"linear-gradient(135deg,#B58A4E,#6E4E28)", freq:true,
+    topics:["Mughal Architecture","UNESCO Site","River Yamuna"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","11 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","19 Cards"]]
+  },
+  machu: {
+    name:"Machu Picchu", region:"Cusco Region, Peru", lat:-13.1631, lng:-72.5450, coords:"13.16°S, 72.55°W", icon:"⛰️",
+    banner:"linear-gradient(135deg,#5C7A5E,#33472F)", freq:false,
+    topics:["Andes Mountains","Inca Civilization","Highland Terrain"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","17 Cards"]]
+  },
+  sydney: {
+    name:"Sydney Opera House", region:"Sydney, Australia", lat:-33.8568, lng:151.2153, coords:"33.86°S, 151.22°E", icon:"🎭",
     banner:"linear-gradient(135deg,#4E7A87,#22434B)", freq:false,
-    topics:["Ramsar Site","Lagoons","Migratory Birds"],
+    topics:["Coastal Cities","Modern Architecture","Southern Hemisphere"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","7 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","11 Cards"]]
+  },
+  everest: {
+    name:"Mount Everest", region:"Nepal / China border", lat:27.9881, lng:86.9250, coords:"27.99°N, 86.93°E", icon:"🏔️",
+    banner:"linear-gradient(135deg,#7AA8BD,#2C4250)", freq:true,
+    topics:["Himalayan System","Highest Peaks","Tectonic Boundaries"],
+    practice:[["🗺️","Map Practice","8 Questions"],["📄","Previous Year Qs","16 Questions"],["📰","Current Affairs","6 Articles"],["🗂️","Flashcards","28 Cards"]]
+  },
+  grandcanyon: {
+    name:"Grand Canyon", region:"Arizona, USA", lat:36.1069, lng:-112.1129, coords:"36.11°N, 112.11°W", icon:"🏜️",
+    banner:"linear-gradient(135deg,#B87A4E,#6E4425)", freq:false,
+    topics:["Erosional Landforms","Colorado River","National Parks"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","8 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","14 Cards"]]
+  },
+  colosseum: {
+    name:"Colosseum", region:"Rome, Italy", lat:41.8902, lng:12.4922, coords:"41.89°N, 12.49°E", icon:"🏟️",
+    banner:"linear-gradient(135deg,#A6503B,#5C2E1E)", freq:false,
+    topics:["Roman Empire","Ancient Amphitheatres","Mediterranean Climate"],
     practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","16 Cards"]]
   },
-  hampi: {
-    name:"Hampi", region:"Karnataka", coords:"15.34°N, 76.46°E",
-    banner:"linear-gradient(135deg,#A65C42,#5C2E1E)", freq:false,
-    topics:["Historical Site","Vijayanagara Empire","UNESCO"],
-    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","19 Cards"]]
+  christ: {
+    name:"Christ the Redeemer", region:"Rio de Janeiro, Brazil", lat:-22.9519, lng:-43.2105, coords:"22.95°S, 43.21°W", icon:"⛪",
+    banner:"linear-gradient(135deg,#4E7A55,#26402A)", freq:false,
+    topics:["Monuments","Coastal Brazil","Amazon Basin"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","6 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","10 Cards"]]
   },
-  ghats: {
-    name:"Western Ghats", region:"Maharashtra → Kerala", coords:"11.5°N, 76.5°E",
-    banner:"linear-gradient(135deg,#4E7A55,#26402A)", freq:true,
-    topics:["Biodiversity Hotspot","Escarpment","Endemic Species"],
-    practice:[["🗺️","Map Practice","7 Questions"],["📄","Previous Year Qs","13 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","21 Cards"]]
-  },
-  kanyakumari: {
-    name:"Kanyakumari", region:"Tamil Nadu", coords:"8.08°N, 77.54°E",
-    banner:"linear-gradient(135deg,#4C6E8A,#20344A)", freq:false,
-    topics:["Land's End","Confluence of Seas","Coastal Geography"],
-    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","6 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","12 Cards"]]
+  fuji: {
+    name:"Mount Fuji", region:"Honshu, Japan", lat:35.3606, lng:138.7274, coords:"35.36°N, 138.73°E", icon:"🗻",
+    banner:"linear-gradient(135deg,#4C6E8A,#20344A)", freq:true,
+    topics:["Volcanic Peaks","Ring of Fire","Island Nations"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","18 Cards"]]
   }
 };
 
@@ -596,22 +622,16 @@ function renderDetail(key){
   `;
 }
 
-/* ---------- Dot-matrix India map ---------- */
-const INDIA_PATH_D = "M185,8 L220,25 L255,45 L290,55 L320,60 L365,68 L385,78 L400,95 L430,100 L455,90 L458,130 L430,150 L415,175 L395,195 L375,175 L365,155 L345,140 L340,165 L355,195 L345,215 L330,250 L320,290 L330,330 L322,370 L310,410 L295,450 L275,490 L255,530 L230,570 L205,590 L185,565 L175,520 L170,480 L165,440 L168,400 L160,360 L150,320 L140,290 L110,280 L75,300 L60,275 L85,255 L70,235 L40,220 L55,195 L90,190 L110,160 L100,120 L120,85 L140,55 L165,30 Z";
-const VBW = 480, VBH = 620;
-
-function lerp(a,b,t){ return a + (b-a)*t; }
-function lerpColor(c1,c2,t){
-  return [ lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t) ];
-}
-// Elevation-style palette: cool Himalayan blue-grey (north) -> warm brass plains -> moss peninsula (south)
+/* ---------- Decorative dot-matrix tint (echoes the old elevation-dot texture) ---------- */
 const STOPS = [
-  { t:0.00, c:[122,168,189] },  // Himalaya haze
-  { t:0.28, c:[227,179,104] },  // brass plains
-  { t:0.55, c:[201,169,104] },  // warm plateau
-  { t:0.80, c:[139,157,110] },  // deccan green
+  { t:0.00, c:[122,168,189] },  // polar / high-latitude haze
+  { t:0.28, c:[227,179,104] },  // brass mid-latitudes
+  { t:0.55, c:[201,169,104] },  // warm equatorial band
+  { t:0.80, c:[139,157,110] },  // temperate green
   { t:1.00, c:[107,138,109] }   // moss south
 ];
+function lerp(a,b,t){ return a + (b-a)*t; }
+function lerpColor(c1,c2,t){ return [lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t)]; }
 function colorAt(t){
   for(let i=0;i<STOPS.length-1;i++){
     if(t>=STOPS[i].t && t<=STOPS[i+1].t){
@@ -621,71 +641,106 @@ function colorAt(t){
   }
   return STOPS[STOPS.length-1].c;
 }
-
-function drawIndiaCanvas(){
-  const canvas = document.getElementById('indiaCanvas');
-  if(!canvas) return;
+function drawDotOverlay(){
+  const canvas = document.getElementById('dotOverlay');
   const stage = canvas.parentElement;
   const rect = stage.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
   if(rect.width < 10 || rect.height < 10) return;
-
   canvas.width = Math.round(rect.width * dpr);
   canvas.height = Math.round(rect.height * dpr);
-
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  const scaleX = (rect.width / VBW) * dpr;
-  const scaleY = (rect.height / VBH) * dpr;
-  ctx.setTransform(scaleX, 0, 0, scaleY, 0, 0);
-
-  const path = new Path2D(INDIA_PATH_D);
-  const step = 6.4;
-  const armLen = 1.5;
-
+  const step = 13 * dpr;
+  const armLen = 1.5 * dpr;
   ctx.lineCap = 'round';
-  ctx.shadowColor = 'rgba(227,179,104,0.35)';
-  ctx.shadowBlur = 2.2;
-
-  for(let vy = 4; vy <= VBH; vy += step){
-    const t = vy / VBH;
-    const rowJitterOffset = ((vy/step) % 2 === 0) ? 0 : step/2; // brick offset for denser, organic packing
-    for(let vx = 4 - rowJitterOffset; vx <= VBW; vx += step){
-      if(!ctx.isPointInPath(path, vx, vy)) continue;
-      const jitter = 0.72 + Math.random()*0.5;
+  for(let y = step/2; y <= canvas.height; y += step){
+    const t = y / canvas.height;
+    const rowOffset = ((y/step) % 2 === 0) ? 0 : step/2;
+    for(let x = step/2 - rowOffset; x <= canvas.width; x += step){
+      const jitter = 0.65 + Math.random()*0.5;
       const [r,g,b] = colorAt(t);
-      ctx.strokeStyle = `rgba(${r|0},${g|0},${b|0},${Math.min(1,0.55*jitter+0.25)})`;
-      ctx.lineWidth = 1.15;
+      ctx.strokeStyle = `rgba(${r|0},${g|0},${b|0},${Math.min(1,0.4*jitter+0.15)})`;
+      ctx.lineWidth = 1.1 * dpr;
       ctx.beginPath();
-      ctx.moveTo(vx-armLen, vy);
-      ctx.lineTo(vx+armLen, vy);
-      ctx.moveTo(vx, vy-armLen);
-      ctx.lineTo(vx, vy+armLen);
+      ctx.moveTo(x-armLen, y); ctx.lineTo(x+armLen, y);
+      ctx.moveTo(x, y-armLen); ctx.lineTo(x, y+armLen);
       ctx.stroke();
     }
   }
-  ctx.shadowBlur = 0;
 }
+
+/* ---------- Leaflet world map ---------- */
+const map = L.map('worldMap', {
+  center:[18, 20], zoom:2, minZoom:2, maxZoom:18,
+  zoomControl:false, worldCopyJump:true, attributionControl:true
+});
+
+map.createPane('baseTiles');  map.getPane('baseTiles').style.zIndex = 200;
+map.createPane('labelTiles'); map.getPane('labelTiles').style.zIndex = 400;
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
+  subdomains:'abcd', maxZoom:19, pane:'baseTiles'
+}).addTo(map);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+  subdomains:'abcd', minZoom:4, maxZoom:19, pane:'labelTiles'
+}).addTo(map);
+
+/* Optional India boundary overlay — highlighted in brass, matching Terra Prep's home market */
+const INDIA_BOUNDARY_URLS = [
+  'https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson',
+  'https://cdn.jsdelivr.net/gh/datameet/maps@master/Country/india-land-simplified.geojson'
+];
+(async () => {
+  for (const url of INDIA_BOUNDARY_URLS) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const geojson = await res.json();
+      L.geoJSON(geojson, {
+        className:'india-outline',
+        style: { color:'#E3B368', weight:1.6, opacity:0.75, fillColor:'#C9974B', fillOpacity:0.05, dashArray:'2 3' }
+      }).addTo(map);
+      break;
+    } catch (e) { /* try next mirror, or silently skip if both fail */ }
+  }
+})();
+
+/* Custom diamond-pin markers reusing the original .pin styling */
+const markers = {};
+Object.keys(LOCATIONS).forEach(key => {
+  const d = LOCATIONS[key];
+  const icon = L.divIcon({
+    html: `<div class="pin" data-loc="${key}"><span class="dot"><span>${d.icon}</span></span><span class="label">${d.name}</span></div>`,
+    className: '', iconSize:[26,26], iconAnchor:[13,22]
+  });
+  const marker = L.marker([d.lat, d.lng], { icon }).addTo(map);
+  marker.on('click', () => setActive(key));
+  markers[key] = marker;
+});
+
+function setActive(key){
+  Object.keys(markers).forEach(k => {
+    const el = markers[k].getElement();
+    if (el) el.querySelector('.pin').classList.toggle('active', k === key);
+  });
+  renderDetail(key);
+}
+
+document.getElementById('zoomIn').addEventListener('click', () => map.zoomIn());
+document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut());
 
 let resizeRAF;
 new ResizeObserver(()=>{
   cancelAnimationFrame(resizeRAF);
-  resizeRAF = requestAnimationFrame(drawIndiaCanvas);
+  resizeRAF = requestAnimationFrame(()=>{ map.invalidateSize(); drawDotOverlay(); });
 }).observe(document.querySelector('.map-stage'));
 
-window.addEventListener('load', drawIndiaCanvas);
-drawIndiaCanvas();
-
-document.querySelectorAll('.pin').forEach(pin=>{
-  pin.addEventListener('click', ()=>{
-    document.querySelectorAll('.pin').forEach(p=>p.classList.remove('active'));
-    pin.classList.add('active');
-    renderDetail(pin.dataset.loc);
-  });
-});
-
-renderDetail('kaziranga');
+window.addEventListener('load', () => { map.invalidateSize(); drawDotOverlay(); setActive('tajmahal'); });
+setTimeout(() => { map.invalidateSize(); drawDotOverlay(); }, 300);
+setActive('tajmahal');
 </script>
 
 </body>
