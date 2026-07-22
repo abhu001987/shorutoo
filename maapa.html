@@ -35,14 +35,40 @@
   }
   img,svg{ max-width:100%; }
   .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
-
   a{ color:inherit; text-decoration:none; }
   button{ font-family:inherit; cursor:pointer; }
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  /* ---------- Icon system ---------- */
+  .icon-badge{
+    width:34px; height:34px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background: rgba(201,151,75,0.12); border:1px solid rgba(201,151,75,0.28);
+    color: var(--brass-bright);
+    transition: transform .28s cubic-bezier(.34,1.56,.64,1), background .2s, border-color .2s, color .2s;
+  }
+  .icon-badge svg{ width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; display:block; }
+  .icon-badge.sm{ width:28px; height:28px; border-radius:8px; }
+  .icon-badge.sm svg{ width:14px; height:14px; }
+  .icon-hover:hover .icon-badge, .icon-hover:focus-visible .icon-badge{
+    transform: scale(1.14) rotate(-7deg);
+    background: rgba(166,80,59,0.22); border-color: var(--rust); color: var(--brass-bright);
+  }
+  button.icon-badge{ cursor:pointer; }
+  button.icon-badge:hover{ transform: rotate(90deg); background: rgba(166,80,59,0.22); border-color: var(--rust); }
+
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none; } }
+  @keyframes searchPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.18); } }
+  @keyframes flashPulse{ 0%{ box-shadow:0 0 0 0 rgba(227,179,104,.55); } 70%{ box-shadow:0 0 0 12px rgba(227,179,104,0); } 100%{ box-shadow:none; } }
+  @keyframes modalIn{ from{ opacity:0; transform:scale(.94) translateY(6px); } to{ opacity:1; transform:none; } }
 
   /* ---------- Header ---------- */
   header{
     display:flex; align-items:center; justify-content:space-between; gap:16px;
-    padding: 16px clamp(14px,4vw,32px);
+    padding: 16px clamp(16px,2.4vw,36px);
     border-bottom: 1px solid var(--line);
     flex-wrap:wrap;
   }
@@ -52,6 +78,7 @@
   .brand-text .tag{ font-size:10.5px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
 
   .search-wrap{
+    position:relative;
     flex:1 1 260px; max-width:460px;
     display:flex; align-items:center; gap:10px;
     background: var(--navy-soft);
@@ -59,13 +86,33 @@
     border-radius:10px;
     padding:10px 14px;
     order:3;
+    transition: border-color .18s, box-shadow .18s;
   }
+  .search-wrap.focused{ border-color: var(--brass); box-shadow: 0 0 0 3px rgba(201,151,75,0.14); }
   .search-wrap input{
     background:none; border:none; outline:none; color:var(--ink-text);
     font-family:'Inter',sans-serif; font-size:13.5px; width:100%; min-width:0;
   }
   .search-wrap input::placeholder{ color: var(--muted-dark); }
-  .search-wrap svg{ flex-shrink:0; opacity:0.6; }
+  .search-wrap svg{ flex-shrink:0; opacity:0.65; color:var(--muted); transition: color .18s; }
+  .search-wrap.focused svg{ color: var(--brass-bright); opacity:1; animation: searchPulse 1.5s ease-in-out infinite; }
+
+  .search-dropdown{
+    position:absolute; top:calc(100% + 8px); left:0; right:0;
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:12px;
+    box-shadow: 0 16px 34px rgba(0,0,0,0.5);
+    max-height:380px; overflow-y:auto; z-index:900;
+    opacity:0; transform:translateY(-6px); pointer-events:none;
+    transition: opacity .15s, transform .15s;
+  }
+  .search-dropdown.open{ opacity:1; transform:none; pointer-events:auto; }
+  .sd-group-label{ font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted-dark); padding:10px 14px 4px; }
+  .sd-item{ display:flex; align-items:center; gap:10px; padding:8px 14px; cursor:pointer; transition:background .12s; }
+  .sd-item:hover{ background: rgba(201,151,75,0.1); }
+  .sd-item .sd-emoji{ font-size:15px; width:28px; height:28px; border-radius:8px; background:rgba(201,151,75,0.12); border:1px solid rgba(201,151,75,0.28); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .sd-name{ font-size:13px; font-weight:500; color:var(--parchment); }
+  .sd-sub{ font-size:10.5px; color:var(--muted-dark); margin-top:1px; }
+  .sd-empty{ padding:18px 14px; text-align:center; font-size:12px; color:var(--muted-dark); }
 
   .header-right{ display:flex; align-items:center; gap:14px; order:2; margin-left:auto; }
   .streak{
@@ -74,6 +121,8 @@
     border:1px solid rgba(201,151,75,0.35);
     padding:7px 12px; border-radius:10px;
   }
+  .streak .icon-badge{ width:28px; height:28px; border-radius:8px; background:rgba(227,179,104,0.18); border-color:rgba(227,179,104,0.4); }
+  .streak .icon-badge svg{ width:14px; height:14px; }
   .streak .n{ font-family:'Fraunces',serif; font-weight:600; font-size:14px; color: var(--brass-bright); white-space:nowrap; }
   .streak .l{ font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
   .avatar{
@@ -83,23 +132,20 @@
     font-family:'Fraunces',serif; font-weight:600; font-size:13px;
     border:1px solid var(--line);
   }
-  @media (max-width:560px){
-    .streak .l{ display:none; }
-  }
+  @media (max-width:560px){ .streak .l{ display:none; } }
 
   /* ---------- Layout ---------- */
   .layout{
     display:grid;
-    grid-template-columns: 360px 1fr 320px;
+    grid-template-columns: minmax(300px,360px) 1fr minmax(280px,320px);
     gap: 20px;
-    padding: 24px clamp(14px,4vw,32px) 10px;
+    padding: 22px clamp(16px,2.2vw,30px) 10px;
     align-items:start;
-    max-width:1440px;
+    max-width:1720px;
     margin:0 auto;
+    width:100%;
   }
-  @media (max-width: 1180px){
-    .layout{ grid-template-columns: 1fr; }
-  }
+  @media (max-width: 1180px){ .layout{ grid-template-columns: 1fr; } }
 
   /* ---------- Left panel ---------- */
   .eyebrow{
@@ -119,13 +165,14 @@
   h1.hero em{ font-style:italic; color: var(--brass-bright); }
   .hero-sub{ color: var(--muted); font-size:14.5px; line-height:1.6; margin-bottom:22px; max-width:38ch; }
 
-  .stat-row{
-    display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:26px;
-  }
+  .stat-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:26px; }
   .stat-card{
     background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
     padding:12px 14px; min-width:0;
+    animation: fadeUp .5s ease both;
   }
+  .stat-card:nth-child(1){ animation-delay:.02s; } .stat-card:nth-child(2){ animation-delay:.06s; }
+  .stat-card:nth-child(3){ animation-delay:.1s; } .stat-card:nth-child(4){ animation-delay:.14s; }
   .stat-card .v{ font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--parchment); }
   .stat-card .k{ font-size:11px; color:var(--muted); margin-top:2px; }
 
@@ -135,26 +182,23 @@
   }
   .section-label::after{ content:''; flex:1; height:1px; background:var(--line); }
 
-  .collections{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:9px;
-  }
-  @media (max-width:420px){
-    .collections{ grid-template-columns:repeat(3,1fr); }
-  }
+  .collections{ display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
+  @media (max-width:420px){ .collections{ grid-template-columns:repeat(3,1fr); } }
   .coll-card{
     background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
-    padding:12px 6px; text-align:center; transition: border-color .15s, transform .15s;
-    min-width:0;
+    padding:14px 6px 12px; text-align:center; transition: border-color .18s, transform .18s;
+    min-width:0; display:flex; flex-direction:column; align-items:center; gap:8px;
+    animation: fadeUp .45s ease both;
   }
-  .coll-card:hover{ border-color: var(--brass); transform: translateY(-2px); }
-  .coll-card .icon{ font-size:18px; margin-bottom:6px; display:block; }
+  .coll-card:hover{ border-color: var(--brass); transform: translateY(-3px); }
   .coll-card .cname{ font-size:11.5px; font-weight:500; color:var(--parchment); overflow-wrap:break-word; }
   .coll-card .ccount{ font-size:10px; color:var(--muted-dark); font-family:'IBM Plex Mono',monospace; }
   .coll-more{
-    grid-column: 1/-1;
-    text-align:center; padding:10px; font-size:12px; color:var(--brass-bright);
-    border:1px dashed var(--line); border-radius:10px; margin-top:2px;
+    grid-column: 1/-1; text-align:center; padding:11px; font-size:12px; color:var(--brass-bright);
+    border:1px dashed var(--line); border-radius:10px; margin-top:2px; cursor:pointer;
+    transition: border-color .18s, background .18s, transform .18s;
   }
+  .coll-more:hover{ border-color: var(--brass); background: rgba(201,151,75,0.08); transform: translateY(-2px); }
 
   .level-card{
     margin-top:24px;
@@ -163,196 +207,157 @@
   }
   .level-card .top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
   .level-card .top .t{ font-family:'Fraunces',serif; font-size:14px; font-weight:600; }
+  .level-card .icon-badge{ width:30px; height:30px; }
   .xp-bar{ height:6px; border-radius:4px; background:rgba(237,230,211,0.1); overflow:hidden; }
   .xp-fill{ height:100%; background: linear-gradient(90deg, var(--brass), var(--brass-bright)); width:62%; }
   .xp-label{ font-size:10.5px; color:var(--muted-dark); margin-top:6px; font-family:'IBM Plex Mono',monospace; }
 
   /* ---------- Map panel ---------- */
-  .map-panel{
-    background: var(--navy-soft);
-    border:1px solid var(--line);
-    border-radius:16px;
-    overflow:hidden;
-  }
+  .map-panel{ background: var(--navy-soft); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
   .map-stage{
-    position:relative;
-    aspect-ratio: 480 / 600;
+    position:relative; aspect-ratio: 480 / 600;
     background: radial-gradient(ellipse at 28% 18%, #16394A 0%, #0F2029 72%);
     overflow:hidden;
   }
   .map-caption{
     position:absolute; top:16px; left:18px; font-size:10.5px; color:var(--muted-dark);
     letter-spacing:0.08em; text-transform:uppercase; z-index:650;
-    background: rgba(18,32,44,0.55); padding:4px 9px; border-radius:6px;
-    border:1px solid var(--line);
+    background: rgba(18,32,44,0.55); padding:4px 9px; border-radius:6px; border:1px solid var(--line);
   }
-
   #worldMap{ position:absolute; inset:0; width:100%; height:100%; z-index:1; background:var(--navy); }
   .dot-overlay{ position:absolute; inset:0; width:100%; height:100%; z-index:410; pointer-events:none; mix-blend-mode:color-dodge; opacity:0.55; }
 
-  /* Recolor the light Carto basemap into the Terra Prep navy/brass palette */
   .leaflet-baseTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(0.82) saturate(0.55) contrast(0.98); }
   .leaflet-labelTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(1.35) saturate(0.35) contrast(0.85); opacity:0.9; }
   .leaflet-container{ background: var(--navy); font-family:'Inter',sans-serif; }
-  .leaflet-control-attribution{
-    background: rgba(18,32,44,0.7) !important; color:var(--muted-dark) !important;
-    font-size:9.5px !important; backdrop-filter: blur(2px);
-  }
+  .leaflet-control-attribution{ background: rgba(18,32,44,0.7) !important; color:var(--muted-dark) !important; font-size:9.5px !important; backdrop-filter: blur(2px); }
   .leaflet-control-attribution a{ color:var(--brass-bright) !important; }
   .india-outline{ pointer-events:none; }
 
-  /* Pins reused for Leaflet divIcon markers */
-  .pin{
-    display:flex; flex-direction:column; align-items:center;
-    background:none; border:none; padding:0; cursor:pointer;
-  }
+  .pin{ display:flex; flex-direction:column; align-items:center; background:none; border:none; padding:0; cursor:pointer; }
   .pin .dot{
-    width:26px; height:26px; border-radius:50% 50% 50% 0;
-    transform: rotate(-45deg);
-    background: var(--brass);
-    display:flex; align-items:center; justify-content:center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.45);
-    border: 2px solid rgba(18,32,44,0.6);
+    width:26px; height:26px; border-radius:50% 50% 50% 0; transform: rotate(-45deg);
+    background: var(--brass); display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.45); border: 2px solid rgba(18,32,44,0.6);
     transition: transform .18s, background .18s;
   }
   .pin .dot span{ transform: rotate(45deg); font-size:11px; }
   .pin.active .dot, .pin:hover .dot{ background: var(--rust); transform: rotate(-45deg) scale(1.12); }
   .pin .label{
-    margin-top:4px; font-size:10px; white-space:nowrap;
-    background: rgba(18,32,44,0.9); padding:2px 7px; border-radius:5px;
-    color: var(--parchment); border:1px solid var(--line);
+    margin-top:4px; font-size:10px; white-space:nowrap; background: rgba(18,32,44,0.9); padding:2px 7px;
+    border-radius:5px; color: var(--parchment); border:1px solid var(--line);
     opacity:0; transition:opacity .15s; pointer-events:none;
   }
   .pin:hover .label, .pin.active .label{ opacity:1; }
-  @media (max-width:640px){
-    .pin .dot{ width:22px; height:22px; }
-    .pin .dot span{ font-size:10px; }
-  }
+  @media (max-width:640px){ .pin .dot{ width:22px; height:22px; } .pin .dot span{ font-size:10px; } }
 
-  .compass{
-    position:absolute; bottom:16px; right:16px; width:52px; height:52px; z-index:640;
-    animation: spin 60s linear infinite;
-    opacity:0.85; pointer-events:none;
-  }
+  .compass{ position:absolute; bottom:16px; right:16px; width:52px; height:52px; z-index:640; animation: spin 60s linear infinite; opacity:0.85; pointer-events:none; }
   @keyframes spin{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
 
-  .zoom-ctrl{
-    position:absolute; top:16px; right:16px; z-index:650;
-    display:flex; flex-direction:column; gap:6px;
-  }
+  .zoom-ctrl{ position:absolute; top:16px; right:16px; z-index:650; display:flex; flex-direction:column; gap:6px; }
   .zoom-ctrl button{
-    width:30px; height:30px; border-radius:8px;
-    background: var(--navy-soft); border:1px solid var(--line);
-    color: var(--parchment); font-size:15px; line-height:1;
+    width:30px; height:30px; border-radius:8px; background: var(--navy-soft); border:1px solid var(--line);
+    color: var(--parchment); font-size:15px; line-height:1; transition: border-color .15s, transform .15s;
   }
-  .zoom-ctrl button:hover{ border-color: var(--brass); }
+  .zoom-ctrl button:hover{ border-color: var(--brass); transform: scale(1.08); }
 
-  .quick-bar{
-    display:grid; grid-template-columns:repeat(4,1fr);
-    border-top:1px solid var(--line);
-  }
-  @media (max-width:680px){
-    .quick-bar{ grid-template-columns:repeat(2,1fr); }
-  }
+  .quick-bar{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); }
+  @media (max-width:680px){ .quick-bar{ grid-template-columns:repeat(2,1fr); } }
   .quick-item{
     display:flex; align-items:center; gap:10px; padding:14px 14px;
     border-right:1px solid var(--line); border-bottom:1px solid var(--line);
-    min-width:0;
+    min-width:0; cursor:pointer; transition: background .15s;
   }
+  .quick-item:hover{ background: rgba(201,151,75,0.05); }
   .quick-item:nth-child(4){ border-right:none; }
-  @media (max-width:680px){
-    .quick-item:nth-child(2){ border-right:none; }
-    .quick-item:nth-child(3), .quick-item:nth-child(4){ border-bottom:none; }
-  }
-  .quick-item .qi{ font-size:16px; flex-shrink:0; }
+  @media (max-width:680px){ .quick-item:nth-child(2){ border-right:none; } .quick-item:nth-child(3), .quick-item:nth-child(4){ border-bottom:none; } }
+  .quick-item .icon-badge{ width:32px; height:32px; }
   .quick-item .qt{ font-size:12.5px; font-weight:600; color:var(--parchment); }
   .quick-item .qs{ font-size:10.5px; color:var(--muted-dark); }
 
   /* ---------- Right sidebar ---------- */
-  .detail-card{
-    background: var(--navy-soft); border:1px solid var(--line); border-radius:14px;
-    overflow:hidden;
-  }
-  .detail-banner{
-    height:100px; position:relative;
-    display:flex; align-items:flex-end; padding:12px 16px;
-  }
+  .detail-card{ background: var(--navy-soft); border:1px solid var(--line); border-radius:14px; overflow:hidden; }
+  .detail-banner{ height:100px; position:relative; display:flex; align-items:flex-end; padding:12px 16px; }
   .detail-banner .frequently{
-    position:absolute; top:10px; right:10px;
-    background: rgba(18,32,44,0.55); color: var(--brass-bright);
-    font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase;
-    padding:4px 8px; border-radius:6px; border:1px solid rgba(201,151,75,0.4);
+    position:absolute; top:10px; right:10px; background: rgba(18,32,44,0.55); color: var(--brass-bright);
+    font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase; padding:4px 8px; border-radius:6px;
+    border:1px solid rgba(201,151,75,0.4);
   }
   .detail-body{ padding:16px; }
   .detail-name{ font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
   .detail-region{ font-size:12px; color:var(--muted); margin-top:2px; }
   .detail-coords{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--brass-bright); margin-top:6px; }
-
   .chip-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
-  .chip{
-    font-size:11px; padding:5px 10px; border-radius:20px;
-    background: rgba(107,138,109,0.16); color: var(--parchment);
-    border:1px solid rgba(107,138,109,0.35);
-  }
+  .chip{ font-size:11px; padding:5px 10px; border-radius:20px; background: rgba(107,138,109,0.16); color: var(--parchment); border:1px solid rgba(107,138,109,0.35); }
 
   .learn-list{ margin-top:16px; display:flex; flex-direction:column; gap:6px; }
   .learn-item{
-    display:flex; align-items:center; justify-content:space-between; gap:8px;
-    padding:10px 12px; border-radius:9px; background: rgba(237,230,211,0.03);
-    border:1px solid var(--line);
-    transition: border-color .15s;
+    display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 12px;
+    border-radius:9px; background: rgba(237,230,211,0.03); border:1px solid var(--line);
+    transition: border-color .15s, transform .15s;
   }
-  .learn-item:hover{ border-color: var(--brass); }
+  .learn-item:hover{ border-color: var(--brass); transform: translateX(2px); }
   .learn-item .li-l{ display:flex; align-items:center; gap:10px; min-width:0; }
-  .learn-item .li-icon{ font-size:15px; flex-shrink:0; }
   .learn-item .li-t{ font-size:12.5px; font-weight:500; }
   .learn-item .li-s{ font-size:10.5px; color:var(--muted-dark); }
-  .learn-item .arrow{ color:var(--muted-dark); flex-shrink:0; }
+  .learn-item .arrow{ color:var(--muted-dark); flex-shrink:0; transition: transform .15s; }
+  .learn-item:hover .arrow{ transform: translateX(3px); color:var(--brass-bright); }
 
   .cta-btn{
     margin-top:16px; width:100%; padding:12px; border-radius:10px; border:none;
     background: linear-gradient(135deg, var(--brass), var(--rust));
     color: #FBF6EA; font-weight:600; font-size:13.5px;
     display:flex; align-items:center; justify-content:center; gap:8px;
+    transition: transform .15s, box-shadow .15s;
   }
+  .cta-btn:hover{ transform: translateY(-2px); box-shadow: 0 10px 22px rgba(166,80,59,0.35); }
+  .cta-btn svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ---------- Topics modal ---------- */
+  .topics-overlay{
+    position:fixed; inset:0; background:rgba(8,14,19,0.72); backdrop-filter:blur(3px);
+    z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px;
+    opacity:0; pointer-events:none; transition:opacity .2s;
+  }
+  .topics-overlay.open{ opacity:1; pointer-events:auto; }
+  .topics-modal{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:18px;
+    max-width:820px; width:100%; max-height:82vh; overflow-y:auto; padding:26px;
+  }
+  .topics-overlay.open .topics-modal{ animation: modalIn .25s cubic-bezier(.2,.9,.3,1.2) both; }
+  .topics-modal-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+  .tm-title{ font-family:'Fraunces',serif; font-weight:600; font-size:22px; }
+  .tm-sub{ font-size:12.5px; color:var(--muted); margin-top:4px; max-width:46ch; }
+  .topics-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:22px; }
+  .topic-card{
+    background: var(--navy-softer); border:1px solid var(--line); border-radius:12px;
+    padding:14px 10px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:8px;
+    cursor:pointer; transition: border-color .18s, transform .18s;
+    animation: fadeUp .4s ease both;
+  }
+  .topic-card:hover{ border-color: var(--brass); transform: translateY(-3px); }
+  .topic-card.flash{ animation: flashPulse 1s ease; }
+  .topic-card .cname{ font-size:11.5px; font-weight:500; color:var(--parchment); }
+  .topic-card .ccount{ font-size:10px; color:var(--muted-dark); font-family:'IBM Plex Mono',monospace; }
 
   /* ---------- Footer ---------- */
-  footer{
-    margin-top:32px;
-    border-top:1px solid var(--line);
-    padding: 36px clamp(14px,4vw,32px) 26px;
-  }
-  .footer-grid{
-    max-width:1440px; margin:0 auto;
-    display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap:28px;
-  }
-  @media (max-width:860px){
-    .footer-grid{ grid-template-columns: repeat(2,1fr); }
-  }
-  @media (max-width:480px){
-    .footer-grid{ grid-template-columns: 1fr; }
-  }
+  footer{ margin-top:32px; border-top:1px solid var(--line); padding: 36px clamp(16px,2.2vw,30px) 26px; }
+  .footer-grid{ max-width:1720px; margin:0 auto; display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap:28px; }
+  @media (max-width:860px){ .footer-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width:480px){ .footer-grid{ grid-template-columns: 1fr; } }
   .footer-brand{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
   .footer-brand .name{ font-family:'Fraunces',serif; font-weight:600; font-size:16px; }
   .footer-about{ font-size:12.5px; color:var(--muted); line-height:1.6; max-width:32ch; }
-  .footer-col h4{
-    font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted-dark);
-    margin:0 0 12px; font-weight:600;
-  }
+  .footer-col h4{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted-dark); margin:0 0 12px; font-weight:600; }
   .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px; }
   .footer-col a{ font-size:13px; color:var(--parchment); opacity:0.85; }
   .footer-col a:hover{ color:var(--brass-bright); opacity:1; }
   .footer-bottom{
-    max-width:1440px; margin:28px auto 0;
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
-    padding-top:20px; border-top:1px solid var(--line);
-    font-size:11.5px; color:var(--muted-dark);
+    max-width:1720px; margin:28px auto 0; display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:12px; padding-top:20px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted-dark);
   }
   .footer-social{ display:flex; gap:10px; }
-  .footer-social a{
-    width:30px; height:30px; border-radius:8px; border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center; font-size:13px;
-  }
+  .footer-social a{ width:30px; height:30px; border-radius:8px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:13px; }
   .footer-social a:hover{ border-color:var(--brass); color:var(--brass-bright); }
 
   ::selection{ background: var(--brass); color: var(--navy); }
@@ -374,14 +379,15 @@
     </div>
   </div>
 
-  <div class="search-wrap">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93A0A8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
-    <input type="text" placeholder="Search any location, river, mountain, place…" />
+  <div class="search-wrap" id="searchWrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+    <input type="text" id="searchInput" placeholder="Search any location, river, mountain, place…" autocomplete="off" />
+    <div class="search-dropdown" id="searchDropdown"></div>
   </div>
 
   <div class="header-right">
     <div class="streak">
-      <span style="font-size:16px;">🔥</span>
+      <span class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 2c1 4-3 5-3 9a3 3 0 006 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 01-10 0c0-5 3-6 5-11z"/></svg></span>
       <div>
         <div class="n">9 Day Streak</div>
         <div class="l">Keep it up</div>
@@ -407,22 +413,12 @@
     </div>
 
     <div class="section-label">Popular collections</div>
-    <div class="collections">
-      <div class="coll-card"><span class="icon">🏞️</span><div class="cname">Rivers &amp; Dams</div><div class="ccount">124</div></div>
-      <div class="coll-card"><span class="icon">⛰️</span><div class="cname">Mountains</div><div class="ccount">89</div></div>
-      <div class="coll-card"><span class="icon">🌳</span><div class="cname">National Parks</div><div class="ccount">71</div></div>
-      <div class="coll-card"><span class="icon">⚓</span><div class="cname">Ports</div><div class="ccount">16</div></div>
-      <div class="coll-card"><span class="icon">🏛️</span><div class="cname">World Heritage</div><div class="ccount">41</div></div>
-      <div class="coll-card"><span class="icon">🚂</span><div class="cname">Trade Routes</div><div class="ccount">18</div></div>
-      <div class="coll-card"><span class="icon">🌊</span><div class="cname">Seas &amp; Gulfs</div><div class="ccount">21</div></div>
-      <div class="coll-card"><span class="icon">🏭</span><div class="cname">Industries</div><div class="ccount">37</div></div>
-      <div class="coll-more">View all 30+ topics →</div>
-    </div>
+    <div class="collections" id="collectionsGrid"></div>
 
     <div class="level-card">
       <div class="top">
         <div class="t">Explorer · Level 4</div>
-        <span class="icon">🧭</span>
+        <span class="icon-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 6-6 2 2-6z"/></svg></span>
       </div>
       <div class="xp-bar"><div class="xp-fill"></div></div>
       <div class="xp-label">1,240 / 2,000 XP</div>
@@ -433,7 +429,6 @@
   <div class="map-panel" id="mapPanel">
     <div class="map-stage">
       <div class="map-caption">Physical &amp; political · World</div>
-
       <div id="worldMap"></div>
       <canvas class="dot-overlay" id="dotOverlay"></canvas>
 
@@ -452,12 +447,7 @@
       </div>
     </div>
 
-    <div class="quick-bar">
-      <div class="quick-item"><span class="qi">🎯</span><div><div class="qt">Daily Challenge</div><div class="qs">10 points</div></div></div>
-      <div class="quick-item"><span class="qi">🎲</span><div><div class="qt">Random Place</div><div class="qs">Test yourself</div></div></div>
-      <div class="quick-item"><span class="qi">📊</span><div><div class="qt">My Progress</div><div class="qs">Track journey</div></div></div>
-      <div class="quick-item"><span class="qi">🔖</span><div><div class="qt">Saved Places</div><div class="qs">9 locations</div></div></div>
-    </div>
+    <div class="quick-bar" id="quickBar"></div>
   </div>
 
   <!-- RIGHT DETAIL PANEL -->
@@ -519,82 +509,188 @@
   </div>
 </footer>
 
+<!-- All-topics modal -->
+<div class="topics-overlay" id="topicsOverlay">
+  <div class="topics-modal">
+    <div class="topics-modal-head">
+      <div>
+        <div class="tm-title">All topics</div>
+        <div class="tm-sub">30+ categories mapped across rivers, ranges, climate systems, trade and more — tap one to start practicing.</div>
+      </div>
+      <button class="icon-badge" id="topicsCloseBtn" aria-label="Close">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="topics-grid" id="topicsGrid"></div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-/* ---------- World landmark data (replaces the old India-only pins) ---------- */
-const LOCATIONS = {
-  eiffel: {
-    name:"Eiffel Tower", region:"Paris, France", lat:48.8584, lng:2.2945, coords:"48.86°N, 2.29°E", icon:"🗼",
-    banner:"linear-gradient(135deg,#4C7A8F,#22414F)", freq:true,
-    topics:["Landmark Structures","Iron Architecture","World Capitals"],
-    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","14 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","20 Cards"]]
-  },
-  greatwall: {
-    name:"Great Wall of China", region:"Beijing, China", lat:40.4319, lng:116.5704, coords:"40.43°N, 116.57°E", icon:"🏯",
-    banner:"linear-gradient(135deg,#A6503B,#5C2E1E)", freq:true,
-    topics:["Fortifications","Ancient Trade Routes","World Heritage"],
-    practice:[["🗺️","Map Practice","7 Questions"],["📄","Previous Year Qs","15 Questions"],["📰","Current Affairs","5 Articles"],["🗂️","Flashcards","24 Cards"]]
-  },
-  giza: {
-    name:"Pyramids of Giza", region:"Giza, Egypt", lat:29.9792, lng:31.1342, coords:"29.98°N, 31.13°E", icon:"🏛️",
-    banner:"linear-gradient(135deg,#C9A968,#8A6B3E)", freq:true,
-    topics:["Ancient Civilizations","Desert Landforms","World Heritage"],
-    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","12 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","18 Cards"]]
-  },
-  liberty: {
-    name:"Statue of Liberty", region:"New York, USA", lat:40.6892, lng:-74.0445, coords:"40.69°N, 74.04°W", icon:"🗽",
-    banner:"linear-gradient(135deg,#5C7A8A,#2C4250)", freq:false,
-    topics:["Monuments","Harbours &amp; Ports","Migration History"],
-    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","15 Cards"]]
-  },
-  tajmahal: {
-    name:"Taj Mahal", region:"Agra, India", lat:27.1751, lng:78.0421, coords:"27.18°N, 78.04°E", icon:"🕌",
-    banner:"linear-gradient(135deg,#B58A4E,#6E4E28)", freq:true,
-    topics:["Mughal Architecture","UNESCO Site","River Yamuna"],
-    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","11 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","19 Cards"]]
-  },
-  machu: {
-    name:"Machu Picchu", region:"Cusco Region, Peru", lat:-13.1631, lng:-72.5450, coords:"13.16°S, 72.55°W", icon:"⛰️",
-    banner:"linear-gradient(135deg,#5C7A5E,#33472F)", freq:false,
-    topics:["Andes Mountains","Inca Civilization","Highland Terrain"],
-    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","17 Cards"]]
-  },
-  sydney: {
-    name:"Sydney Opera House", region:"Sydney, Australia", lat:-33.8568, lng:151.2153, coords:"33.86°S, 151.22°E", icon:"🎭",
-    banner:"linear-gradient(135deg,#4E7A87,#22434B)", freq:false,
-    topics:["Coastal Cities","Modern Architecture","Southern Hemisphere"],
-    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","7 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","11 Cards"]]
-  },
-  everest: {
-    name:"Mount Everest", region:"Nepal / China border", lat:27.9881, lng:86.9250, coords:"27.99°N, 86.93°E", icon:"🏔️",
-    banner:"linear-gradient(135deg,#7AA8BD,#2C4250)", freq:true,
-    topics:["Himalayan System","Highest Peaks","Tectonic Boundaries"],
-    practice:[["🗺️","Map Practice","8 Questions"],["📄","Previous Year Qs","16 Questions"],["📰","Current Affairs","6 Articles"],["🗂️","Flashcards","28 Cards"]]
-  },
-  grandcanyon: {
-    name:"Grand Canyon", region:"Arizona, USA", lat:36.1069, lng:-112.1129, coords:"36.11°N, 112.11°W", icon:"🏜️",
-    banner:"linear-gradient(135deg,#B87A4E,#6E4425)", freq:false,
-    topics:["Erosional Landforms","Colorado River","National Parks"],
-    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","8 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","14 Cards"]]
-  },
-  colosseum: {
-    name:"Colosseum", region:"Rome, Italy", lat:41.8902, lng:12.4922, coords:"41.89°N, 12.49°E", icon:"🏟️",
-    banner:"linear-gradient(135deg,#A6503B,#5C2E1E)", freq:false,
-    topics:["Roman Empire","Ancient Amphitheatres","Mediterranean Climate"],
-    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","16 Cards"]]
-  },
-  christ: {
-    name:"Christ the Redeemer", region:"Rio de Janeiro, Brazil", lat:-22.9519, lng:-43.2105, coords:"22.95°S, 43.21°W", icon:"⛪",
-    banner:"linear-gradient(135deg,#4E7A55,#26402A)", freq:false,
-    topics:["Monuments","Coastal Brazil","Amazon Basin"],
-    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","6 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","10 Cards"]]
-  },
-  fuji: {
-    name:"Mount Fuji", region:"Honshu, Japan", lat:35.3606, lng:138.7274, coords:"35.36°N, 138.73°E", icon:"🗻",
-    banner:"linear-gradient(135deg,#4C6E8A,#20344A)", freq:true,
-    topics:["Volcanic Peaks","Ring of Fire","Island Nations"],
-    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","18 Cards"]]
+/* ---------- Icon set (inline line-icons, 24x24 viewBox) ---------- */
+const ICONS = {
+  mountain: `<svg viewBox="0 0 24 24"><path d="M3 18 9 8l4 6 3-5 5 9z"/></svg>`,
+  river: `<svg viewBox="0 0 24 24"><path d="M3 9c3 0 3 3 6 3s3-3 6-3 3 3 6 3M3 15c3 0 3 3 6 3s3-3 6-3 3 3 6 3"/></svg>`,
+  park: `<svg viewBox="0 0 24 24"><path d="M12 3l4 6h-2.5l3.5 5h-3v5h-4v-5h-3l3.5-5H8z"/></svg>`,
+  anchor: `<svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M12 6.3V20M5 13a7 7 0 0014 0M5 13H3M19 13h2M8.2 18l-3-2M15.8 18l3-2"/></svg>`,
+  landmark: `<svg viewBox="0 0 24 24"><path d="M4 21h16M5 21V10M9 21V10M15 21V10M19 21V10M3 10l9-6 9 6"/></svg>`,
+  route: `<svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h5a3 3 0 003-3V9a3 3 0 013-3"/></svg>`,
+  waves: `<svg viewBox="0 0 24 24"><path d="M2 9c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>`,
+  factory: `<svg viewBox="0 0 24 24"><path d="M3 21V11l5 3v-3l5 3V8l6 4v9H3z"/><path d="M7 21v-4M12 21v-4M17 21v-4"/></svg>`,
+  desert: `<svg viewBox="0 0 24 24"><path d="M2 17c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/><path d="M2 21h20"/></svg>`,
+  glacier: `<svg viewBox="0 0 24 24"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/></svg>`,
+  volcano: `<svg viewBox="0 0 24 24"><path d="M4 20L10 6l2 4 2-4 6 14z"/><path d="M11 3c0 1.2 1.4 1.2 1.4 2.4"/></svg>`,
+  plateau: `<svg viewBox="0 0 24 24"><path d="M3 20h4v-4h4v-4h4v-4h4v12H3z"/></svg>`,
+  lake: `<svg viewBox="0 0 24 24"><path d="M12 3s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z"/></svg>`,
+  wind: `<svg viewBox="0 0 24 24"><path d="M3 8h9a3 3 0 10-3-3M3 12h13a3 3 0 11-3 3M3 16h7a2 2 0 102-2"/></svg>`,
+  climate: `<svg viewBox="0 0 24 24"><circle cx="8" cy="7" r="2.6"/><path d="M8 2.3v1.2M8 10.5v1.2M3.3 7H4.5M11.5 7h1.2M4.9 3.9l.85.85M10.25 3.9l-.85.85"/><path d="M6 15a4 4 0 014-4 5 5 0 019.6 1.7A3.4 3.4 0 0119 19H8a3 3 0 01-2-4z"/></svg>`,
+  mineral: `<svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3l3 6-3 12M15 3l-3 6 3 12"/></svg>`,
+  agriculture: `<svg viewBox="0 0 24 24"><path d="M12 21V9M12 9c-2 0-3-2-3-4M12 9c2 0 3-2 3-4M12 14c-2 0-3-2-3-4M12 14c2 0 3-2 3-4M12 18c-1.6 0-2.5-1.6-2.5-3.2"/></svg>`,
+  population: `<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0111 0"/><circle cx="17" cy="9.5" r="2.4"/><path d="M14.8 20a4.6 4.6 0 018.2-2.8"/></svg>`,
+  timezone: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg>`,
+  island: `<svg viewBox="0 0 24 24"><path d="M3 19c3-6 15-6 18 0"/><path d="M12 3v9M9 6l3-3 3 3"/></svg>`,
+  biosphere: `<svg viewBox="0 0 24 24"><path d="M4 20C4 10 12 4 20 4c0 8-6 16-16 16z"/><path d="M4 20c4-4 8-8 16-16"/></svg>`,
+  bolt: `<svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>`,
+  target: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" style="fill:currentColor"/></svg>`,
+  dice: `<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="8.5" cy="8.5" r="1" style="fill:currentColor"/><circle cx="15.5" cy="8.5" r="1" style="fill:currentColor"/><circle cx="12" cy="12" r="1" style="fill:currentColor"/><circle cx="8.5" cy="15.5" r="1" style="fill:currentColor"/><circle cx="15.5" cy="15.5" r="1" style="fill:currentColor"/></svg>`,
+  chart: `<svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v4M12 11v9M16 7v13"/></svg>`,
+  bookmark: `<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3z"/></svg>`,
+  map: `<svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>`,
+  doc: `<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5M9 13h6M9 17h6M9 9h3"/></svg>`,
+  news: `<svg viewBox="0 0 24 24"><path d="M4 4h13v16H4z"/><path d="M8 8h5M8 11h5M8 14h3M17 8h3v9a2 2 0 01-2 2h-1"/></svg>`,
+  layers: `<svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5M3 18l9 5 9-5"/></svg>`,
+  rocket: `<svg viewBox="0 0 24 24"><path d="M12 2c3 2 5 6 5 10 0 2-1 4-2 5l-3 3-3-3c-1-1-2-3-2-5 0-4 2-8 5-10z"/><circle cx="12" cy="10" r="1.6"/><path d="M9 17l-3 4M15 17l3 4"/></svg>`
+};
+function ic(name){ return ICONS[name] || ICONS.map; }
+
+/* ---------- Topic taxonomy (drives sidebar + "All topics" modal) ---------- */
+const ALL_TOPICS = [
+  { name:"Rivers & Dams", icon:"river", count:124, keywords:"river dam water basin tributary" },
+  { name:"Mountains", icon:"mountain", count:89, keywords:"mountain peak range highland summit" },
+  { name:"National Parks", icon:"park", count:71, keywords:"park wildlife forest reserve sanctuary" },
+  { name:"Ports", icon:"anchor", count:16, keywords:"port harbour trade shipping" },
+  { name:"World Heritage", icon:"landmark", count:41, keywords:"heritage unesco monument ancient" },
+  { name:"Trade Routes", icon:"route", count:18, keywords:"trade route silk road rail" },
+  { name:"Seas & Gulfs", icon:"waves", count:21, keywords:"sea gulf ocean bay strait" },
+  { name:"Industries", icon:"factory", count:37, keywords:"industry factory manufacturing mining" },
+  { name:"Deserts", icon:"desert", count:19, keywords:"desert dune arid sand" },
+  { name:"Glaciers", icon:"glacier", count:12, keywords:"glacier ice snow polar" },
+  { name:"Volcanoes", icon:"volcano", count:15, keywords:"volcano lava eruption magma ring of fire" },
+  { name:"Plateaus", icon:"plateau", count:22, keywords:"plateau tableland highland terrace" },
+  { name:"Lakes", icon:"lake", count:33, keywords:"lake lagoon wetland freshwater" },
+  { name:"Forests", icon:"park", count:28, keywords:"forest rainforest jungle woodland" },
+  { name:"Wind Patterns", icon:"wind", count:9, keywords:"wind trade winds monsoon jet stream" },
+  { name:"Ocean Currents", icon:"waves", count:11, keywords:"current ocean gulf stream circulation" },
+  { name:"Climate Zones", icon:"climate", count:14, keywords:"climate zone weather tropical temperate" },
+  { name:"Minerals & Mining", icon:"mineral", count:26, keywords:"mineral mining ore coal metal" },
+  { name:"Agriculture Belts", icon:"agriculture", count:31, keywords:"agriculture crop farming belt soil" },
+  { name:"Population & Cities", icon:"population", count:44, keywords:"population city urban density migration" },
+  { name:"Time Zones", icon:"timezone", count:8, keywords:"time zone meridian longitude" },
+  { name:"Tectonic Plates", icon:"layers", count:10, keywords:"tectonic plate earthquake fault boundary" },
+  { name:"Coastlines", icon:"waves", count:17, keywords:"coast coastline shoreline beach" },
+  { name:"Islands", icon:"island", count:20, keywords:"island archipelago atoll" },
+  { name:"Canals & Straits", icon:"route", count:13, keywords:"canal strait channel waterway" },
+  { name:"Biosphere Reserves", icon:"biosphere", count:18, keywords:"biosphere reserve ecology conservation" },
+  { name:"Monsoon Systems", icon:"wind", count:12, keywords:"monsoon rainfall season wind" },
+  { name:"Soil Types", icon:"agriculture", count:16, keywords:"soil alluvial laterite black soil" },
+  { name:"Migration Routes", icon:"route", count:14, keywords:"migration route bird human corridor" },
+  { name:"Renewable Energy", icon:"bolt", count:9, keywords:"energy solar wind hydro renewable" }
+];
+const QUICKBAR = [
+  { icon:"target", t:"Daily Challenge", s:"10 points" },
+  { icon:"dice", t:"Random Place", s:"Test yourself" },
+  { icon:"chart", t:"My Progress", s:"Track journey" },
+  { icon:"bookmark", t:"Saved Places", s:"9 locations" }
+];
+
+function renderCollections(){
+  const grid = document.getElementById('collectionsGrid');
+  grid.innerHTML = ALL_TOPICS.slice(0,8).map((t,i)=>`
+    <div class="coll-card" style="animation-delay:${i*35}ms">
+      <div class="icon-badge">${ic(t.icon)}</div>
+      <div class="cname">${t.name}</div>
+      <div class="ccount">${t.count}</div>
+    </div>`).join('') + `<div class="coll-more" id="viewAllBtn">View all 30+ topics →</div>`;
+  document.getElementById('viewAllBtn').addEventListener('click', ()=>openTopicsModal());
+}
+function renderQuickBar(){
+  document.getElementById('quickBar').innerHTML = QUICKBAR.map(q=>`
+    <div class="quick-item icon-hover">
+      <span class="icon-badge">${ic(q.icon)}</span>
+      <div><div class="qt">${q.t}</div><div class="qs">${q.s}</div></div>
+    </div>`).join('');
+}
+function renderTopicsGrid(){
+  document.getElementById('topicsGrid').innerHTML = ALL_TOPICS.map((t,i)=>`
+    <div class="topic-card" data-topic="${t.name}" style="animation-delay:${i*22}ms">
+      <div class="icon-badge">${ic(t.icon)}</div>
+      <div class="cname">${t.name}</div>
+      <div class="ccount">${t.count} items</div>
+    </div>`).join('');
+}
+function openTopicsModal(highlightName){
+  document.getElementById('topicsOverlay').classList.add('open');
+  if(highlightName){
+    setTimeout(()=>{
+      const card = [...document.querySelectorAll('.topic-card')].find(c=>c.dataset.topic===highlightName);
+      if(card){ card.scrollIntoView({block:'center',behavior:'smooth'}); card.classList.add('flash'); setTimeout(()=>card.classList.remove('flash'),1000); }
+    },260);
   }
+}
+function closeTopicsModal(){ document.getElementById('topicsOverlay').classList.remove('open'); }
+document.getElementById('topicsCloseBtn').addEventListener('click', closeTopicsModal);
+document.getElementById('topicsOverlay').addEventListener('click', e=>{ if(e.target.id==='topicsOverlay') closeTopicsModal(); });
+
+/* ---------- World landmark data ---------- */
+const LOCATIONS = {
+  eiffel: { name:"Eiffel Tower", region:"Paris, France", lat:48.8584, lng:2.2945, coords:"48.86°N, 2.29°E", icon:"🗼",
+    banner:"linear-gradient(135deg,#4C7A8F,#22414F)", freq:true, category:"monument landmark iron architecture",
+    topics:["Landmark Structures","Iron Architecture","World Capitals"],
+    practice:[["map","Map Practice","6 Questions"],["doc","Previous Year Qs","14 Questions"],["news","Current Affairs","4 Articles"],["layers","Flashcards","20 Cards"]] },
+  greatwall: { name:"Great Wall of China", region:"Beijing, China", lat:40.4319, lng:116.5704, coords:"40.43°N, 116.57°E", icon:"🏯",
+    banner:"linear-gradient(135deg,#A6503B,#5C2E1E)", freq:true, category:"fortification wall ancient monument",
+    topics:["Fortifications","Ancient Trade Routes","World Heritage"],
+    practice:[["map","Map Practice","7 Questions"],["doc","Previous Year Qs","15 Questions"],["news","Current Affairs","5 Articles"],["layers","Flashcards","24 Cards"]] },
+  giza: { name:"Pyramids of Giza", region:"Giza, Egypt", lat:29.9792, lng:31.1342, coords:"29.98°N, 31.13°E", icon:"🏛️",
+    banner:"linear-gradient(135deg,#C9A968,#8A6B3E)", freq:true, category:"pyramid desert ancient monument",
+    topics:["Ancient Civilizations","Desert Landforms","World Heritage"],
+    practice:[["map","Map Practice","6 Questions"],["doc","Previous Year Qs","12 Questions"],["news","Current Affairs","3 Articles"],["layers","Flashcards","18 Cards"]] },
+  liberty: { name:"Statue of Liberty", region:"New York, USA", lat:40.6892, lng:-74.0445, coords:"40.69°N, 74.04°W", icon:"🗽",
+    banner:"linear-gradient(135deg,#5C7A8A,#2C4250)", freq:false, category:"monument harbour port migration",
+    topics:["Monuments","Harbours & Ports","Migration History"],
+    practice:[["map","Map Practice","4 Questions"],["doc","Previous Year Qs","9 Questions"],["news","Current Affairs","3 Articles"],["layers","Flashcards","15 Cards"]] },
+  tajmahal: { name:"Taj Mahal", region:"Agra, India", lat:27.1751, lng:78.0421, coords:"27.18°N, 78.04°E", icon:"🕌",
+    banner:"linear-gradient(135deg,#B58A4E,#6E4E28)", freq:true, category:"monument mughal river architecture",
+    topics:["Mughal Architecture","UNESCO Site","River Yamuna"],
+    practice:[["map","Map Practice","5 Questions"],["doc","Previous Year Qs","11 Questions"],["news","Current Affairs","4 Articles"],["layers","Flashcards","19 Cards"]] },
+  machu: { name:"Machu Picchu", region:"Cusco Region, Peru", lat:-13.1631, lng:-72.5450, coords:"13.16°S, 72.55°W", icon:"⛰️",
+    banner:"linear-gradient(135deg,#5C7A5E,#33472F)", freq:false, category:"mountain andes ancient ruins highland",
+    topics:["Andes Mountains","Inca Civilization","Highland Terrain"],
+    practice:[["map","Map Practice","5 Questions"],["doc","Previous Year Qs","10 Questions"],["news","Current Affairs","2 Articles"],["layers","Flashcards","17 Cards"]] },
+  sydney: { name:"Sydney Opera House", region:"Sydney, Australia", lat:-33.8568, lng:151.2153, coords:"33.86°S, 151.22°E", icon:"🎭",
+    banner:"linear-gradient(135deg,#4E7A87,#22434B)", freq:false, category:"coastal architecture city harbour",
+    topics:["Coastal Cities","Modern Architecture","Southern Hemisphere"],
+    practice:[["map","Map Practice","3 Questions"],["doc","Previous Year Qs","7 Questions"],["news","Current Affairs","2 Articles"],["layers","Flashcards","11 Cards"]] },
+  everest: { name:"Mount Everest", region:"Nepal / China border", lat:27.9881, lng:86.9250, coords:"27.99°N, 86.93°E", icon:"🏔️",
+    banner:"linear-gradient(135deg,#7AA8BD,#2C4250)", freq:true, category:"mountain peak himalaya highest tectonic",
+    topics:["Himalayan System","Highest Peaks","Tectonic Boundaries"],
+    practice:[["map","Map Practice","8 Questions"],["doc","Previous Year Qs","16 Questions"],["news","Current Affairs","6 Articles"],["layers","Flashcards","28 Cards"]] },
+  grandcanyon: { name:"Grand Canyon", region:"Arizona, USA", lat:36.1069, lng:-112.1129, coords:"36.11°N, 112.11°W", icon:"🏜️",
+    banner:"linear-gradient(135deg,#B87A4E,#6E4425)", freq:false, category:"canyon desert river erosion landform",
+    topics:["Erosional Landforms","Colorado River","National Parks"],
+    practice:[["map","Map Practice","4 Questions"],["doc","Previous Year Qs","8 Questions"],["news","Current Affairs","2 Articles"],["layers","Flashcards","14 Cards"]] },
+  colosseum: { name:"Colosseum", region:"Rome, Italy", lat:41.8902, lng:12.4922, coords:"41.89°N, 12.49°E", icon:"🏟️",
+    banner:"linear-gradient(135deg,#A6503B,#5C2E1E)", freq:false, category:"ancient monument roman mediterranean",
+    topics:["Roman Empire","Ancient Amphitheatres","Mediterranean Climate"],
+    practice:[["map","Map Practice","4 Questions"],["doc","Previous Year Qs","9 Questions"],["news","Current Affairs","3 Articles"],["layers","Flashcards","16 Cards"]] },
+  christ: { name:"Christ the Redeemer", region:"Rio de Janeiro, Brazil", lat:-22.9519, lng:-43.2105, coords:"22.95°S, 43.21°W", icon:"⛪",
+    banner:"linear-gradient(135deg,#4E7A55,#26402A)", freq:false, category:"monument coastal amazon brazil",
+    topics:["Monuments","Coastal Brazil","Amazon Basin"],
+    practice:[["map","Map Practice","3 Questions"],["doc","Previous Year Qs","6 Questions"],["news","Current Affairs","2 Articles"],["layers","Flashcards","10 Cards"]] },
+  fuji: { name:"Mount Fuji", region:"Honshu, Japan", lat:35.3606, lng:138.7274, coords:"35.36°N, 138.73°E", icon:"🗻",
+    banner:"linear-gradient(135deg,#4C6E8A,#20344A)", freq:true, category:"mountain volcano island ring of fire",
+    topics:["Volcanic Peaks","Ring of Fire","Island Nations"],
+    practice:[["map","Map Practice","5 Questions"],["doc","Previous Year Qs","10 Questions"],["news","Current Affairs","4 Articles"],["layers","Flashcards","18 Cards"]] }
 };
 
 function renderDetail(key){
@@ -613,22 +709,19 @@ function renderDetail(key){
       <div class="learn-list">
         ${d.practice.map(p=>`
           <div class="learn-item">
-            <div class="li-l"><span class="li-icon">${p[0]}</span><div><div class="li-t">${p[1]}</div><div class="li-s">${p[2]}</div></div></div>
+            <div class="li-l"><span class="icon-badge sm">${ic(p[0])}</span><div><div class="li-t">${p[1]}</div><div class="li-s">${p[2]}</div></div></div>
             <span class="arrow">›</span>
           </div>`).join('')}
       </div>
-      <button class="cta-btn">🚀 Start learning</button>
+      <button class="cta-btn">${ICONS.rocket} Start learning</button>
     </div>
   `;
 }
 
-/* ---------- Decorative dot-matrix tint (echoes the old elevation-dot texture) ---------- */
+/* ---------- Decorative dot-matrix tint ---------- */
 const STOPS = [
-  { t:0.00, c:[122,168,189] },  // polar / high-latitude haze
-  { t:0.28, c:[227,179,104] },  // brass mid-latitudes
-  { t:0.55, c:[201,169,104] },  // warm equatorial band
-  { t:0.80, c:[139,157,110] },  // temperate green
-  { t:1.00, c:[107,138,109] }   // moss south
+  { t:0.00, c:[122,168,189] }, { t:0.28, c:[227,179,104] }, { t:0.55, c:[201,169,104] },
+  { t:0.80, c:[139,157,110] }, { t:1.00, c:[107,138,109] }
 ];
 function lerp(a,b,t){ return a + (b-a)*t; }
 function lerpColor(c1,c2,t){ return [lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t)]; }
@@ -675,20 +768,16 @@ const map = L.map('worldMap', {
   center:[18, 20], zoom:2, minZoom:2, maxZoom:18,
   zoomControl:false, worldCopyJump:true, attributionControl:true
 });
-
 map.createPane('baseTiles');  map.getPane('baseTiles').style.zIndex = 200;
 map.createPane('labelTiles'); map.getPane('labelTiles').style.zIndex = 400;
-
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
   subdomains:'abcd', maxZoom:19, pane:'baseTiles'
 }).addTo(map);
-
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
   subdomains:'abcd', minZoom:4, maxZoom:19, pane:'labelTiles'
 }).addTo(map);
 
-/* Optional India boundary overlay — highlighted in brass, matching Terra Prep's home market */
 const INDIA_BOUNDARY_URLS = [
   'https://raw.githubusercontent.com/datameet/maps/master/Country/india-land-simplified.geojson',
   'https://cdn.jsdelivr.net/gh/datameet/maps@master/Country/india-land-simplified.geojson'
@@ -708,7 +797,6 @@ const INDIA_BOUNDARY_URLS = [
   }
 })();
 
-/* Custom diamond-pin markers reusing the original .pin styling */
 const markers = {};
 Object.keys(LOCATIONS).forEach(key => {
   const d = LOCATIONS[key];
@@ -720,7 +808,6 @@ Object.keys(LOCATIONS).forEach(key => {
   marker.on('click', () => setActive(key));
   markers[key] = marker;
 });
-
 function setActive(key){
   Object.keys(markers).forEach(k => {
     const el = markers[k].getElement();
@@ -728,7 +815,6 @@ function setActive(key){
   });
   renderDetail(key);
 }
-
 document.getElementById('zoomIn').addEventListener('click', () => map.zoomIn());
 document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut());
 
@@ -738,7 +824,76 @@ new ResizeObserver(()=>{
   resizeRAF = requestAnimationFrame(()=>{ map.invalidateSize(); drawDotOverlay(); });
 }).observe(document.querySelector('.map-stage'));
 
-window.addEventListener('load', () => { map.invalidateSize(); drawDotOverlay(); setActive('tajmahal'); });
+/* ---------- Live search: locations + topics ---------- */
+function norm(s){ return (s||'').toLowerCase(); }
+function searchAll(q){
+  q = norm(q).trim();
+  if(!q) return { locs:[], topics:[] };
+  const locs = Object.keys(LOCATIONS).filter(k=>{
+    const d = LOCATIONS[k];
+    return norm(`${d.name} ${d.region} ${d.topics.join(' ')} ${d.category}`).includes(q);
+  }).slice(0,6);
+  const topics = ALL_TOPICS.filter(t=> norm(`${t.name} ${t.keywords}`).includes(q)).slice(0,6);
+  return { locs, topics };
+}
+function renderDropdown(q){
+  const dd = document.getElementById('searchDropdown');
+  if(!q.trim()){ dd.classList.remove('open'); dd.innerHTML=''; return; }
+  const { locs, topics } = searchAll(q);
+  if(locs.length===0 && topics.length===0){
+    dd.innerHTML = `<div class="sd-empty">No matches — try "mountain", "river", "desert"…</div>`;
+    dd.classList.add('open'); return;
+  }
+  let html='';
+  if(locs.length){
+    html += `<div class="sd-group-label">Locations</div>`;
+    html += locs.map(k=>{
+      const d=LOCATIONS[k];
+      return `<div class="sd-item" data-type="loc" data-key="${k}"><span class="sd-emoji">${d.icon}</span><div><div class="sd-name">${d.name}</div><div class="sd-sub">${d.region}</div></div></div>`;
+    }).join('');
+  }
+  if(topics.length){
+    html += `<div class="sd-group-label">Topics</div>`;
+    html += topics.map(t=>`<div class="sd-item" data-type="topic" data-name="${t.name}"><span class="sd-emoji" style="color:var(--brass-bright)">${ic(t.icon)}</span><div><div class="sd-name">${t.name}</div><div class="sd-sub">${t.count} items</div></div></div>`).join('');
+  }
+  dd.innerHTML = html;
+  dd.classList.add('open');
+}
+const searchInput = document.getElementById('searchInput');
+const searchWrap = document.getElementById('searchWrap');
+const searchDropdown = document.getElementById('searchDropdown');
+searchInput.addEventListener('input', e => renderDropdown(e.target.value));
+searchInput.addEventListener('focus', () => { searchWrap.classList.add('focused'); if(searchInput.value) renderDropdown(searchInput.value); });
+searchInput.addEventListener('blur', () => searchWrap.classList.remove('focused'));
+searchDropdown.addEventListener('mousedown', e => {
+  const item = e.target.closest('.sd-item');
+  if(!item) return;
+  e.preventDefault();
+  if(item.dataset.type==='loc'){
+    const key = item.dataset.key;
+    const d = LOCATIONS[key];
+    map.flyTo([d.lat, d.lng], Math.max(map.getZoom(), 5), { duration:1.1 });
+    setActive(key);
+    document.querySelector('.right-panel').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  } else {
+    openTopicsModal(item.dataset.name);
+  }
+  searchInput.value = '';
+  searchDropdown.classList.remove('open');
+  searchInput.blur();
+});
+document.addEventListener('click', e => {
+  if(!e.target.closest('.search-wrap')){ searchDropdown.classList.remove('open'); }
+});
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape'){ searchDropdown.classList.remove('open'); closeTopicsModal(); }
+});
+
+/* ---------- Init ---------- */
+renderCollections();
+renderQuickBar();
+renderTopicsGrid();
+window.addEventListener('load', () => { map.invalidateSize(); drawDotOverlay(); });
 setTimeout(() => { map.invalidateSize(); drawDotOverlay(); }, 300);
 setActive('tajmahal');
 </script>
