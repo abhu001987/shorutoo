@@ -114,17 +114,10 @@
   .sd-sub{ font-size:10.5px; color:var(--muted-dark); margin-top:1px; }
   .sd-empty{ padding:18px 14px; text-align:center; font-size:12px; color:var(--muted-dark); }
 
-  .header-right{ display:flex; align-items:center; gap:14px; order:2; margin-left:auto; }
-  .streak{
-    display:flex; align-items:center; gap:8px;
-    background: linear-gradient(135deg, rgba(166,80,59,0.25), rgba(201,151,75,0.18));
-    border:1px solid rgba(201,151,75,0.35);
-    padding:7px 12px; border-radius:10px;
+  .header-right{ display:flex; align-items:center; gap:12px; }
+  .search-toggle.active{
+    background: rgba(166,80,59,0.22); border-color: var(--rust); color: var(--brass-bright);
   }
-  .streak .icon-badge{ width:28px; height:28px; border-radius:8px; background:rgba(227,179,104,0.18); border-color:rgba(227,179,104,0.4); }
-  .streak .icon-badge svg{ width:14px; height:14px; }
-  .streak .n{ font-family:'Fraunces',serif; font-weight:600; font-size:14px; color: var(--brass-bright); white-space:nowrap; }
-  .streak .l{ font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
   .avatar{
     width:34px; height:34px; border-radius:50%; flex-shrink:0;
     background: linear-gradient(135deg,#6B8A6D,#3F5A41);
@@ -132,7 +125,25 @@
     font-family:'Fraunces',serif; font-weight:600; font-size:13px;
     border:1px solid var(--line);
   }
-  @media (max-width:560px){ .streak .l{ display:none; } }
+
+  /* Expandable search panel — sits below the header, toggled by the search icon */
+  .search-panel{
+    max-height:0; opacity:0; overflow:hidden;
+    padding:0 clamp(16px,2.4vw,36px);
+    border-bottom:1px solid transparent;
+    transition: max-height .32s ease, opacity .24s ease, padding .32s ease, border-color .24s ease;
+  }
+  .search-panel.open{
+    max-height:96px; opacity:1;
+    padding:14px clamp(16px,2.4vw,36px) 18px;
+    border-bottom:1px solid var(--line);
+  }
+  .search-panel .search-wrap{ max-width:640px; margin:0 auto; order:initial; }
+
+  @media (max-width:680px){
+    header{ gap:10px 14px; }
+    .brand-text .tag{ display:none; }
+  }
 
   /* ---------- Layout ---------- */
   .layout{
@@ -157,13 +168,47 @@
     font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
     margin-bottom:16px;
   }
+  .hero-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   h1.hero{
     font-family:'Fraunces',serif; font-weight:600;
     font-size: clamp(28px, 4.6vw, 38px); line-height:1.14; letter-spacing:-0.01em;
-    margin:0 0 14px;
+    margin:0 0 14px; flex:1 1 auto; min-width:200px;
   }
   h1.hero em{ font-style:italic; color: var(--brass-bright); }
   .hero-sub{ color: var(--muted); font-size:14.5px; line-height:1.6; margin-bottom:22px; max-width:38ch; }
+
+  .hero-streak{
+    position:relative; overflow:hidden;
+    display:flex; align-items:center; gap:8px; flex-shrink:0;
+    background: linear-gradient(135deg, rgba(166,80,59,0.25), rgba(201,151,75,0.18));
+    border:1px solid rgba(201,151,75,0.35);
+    padding:7px 12px; border-radius:10px;
+    margin-top:2px;
+  }
+  .hero-streak::before{
+    content:''; position:absolute; top:0; left:-60%; width:35%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    animation: heroStreakShine 3.4s ease-in-out infinite;
+  }
+  @keyframes heroStreakShine{
+    0%{ left:-60%; } 45%{ left:130%; } 100%{ left:130%; }
+  }
+  .hero-streak .icon-badge{
+    width:28px; height:28px; border-radius:8px; background:rgba(227,179,104,0.18); border-color:rgba(227,179,104,0.4);
+    animation: heroFlameGlow 2.6s ease-in-out infinite;
+  }
+  @keyframes heroFlameGlow{
+    0%,100%{ box-shadow:0 0 0 0 rgba(227,179,104,0); }
+    50%{ box-shadow:0 0 10px 3px rgba(227,179,104,0.55); }
+  }
+  .hero-streak .icon-badge svg{ width:14px; height:14px; }
+  .hero-streak .n{
+    font-family:'Fraunces',serif; font-weight:600; font-size:14px; white-space:nowrap;
+    background: linear-gradient(135deg, var(--brass-bright), var(--rust));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero-streak .l{ font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
 
   .stat-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:26px; }
   .stat-card{
@@ -379,30 +424,37 @@
     </div>
   </div>
 
+  <div class="header-right">
+    <button class="icon-badge search-toggle" id="searchToggleBtn" aria-label="Search" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+    </button>
+    <div class="avatar">RA</div>
+  </div>
+</header>
+
+<div class="search-panel" id="searchPanel">
   <div class="search-wrap" id="searchWrap">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
     <input type="text" id="searchInput" placeholder="Search any location, river, mountain, place…" autocomplete="off" />
     <div class="search-dropdown" id="searchDropdown"></div>
   </div>
-
-  <div class="header-right">
-    <div class="streak">
-      <span class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 2c1 4-3 5-3 9a3 3 0 006 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 01-10 0c0-5 3-6 5-11z"/></svg></span>
-      <div>
-        <div class="n">9 Day Streak</div>
-        <div class="l">Keep it up</div>
-      </div>
-    </div>
-    <div class="avatar">RA</div>
-  </div>
-</header>
+</div>
 
 <div class="layout">
 
   <!-- LEFT PANEL -->
   <div class="left-panel">
     <div class="eyebrow">Explore the world</div>
-    <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
+    <div class="hero-top">
+      <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
+      <div class="hero-streak">
+        <span class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 2c1 4-3 5-3 9a3 3 0 006 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 01-10 0c0-5 3-6 5-11z"/></svg></span>
+        <div>
+          <div class="n">9 Day Streak</div>
+          <div class="l">Keep it up</div>
+        </div>
+      </div>
+    </div>
     <p class="hero-sub">Tap any landmark on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC world geography.</p>
 
     <div class="stat-row">
@@ -862,6 +914,27 @@ function renderDropdown(q){
 const searchInput = document.getElementById('searchInput');
 const searchWrap = document.getElementById('searchWrap');
 const searchDropdown = document.getElementById('searchDropdown');
+const searchPanel = document.getElementById('searchPanel');
+const searchToggleBtn = document.getElementById('searchToggleBtn');
+
+function openSearchPanel(){
+  searchPanel.classList.add('open');
+  searchToggleBtn.classList.add('active');
+  searchToggleBtn.setAttribute('aria-expanded','true');
+  setTimeout(() => searchInput.focus(), 260);
+}
+function closeSearchPanel(){
+  searchPanel.classList.remove('open');
+  searchToggleBtn.classList.remove('active');
+  searchToggleBtn.setAttribute('aria-expanded','false');
+  searchDropdown.classList.remove('open');
+  searchInput.blur();
+}
+searchToggleBtn.addEventListener('click', () => {
+  if(searchPanel.classList.contains('open')) closeSearchPanel();
+  else openSearchPanel();
+});
+
 searchInput.addEventListener('input', e => renderDropdown(e.target.value));
 searchInput.addEventListener('focus', () => { searchWrap.classList.add('focused'); if(searchInput.value) renderDropdown(searchInput.value); });
 searchInput.addEventListener('blur', () => searchWrap.classList.remove('focused'));
@@ -884,9 +957,10 @@ searchDropdown.addEventListener('mousedown', e => {
 });
 document.addEventListener('click', e => {
   if(!e.target.closest('.search-wrap')){ searchDropdown.classList.remove('open'); }
+  if(!e.target.closest('.search-panel') && !e.target.closest('.search-toggle')){ closeSearchPanel(); }
 });
 document.addEventListener('keydown', e => {
-  if(e.key==='Escape'){ searchDropdown.classList.remove('open'); closeTopicsModal(); }
+  if(e.key==='Escape'){ searchDropdown.classList.remove('open'); closeTopicsModal(); closeSearchPanel(); }
 });
 
 /* ---------- Init ---------- */
