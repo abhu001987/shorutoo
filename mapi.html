@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Terra Prep — Chart India. Crack the exam.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #12202C;
+    --navy-soft: #1B2F3F;
+    --navy-softer: #223D4F;
+    --parchment: #E7DEC7;
+    --parchment-dim: #D9CEB2;
+    --brass: #C9974B;
+    --brass-bright: #E3B368;
+    --moss: #6B8A6D;
+    --rust: #A6503B;
+    --ink-text: #EDE6D3;
+    --muted: #93A0A8;
+    --muted-dark: #6B7981;
+    --line: rgba(237,230,211,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--navy);
+    color: var(--ink-text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  .display{ font-family:'Fraunces',serif; }
+
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  /* ---------- Header ---------- */
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{ width:38px; height:38px; }
+  .brand-text .name{ font-family:'Fraunces',serif; font-weight:600; font-size:19px; letter-spacing:0.01em; }
+  .brand-text .tag{ font-size:11px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
+
+  .search-wrap{
+    flex:1; max-width:460px; margin:0 40px;
+    display:flex; align-items:center; gap:10px;
+    background: var(--navy-soft);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 14px;
+  }
+  .search-wrap input{
+    background:none; border:none; outline:none; color:var(--ink-text);
+    font-family:'Inter',sans-serif; font-size:13.5px; width:100%;
+  }
+  .search-wrap input::placeholder{ color: var(--muted-dark); }
+  .search-wrap svg{ flex-shrink:0; opacity:0.6; }
+
+  .header-right{ display:flex; align-items:center; gap:16px; }
+  .streak{
+    display:flex; align-items:center; gap:8px;
+    background: linear-gradient(135deg, rgba(166,80,59,0.25), rgba(201,151,75,0.18));
+    border:1px solid rgba(201,151,75,0.35);
+    padding:8px 14px; border-radius:10px;
+  }
+  .streak .n{ font-family:'Fraunces',serif; font-weight:600; font-size:15px; color: var(--brass-bright); }
+  .streak .l{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+  .avatar{
+    width:36px; height:36px; border-radius:50%;
+    background: linear-gradient(135deg,#6B8A6D,#3F5A41);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:14px;
+    border:1px solid var(--line);
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns: 380px 1fr 340px;
+    gap: 22px;
+    padding: 26px 32px 40px;
+    align-items:start;
+  }
+  @media (max-width: 1180px){
+    .layout{ grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Left panel ---------- */
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    background: rgba(201,151,75,0.12);
+    border:1px solid rgba(201,151,75,0.3);
+    color: var(--brass-bright);
+    padding:5px 12px; border-radius:20px;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  h1.hero{
+    font-family:'Fraunces',serif; font-weight:600;
+    font-size:38px; line-height:1.12; letter-spacing:-0.01em;
+    margin:0 0 14px;
+  }
+  h1.hero em{ font-style:italic; color: var(--brass-bright); }
+  .hero-sub{ color: var(--muted); font-size:14.5px; line-height:1.6; margin-bottom:22px; max-width:34ch; }
+
+  .stat-row{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:26px;
+  }
+  .stat-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px;
+  }
+  .stat-card .v{ font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--parchment); }
+  .stat-card .k{ font-size:11px; color:var(--muted); margin-top:2px; }
+
+  .section-label{
+    font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted-dark);
+    margin: 4px 0 12px; display:flex; align-items:center; gap:8px;
+  }
+  .section-label::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+  .collections{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:9px;
+  }
+  .coll-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:10px;
+    padding:12px 8px; text-align:center; transition: border-color .15s, transform .15s;
+  }
+  .coll-card:hover{ border-color: var(--brass); transform: translateY(-2px); }
+  .coll-card .icon{ font-size:18px; margin-bottom:6px; display:block; }
+  .coll-card .cname{ font-size:12px; font-weight:500; color:var(--parchment); }
+  .coll-card .ccount{ font-size:10.5px; color:var(--muted-dark); font-family:'IBM Plex Mono',monospace; }
+  .coll-more{
+    grid-column: span 4;
+    text-align:center; padding:10px; font-size:12px; color:var(--brass-bright);
+    border:1px dashed var(--line); border-radius:10px; margin-top:2px;
+  }
+
+  .level-card{
+    margin-top:24px;
+    background: linear-gradient(135deg, var(--navy-soft), var(--navy-softer));
+    border:1px solid var(--line); border-radius:12px; padding:16px;
+  }
+  .level-card .top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .level-card .top .t{ font-family:'Fraunces',serif; font-size:14px; font-weight:600; }
+  .level-card .top .icon{ font-size:16px; }
+  .xp-bar{ height:6px; border-radius:4px; background:rgba(237,230,211,0.1); overflow:hidden; }
+  .xp-fill{ height:100%; background: linear-gradient(90deg, var(--brass), var(--brass-bright)); width:62%; }
+  .xp-label{ font-size:10.5px; color:var(--muted-dark); margin-top:6px; font-family:'IBM Plex Mono',monospace; }
+
+  /* ---------- Map panel ---------- */
+  .map-panel{
+    position:relative;
+    background: radial-gradient(ellipse at 30% 20%, #16394A 0%, #0F2029 70%);
+    border:1px solid var(--line);
+    border-radius:16px;
+    min-height:640px;
+    overflow:hidden;
+  }
+  .map-panel::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(237,230,211,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(237,230,211,0.035) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events:none;
+  }
+  .map-caption{
+    position:absolute; top:18px; left:22px; font-size:11px; color:var(--muted-dark);
+    letter-spacing:0.08em; text-transform:uppercase; z-index:3;
+  }
+  .india-svg{ position:absolute; inset:0; width:100%; height:100%; z-index:1; }
+  .india-shape{
+    fill: url(#terrainGradient);
+    stroke: rgba(201,151,75,0.55);
+    stroke-width:1.4;
+  }
+
+  .pin{
+    position:absolute; transform: translate(-50%,-100%);
+    z-index:4; display:flex; flex-direction:column; align-items:center;
+    background:none; border:none; padding:0;
+  }
+  .pin .dot{
+    width:28px; height:28px; border-radius:50% 50% 50% 0;
+    transform: rotate(-45deg);
+    background: var(--brass);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    border: 2px solid rgba(18,32,44,0.6);
+    transition: transform .18s, background .18s;
+  }
+  .pin .dot span{ transform: rotate(45deg); font-size:12px; }
+  .pin.active .dot, .pin:hover .dot{ background: var(--rust); transform: rotate(-45deg) scale(1.12); }
+  .pin .label{
+    margin-top:4px; font-size:10.5px; white-space:nowrap;
+    background: rgba(18,32,44,0.85); padding:2px 7px; border-radius:5px;
+    color: var(--parchment); border:1px solid var(--line);
+    opacity:0; transition:opacity .15s; pointer-events:none;
+  }
+  .pin:hover .label, .pin.active .label{ opacity:1; }
+
+  .compass{
+    position:absolute; bottom:20px; right:22px; width:64px; height:64px; z-index:3;
+    animation: spin 60s linear infinite;
+    opacity:0.85;
+  }
+  @keyframes spin{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
+
+  .zoom-ctrl{
+    position:absolute; top:20px; right:20px; z-index:3;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .zoom-ctrl button{
+    width:32px; height:32px; border-radius:8px;
+    background: var(--navy-soft); border:1px solid var(--line);
+    color: var(--parchment); font-size:16px; line-height:1;
+  }
+  .zoom-ctrl button:hover{ border-color: var(--brass); }
+
+  .quick-bar{
+    position:absolute; bottom:0; left:0; right:0; z-index:3;
+    display:flex; gap:0; border-top:1px solid var(--line);
+    background: rgba(18,32,44,0.75); backdrop-filter: blur(6px);
+  }
+  .quick-item{
+    flex:1; display:flex; align-items:center; gap:10px; padding:14px 16px;
+    border-right:1px solid var(--line);
+  }
+  .quick-item:last-child{ border-right:none; }
+  .quick-item .qi{ font-size:16px; }
+  .quick-item .qt{ font-size:12.5px; font-weight:600; color:var(--parchment); }
+  .quick-item .qs{ font-size:10.5px; color:var(--muted-dark); }
+
+  /* ---------- Right sidebar ---------- */
+  .detail-card{
+    background: var(--navy-soft); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden;
+  }
+  .detail-banner{
+    height:110px; position:relative;
+    display:flex; align-items:flex-end; padding:12px 16px;
+  }
+  .detail-banner .frequently{
+    position:absolute; top:10px; right:10px;
+    background: rgba(18,32,44,0.55); color: var(--brass-bright);
+    font-size:9.5px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:4px 8px; border-radius:6px; border:1px solid rgba(201,151,75,0.4);
+  }
+  .detail-body{ padding:16px; }
+  .detail-name{ font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
+  .detail-region{ font-size:12px; color:var(--muted); margin-top:2px; }
+  .detail-coords{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--brass-bright); margin-top:6px; }
+
+  .chip-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+  .chip{
+    font-size:11px; padding:5px 10px; border-radius:20px;
+    background: rgba(107,138,109,0.16); color: var(--parchment);
+    border:1px solid rgba(107,138,109,0.35);
+  }
+
+  .learn-list{ margin-top:16px; display:flex; flex-direction:column; gap:6px; }
+  .learn-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 12px; border-radius:9px; background: rgba(237,230,211,0.03);
+    border:1px solid var(--line);
+    transition: border-color .15s;
+  }
+  .learn-item:hover{ border-color: var(--brass); }
+  .learn-item .li-l{ display:flex; align-items:center; gap:10px; }
+  .learn-item .li-icon{ font-size:15px; }
+  .learn-item .li-t{ font-size:12.5px; font-weight:500; }
+  .learn-item .li-s{ font-size:10.5px; color:var(--muted-dark); }
+  .learn-item .arrow{ color:var(--muted-dark); }
+
+  .cta-btn{
+    margin-top:16px; width:100%; padding:12px; border-radius:10px; border:none;
+    background: linear-gradient(135deg, var(--brass), var(--rust));
+    color: #FBF6EA; font-weight:600; font-size:13.5px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+
+  ::selection{ background: var(--brass); color: var(--navy); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="18" stroke="#C9974B" stroke-width="1.6"/>
+      <path d="M20 5 L23 18 L20 20 L17 18 Z" fill="#E3B368"/>
+      <path d="M20 35 L23 22 L20 20 L17 22 Z" fill="#6B7981"/>
+      <circle cx="20" cy="20" r="2.4" fill="#E7DEC7"/>
+    </svg>
+    <div class="brand-text">
+      <div class="name">Terra Prep</div>
+      <div class="tag">Chart India · Crack the exam</div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93A0A8" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
+    <input type="text" placeholder="Search any location, river, mountain, place…" />
+  </div>
+
+  <div class="header-right">
+    <div class="streak">
+      <span style="font-size:16px;">🔥</span>
+      <div>
+        <div class="n">9 Day Streak</div>
+        <div class="l">Keep it up</div>
+      </div>
+    </div>
+    <div class="avatar">RA</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="eyebrow">Explore India</div>
+    <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
+    <p class="hero-sub">Tap any location on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC geography.</p>
+
+    <div class="stat-row">
+      <div class="stat-card"><div class="v">4,800+</div><div class="k">Locations mapped</div></div>
+      <div class="stat-card"><div class="v">11,500+</div><div class="k">Practice questions</div></div>
+      <div class="stat-card"><div class="v">30+</div><div class="k">Topic categories</div></div>
+      <div class="stat-card"><div class="v">100%</div><div class="k">Syllabus aligned</div></div>
+    </div>
+
+    <div class="section-label">Popular collections</div>
+    <div class="collections">
+      <div class="coll-card"><span class="icon">🏞️</span><div class="cname">Rivers &amp; Dams</div><div class="ccount">124</div></div>
+      <div class="coll-card"><span class="icon">⛰️</span><div class="cname">Mountains</div><div class="ccount">89</div></div>
+      <div class="coll-card"><span class="icon">🌳</span><div class="cname">National Parks</div><div class="ccount">71</div></div>
+      <div class="coll-card"><span class="icon">⚓</span><div class="cname">Ports</div><div class="ccount">16</div></div>
+      <div class="coll-card"><span class="icon">🏛️</span><div class="cname">UNESCO Sites</div><div class="ccount">41</div></div>
+      <div class="coll-card"><span class="icon">🚂</span><div class="cname">Rail Zones</div><div class="ccount">18</div></div>
+      <div class="coll-card"><span class="icon">🌊</span><div class="cname">Seas &amp; Gulfs</div><div class="ccount">21</div></div>
+      <div class="coll-card"><span class="icon">🏭</span><div class="cname">Industries</div><div class="ccount">37</div></div>
+      <div class="coll-more">View all 30+ topics →</div>
+    </div>
+
+    <div class="level-card">
+      <div class="top">
+        <div class="t">Explorer · Level 4</div>
+        <span class="icon">🧭</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+      <div class="xp-label">1,240 / 2,000 XP</div>
+    </div>
+  </div>
+
+  <!-- MAP PANEL -->
+  <div class="map-panel" id="mapPanel">
+    <div class="map-caption">Physical &amp; political · India</div>
+
+    <svg class="india-svg" viewBox="0 0 500 700" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="terrainGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8FA88E"/>
+          <stop offset="35%" stop-color="#B7B078"/>
+          <stop offset="65%" stop-color="#C9A968"/>
+          <stop offset="100%" stop-color="#89A6A0"/>
+        </linearGradient>
+      </defs>
+      <path class="india-shape" d="M230,18 L268,10 L300,32 L335,55 L372,58 L405,78 L432,95 L468,108 L520,118 L556,138 L540,168 L516,178 L528,208 L500,222 L476,214 L462,238 L482,262 L456,278 L432,270 L420,296 L448,318 L432,352 L420,398 L412,438 L400,470 L406,506 L392,540 L378,568 L358,596 L338,624 L318,608 L306,580 L288,600 L270,584 L262,548 L242,520 L252,486 L232,452 L214,420 L206,382 L188,358 L166,338 L150,318 L160,286 L138,268 L146,236 L172,246 L178,214 L158,196 L168,160 L192,132 L188,100 L210,80 L206,48 Z" />
+    </svg>
+
+    <button class="pin" style="left:33%; top:6%;" data-loc="karakoram"><span class="dot"><span>⛰️</span></span><span class="label">Karakoram Range</span></button>
+    <button class="pin" style="left:22%; top:33%;" data-loc="thar"><span class="dot"><span>🏜️</span></span><span class="label">Thar Desert</span></button>
+    <button class="pin" style="left:20%; top:47%;" data-loc="kandla"><span class="dot"><span>⚓</span></span><span class="label">Kandla Port</span></button>
+    <button class="pin" style="left:46%; top:30%;" data-loc="ganga"><span class="dot"><span>🌊</span></span><span class="label">Ganga River System</span></button>
+    <button class="pin" style="left:47%; top:45%;" data-loc="khajuraho"><span class="dot"><span>🏛️</span></span><span class="label">Khajuraho</span></button>
+    <button class="pin active" style="left:79%; top:23%;" data-loc="kaziranga"><span class="dot"><span>🦏</span></span><span class="label">Kaziranga N.P.</span></button>
+    <button class="pin" style="left:58%; top:56%;" data-loc="chilika"><span class="dot"><span>🦩</span></span><span class="label">Chilika Lake</span></button>
+    <button class="pin" style="left:34%; top:70%;" data-loc="hampi"><span class="dot"><span>🏯</span></span><span class="label">Hampi</span></button>
+    <button class="pin" style="left:33%; top:78%;" data-loc="ghats"><span class="dot"><span>🌲</span></span><span class="label">Western Ghats</span></button>
+    <button class="pin" style="left:41%; top:93%;" data-loc="kanyakumari"><span class="dot"><span>🏝️</span></span><span class="label">Kanyakumari</span></button>
+
+    <svg class="compass" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="27" stroke="#C9974B" stroke-width="1"/>
+      <path d="M30 6 L34 30 L30 30 L26 30 Z" fill="#E3B368"/>
+      <path d="M30 54 L34 30 L30 30 L26 30 Z" fill="#6B7981"/>
+      <path d="M6 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
+      <path d="M54 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
+      <text x="30" y="12" text-anchor="middle" fill="#E7DEC7" font-size="6" font-family="IBM Plex Mono">N</text>
+    </svg>
+
+    <div class="zoom-ctrl">
+      <button>+</button>
+      <button>−</button>
+    </div>
+
+    <div class="quick-bar">
+      <div class="quick-item"><span class="qi">🎯</span><div><div class="qt">Daily Challenge</div><div class="qs">10 points</div></div></div>
+      <div class="quick-item"><span class="qi">🎲</span><div><div class="qt">Random Place</div><div class="qs">Test yourself</div></div></div>
+      <div class="quick-item"><span class="qi">📊</span><div><div class="qt">My Progress</div><div class="qs">Track journey</div></div></div>
+      <div class="quick-item"><span class="qi">🔖</span><div><div class="qt">Saved Places</div><div class="qs">9 locations</div></div></div>
+    </div>
+  </div>
+
+  <!-- RIGHT DETAIL PANEL -->
+  <div class="right-panel">
+    <div class="detail-card" id="detailCard"></div>
+  </div>
+
+</div>
+
+<script>
+const LOCATIONS = {
+  karakoram: {
+    name:"Karakoram Range", region:"Jammu & Kashmir / Ladakh", coords:"35.86°N, 76.55°E",
+    banner:"linear-gradient(135deg,#5C7A8A,#2C4250)", freq:false,
+    topics:["Glaciers","K2","Himalayan Systems"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","18 Cards"]]
+  },
+  thar: {
+    name:"Thar Desert", region:"Rajasthan", coords:"27.0°N, 71.0°E",
+    banner:"linear-gradient(135deg,#C9A968,#8A6B3E)", freq:true,
+    topics:["Arid Climate","Desert National Park","Sand Dunes"],
+    practice:[["🗺️","Map Practice","6 Questions"],["📄","Previous Year Qs","14 Questions"],["📰","Current Affairs","5 Articles"],["🗂️","Flashcards","22 Cards"]]
+  },
+  kandla: {
+    name:"Kandla Port", region:"Gujarat", coords:"23.03°N, 70.22°E",
+    banner:"linear-gradient(135deg,#3E6B7A,#20323C)", freq:false,
+    topics:["Major Ports","Gulf of Kutch","Trade Routes"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","7 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","10 Cards"]]
+  },
+  ganga: {
+    name:"Ganga River System", region:"Uttarakhand → West Bengal", coords:"25.31°N, 83.01°E",
+    banner:"linear-gradient(135deg,#4C7A8F,#22414F)", freq:true,
+    topics:["River Systems","Tributaries","Delta Formation"],
+    practice:[["🗺️","Map Practice","8 Questions"],["📄","Previous Year Qs","16 Questions"],["📰","Current Affairs","6 Articles"],["🗂️","Flashcards","30 Cards"]]
+  },
+  khajuraho: {
+    name:"Khajuraho", region:"Madhya Pradesh", coords:"24.85°N, 79.93°E",
+    banner:"linear-gradient(135deg,#B58A4E,#6E4E28)", freq:false,
+    topics:["UNESCO Site","Chandela Dynasty","Temple Architecture"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","8 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","15 Cards"]]
+  },
+  kaziranga: {
+    name:"Kaziranga National Park", region:"Assam, India", coords:"26.58°N, 93.17°E",
+    banner:"linear-gradient(135deg,#5C7A5E,#33472F)", freq:true,
+    topics:["National Parks","Assam","Biodiversity","Wildlife Conservation"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","12 Questions"],["📰","Current Affairs","8 Articles"],["🗂️","Flashcards","25 Cards"]]
+  },
+  chilika: {
+    name:"Chilika Lake", region:"Odisha", coords:"19.7°N, 85.42°E",
+    banner:"linear-gradient(135deg,#4E7A87,#22434B)", freq:false,
+    topics:["Ramsar Site","Lagoons","Migratory Birds"],
+    practice:[["🗺️","Map Practice","4 Questions"],["📄","Previous Year Qs","9 Questions"],["📰","Current Affairs","3 Articles"],["🗂️","Flashcards","16 Cards"]]
+  },
+  hampi: {
+    name:"Hampi", region:"Karnataka", coords:"15.34°N, 76.46°E",
+    banner:"linear-gradient(135deg,#A65C42,#5C2E1E)", freq:false,
+    topics:["Historical Site","Vijayanagara Empire","UNESCO"],
+    practice:[["🗺️","Map Practice","5 Questions"],["📄","Previous Year Qs","10 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","19 Cards"]]
+  },
+  ghats: {
+    name:"Western Ghats", region:"Maharashtra → Kerala", coords:"11.5°N, 76.5°E",
+    banner:"linear-gradient(135deg,#4E7A55,#26402A)", freq:true,
+    topics:["Biodiversity Hotspot","Escarpment","Endemic Species"],
+    practice:[["🗺️","Map Practice","7 Questions"],["📄","Previous Year Qs","13 Questions"],["📰","Current Affairs","4 Articles"],["🗂️","Flashcards","21 Cards"]]
+  },
+  kanyakumari: {
+    name:"Kanyakumari", region:"Tamil Nadu", coords:"8.08°N, 77.54°E",
+    banner:"linear-gradient(135deg,#4C6E8A,#20344A)", freq:false,
+    topics:["Land's End","Confluence of Seas","Coastal Geography"],
+    practice:[["🗺️","Map Practice","3 Questions"],["📄","Previous Year Qs","6 Questions"],["📰","Current Affairs","2 Articles"],["🗂️","Flashcards","12 Cards"]]
+  }
+};
+
+function renderDetail(key){
+  const d = LOCATIONS[key];
+  const card = document.getElementById('detailCard');
+  card.innerHTML = `
+    <div class="detail-banner" style="background:${d.banner}">
+      ${d.freq ? '<div class="frequently">Frequently Asked</div>' : ''}
+    </div>
+    <div class="detail-body">
+      <div class="detail-name">${d.name}</div>
+      <div class="detail-region">${d.region}</div>
+      <div class="detail-coords">${d.coords}</div>
+      <div class="chip-row">${d.topics.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      <div class="section-label" style="margin-top:18px;">Practice &amp; learn</div>
+      <div class="learn-list">
+        ${d.practice.map(p=>`
+          <div class="learn-item">
+            <div class="li-l"><span class="li-icon">${p[0]}</span><div><div class="li-t">${p[1]}</div><div class="li-s">${p[2]}</div></div></div>
+            <span class="arrow">›</span>
+          </div>`).join('')}
+      </div>
+      <button class="cta-btn">🚀 Start learning</button>
+    </div>
+  `;
+}
+
+document.querySelectorAll('.pin').forEach(pin=>{
+  pin.addEventListener('click', ()=>{
+    document.querySelectorAll('.pin').forEach(p=>p.classList.remove('active'));
+    pin.classList.add('active');
+    renderDetail(pin.dataset.loc);
+  });
+});
+
+renderDetail('kaziranga');
+</script>
+
+</body>
+</html>
