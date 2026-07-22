@@ -260,10 +260,12 @@
   /* ---------- Map panel ---------- */
   .map-panel{ background: var(--navy-soft); border:1px solid var(--line); border-radius:16px; overflow:hidden; }
   .map-stage{
-    position:relative; aspect-ratio: 480 / 600;
+    position:relative; aspect-ratio: 4 / 3; max-height:520px;
     background: radial-gradient(ellipse at 28% 18%, #16394A 0%, #0F2029 72%);
     overflow:hidden;
   }
+  @media (max-width:1180px){ .map-stage{ aspect-ratio: 16 / 11; max-height:460px; } }
+  @media (max-width:640px){ .map-stage{ aspect-ratio: 4 / 3.6; max-height:420px; } }
   .map-caption{
     position:absolute; top:16px; left:18px; font-size:10.5px; color:var(--muted-dark);
     letter-spacing:0.08em; text-transform:uppercase; z-index:650;
