@@ -461,12 +461,8 @@
   .footer-social a{ width:30px; height:30px; border-radius:8px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:13px; }
   .footer-social a:hover{ border-color:var(--brass); color:var(--brass-bright); }
 
-  /* ---------- Progress + Daily Challenge section (above footer) ---------- */
-  .pc-section{
-    max-width:1720px; margin:26px auto 0; padding: 0 clamp(16px,2.2vw,30px);
-    display:grid; grid-template-columns:1fr 1fr; gap:20px;
-  }
-  @media (max-width:900px){ .pc-section{ grid-template-columns:1fr; } }
+  /* ---------- Column stack: panel + its companion card below it ---------- */
+  .col-stack{ display:flex; flex-direction:column; gap:20px; min-width:0; }
 
   .pc-card{
     position:relative; overflow:hidden;
@@ -699,7 +695,8 @@
     </div>
   </div>
 
-  <!-- MAP PANEL -->
+  <!-- MAP COLUMN: map panel + progress card stacked together -->
+  <div class="col-stack">
   <div class="map-panel" id="mapPanel">
     <div class="map-stage">
       <div class="map-caption">Physical &amp; political · World</div>
@@ -722,16 +719,6 @@
 
     <div class="quick-bar" id="quickBar"></div>
   </div>
-
-  <!-- RIGHT DETAIL PANEL -->
-  <div class="right-panel">
-    <div class="detail-card" id="detailCard"></div>
-  </div>
-
-</div>
-
-<!-- PROGRESS + DAILY CHALLENGE -->
-<div class="pc-section">
 
   <!-- Progress card -->
   <div class="pc-card pc-progress">
@@ -783,6 +770,14 @@
       <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
     </button>
   </div>
+  </div>
+  <!-- /MAP COLUMN -->
+
+  <!-- DETAIL COLUMN: detail card + quiz card stacked together -->
+  <div class="col-stack">
+  <div class="right-panel">
+    <div class="detail-card" id="detailCard"></div>
+  </div>
 
   <!-- Daily challenge / quiz card -->
   <div class="pc-card pc-quiz">
@@ -830,6 +825,8 @@
       <div class="pc-retry-link" id="pcRetryLink">Try another question →</div>
     </div>
   </div>
+  </div>
+  <!-- /DETAIL COLUMN -->
 
 </div>
 
