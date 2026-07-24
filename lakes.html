@@ -8,14 +8,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 <style>
-  /* ---------- MODERN WHITE + GLASS + DARK BLUE THEME ---------- */
+  /* ---------- WHITE + GLASS THEME (default) ---------- */
   :root {
     --glass-bg: rgba(255, 255, 255, 0.55);
     --glass-border: rgba(255, 255, 255, 0.35);
     --glass-shadow: 0 12px 40px rgba(0, 20, 40, 0.10);
     --deep-blue: #0B2A3C;
     --deep-blue-soft: #1A3B4F;
-    --deep-blue-light: #D9E6F0;
     --ink: #1A2E3B;
     --ink-soft: #3A4F5E;
     --muted: #748A98;
@@ -39,7 +38,7 @@
     --line: rgba(237,230,211,0.12);
   }
 
-  /* Dark theme - ONLY FOR MAP, rest stays white */
+  /* DARK THEME - map only gets dark, UI stays white */
   [data-theme="dark"] .leaflet-baseTiles-pane { 
     filter: invert(1) hue-rotate(188deg) brightness(0.82) saturate(0.55) contrast(0.98); 
   }
@@ -74,41 +73,53 @@
   [data-theme="dark"] .compass circle { stroke: #C9974B; }
   [data-theme="dark"] .compass path { fill: #E3B368; }
   [data-theme="dark"] .compass text { fill: #E7DEC7; }
-
-  /* Map always shows dark map, but UI stays white */
-  .leaflet-baseTiles-pane { 
-    filter: invert(1) hue-rotate(188deg) brightness(0.82) saturate(0.55) contrast(0.98); 
-  }
-  .leaflet-labelTiles-pane { 
-    filter: invert(1) hue-rotate(188deg) brightness(1.35) saturate(0.35) contrast(0.85); 
-    opacity: 0.9; 
-  }
-  .map-stage { 
-    background: radial-gradient(ellipse at 28% 18%, #16394A 0%, #0F2029 72%); 
-  }
-  .map-caption { 
-    background: rgba(18,32,44,0.55); 
-    color: #6B7981; 
-    border-color: rgba(237,230,211,0.12); 
-  }
-  .leaflet-control-attribution { 
-    background: rgba(18,32,44,0.7) !important; 
-    color: #6B7981 !important; 
-  }
-  .leaflet-control-attribution a { 
-    color: #F7C177 !important; 
-  }
-  .pin .dot { 
-    border-color: rgba(18,32,44,0.6); 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.45); 
-  }
-  .pin .label { 
-    background: rgba(18,32,44,0.9); 
-    color: #EFE7D4; 
-    border-color: rgba(237,230,211,0.12); 
+  [data-theme="dark"] .zoom-ctrl button {
+    background: rgba(18,32,44,0.55);
+    border-color: rgba(237,230,211,0.12);
+    color: #EFE7D4;
   }
 
-  /* Keep UI white */
+  /* LIGHT THEME - normal light map */
+  [data-theme="light"] .leaflet-baseTiles-pane { filter: none; }
+  [data-theme="light"] .leaflet-labelTiles-pane { filter: none; opacity: 0.95; }
+  [data-theme="light"] .map-stage { 
+    background: radial-gradient(ellipse at 28% 18%, #E6EEF4 0%, #D9E6F0 72%); 
+  }
+  [data-theme="light"] .map-caption { 
+    background: rgba(255,255,255,0.78); 
+    color: #5C6B73; 
+    border-color: rgba(28,43,53,0.12); 
+  }
+  [data-theme="light"] .leaflet-control-attribution { 
+    background: rgba(255,255,255,0.82) !important; 
+    color: #5C6B73 !important; 
+  }
+  [data-theme="light"] .leaflet-control-attribution a { 
+    color: #C17F2A !important; 
+  }
+  [data-theme="light"] .pin .dot { 
+    border-color: rgba(255,255,255,0.85); 
+    background: #C17F2A;
+  }
+  [data-theme="light"] .pin .label { 
+    background: rgba(255,255,255,0.95); 
+    color: #1C2B35; 
+    border-color: rgba(28,43,53,0.12); 
+  }
+  [data-theme="light"] .pin.active .dot, 
+  [data-theme="light"] .pin:hover .dot { 
+    background: #B85630; 
+  }
+  [data-theme="light"] .compass circle { stroke: #C17F2A; }
+  [data-theme="light"] .compass path { fill: #A8661C; }
+  [data-theme="light"] .compass text { fill: #1C2B35; }
+  [data-theme="light"] .zoom-ctrl button {
+    background: rgba(255,255,255,0.78);
+    border-color: rgba(28,43,53,0.12);
+    color: #1C2B35;
+  }
+
+  /* UI stays white in both modes */
   body {
     background: #F4F8FC;
     color: var(--ink);
@@ -233,18 +244,31 @@
     cursor: pointer;
     transition: all 0.2s ease;
     color: var(--deep-blue);
+    position: relative;
+    overflow: hidden;
   }
   .theme-toggle:hover {
     background: var(--gold-glow);
     border-color: var(--gold);
   }
-  .theme-toggle svg {
+  .theme-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -8.5px 0 0 -8.5px;
     width: 17px;
     height: 17px;
     stroke: currentColor;
     fill: none;
     stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: opacity .25s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
   }
+  .theme-icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.5); }
+  .theme-icon-moon { opacity: 1; transform: rotate(0) scale(1); }
+  [data-theme="light"] .theme-icon-sun { opacity: 1; transform: rotate(0) scale(1); }
+  [data-theme="light"] .theme-icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
 
   .search-panel{
     max-height:0; opacity:0; overflow:hidden;
@@ -459,39 +483,43 @@
   .map-stage{
     position:relative; width:100%;
     height: clamp(320px, 42vw, 520px);
-    background: radial-gradient(ellipse at 28% 18%, #16394A 0%, #0F2029 72%);
+    background: radial-gradient(ellipse at 28% 18%, #E6EEF4 0%, #D9E6F0 72%);
     overflow:hidden;
+    transition: background .35s ease;
   }
   @media (max-width:1180px){ .map-stage{ height: clamp(320px, 52vw, 460px); } }
   @media (max-width:640px){ .map-stage{ height: clamp(280px, 78vw, 400px); } }
   .map-caption{
-    position:absolute; top:16px; left:18px; font-size:10.5px; color:#6B7981;
+    position:absolute; top:16px; left:18px; font-size:10.5px; color:#5C6B73;
     letter-spacing:0.08em; text-transform:uppercase; z-index:650;
-    background: rgba(18,32,44,0.55);
+    background: rgba(255,255,255,0.78);
     padding:4px 12px; border-radius:30px;
-    border:1px solid rgba(237,230,211,0.12);
+    border:1px solid rgba(28,43,53,0.12);
+    transition: background .35s ease, color .35s ease;
   }
   #worldMap{ position:absolute; inset:0; width:100%; height:100%; z-index:1; background:transparent; }
 
-  .leaflet-baseTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(0.82) saturate(0.55) contrast(0.98); }
-  .leaflet-labelTiles-pane{ filter: invert(1) hue-rotate(188deg) brightness(1.35) saturate(0.35) contrast(0.85); opacity:0.9; }
+  .leaflet-baseTiles-pane{ filter: none; transition: filter .35s ease; }
+  .leaflet-labelTiles-pane{ filter: none; opacity:0.95; transition: filter .35s ease; }
   .leaflet-container{ background: transparent; font-family:'Inter',sans-serif; }
-  .leaflet-control-attribution{ background: rgba(18,32,44,0.7) !important; color:#6B7981 !important; font-size:9.5px !important; backdrop-filter: blur(2px); }
-  .leaflet-control-attribution a{ color:#F7C177 !important; }
+  .leaflet-control-attribution{ background: rgba(255,255,255,0.82) !important; color:#5C6B73 !important; font-size:9.5px !important; backdrop-filter: blur(2px); transition: background .35s ease; }
+  .leaflet-control-attribution a{ color:#C17F2A !important; }
   .india-outline{ pointer-events:none; }
 
   .pin{ display:flex; flex-direction:column; align-items:center; background:none; border:none; padding:0; cursor:pointer; }
   .pin .dot{
     width:26px; height:26px; border-radius:50% 50% 50% 0; transform: rotate(-45deg);
-    background: var(--brass); display:flex; align-items:center; justify-content:center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.45); border: 2px solid rgba(18,32,44,0.6);
+    background: #C17F2A; display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12); border: 2px solid rgba(255,255,255,0.85);
     transition: transform .18s, background .18s;
   }
   .pin .dot span{ transform: rotate(45deg); font-size:11px; }
-  .pin.active .dot, .pin:hover .dot{ background: var(--rust); transform: rotate(-45deg) scale(1.12); }
+  .pin.active .dot, .pin:hover .dot{ background: #B85630; transform: rotate(-45deg) scale(1.12); }
   .pin .label{
-    margin-top:4px; font-size:10px; white-space:nowrap; background: rgba(18,32,44,0.9); padding:2px 7px;
-    border-radius:5px; color: var(--parchment); border:1px solid rgba(237,230,211,0.12);
+    margin-top:4px; font-size:10px; white-space:nowrap; background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(4px);
+    padding:2px 8px; border-radius:30px;
+    color: #1C2B35; border:1px solid rgba(28,43,53,0.12);
     opacity:0; transition:opacity .15s; pointer-events:none;
   }
   .pin:hover .label, .pin.active .label{ opacity:1; }
@@ -502,10 +530,10 @@
 
   .zoom-ctrl{ position:absolute; top:16px; right:16px; z-index:650; display:flex; flex-direction:column; gap:6px; }
   .zoom-ctrl button{
-    width:30px; height:30px; border-radius:8px; background: rgba(18,32,44,0.55); border:1px solid rgba(237,230,211,0.12);
-    color: #EFE7D4; font-size:15px; line-height:1; transition: border-color .15s, transform .15s;
+    width:30px; height:30px; border-radius:8px; background: rgba(255,255,255,0.78); border:1px solid rgba(28,43,53,0.12);
+    color: #1C2B35; font-size:15px; line-height:1; transition: border-color .15s, transform .15s, background .35s ease;
   }
-  .zoom-ctrl button:hover{ border-color: var(--brass); transform: scale(1.08); }
+  .zoom-ctrl button:hover{ border-color: var(--gold); transform: scale(1.08); }
 
   .quick-bar{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--border-light); }
   @media (max-width:680px){ .quick-bar{ grid-template-columns:repeat(2,1fr); } }
@@ -805,8 +833,9 @@
     <button class="icon-badge search-toggle" id="searchToggleBtn" aria-label="Search" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.6" y2="16.6"/></svg>
     </button>
-    <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+    <button class="icon-badge theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+      <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.4M12 19.1v2.4M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/></svg>
     </button>
   </div>
 </header>
@@ -887,12 +916,12 @@
       <div id="worldMap"></div>
 
       <svg class="compass" viewBox="0 0 60 60" fill="none">
-        <circle cx="30" cy="30" r="27" stroke="#C9974B" stroke-width="1"/>
-        <path d="M30 6 L34 30 L30 30 L26 30 Z" fill="#E3B368"/>
+        <circle cx="30" cy="30" r="27" stroke="#C17F2A" stroke-width="1"/>
+        <path d="M30 6 L34 30 L30 30 L26 30 Z" fill="#A8661C"/>
         <path d="M30 54 L34 30 L30 30 L26 30 Z" fill="#6B7981"/>
         <path d="M6 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
         <path d="M54 30 L30 34 L30 30 L30 26 Z" fill="#93A0A8"/>
-        <text x="30" y="12" text-anchor="middle" fill="#E7DEC7" font-size="6" font-family="IBM Plex Mono">N</text>
+        <text x="30" y="12" text-anchor="middle" fill="#1C2B35" font-size="6" font-family="IBM Plex Mono">N</text>
       </svg>
 
       <div class="zoom-ctrl">
@@ -1576,7 +1605,7 @@ window.addEventListener('load', () => { map.invalidateSize(); });
 setTimeout(() => { map.invalidateSize(); }, 300);
 setActive('tajmahal');
 
-/* ---------- Theme toggle: dark map only ---------- */
+/* ---------- Theme toggle: map only ---------- */
 (function(){
   const root = document.documentElement;
   const btn = document.getElementById('themeToggleBtn');
