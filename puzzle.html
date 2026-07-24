@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Taj Mahal Puzzle</title>
+    <style>
+        /* ================================================================
+           COMPLETE STYLES - Based on grrd's Puzzle CSS
+           ================================================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: 100%;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(#444, #222);
+            min-height: 100vh;
+            min-width: 100vw;
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            font-size: large;
+            color: white;
+            text-shadow: 1px 1px 2px #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .puzzle-app {
+            background: #1a1a2e;
+            border-radius: 24px;
+            padding: 28px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        /* ===== HEADER ===== */
+        .puzzle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .puzzle-title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .puzzle-title span {
+            color: #ff6b35;
+        }
+
+        .puzzle-stats {
+            color: #8888aa;
+            font-size: 13px;
+            display: flex;
+            gap: 16px;
+        }
+
+        /* ===== PUZZLE CONTAINER ===== */
+        .puzzle-container {
+            position: relative;
+            background: #0a0a18;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* ===== OVERLAY (Play Button) ===== */
+        .puzzle-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 0.6s ease;
+            border-radius: 16px;
+        }
+
+        .puzzle-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .puzzle-overlay .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+            opacity: 0.5;
+        }
+
+        .puzzle-overlay .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .puzzle-overlay h2 {
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .puzzle-overlay p {
+            color: #aaaacc;
+            font-size: 18px;
+            margin: 0 0 24px 0;
+            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
+        }
+
+        .play-button {
+            padding: 18px 56px;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 35px rgba(255, 107, 53, 0.5);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .play-button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 50px rgba(255, 107, 53, 0.7);
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== CANVAS ===== */
+        #puzzleCanvas {
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: #0a0a18;
+            touch-action: none;
+        }
+
+        #puzzleCanvas.active {
+            display: block;
+            cursor: grab;
+        }
+
+        #puzzleCanvas.active:active {
+            cursor: grabbing;
+        }
+
+        /* ===== STATUS BAR ===== */
+        .status-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            margin-top: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .status-bar.show {
+            display: flex;
+        }
+
+        .status-item {
+            color: #8888aa;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-item .value {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            min-width: 60px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+        }
+
+        /* ===== CONTROLS ===== */
+        .controls {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .controls.show {
+            display: flex;
+        }
+
+        .controls button {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #aaaacc;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .controls button:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .controls .btn-primary {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+        }
+
+        .controls .btn-primary:hover {
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .controls .btn-success {
+            background: #2e7d32;
+            color: white;
+            border: none;
+        }
+
+        .controls .btn-success:hover {
+            background: #388e3c;
+            box-shadow: 0 8px 30px rgba(46, 125, 50, 0.4);
+        }
+
+        /* ===== SOLVED OVERLAY ===== */
+        .solved-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            border-radius: 16px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .solved-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .solved-overlay .trophy {
+            font-size: 72px;
+            margin-bottom: 8px;
+            animation: bounce 1.2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-16px); }
+        }
+
+        .solved-overlay h2 {
+            font-size: 38px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .solved-overlay p {
+            color: #8a8aaa;
+            font-size: 18px;
+            margin-top: 4px;
+        }
+
+        .solved-overlay .time-result {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .puzzle-app {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            .puzzle-title {
+                font-size: 18px;
+            }
+
+            .puzzle-overlay h2 {
+                font-size: 24px;
+            }
+
+            .puzzle-overlay p {
+                font-size: 14px;
+                margin-bottom: 16px;
+            }
+
+            .play-button {
+                padding: 14px 32px;
+                font-size: 17px;
+            }
+
+            .status-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 10px 14px;
+            }
+
+            .controls button {
+                flex: 1;
+                justify-content: center;
+                font-size: 12px;
+                padding: 8px 14px;
+            }
+
+            .solved-overlay h2 {
+                font-size: 26px;
+            }
+
+            .solved-overlay .trophy {
+                font-size: 52px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .puzzle-app {
+                padding: 10px;
+            }
+
+            .puzzle-overlay h2 {
+                font-size: 20px;
+            }
+
+            .play-button {
+                padding: 12px 24px;
+                font-size: 15px;
+            }
+
+            .status-item {
+                font-size: 12px;
+            }
+
+            .controls button {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="puzzle-app">
+    <!-- ===== HEADER ===== -->
+    <div class="puzzle-header">
+        <div class="puzzle-title">
+            🏛️ <span>Taj Mahal</span> Puzzle
+        </div>
+        <div class="puzzle-stats">
+            <span>🧩 24 pieces</span>
+            <span>⭐ 4.8</span>
+        </div>
+    </div>
+
+    <!-- ===== PUZZLE ===== -->
+    <div class="puzzle-container" id="puzzleContainer">
+        <!-- OVERLAY with Play Button -->
+        <div class="puzzle-overlay" id="puzzleOverlay">
+            <img src="taj-mahal.png"
+                 alt="Taj Mahal"
+                 class="preview-image"
+                 id="previewImg">
+            <div class="content">
+                <h2>🧩 Complete the Puzzle</h2>
+                <p>Drag pieces to reconstruct the image</p>
+                <button class="play-button" id="playButton">
+                    ▶ Play Now
+                </button>
+            </div>
+        </div>
+
+        <!-- SOLVED OVERLAY -->
+        <div class="solved-overlay" id="solvedOverlay">
+            <div class="trophy">🏆</div>
+            <h2>Puzzle Complete!</h2>
+            <p>You solved it in</p>
+            <div class="time-result" id="finalTime">0:00</div>
+        </div>
+
+        <!-- Canvas for the puzzle -->
+        <canvas id="puzzleCanvas"></canvas>
+    </div>
+
+    <!-- ===== STATUS BAR ===== -->
+    <div class="status-bar" id="statusBar">
+        <div class="status-item">
+            ⏱️ <span class="value" id="timerDisplay">0:00</span>
+        </div>
+        <div class="status-item">
+            🧩 <span class="value" id="pieceCount">0/24</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="status-item">
+            <span class="value" id="progressLabel">0%</span>
+        </div>
+        <button id="shuffleBtn" style="background:rgba(255,255,255,0.05);border:none;color:#aaaacc;padding:4px 12px;border-radius:6px;cursor:pointer;font-size:13px;">
+            🔀 Shuffle
+        </button>
+    </div>
+
+    <!-- ===== CONTROLS ===== -->
+    <div class="controls" id="controls">
+        <button class="btn-primary" id="shuffleBtn2">🔀 Shuffle</button>
+        <button id="hintBtn">💡 Hint</button>
+        <button class="btn-success" id="resetBtn">🔄 New</button>
+    </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- JAVASCRIPT - PUZZLE ENGINE (Based on grrd's Puzzle)             -->
+<!-- ================================================================ -->
+<script>
+    // ================================================================
+    // 🧩 TAJ MAHAL PUZZLE - Based on grrd's Puzzle Engine
+    // ================================================================
+
+    // ---- CONFIG ----
+    const ROWS = 4;
+    const COLS = 6;
+    const TOTAL_PIECES = ROWS * COLS;
+    const PRECISION = 15;
+
+    // ---- YOUR IMAGE ----
+    const IMAGE_URL = 'taj-mahal.png';
+
+    // ---- DOM Elements ----
+    const canvas = document.getElementById('puzzleCanvas');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('puzzleOverlay');
+    const solvedOverlay = document.getElementById('solvedOverlay');
+    const playBtn = document.getElementById('playButton');
+    const statusBar = document.getElementById('statusBar');
+    const controls = document.getElementById('controls');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const pieceCount = document.getElementById('pieceCount');
+    const progressFill = document.getElementById('progressFill');
+    const progressLabel = document.getElementById('progressLabel');
+    const finalTime = document.getElementById('finalTime');
+    const previewImg = document.getElementById('previewImg');
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const shuffleBtn2 = document.getElementById('shuffleBtn2');
+    const hintBtn = document.getElementById('hintBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // ---- State ----
+    let pieces = [];
+    let selectedPiece = null;
+    let isDragging = false;
+    let dragOffX = 0, dragOffY = 0;
+    let puzzleSolved = false;
+    let timerSeconds = 0;
+    let timerInterval = null;
+    let timerRunning = false;
+    let imageLoaded = false;
+    let puzzleImage = null;
+    let hintMode = false;
+    let placedCount = 0;
+    let groups = [];
+
+    // ================================================================
+    // SETUP CANVAS
+    // ================================================================
+
+    function setupCanvas() {
+        const container = document.getElementById('puzzleContainer');
+        const rect = container.getBoundingClientRect();
+        const width = rect.width - 0;
+        const height = width * 0.75;
+
+        canvas.width = 800;
+        canvas.height = 600;
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+    }
+
+    // ================================================================
+    // DRAW PUZZLE PIECE WITH TABS (grrd's bezier curve logic)
+    // ================================================================
+
+    function drawPieceShape(ctx, x, y, w, h, tabs) {
+        const ts = Math.min(w, h) * 0.22;
+        const cs = ts * 0.6;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        // Top
+        if (tabs[0] === 0) ctx.lineTo(x + w, y);
+        else {
+            const mid = x + w / 2;
+            const dir = tabs[0];
+            ctx.bezierCurveTo(
+                x + w * 0.8, y + h * 0.1 * dir,
+                x, y - h * 0.25 * dir,
+                mid, y - h * 0.25 * dir
+            );
+            ctx.bezierCurveTo(
+                x + w, y - h * 0.25 * dir,
+                x + w * 0.2, y + h * 0.1 * dir,
+                x + w, y
+            );
+        }
+
+        // Right
+        if (tabs[1] === 0) ctx.lineTo(x + w, y + h);
+        else {
+            const mid = y + h / 2;
+            const dir = tabs[1];
+            ctx.bezierCurveTo(
+                x + w + w * 0.1 * dir, y + h * 0.8,
+                x + w - w * 0.25 * dir, y,
+                x + w - w * 0.25 * dir, mid
+            );
+            ctx.bezierCurveTo(
+                x + w - w * 0.25 * dir, y + h,
+                x + w + w * 0.1 * dir, y + h * 0.2,
+                x + w, y + h
+            );
+        }
+
+        // Bottom
+        if (tabs[2] === 0) ctx.lineTo(x, y + h);
+        else {
+            const mid = x + w / 2;
+            const dir = tabs[2];
+            ctx.bezierCurveTo(
+                x + w * 0.2, y + h - h * 0.1 * dir,
+                x + w, y + h + h * 0.25 * dir,
+                mid, y + h + h * 0.25 * dir
+            );
+            ctx.bezierCurveTo(
+                x, y + h + h * 0.25 * dir,
+                x + w * 0.8, y + h - h * 0.1 * dir,
+                x, y + h
+            );
+        }
+
+        // Left
+        if (tabs[3] === 0) ctx.closePath();
+        else {
+            const mid = y + h / 2;
+            const dir = tabs[3];
+            ctx.bezierCurveTo(
+                x - w * 0.1 * dir, y + h * 0.2,
+                x + w * 0.25 * dir, y + h,
+                x + w * 0.25 * dir, mid
+            );
+            ctx.bezierCurveTo(
+                x + w * 0.25 * dir, y,
+                x - w * 0.1 * dir, y + h * 0.8,
+                x, y
+            );
+            ctx.closePath();
+        }
+    }
+
+    // ================================================================
+    // GENERATE PIECES WITH TABS
+    // ================================================================
+
+    function generatePieces() {
+        const W = canvas.width, H = canvas.height;
+        const pw = W / COLS, ph = H / ROWS;
+
+        // Generate random tabs
+        const tabs = [];
+        for (let r = 0; r < ROWS; r++) {
+            tabs[r] = [];
+            for (let c = 0; c < COLS; c++) {
+                tabs[r][c] = [
+                    r === 0 ? 0 : (Math.random() > 0.5 ? 1 : -1),
+                    c === COLS - 1 ? 0 : (Math.random() > 0.5 ? 1 : -1),
+                    r === ROWS - 1 ? 0 : (Math.random() > 0.5 ? 1 : -1),
+                    c === 0 ? 0 : (Math.random() > 0.5 ? 1 : -1)
+                ];
+            }
+        }
+
+        // Match adjacent pieces
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                if (c < COLS - 1 && tabs[r][c][1] !== 0 && tabs[r][c + 1][3] !== 0) {
+                    tabs[r][c + 1][3] = -tabs[r][c][1];
+                }
+                if (r < ROWS - 1 && tabs[r][c][2] !== 0 && tabs[r + 1][c][0] !== 0) {
+                    tabs[r + 1][c][0] = -tabs[r][c][2];
+                }
+            }
+        }
+
+        const result = [];
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                result.push({
+                    id: r * COLS + c,
+                    row: r,
+                    col: c,
+                    correctX: c * pw,
+                    correctY: r * ph,
+                    currentX: 0,
+                    currentY: 0,
+                    width: pw,
+                    height: ph,
+                    tabs: tabs[r][c],
+                    isPlaced: false,
+                    imageData: null,
+                    groupId: null
+                });
+            }
+        }
+        return result;
+    }
+
+    // ================================================================
+    // RENDER PIECE IMAGES WITH SHAPE MASK
+    // ================================================================
+
+    function renderPieceImages(img, piecesArray) {
+        const pw = canvas.width / COLS;
+        const ph = canvas.height / ROWS;
+
+        piecesArray.forEach(p => {
+            const off = document.createElement('canvas');
+            off.width = pw;
+            off.height = ph;
+            const octx = off.getContext('2d');
+
+            // Draw the image portion
+            octx.drawImage(img, p.correctX, p.correctY, pw, ph, 0, 0, pw, ph);
+
+            // Create mask with puzzle shape
+            const mask = document.createElement('canvas');
+            mask.width = pw;
+            mask.height = ph;
+            const mctx = mask.getContext('2d');
+            drawPieceShape(mctx, 0, 0, pw, ph, p.tabs);
+            mctx.fillStyle = 'white';
+            mctx.fill();
+
+            // Apply mask
+            octx.globalCompositeOperation = 'destination-in';
+            octx.drawImage(mask, 0, 0);
+            octx.globalCompositeOperation = 'source-over';
+
+            // Add shadow
+            octx.shadowColor = 'rgba(0,0,0,0.4)';
+            octx.shadowBlur = 10;
+            octx.shadowOffsetX = 2;
+            octx.shadowOffsetY = 2;
+            drawPieceShape(octx, 2, 2, pw - 4, ph - 4, p.tabs);
+            octx.shadowColor = 'transparent';
+
+            p.imageData = off.toDataURL();
+        });
+    }
+
+    // ================================================================
+    // DRAW PUZZLE
+    // ================================================================
+
+    function drawPuzzle() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Background
+        const grad = ctx.createRadialGradient(
+            canvas.width / 2, canvas.height / 2, 40,
+            canvas.width / 2, canvas.height / 2, canvas.width / 1.4
+        );
+        grad.addColorStop(0, '#1a1a3a');
+        grad.addColorStop(1, '#0a0a16');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Sort pieces (selected on top)
+        const sorted = [...pieces];
+        if (selectedPiece && isDragging) {
+            const idx = sorted.indexOf(selectedPiece);
+            if (idx > -1) {
+                sorted.splice(idx, 1);
+                sorted.push(selectedPiece);
+            }
+        }
+
+        sorted.forEach(p => {
+            if (!p.imageData) return;
+            const img = new Image();
+            img.src = p.imageData;
+
+            ctx.drawImage(img, p.currentX, p.currentY, p.width, p.height);
+
+            // Border
+            ctx.strokeStyle = p.isPlaced ? 'rgba(76,175,80,0.3)' : 'rgba(255,255,255,0.06)';
+            ctx.lineWidth = 1.5;
+            drawPieceShape(ctx, p.currentX, p.currentY, p.width, p.height, p.tabs);
+            ctx.stroke();
+
+            // Hint mode - show correct position
+            if (hintMode && !p.isPlaced) {
+                ctx.strokeStyle = 'rgba(255,107,53,0.2)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([6, 6]);
+                drawPieceShape(ctx, p.correctX, p.correctY, p.width, p.height, p.tabs);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Selected piece highlight
+            if (p === selectedPiece && isDragging) {
+                ctx.shadowColor = 'rgba(255,107,53,0.4)';
+                ctx.shadowBlur = 30;
+                ctx.strokeStyle = '#ff6b35';
+                ctx.lineWidth = 3;
+                drawPieceShape(ctx, p.currentX, p.currentY, p.width, p.height, p.tabs);
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+        });
+    }
+
+    // ================================================================
+    // SHUFFLE
+    // ================================================================
+
+    function shufflePiecesArray() {
+        const W = canvas.width, H = canvas.height;
+        pieces.forEach(p => {
+            p.currentX = Math.random() * (W - p.width);
+            p.currentY = Math.random() * (H - p.height);
+            p.isPlaced = false;
+            p.groupId = null;
+        });
+        puzzleSolved = false;
+        solvedOverlay.classList.remove('show');
+        placedCount = 0;
+        groups = [];
+        updateProgress();
+        drawPuzzle();
+    }
+
+    // ================================================================
+    // TIMER
+    // ================================================================
+
+    function startTimer() {
+        if (timerRunning) return;
+        timerRunning = true;
+        timerInterval = setInterval(() => {
+            timerSeconds++;
+            const m = Math.floor(timerSeconds / 60);
+            const s = timerSeconds % 60;
+            timerDisplay.textContent = m + ':' + String(s).padStart(2, '0');
+        }, 1000);
+    }
+
+    function stopTimer() {
+        timerRunning = false;
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+    function resetTimer() {
+        timerSeconds = 0;
+        timerDisplay.textContent = '0:00';
+    }
+
+    // ================================================================
+    // PROGRESS
+    // ================================================================
+
+    function updateProgress() {
+        const placed = pieces.filter(p => p.isPlaced).length;
+        const pct = Math.round((placed / TOTAL_PIECES) * 100);
+        progressFill.style.width = pct + '%';
+        progressLabel.textContent = pct + '%';
+        pieceCount.textContent = placed + '/' + TOTAL_PIECES;
+        placedCount = placed;
+    }
+
+    // ================================================================
+    // DRAG & DROP
+    // ================================================================
+
+    function getPieceAt(x, y) {
+        for (let i = pieces.length - 1; i >= 0; i--) {
+            const p = pieces[i];
+            if (p.isPlaced) continue;
+            if (x >= p.currentX && x <= p.currentX + p.width &&
+                y >= p.currentY && y <= p.currentY + p.height) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    function findGroup(piece) {
+        if (piece.groupId !== null) {
+            return groups.find(g => g.id === piece.groupId);
+        }
+        return null;
+    }
+
+    function getAllPiecesInGroup(group) {
+        if (!group) return [];
+        return pieces.filter(p => p.groupId === group.id);
+    }
+
+    function onPointerDown(e) {
+        if (puzzleSolved || !imageLoaded) return;
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        const cx = e.clientX || e.touches?.[0]?.clientX || 0;
+        const cy = e.clientY || e.touches?.[0]?.clientY || 0;
+
+        const mx = (cx - rect.left) * scaleX;
+        const my = (cy - rect.top) * scaleY;
+
+        // Check if clicking on a piece
+        const p = getPieceAt(mx, my);
+        if (p) {
+            selectedPiece = p;
+            isDragging = true;
+            dragOffX = mx - p.currentX;
+            dragOffY = my - p.currentY;
+            if (!timerRunning && !puzzleSolved) startTimer();
+
+            // Bring to top
+            const idx = pieces.indexOf(p);
+            if (idx > -1) {
+                pieces.splice(idx, 1);
+                pieces.push(p);
+            }
+            drawPuzzle();
+        }
+    }
+
+    function onPointerMove(e) {
+        if (!isDragging || !selectedPiece || puzzleSolved) return;
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        const cx = e.clientX || e.touches?.[0]?.clientX || 0;
+        const cy = e.clientY || e.touches?.[0]?.clientY || 0;
+
+        let mx = (cx - rect.left) * scaleX;
+        let my = (cy - rect.top) * scaleY;
+
+        selectedPiece.currentX = Math.max(0, Math.min(canvas.width - selectedPiece.width, mx - dragOffX));
+        selectedPiece.currentY = Math.max(0, Math.min(canvas.height - selectedPiece.height, my - dragOffY));
+        drawPuzzle();
+    }
+
+    function onPointerUp(e) {
+        if (isDragging && selectedPiece) {
+            const p = selectedPiece;
+
+            // Check if piece snaps to correct position
+            if (Math.abs(p.currentX - p.correctX) < PRECISION &&
+                Math.abs(p.currentY - p.correctY) < PRECISION) {
+                p.currentX = p.correctX;
+                p.currentY = p.correctY;
+                p.isPlaced = true;
+                updateProgress();
+
+                // Check if puzzle is solved
+                if (pieces.filter(pc => pc.isPlaced).length === TOTAL_PIECES) {
+                    puzzleSolved = true;
+                    stopTimer();
+                    finalTime.textContent = timerDisplay.textContent;
+                    solvedOverlay.classList.add('show');
+                }
+            } else {
+                // Check surrounding pieces for grouping
+                checkSurroundingPieces(p);
+            }
+
+            isDragging = false;
+            selectedPiece = null;
+            drawPuzzle();
+        }
+    }
+
+    function checkSurroundingPieces(piece) {
+        const directions = [
+            [-1, 0], [1, 0], [0, -1], [0, 1]
+        ];
+
+        directions.forEach(([dr, dc]) => {
+            const targetRow = piece.row + dr;
+            const targetCol = piece.col + dc;
+            if (targetRow < 0 || targetRow >= ROWS || targetCol < 0 || targetCol >= COLS) return;
+
+            const target = pieces.find(p => p.row === targetRow && p.col === targetCol);
+            if (!target || target.isPlaced) return;
+
+            // Check if target is close enough
+            const dx = Math.abs(piece.currentX - target.currentX);
+            const dy = Math.abs(piece.currentY - target.currentY);
+            if (dx < PRECISION && dy < PRECISION) {
+                // Snap target to correct relative position
+                target.currentX = piece.currentX + (target.correctX - piece.correctX);
+                target.currentY = piece.currentY + (target.correctY - piece.correctY);
+                drawPuzzle();
+            }
+        });
+    }
+
+    // ---- Events ----
+    canvas.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+
+    canvas.addEventListener('touchstart', e => { e.preventDefault();
+        onPointerDown(e); }, { passive: false });
+    canvas.addEventListener('touchmove', e => { e.preventDefault();
+        onPointerMove(e); }, { passive: false });
+    canvas.addEventListener('touchend', e => { e.preventDefault();
+        onPointerUp(e); }, { passive: false });
+
+    // ================================================================
+    // LOAD IMAGE & INIT
+    // ================================================================
+
+    function loadImage(url) {
+        return new Promise(resolve => {
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = () => resolve(img);
+            img.onerror = () => resolve(null);
+            img.src = url;
+        });
+    }
+
+    async function initPuzzle(imgUrl) {
+        const img = await loadImage(imgUrl);
+        if (!img) {
+            alert('Failed to load image. Please make sure taj-mahal.png is in the same folder.');
+            return;
+        }
+
+        puzzleImage = img;
+        imageLoaded = true;
+
+        setupCanvas();
+        pieces = generatePieces();
+        renderPieceImages(img, pieces);
+
+        const W = canvas.width,
+            H = canvas.height;
+        pieces.forEach(p => {
+            p.currentX = Math.random() * (W - p.width);
+            p.currentY = Math.random() * (H - p.height);
+            p.isPlaced = false;
+        });
+
+        puzzleSolved = false;
+        solvedOverlay.classList.remove('show');
+        resetTimer();
+        timerRunning = false;
+        placedCount = 0;
+        updateProgress();
+        drawPuzzle();
+    }
+
+    // ================================================================
+    // PLAY BUTTON - Start the Game
+    // ================================================================
+
+    playBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+
+        // Hide overlay
+        overlay.classList.add('hidden');
+
+        // Show canvas, status bar, controls
+        canvas.classList.add('active');
+        statusBar.classList.add('show');
+        controls.classList.add('show');
+
+        // Load and init puzzle if not already loaded
+        if (!imageLoaded) {
+            initPuzzle(IMAGE_URL);
+        } else {
+            shufflePiecesArray();
+            resetTimer();
+            timerRunning = false;
+        }
+    });
+
+    // Allow clicking the container to start
+    document.getElementById('puzzleContainer').addEventListener('click', function(e) {
+        if (e.target === this || e.target.closest('.puzzle-overlay')) {
+            if (!overlay.classList.contains('hidden')) {
+                playBtn.click();
+            }
+        }
+    });
+
+    // ================================================================
+    // CONTROL BUTTONS
+    // ================================================================
+
+    function shufflePieces() {
+        if (!imageLoaded || puzzleSolved) {
+            if (puzzleSolved) solvedOverlay.classList.remove('show');
+            shufflePiecesArray();
+            resetTimer();
+            timerRunning = false;
+        } else {
+            shufflePiecesArray();
+            resetTimer();
+            timerRunning = false;
+        }
+    }
+
+    function toggleHint() {
+        hintMode = !hintMode;
+        drawPuzzle();
+    }
+
+    function resetPuzzle() {
+        if (puzzleSolved) solvedOverlay.classList.remove('show');
+        shufflePiecesArray();
+        resetTimer();
+        timerRunning = false;
+    }
+
+    shuffleBtn.addEventListener('click', shufflePieces);
+    shuffleBtn2.addEventListener('click', shufflePieces);
+    hintBtn.addEventListener('click', toggleHint);
+    resetBtn.addEventListener('click', resetPuzzle);
+
+    // ================================================================
+    // RESIZE HANDLER
+    // ================================================================
+
+    window.addEventListener('resize', () => {
+        if (imageLoaded) {
+            setupCanvas();
+            // Recalculate correct positions
+            const W = canvas.width,
+                H = canvas.height;
+            const pw = W / COLS,
+                ph = H / ROWS;
+            pieces.forEach(p => {
+                p.correctX = p.col * pw;
+                p.correctY = p.row * ph;
+                p.width = pw;
+                p.height = ph;
+                if (p.isPlaced) {
+                    p.currentX = p.correctX;
+                    p.currentY = p.correctY;
+                }
+            });
+            drawPuzzle();
+        }
+    });
+
+    // ================================================================
+    // START - Preload the image
+    // ================================================================
+
+    console.log('🧩 Taj Mahal Puzzle loaded!');
+    console.log('📸 Image:', IMAGE_URL);
+    console.log('🔢 Pieces:', TOTAL_PIECES, '(', ROWS, 'x', COLS, ')');
+
+    // Preload the image in background
+    loadImage(IMAGE_URL).then(img => {
+        if (img) {
+            puzzleImage = img;
+            imageLoaded = true;
+            setupCanvas();
+            pieces = generatePieces();
+            renderPieceImages(img, pieces);
+            const W = canvas.width,
+                H = canvas.height;
+            pieces.forEach(p => {
+                p.currentX = Math.random() * (W - p.width);
+                p.currentY = Math.random() * (H - p.height);
+                p.isPlaced = false;
+            });
+            updateProgress();
+            drawPuzzle();
+            console.log('✅ Puzzle preloaded successfully!');
+        } else {
+            console.error('❌ Failed to load image: taj-mahal.png');
+            console.log('📝 Make sure the image is in the same folder as this HTML file.');
+        }
+    });
+
+    // Fix for preview image
+    previewImg.onerror = function() {
+        console.warn('⚠️ Preview image not found. Make sure taj-mahal.png exists.');
+        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23333" width="800" height="600"/%3E%3Ctext x="400" y="300" text-anchor="middle" fill="%23aaa" font-size="30" font-family="Arial"%3ETaj Mahal%3C/text%3E%3C/svg%3E';
+    };
+</script>
+
+</body>
+</html>
