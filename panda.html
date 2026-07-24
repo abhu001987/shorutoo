@@ -1,15 +1,146 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Taj Mahal Puzzle</title>
+    <title>Jigsaw Puzzle</title>
+    <style>
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .puzzle-container {
+            background: #16213e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        canvas {
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            cursor: grab;
+        }
+        canvas:active {
+            cursor: grabbing;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 25px;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #f7931e;
+        }
+        button.secondary {
+            background: #4a4a6a;
+        }
+        button.secondary:hover {
+            background: #6a6a8a;
+        }
+        .status {
+            color: #aaa;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Taj Mahal Jigsaw Puzzle</h1>
+<div class="puzzle-container">
+    <h2 style="color: white; text-align: center; margin-top: 0;">🧩 Jigsaw Puzzle</h2>
+    
+    <!-- Puzzle canvas -->
+    <canvas id="puzzleCanvas" width="600" height="450"></canvas>
+    
+    <div class="controls">
+        <button onclick="startPuzzle()">🔄 New Puzzle</button>
+        <button class="secondary" onclick="toggleHint()">💡 Toggle Hint</button>
+        <button class="secondary" onclick="shufflePieces()">🔀 Reshuffle</button>
+    </div>
+    
+    <div class="status" id="statusText">Drag pieces to solve the puzzle!</div>
+</div>
 
-<div id="game"></div>
+<!-- Include the puzzle library -->
+<script src="https://cdn.jsdelivr.net/npm/jigsaw-js-puzzle-lib@1.0.0/dist/puzzle.min.js"></script>
 
-<script src="https://gist.github.com/josephyee/450916.js"></script>
+<script>
+// Your puzzle instance
+let puzzle;
+let puzzleSolved = false;
+
+// Use a free image or your own
+const imageUrl = 'https://picsum.photos/600/450?random=1';
+
+// Start the puzzle
+function startPuzzle() {
+    const canvas = document.getElementById('puzzleCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Create puzzle instance
+    puzzle = new Puzzle({
+        canvas: canvas,
+        rows: 4,
+        columns: 6,
+        image: imageUrl,
+        hintsEnabled: false,
+        onSolved: function() {
+            puzzleSolved = true;
+            document.getElementById('statusText').innerHTML = '🎉 Congratulations! Puzzle solved! 🎉';
+            document.getElementById('statusText').style.color = '#4CAF50';
+        }
+    });
+    
+    puzzle.generatePieces();
+    puzzle.randomizePieces();
+    puzzle.draw();
+    puzzleSolved = false;
+    document.getElementById('statusText').innerHTML = 'Drag pieces to solve the puzzle!';
+    document.getElementById('statusText').style.color = '#aaa';
+}
+
+// Toggle hints
+function toggleHint() {
+    if (puzzle) {
+        puzzle.hintsEnabled = !puzzle.hintsEnabled;
+        puzzle.draw();
+        document.getElementById('statusText').innerHTML = puzzle.hintsEnabled ? '💡 Hint mode ON' : 'Hint mode OFF';
+    }
+}
+
+// Shuffle pieces
+function shufflePieces() {
+    if (puzzle) {
+        puzzle.randomizePieces();
+        puzzle.draw();
+        puzzleSolved = false;
+        document.getElementById('statusText').innerHTML = '🔀 Pieces reshuffled!';
+        document.getElementById('statusText').style.color = '#aaa';
+    }
+}
+
+// Start the puzzle when page loads
+window.onload = function() {
+    startPuzzle();
+};
+</script>
 
 </body>
 </html>
