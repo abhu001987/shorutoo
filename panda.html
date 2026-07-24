@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Jigsaw Puzzle</title>
+    <title>Simple Jigsaw</title>
     <style>
         body {
             background: #1a1a2e;
@@ -17,21 +17,32 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
         }
-        canvas {
+        #puzzleContainer {
+            position: relative;
+            width: 600px;
+            height: 450px;
+            margin: 0 auto;
+            background: #2a2a4a;
             border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+            border: 2px solid #4a4a6a;
+        }
+        .piece {
+            position: absolute;
+            border: 1px solid rgba(255,255,255,0.3);
             cursor: grab;
+            transition: box-shadow 0.2s;
         }
-        canvas:active {
-            cursor: grabbing;
+        .piece:hover {
+            box-shadow: 0 0 15px rgba(255,107,53,0.5);
+            z-index: 10;
         }
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .piece.selected {
+            border: 3px solid #ff6b35;
+            z-index: 20;
+            box-shadow: 0 0 30px rgba(255,107,53,0.7);
         }
         button {
             padding: 10px 25px;
@@ -42,20 +53,13 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.3s;
+            margin: 10px 5px;
         }
         button:hover {
             background: #f7931e;
         }
-        button.secondary {
-            background: #4a4a6a;
-        }
-        button.secondary:hover {
-            background: #6a6a8a;
-        }
         .status {
             color: #aaa;
-            text-align: center;
             margin-top: 15px;
             font-size: 14px;
         }
@@ -64,81 +68,242 @@
 <body>
 
 <div class="puzzle-container">
-    <h2 style="color: white; text-align: center; margin-top: 0;">🧩 Jigsaw Puzzle</h2>
-    
-    <!-- Puzzle canvas -->
-    <canvas id="puzzleCanvas" width="600" height="450"></canvas>
-    
-    <div class="controls">
-        <button onclick="startPuzzle()">🔄 New Puzzle</button>
-        <button class="secondary" onclick="toggleHint()">💡 Toggle Hint</button>
-        <button class="secondary" onclick="shufflePieces()">🔀 Reshuffle</button>
+    <h2 style="color: white;">🧩 Jigsaw Puzzle</h2>
+    <div id="puzzleContainer"></div>
+    <div>
+        <button onclick="shufflePieces()">🔀 Shuffle</button>
+        <button onclick="resetPuzzle()">🔄 New Puzzle</button>
     </div>
-    
-    <div class="status" id="statusText">Drag pieces to solve the puzzle!</div>
+    <div class="status" id="status">Drag pieces to solve!</div>
 </div>
 
-<!-- Include the puzzle library -->
-<script src="https://cdn.jsdelivr.net/npm/jigsaw-js-puzzle-lib@1.0.0/dist/puzzle.min.js"></script>
-
 <script>
-// Your puzzle instance
-let puzzle;
-let puzzleSolved = false;
+// Simple jigsaw implementation
+let pieces = [];
+let selectedPiece = null;
+let offsetX, offsetY;
+let rows = 4;
+let cols = 6;
+let container = document.getElementById('puzzleContainer');
+let containerWidth = 600;
+let containerHeight = 450;
 
-// Use a free image or your own
-const imageUrl = 'https://picsum.photos/600/450?random=1';
+// Load a random image
+const imageUrl = 'https://picsum.photos/600/450?random=' + Date.now();
 
-// Start the puzzle
-function startPuzzle() {
-    const canvas = document.getElementById('puzzleCanvas');
-    const ctx = canvas.getContext('2d');
+function createPuzzle() {
+    // Clear container
+    container.innerHTML = '';
+    pieces = [];
+    selectedPiece = null;
     
-    // Create puzzle instance
-    puzzle = new Puzzle({
-        canvas: canvas,
-        rows: 4,
-        columns: 6,
-        image: imageUrl,
-        hintsEnabled: false,
-        onSolved: function() {
-            puzzleSolved = true;
-            document.getElementById('statusText').innerHTML = '🎉 Congratulations! Puzzle solved! 🎉';
-            document.getElementById('statusText').style.color = '#4CAF50';
+    const pieceWidth = containerWidth / cols;
+    const pieceHeight = containerHeight / rows;
+    
+    // Create image
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = imageUrl;
+    
+    img.onload = function() {
+        // Create canvas to slice image
+        const canvas = document.createElement('canvas');
+        canvas.width = containerWidth;
+        canvas.height = containerHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, containerWidth, containerHeight);
+        
+        // Create pieces
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const pieceCanvas = document.createElement('canvas');
+                pieceCanvas.width = pieceWidth;
+                pieceCanvas.height = pieceHeight;
+                const pieceCtx = pieceCanvas.getContext('2d');
+                
+                pieceCtx.drawImage(canvas, 
+                    c * pieceWidth, r * pieceHeight, pieceWidth, pieceHeight,
+                    0, 0, pieceWidth, pieceHeight
+                );
+                
+                const div = document.createElement('div');
+                div.className = 'piece';
+                div.style.width = pieceWidth + 'px';
+                div.style.height = pieceHeight + 'px';
+                div.style.backgroundImage = `url(${pieceCanvas.toDataURL()})`;
+                div.style.backgroundSize = 'cover';
+                div.dataset.row = r;
+                div.dataset.col = c;
+                div.dataset.correctX = c * pieceWidth;
+                div.dataset.correctY = r * pieceHeight;
+                
+                // Random position
+                const randomX = Math.random() * (containerWidth - pieceWidth);
+                const randomY = Math.random() * (containerHeight - pieceHeight);
+                div.style.left = randomX + 'px';
+                div.style.top = randomY + 'px';
+                
+                // Drag events
+                div.addEventListener('mousedown', startDrag);
+                div.addEventListener('touchstart', startDragTouch);
+                
+                container.appendChild(div);
+                pieces.push(div);
+            }
+        }
+        
+        document.getElementById('status').textContent = '🧩 Drag pieces to solve!';
+        document.getElementById('status').style.color = '#aaa';
+    };
+}
+
+// Drag handlers for mouse
+function startDrag(e) {
+    e.preventDefault();
+    const piece = e.target;
+    if (selectedPiece && selectedPiece !== piece) {
+        selectedPiece.classList.remove('selected');
+    }
+    selectedPiece = piece;
+    piece.classList.add('selected');
+    
+    const rect = piece.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    
+    document.addEventListener('mousemove', onDrag);
+    document.addEventListener('mouseup', endDrag);
+}
+
+function onDrag(e) {
+    if (!selectedPiece) return;
+    const containerRect = container.getBoundingClientRect();
+    let x = e.clientX - containerRect.left - offsetX;
+    let y = e.clientY - containerRect.top - offsetY;
+    
+    x = Math.max(0, Math.min(containerWidth - selectedPiece.offsetWidth, x));
+    y = Math.max(0, Math.min(containerHeight - selectedPiece.offsetHeight, y));
+    
+    selectedPiece.style.left = x + 'px';
+    selectedPiece.style.top = y + 'px';
+}
+
+function endDrag(e) {
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup', endDrag);
+    
+    if (selectedPiece) {
+        selectedPiece.classList.remove('selected');
+        checkSnap(selectedPiece);
+        selectedPiece = null;
+    }
+}
+
+// Touch handlers
+function startDragTouch(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const piece = e.target;
+    if (selectedPiece && selectedPiece !== piece) {
+        selectedPiece.classList.remove('selected');
+    }
+    selectedPiece = piece;
+    piece.classList.add('selected');
+    
+    const rect = piece.getBoundingClientRect();
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
+    
+    document.addEventListener('touchmove', onDragTouch);
+    document.addEventListener('touchend', endDragTouch);
+}
+
+function onDragTouch(e) {
+    e.preventDefault();
+    if (!selectedPiece) return;
+    const touch = e.touches[0];
+    const containerRect = container.getBoundingClientRect();
+    let x = touch.clientX - containerRect.left - offsetX;
+    let y = touch.clientY - containerRect.top - offsetY;
+    
+    x = Math.max(0, Math.min(containerWidth - selectedPiece.offsetWidth, x));
+    y = Math.max(0, Math.min(containerHeight - selectedPiece.offsetHeight, y));
+    
+    selectedPiece.style.left = x + 'px';
+    selectedPiece.style.top = y + 'px';
+}
+
+function endDragTouch(e) {
+    document.removeEventListener('touchmove', onDragTouch);
+    document.removeEventListener('touchend', endDragTouch);
+    
+    if (selectedPiece) {
+        selectedPiece.classList.remove('selected');
+        checkSnap(selectedPiece);
+        selectedPiece = null;
+    }
+}
+
+function checkSnap(piece) {
+    const correctX = parseInt(piece.dataset.correctX);
+    const correctY = parseInt(piece.dataset.correctY);
+    const currentX = parseInt(piece.style.left);
+    const currentY = parseInt(piece.style.top);
+    
+    const threshold = 20;
+    if (Math.abs(currentX - correctX) < threshold && Math.abs(currentY - correctY) < threshold) {
+        piece.style.left = correctX + 'px';
+        piece.style.top = correctY + 'px';
+        piece.style.cursor = 'default';
+        piece.style.borderColor = 'rgba(76, 175, 80, 0.5)';
+        
+        checkPuzzleSolved();
+    }
+}
+
+function checkPuzzleSolved() {
+    let solved = true;
+    pieces.forEach(piece => {
+        const correctX = parseInt(piece.dataset.correctX);
+        const correctY = parseInt(piece.dataset.correctY);
+        const currentX = parseInt(piece.style.left);
+        const currentY = parseInt(piece.style.top);
+        
+        if (Math.abs(currentX - correctX) > 5 || Math.abs(currentY - correctY) > 5) {
+            solved = false;
         }
     });
     
-    puzzle.generatePieces();
-    puzzle.randomizePieces();
-    puzzle.draw();
-    puzzleSolved = false;
-    document.getElementById('statusText').innerHTML = 'Drag pieces to solve the puzzle!';
-    document.getElementById('statusText').style.color = '#aaa';
-}
-
-// Toggle hints
-function toggleHint() {
-    if (puzzle) {
-        puzzle.hintsEnabled = !puzzle.hintsEnabled;
-        puzzle.draw();
-        document.getElementById('statusText').innerHTML = puzzle.hintsEnabled ? '💡 Hint mode ON' : 'Hint mode OFF';
+    if (solved) {
+        document.getElementById('status').textContent = '🎉 Congratulations! Puzzle solved! 🎉';
+        document.getElementById('status').style.color = '#4CAF50';
     }
 }
 
-// Shuffle pieces
 function shufflePieces() {
-    if (puzzle) {
-        puzzle.randomizePieces();
-        puzzle.draw();
-        puzzleSolved = false;
-        document.getElementById('statusText').innerHTML = '🔀 Pieces reshuffled!';
-        document.getElementById('statusText').style.color = '#aaa';
-    }
+    pieces.forEach(piece => {
+        const x = Math.random() * (containerWidth - parseInt(piece.style.width));
+        const y = Math.random() * (containerHeight - parseInt(piece.style.height));
+        piece.style.left = x + 'px';
+        piece.style.top = y + 'px';
+        piece.style.borderColor = 'rgba(255,255,255,0.3)';
+        piece.style.cursor = 'grab';
+    });
+    document.getElementById('status').textContent = '🔀 Pieces shuffled! Try again!';
+    document.getElementById('status').style.color = '#aaa';
 }
 
-// Start the puzzle when page loads
+function resetPuzzle() {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = 'https://picsum.photos/600/450?random=' + Date.now();
+    createPuzzle();
+}
+
+// Start the puzzle
 window.onload = function() {
-    startPuzzle();
+    createPuzzle();
 };
 </script>
 
