@@ -1586,247 +1586,83 @@
   .pc-detail-link svg{ width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; transition: transform .18s; }
   .pc-detail-link:hover svg{ transform: translateX(3px); }
 
-  /* ========== FIXED: TODAY'S CHALLENGE ========== */
-  .pc-quiz .pc-question {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    font-size: 16.5px;
-    line-height: 1.35;
-    margin: 14px 20px 10px;
-    max-width: 28ch;
-    color: var(--deep-blue);
-  }
+  /* ========== FIXED: TODAY'S CHALLENGE (from original working code) ========== */
+  .pc-quiz .pc-eyebrow{ color: var(--gold); }
+  .pc-quiz .pc-eyebrow .icon-badge svg{ animation: ringPulse 2.4s ease-in-out infinite; }
+  @keyframes ringPulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.1);} }
 
-  .pc-options {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin: 0 20px 10px;
-  }
-  .pc-opt {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 12px;
-    border-radius: 10px;
-    background: var(--pc-opt-bg);
-    border: 1px solid var(--border-light);
-    backdrop-filter: blur(6px);
-    transition: border-color .15s, background .35s ease, transform .12s;
-    text-align: left;
-    width: 100%;
-    color: var(--deep-blue);
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-  }
-  .pc-opt:hover:not(.locked) {
-    border-color: var(--gold);
-    transform: translateX(2px);
-  }
-  .pc-opt .letter {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 600;
-    font-family: 'IBM Plex Mono', monospace;
-    background: rgba(219,154,62,0.16);
-    border: 1px solid rgba(219,154,62,0.4);
-    color: var(--gold);
-    transition: background .15s, border-color .15s, color .15s;
-  }
-  .pc-opt .opt-text {
-    font-size: 13px;
-    font-weight: 500;
-    flex: 1;
-  }
-  .pc-opt.selected {
-    border-color: var(--gold);
-    background: rgba(219,154,62,0.12);
-  }
-  .pc-opt.selected .letter {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: white;
-  }
-  .pc-opt.correct {
-    border-color: #4A9E7A;
-    background: rgba(74,158,122,0.10);
-  }
-  .pc-opt.correct .letter {
-    background: #4A9E7A;
-    border-color: #4A9E7A;
-    color: white;
-  }
-  .pc-opt.incorrect {
-    border-color: #D97757;
-    background: rgba(217,119,87,0.10);
-  }
-  .pc-opt.incorrect .letter {
-    background: #D97757;
-    border-color: #D97757;
-    color: white;
-  }
-  .pc-opt.dim {
-    opacity: 0.4;
-  }
-  .pc-opt .check {
-    margin-left: auto;
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    opacity: 0;
-    transform: scale(0.6);
-    transition: opacity .2s, transform .2s;
-  }
-  .pc-opt.correct .check,
-  .pc-opt.incorrect .check {
-    opacity: 1;
-    transform: scale(1);
-  }
-  .pc-opt .check svg {
-    width: 100%;
-    height: 100%;
-    stroke-width: 2.4;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .pc-opt.correct .check { color: #4A9E7A; }
-  .pc-opt.incorrect .check { color: #D97757; }
+  .pc-quiz-scene{ position:absolute; top:0; right:0; bottom:0; width:42%; z-index:0; border-radius:0 16px 16px 0; overflow:hidden; }
+  .pc-quiz-scene img{ width:100%; height:100%; object-fit:cover; object-position:60% 40%; display:block; filter: saturate(1.05) brightness(0.72) contrast(1.03); }
+  .pc-quiz-scene::before{ content:''; position:absolute; inset:0; background: linear-gradient(90deg, var(--card-bg) 0%, rgba(255,255,255,0.75) 28%, rgba(255,255,255,0.2) 62%, transparent 100%); transition: background .35s ease; }
+  .pc-quiz-scene::after{ content:''; position:absolute; inset:0; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.4) 100%); transition: background .35s ease; }
+  .pc-fireflies span{ position:absolute; width:3px; height:3px; border-radius:50%; background: var(--gold-bright); box-shadow:0 0 6px 2px rgba(212,168,83,0.7); opacity:0; animation: pcFirefly 5s ease-in-out infinite; }
+  @keyframes pcFirefly{ 0%,100%{ opacity:0; transform:translateY(0);} 50%{ opacity:0.9; transform:translateY(-14px);} }
 
-  .pc-submit-btn {
-    width: 100%;
-    padding: 11px;
-    border-radius: 10px;
-    border: none;
+  .pc-question{ position:relative; z-index:2; font-family:'Fraunces',serif; font-weight:600; font-size:16.5px; line-height:1.35; margin: 14px 20px 0; max-width:28ch; color:var(--deep-blue); }
+
+  .pc-options{ position:relative; z-index:2; display:flex; flex-direction:column; gap:7px; margin: 14px 20px 0; }
+  .pc-opt{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; background: var(--pc-opt-bg); border:1px solid var(--border-light); backdrop-filter: blur(6px); transition: border-color .15s, background .35s ease, transform .12s; text-align:left; width:100%; color:var(--deep-blue); }
+  .pc-opt:hover:not(.locked){ border-color: var(--gold); transform: translateX(2px); }
+  .pc-opt .letter{ width:20px; height:20px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:600; font-family:'IBM Plex Mono',monospace; background: rgba(219,154,62,0.16); border:1px solid rgba(219,154,62,0.4); color: var(--gold); transition: background .15s, border-color .15s, color .15s; }
+  .pc-opt .opt-text{ font-size:12.5px; font-weight:500; }
+  .pc-opt.selected{ border-color: var(--gold); background: rgba(219,154,62,0.12); }
+  .pc-opt.selected .letter{ background: var(--gold); border-color: var(--gold); color: white; }
+  .pc-opt.correct{ border-color:#4A9E7A; background: rgba(74,158,122,0.10); }
+  .pc-opt.correct .letter{ background:#4A9E7A; border-color:#4A9E7A; color: white; }
+  .pc-opt.incorrect{ border-color:#D97757; background: rgba(217,119,87,0.10); }
+  .pc-opt.incorrect .letter{ background:#D97757; border-color:#D97757; color: white; }
+  .pc-opt.dim{ opacity:0.4; }
+  .pc-opt .check{ margin-left:auto; width:15px; height:15px; flex-shrink:0; opacity:0; transform:scale(0.6); transition: opacity .2s, transform .2s; }
+  .pc-opt.correct .check, .pc-opt.incorrect .check{ opacity:1; transform:scale(1); }
+  .pc-opt .check svg{ width:100%; height:100%; stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  .pc-opt.correct .check{ color:#4A9E7A; }
+  .pc-opt.incorrect .check{ color:#D97757; }
+
+  .pc-quiz-footer{ position:relative; z-index:2; margin: 14px 20px 18px; }
+  .pc-submit-btn{
+    width:100%; padding:12px; border-radius:10px; border:none;
     background: linear-gradient(135deg, var(--deep-blue), var(--deep-blue-soft));
-    color: white;
-    font-weight: 600;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    color: white; font-weight:600; font-size:13px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
     transition: transform .15s, box-shadow .15s, opacity .15s;
   }
-  .pc-submit-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-  .pc-submit-btn:not(:disabled):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 22px rgba(11,42,60,0.25);
-  }
-  .pc-submit-btn svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 1.9;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
+  .pc-submit-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+  .pc-submit-btn:not(:disabled):hover{ transform: translateY(-2px); box-shadow: 0 10px 22px rgba(11,42,60,0.25); }
+  .pc-submit-btn svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
 
-  .pc-result-panel {
-    display: none;
-    align-items: center;
-    gap: 11px;
-    padding: 12px 14px;
-    border-radius: 11px;
-    background: var(--pc-result-bg);
-    border: 1px solid var(--border-light);
-    animation: pcResultIn .3s cubic-bezier(.2,.9,.3,1.15) both;
-    transition: background .35s ease, border-color .35s ease;
-  }
-  @keyframes pcResultIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: none; }
-  }
-  .pc-result-panel.show { display: flex; }
-  .pc-result-badge {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .pc-result-badge svg {
-    width: 16px;
-    height: 16px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 2.2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .pc-result-panel.win .pc-result-badge {
-    background: rgba(74,158,122,0.15);
-    border: 1px solid rgba(74,158,122,0.4);
-    color: #4A9E7A;
-  }
-  .pc-result-panel.lose .pc-result-badge {
-    background: rgba(217,119,87,0.15);
-    border: 1px solid rgba(217,119,87,0.4);
-    color: #D97757;
-  }
-  .pc-result-title {
-    font-family: 'Fraunces', serif;
-    font-weight: 600;
-    font-size: 13.5px;
-  }
-  .pc-result-panel.win .pc-result-title { color: #4A9E7A; }
-  .pc-result-panel.lose .pc-result-title { color: #D97757; }
-  .pc-result-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-  .pc-result-xp {
-    margin-left: auto;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11.5px;
-    color: var(--gold);
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
+  .pc-result-panel{ display:none; align-items:center; gap:11px; padding:12px 14px; border-radius:11px; background: var(--pc-result-bg); border:1px solid var(--border-light); animation: pcResultIn .3s cubic-bezier(.2,.9,.3,1.15) both; transition: background .35s ease, border-color .35s ease; }
+  @keyframes pcResultIn{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none; } }
+  .pc-result-panel.show{ display:flex; }
+  .pc-result-badge{ width:32px; height:32px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .pc-result-badge svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+  .pc-result-panel.win .pc-result-badge{ background: rgba(74,158,122,0.15); border:1px solid rgba(74,158,122,0.4); color:#4A9E7A; }
+  .pc-result-panel.lose .pc-result-badge{ background: rgba(217,119,87,0.15); border:1px solid rgba(217,119,87,0.4); color:#D97757; }
+  .pc-result-title{ font-family:'Fraunces',serif; font-weight:600; font-size:13.5px; }
+  .pc-result-panel.win .pc-result-title{ color:#4A9E7A; }
+  .pc-result-panel.lose .pc-result-title{ color:#D97757; }
+  .pc-result-sub{ font-size:11px; color: var(--muted); margin-top:2px; }
+  .pc-result-xp{ margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:11.5px; color: var(--gold); flex-shrink:0; white-space:nowrap; }
 
-  .pc-quiz .pc-quiz-footer {
-    margin: 6px 20px 16px;
-  }
+  .pc-retry-link{ display:none; margin-top:10px; text-align:center; font-size:11px; color: var(--muted); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+  .pc-retry-link.show{ display:block; }
+  .pc-retry-link:hover{ color: var(--gold); }
 
-  /* Fix for dark mode quiz */
-  [data-theme="dark"] .pc-opt {
-    color: #E7E1D2;
-  }
-  [data-theme="dark"] .pc-opt .opt-text {
-    color: #E7E1D2;
-  }
-  [data-theme="dark"] .pc-opt.selected .opt-text {
-    color: #E7E1D2;
-  }
-  [data-theme="dark"] .pc-opt.correct .opt-text {
-    color: #E7E1D2;
-  }
-  [data-theme="dark"] .pc-opt.incorrect .opt-text {
-    color: #E7E1D2;
-  }
+  /* Dark theme fixes for quiz */
+  [data-theme="dark"] .pc-opt{ color: var(--deep-blue); }
+  [data-theme="dark"] .pc-opt .opt-text{ color: #E7E1D2; }
+  [data-theme="dark"] .pc-opt.selected .opt-text{ color: #E7E1D2; }
 
   @media (min-width: 1024px) {
-    .pc-quiz .pc-question { font-size: 16px !important; }
-    .pc-opt { padding: 8px 12px !important; }
-    .pc-opt .letter { width: 20px !important; height: 20px !important; font-size: 10px !important; }
-    .pc-opt .opt-text { font-size: 12.5px !important; }
-    .pc-submit-btn { padding: 10px !important; font-size: 12px !important; }
+    .pc-quiz .pc-head { padding: 30px 20px 0 !important; }
+    .pc-quiz .pc-sub { margin-top: 8px !important; font-size: 12.5px !important; margin-bottom: 4px !important; }
+    .pc-quiz .pc-question { margin: 12px 20px 0 !important; font-size: 16px !important; }
+    .pc-quiz .pc-options { margin: 12px 20px 0 !important; gap: 6px !important; }
+    .pc-quiz .pc-opt { padding: 8px 12px !important; }
+    .pc-quiz .pc-opt .letter { width: 18px !important; height: 18px !important; font-size: 10px !important; }
+    .pc-quiz .pc-opt .opt-text { font-size: 12px !important; }
+    .pc-quiz .pc-quiz-footer { margin: 12px 20px 16px !important; }
+    .pc-quiz .pc-submit-btn { padding: 10px !important; font-size: 12px !important; }
+    .pc-quiz .pc-xp-pill { font-size: 10px !important; padding: 3px 10px !important; }
   }
 </style>
 </head>
@@ -1951,7 +1787,7 @@
     <div class="quick-bar" id="quickBar"></div>
   </div>
 
-  <!-- ===== MOCK TEST CARD (always large) ===== -->
+  <!-- ===== MOCK TEST CARD ===== -->
   <div class="pc-card pc-mock" id="mockCard">
     <div class="pc-head">
       <div class="pc-eyebrow">
@@ -2040,7 +1876,7 @@
     <div class="detail-card" id="detailCard"></div>
   </div>
 
-  <!-- ===== TODAY'S CHALLENGE (FIXED) ===== -->
+  <!-- ===== TODAY'S CHALLENGE (FIXED - using original working code) ===== -->
 <div class="pc-card pc-quiz">
   <div class="pc-quiz-scene">
     <img src="https://img.magnific.com/free-photo/jungle-bali-indonesia_1321-2611.jpg?semt=ais_hybrid&w=740&q=80" alt="" />
@@ -2737,14 +2573,34 @@ setActive('tajmahal');
   });
 })();
 
-// ---------- DAILY CHALLENGE (FIXED) ----------
+// ---------- DAILY CHALLENGE (FIXED - using original working code) ----------
 (function(){
   const QUESTIONS = [
-    { question: "Which river passes through the Sundarbans?", options: ["Ganga", "Brahmaputra", "Mahanadi", "Godavari"], correct: "B" },
-    { question: "Which is the longest river in the world?", options: ["Amazon", "Nile", "Mississippi", "Yangtze"], correct: "B" },
-    { question: "Which mountain range separates Europe from Asia?", options: ["Alps", "Himalayas", "Ural Mountains", "Andes"], correct: "C" },
-    { question: "Which is the largest desert in the world?", options: ["Sahara", "Arabian", "Gobi", "Kalahari"], correct: "A" },
-    { question: "Which ocean is the largest?", options: ["Atlantic", "Indian", "Arctic", "Pacific"], correct: "D" }
+    {
+      question: "Which river passes through the Sundarbans?",
+      options: ["Ganga", "Brahmaputra", "Mahanadi", "Godavari"],
+      correct: "B"
+    },
+    {
+      question: "Which is the longest river in the world?",
+      options: ["Amazon", "Nile", "Mississippi", "Yangtze"],
+      correct: "B"
+    },
+    {
+      question: "Which mountain range separates Europe from Asia?",
+      options: ["Alps", "Himalayas", "Ural Mountains", "Andes"],
+      correct: "C"
+    },
+    {
+      question: "Which is the largest desert in the world?",
+      options: ["Sahara", "Arabian", "Gobi", "Kalahari"],
+      correct: "A"
+    },
+    {
+      question: "Which ocean is the largest?",
+      options: ["Atlantic", "Indian", "Arctic", "Pacific"],
+      correct: "D"
+    }
   ];
 
   let currentQuestionIndex = 0;
@@ -2766,10 +2622,14 @@ setActive('tajmahal');
   function loadQuestion(index) {
     const q = QUESTIONS[index % QUESTIONS.length];
     pcQuestion.textContent = q.question;
-    pcOptionTexts.forEach((el, i) => { el.textContent = q.options[i]; });
+    pcOptionTexts.forEach((el, i) => {
+      el.textContent = q.options[i];
+    });
     pcAnswered = false;
     pcSelected = null;
-    pcOptions.forEach(o => { o.classList.remove('locked','correct','incorrect','dim','selected'); });
+    pcOptions.forEach(o => {
+      o.classList.remove('locked','correct','incorrect','dim','selected');
+    });
     pcResultPanel.classList.remove('show','win','lose');
     pcSubmitBtn.style.display = 'flex';
     pcSubmitBtn.disabled = true;
