@@ -1326,7 +1326,7 @@ function initGalaxy(){
   const container = canvas.parentElement;
   let w = 0, h = 0, dpr = 1, stars = [], dust = [], planets = [], granules = [], flames = [], raf;
   let isLight = false;
-  let layoutSeeded = false; // ensures positions randomize once per page load, not on every resize
+  let layoutSeeded = false;
 
   function detectTheme(){
     const bg = getComputedStyle(document.body).backgroundColor;
@@ -1366,7 +1366,6 @@ function initGalaxy(){
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  // stars/planets store RELATIVE (0-1) coords, generated once per load, so resize just rescales — no repositioning mid-session
   function makeStars(){
     stars = Array.from({ length: 75 }, (_,i) => ({
       xr: Math.random(), yr: Math.random(),
@@ -1383,7 +1382,6 @@ function initGalaxy(){
     }));
   }
   function makePlanets(){
-    // random count 5-7, random spots, at least 2 always get rings
     const count = Math.floor(rand(5,8));
     const used = [];
     function farEnough(x,y){
@@ -1410,16 +1408,16 @@ function initGalaxy(){
     }));
   }
   function makeFlames(){
-    // real flame tongues around the rim — irregular count, width, flicker speed
-    const count = 42;
+    const count = 30;
     flames = Array.from({ length: count }, (_,i) => ({
-      baseAngle: (i/count)*Math.PI*2,
-      angleWidth: rand(0.09,0.16),
-      lenBase: rand(0.12,0.3),
-      lenVar: rand(0.35,0.85),
+      baseAngle: (i/count)*Math.PI*2 + rand(-0.05,0.05),
+      lenBase: rand(0.1,0.22),
+      lenVar: rand(0.3,0.7),
       speed1: rand(0.5,1.4), speed2: rand(0.7,1.9),
       phase1: Math.random()*Math.PI*2, phase2: Math.random()*Math.PI*2,
-      curl: rand(-1,1)
+      curl: rand(-1,1),
+      cycleSpeed: rand(0.15,0.35),
+      cycleOffset: Math.random()
     }));
   }
 
@@ -1508,41 +1506,41 @@ function initGalaxy(){
     ctx.beginPath(); ctx.arc(sx,sy,coreR*3.6,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
-    /* real flame tongues — wavy, curling, irregular length, licking outward */
+    /* soft rounded flame licks — blobby, not pointy, only a few active at once */
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     flames.forEach(f => {
+      const cyclePos = ((t*0.00005*f.cycleSpeed + f.cycleOffset) % 1);
+      const activity = Math.max(0, Math.sin(cyclePos * Math.PI));
+      if(activity < 0.04) return;
+
       const flick = 0.5 + 0.3*Math.sin(t*0.0022*f.speed1 + f.phase1) + 0.2*Math.sin(t*0.0037*f.speed2 + f.phase2);
-      const len = coreR * (f.lenBase + f.lenVar * Math.max(0, flick));
-      const wobble = Math.sin(t*0.003*f.speed1 + f.phase1) * f.angleWidth * 0.4 * f.curl;
+      const len = coreR * (f.lenBase + f.lenVar * Math.max(0, flick)) * activity;
+      if(len < coreR*0.04) return;
 
-      const a0 = f.baseAngle - f.angleWidth/2;
-      const a1 = f.baseAngle + f.angleWidth/2;
-      const baseX1 = sx + Math.cos(a0)*coreR*0.99, baseY1 = sy + Math.sin(a0)*coreR*0.99;
-      const baseX2 = sx + Math.cos(a1)*coreR*0.99, baseY2 = sy + Math.sin(a1)*coreR*0.99;
+      const wobble = Math.sin(t*0.0025*f.speed1 + f.phase1) * 0.15 * f.curl;
+      const ang = f.baseAngle + wobble;
 
-      const tipAngle = f.baseAngle + wobble;
-      const tipX = sx + Math.cos(tipAngle)*(coreR + len);
-      const tipY = sy + Math.sin(tipAngle)*(coreR + len);
+      const steps = 4;
+      for(let i=0; i<steps; i++){
+        const frac = i/(steps-1);
+        const dist = coreR*0.92 + len*frac;
+        const bx = sx + Math.cos(ang)*dist;
+        const by = sy + Math.sin(ang)*dist;
+        const blobR = coreR * (0.12 - frac*0.07) * (0.7 + activity*0.5);
 
-      const midR = coreR + len*0.5;
-      const c1a = f.baseAngle - f.angleWidth*0.22 + wobble*0.5;
-      const c2a = f.baseAngle + f.angleWidth*0.22 + wobble*0.5;
-      const c1x = sx + Math.cos(c1a)*midR, c1y = sy + Math.sin(c1a)*midR;
-      const c2x = sx + Math.cos(c2a)*midR, c2y = sy + Math.sin(c2a)*midR;
-
-      ctx.beginPath();
-      ctx.moveTo(baseX1, baseY1);
-      ctx.quadraticCurveTo(c1x, c1y, tipX, tipY);
-      ctx.quadraticCurveTo(c2x, c2y, baseX2, baseY2);
-      ctx.closePath();
-
-      const grad = ctx.createLinearGradient(sx + Math.cos(f.baseAngle)*coreR, sy + Math.sin(f.baseAngle)*coreR, tipX, tipY);
-      grad.addColorStop(0, c(P.sunBright, isLight?0.32:0.46));
-      grad.addColorStop(0.45, c(P.sunMid, isLight?0.2:0.3));
-      grad.addColorStop(1, c(P.sunDeep, 0));
-      ctx.fillStyle = grad;
-      ctx.fill();
+        const bg = ctx.createRadialGradient(bx,by,0,bx,by,blobR);
+        const a = activity * (isLight ? (0.28 - frac*0.16) : (0.4 - frac*0.22));
+        if(frac < 0.5){
+          bg.addColorStop(0, c(P.sunBright, a));
+          bg.addColorStop(1, c(P.sunMid, 0));
+        } else {
+          bg.addColorStop(0, c(P.sunMid, a));
+          bg.addColorStop(1, c(P.sunDeep, 0));
+        }
+        ctx.fillStyle = bg;
+        ctx.beginPath(); ctx.arc(bx,by,blobR,0,Math.PI*2); ctx.fill();
+      }
     });
     ctx.restore();
 
