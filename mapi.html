@@ -1324,7 +1324,7 @@ function initGalaxy(){
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const container = canvas.parentElement;
-  let w = 0, h = 0, dpr = 1, stars = [], dust = [], planets = [], granules = [], coronaLobes = [], raf;
+  let w = 0, h = 0, dpr = 1, stars = [], dust = [], planets = [], flareGlints = [], raf;
   let isLight = false;
   let layoutSeeded = false;
 
@@ -1343,14 +1343,14 @@ function initGalaxy(){
       dustA:'rgba(140,120,160,ALPHA)', dustB:'rgba(200,150,90,ALPHA)',
       planet:['rgba(90,120,95,ALPHA)','rgba(180,110,80,ALPHA)','rgba(120,110,150,ALPHA)'],
       ring:'rgba(190,150,95,ALPHA)', rim:'rgba(230,180,110,ALPHA)',
-      sunBright:'rgba(255,232,180,ALPHA)', sunMid:'rgba(240,150,70,ALPHA)', sunDeep:'rgba(190,80,40,ALPHA)',
+      sunHi:'rgba(255,244,205,ALPHA)', sunMid:'rgba(247,180,80,ALPHA)', sunEdge:'rgba(210,100,40,ALPHA)',
       vignette:'rgba(120,110,140,ALPHA)'
     } : {
       star:'rgba(241,234,218,ALPHA)', starGlow:'rgba(247,210,150,ALPHA)',
       dustA:'rgba(180,140,220,ALPHA)', dustB:'rgba(219,154,62,ALPHA)',
       planet:['rgba(107,138,109,ALPHA)','rgba(196,98,60,ALPHA)','rgba(140,130,190,ALPHA)'],
       ring:'rgba(219,154,62,ALPHA)', rim:'rgba(255,200,130,ALPHA)',
-      sunBright:'rgba(255,244,210,ALPHA)', sunMid:'rgba(250,150,60,ALPHA)', sunDeep:'rgba(200,70,30,ALPHA)',
+      sunHi:'rgba(255,250,225,ALPHA)', sunMid:'rgba(250,175,70,ALPHA)', sunEdge:'rgba(210,90,30,ALPHA)',
       vignette:'rgba(30,20,45,ALPHA)'
     };
   }
@@ -1367,55 +1367,44 @@ function initGalaxy(){
   }
 
   function makeStars(){
-    stars = Array.from({ length: 75 }, (_,i) => ({
+    stars = Array.from({ length: 80 }, () => ({
       xr: Math.random(), yr: Math.random(),
       r: rand(0.4,1.6),
       phase: Math.random()*Math.PI*2, speed: rand(0.4,1.3),
-      sparkle: Math.random() < 0.11
+      sparkle: Math.random() < 0.12
     }));
   }
   function makeDust(){
-    dust = Array.from({ length: 5 }, (_,i) => ({
+    dust = Array.from({ length: 4 }, (_,i) => ({
       xr: rand(0.25,0.85), yr: rand(0.15,0.8),
-      r: rand(65,160), kind: i%2===0 ? 'dustA':'dustB',
+      r: rand(65,150), kind: i%2===0 ? 'dustA':'dustB',
       drift: Math.random()*Math.PI*2, speed: rand(0.15,0.35)
     }));
   }
   function makePlanets(){
     const count = 3;
     const used = [];
-    function farEnough(x,y){
-      return used.every(u => Math.hypot(u.x-x,u.y-y) > 0.22);
-    }
+    function farEnough(x,y){ return used.every(u => Math.hypot(u.x-x,u.y-y) > 0.22); }
     for(let i=0;i<count;i++){
       let x,y,tries=0;
       do { x = rand(0.02,0.98); y = rand(0.04,0.94); tries++; }
       while(!farEnough(x,y) && tries < 30);
       used.push({x,y});
     }
-    const ringIdx = new Set();
-    while(ringIdx.size < 1) ringIdx.add(Math.floor(Math.random()*count));
+    const ringIdx = Math.floor(Math.random()*count);
     planets = used.map((u,i) => ({
       xr:u.x, yr:u.y, r: rand(9,20), kind: i % 3,
-      ring: ringIdx.has(i)
+      ring: i === ringIdx
     }));
   }
-  function makeGranules(){
-    granules = Array.from({ length: 40 }, () => ({
-      a: Math.random()*Math.PI*2, dist: Math.random()*0.9,
-      r: rand(0.05,0.2), dark: Math.random() > 0.42,
-      phase: Math.random()*Math.PI*2, speed: rand(0.2,0.55)
-    }));
-  }
-  function makeCoronaLobes(){
-    // irregular soft bulges around the corona edge — creates uneven "breathing" flame look, no spikes
-    const count = 9;
-    coronaLobes = Array.from({ length: count }, (_,i) => ({
-      baseAngle: (i/count)*Math.PI*2 + rand(-0.15,0.15),
-      angleWidth: rand(0.5,0.9),
-      ampBase: rand(0.15,0.3),
-      speed: rand(0.15,0.4),
-      phase: Math.random()*Math.PI*2
+  function makeFlareGlints(){
+    // subtle soft light streaks that appear/fade near the sun's edge — like lens-flare glints, not spikes
+    flareGlints = Array.from({ length: 5 }, (_,i) => ({
+      ang: (i/5)*Math.PI*2 + rand(-0.2,0.2),
+      lenFactor: rand(1.6,2.6),
+      widthFactor: rand(0.05,0.1),
+      cycleSpeed: rand(0.1,0.22),
+      cycleOffset: Math.random()
     }));
   }
 
@@ -1438,6 +1427,7 @@ function initGalaxy(){
       ctx.beginPath(); ctx.arc(dx,dy,d.r,0,Math.PI*2); ctx.fill();
     });
 
+    /* stars scattered behind the sun */
     stars.forEach(s => {
       const sx0 = s.xr*w, sy0 = s.yr*h;
       const tw = 0.5 + 0.5*Math.sin(t*0.0011*s.speed + s.phase);
@@ -1466,7 +1456,7 @@ function initGalaxy(){
     });
 
     const sx = w*0.66, sy = h*0.4;
-    const coreR = Math.min(w,h)*0.085;
+    const coreR = Math.min(w,h)*0.088;
 
     planets.forEach((p) => {
       const px = p.xr*w, py0 = p.yr*h;
@@ -1493,78 +1483,67 @@ function initGalaxy(){
       ctx.restore();
     });
 
-    /* ===== SUN ===== */
+    /* ===== SUN — clean layered glow, 3D-shaded sphere ===== */
 
-    /* wide ambient bloom */
+    /* wide soft outer bloom */
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
-    const outerHalo = ctx.createRadialGradient(sx,sy,coreR*0.8,sx,sy,coreR*3.6);
-    outerHalo.addColorStop(0, c(P.sunMid, isLight?0.14:0.22));
-    outerHalo.addColorStop(0.6, c(P.sunMid, isLight?0.04:0.07));
-    outerHalo.addColorStop(1, c(P.sunMid, 0));
+    const outerHalo = ctx.createRadialGradient(sx,sy,coreR*0.9,sx,sy,coreR*4.4);
+    outerHalo.addColorStop(0,   c(P.sunMid, isLight?0.16:0.24));
+    outerHalo.addColorStop(0.45,c(P.sunMid, isLight?0.06:0.1));
+    outerHalo.addColorStop(1,   c(P.sunMid, 0));
     ctx.fillStyle = outerHalo;
-    ctx.beginPath(); ctx.arc(sx,sy,coreR*3.6,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(sx,sy,coreR*4.4,0,Math.PI*2); ctx.fill();
+
+    /* mid bloom, tighter and brighter */
+    const midHalo = ctx.createRadialGradient(sx,sy,coreR*0.8,sx,sy,coreR*2.2);
+    midHalo.addColorStop(0, c(P.sunHi, isLight?0.22:0.34));
+    midHalo.addColorStop(1, c(P.sunHi, 0));
+    ctx.fillStyle = midHalo;
+    ctx.beginPath(); ctx.arc(sx,sy,coreR*2.2,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
-    /* irregular breathing corona — a warped, uneven glow ring, no spikes/points */
+    /* subtle glint streaks — soft and faint, fading in/out slowly, never sharp spikes */
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
-    const segs = 64;
-    ctx.beginPath();
-    for(let i=0; i<=segs; i++){
-      const ang = (i/segs)*Math.PI*2;
-      let bulge = 0;
-      coronaLobes.forEach(l => {
-        let d = Math.atan2(Math.sin(ang-l.baseAngle), Math.cos(ang-l.baseAngle));
-        const w2 = l.angleWidth;
-        if(Math.abs(d) < w2){
-          const falloff = Math.cos((d/w2) * Math.PI/2);
-          const pulse = 0.6 + 0.4*Math.sin(t*0.0006*l.speed + l.phase);
-          bulge += l.ampBase * falloff * pulse;
-        }
-      });
-      const rr = coreR * (1.35 + bulge);
-      const px = sx + Math.cos(ang)*rr, py = sy + Math.sin(ang)*rr;
-      i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
-    }
-    ctx.closePath();
-    const coronaGrad = ctx.createRadialGradient(sx,sy,coreR*0.9,sx,sy,coreR*2.1);
-    coronaGrad.addColorStop(0, c(P.sunMid, isLight?0.16:0.24));
-    coronaGrad.addColorStop(1, c(P.sunMid, 0));
-    ctx.fillStyle = coronaGrad;
-    ctx.fill();
+    flareGlints.forEach(f => {
+      const cyclePos = ((t*0.00004*f.cycleSpeed + f.cycleOffset) % 1);
+      const activity = Math.max(0, Math.sin(cyclePos*Math.PI));
+      if(activity < 0.05) return;
+      const len = coreR * f.lenFactor * activity;
+      const width = coreR * f.widthFactor;
+      const tipX = sx + Math.cos(f.ang)*(coreR*0.6 + len);
+      const tipY = sy + Math.sin(f.ang)*(coreR*0.6 + len);
+      const baseX = sx + Math.cos(f.ang)*coreR*0.6;
+      const baseY = sy + Math.sin(f.ang)*coreR*0.6;
+      const grad = ctx.createLinearGradient(baseX,baseY,tipX,tipY);
+      grad.addColorStop(0, c(P.sunHi, activity*(isLight?0.22:0.3)));
+      grad.addColorStop(1, c(P.sunHi, 0));
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = width;
+      ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(baseX,baseY); ctx.lineTo(tipX,tipY); ctx.stroke();
+    });
     ctx.restore();
 
-    /* sun disc base */
-    const core = ctx.createRadialGradient(sx,sy,0,sx,sy,coreR);
-    core.addColorStop(0, c(P.sunBright, isLight?0.62:0.82));
-    core.addColorStop(0.6, c(P.sunMid, isLight?0.55:0.75));
-    core.addColorStop(1, c(P.sunDeep, isLight?0.45:0.65));
+    /* the sphere itself — offset highlight fakes 3D roundness, like a lit ball */
+    const hlx = sx - coreR*0.32, hly = sy - coreR*0.34;
+    const core = ctx.createRadialGradient(hlx,hly,coreR*0.05, sx,sy,coreR*1.05);
+    core.addColorStop(0,   c(P.sunHi,  isLight?0.85:0.95));
+    core.addColorStop(0.35,c(P.sunMid, isLight?0.7:0.85));
+    core.addColorStop(0.75,c(P.sunMid, isLight?0.55:0.7));
+    core.addColorStop(1,   c(P.sunEdge,isLight?0.5:0.68));
     ctx.fillStyle = core;
     ctx.beginPath(); ctx.arc(sx,sy,coreR,0,Math.PI*2); ctx.fill();
 
-    /* rotating turbulent granulation texture on the disc */
+    /* faint darker limb shading on the far edge, reinforcing the 3D sphere read */
     ctx.save();
     ctx.beginPath(); ctx.arc(sx,sy,coreR,0,Math.PI*2); ctx.clip();
-    ctx.globalCompositeOperation = 'lighter';
-    const rotation = t * 0.00006; // slow continuous rotation of the whole surface
-    granules.forEach(g => {
-      const wob = Math.sin(t*0.0007*g.speed + g.phase) * 0.05;
-      const ang = g.a + rotation;
-      const gx = sx + Math.cos(ang) * (g.dist+wob) * coreR;
-      const gy = sy + Math.sin(ang) * (g.dist+wob) * coreR;
-      const gr = g.r * coreR;
-      const gg = ctx.createRadialGradient(gx,gy,0,gx,gy,gr);
-      if(g.dark){
-        gg.addColorStop(0, c(P.sunDeep, isLight?0.14:0.2));
-        gg.addColorStop(1, c(P.sunDeep, 0));
-      } else {
-        gg.addColorStop(0, c(P.sunBright, isLight?0.18:0.26));
-        gg.addColorStop(1, c(P.sunBright, 0));
-      }
-      ctx.fillStyle = gg;
-      ctx.beginPath(); ctx.arc(gx,gy,gr,0,Math.PI*2); ctx.fill();
-    });
+    const limb = ctx.createRadialGradient(sx+coreR*0.4, sy+coreR*0.42, coreR*0.2, sx+coreR*0.35, sy+coreR*0.35, coreR*1.1);
+    limb.addColorStop(0, c(P.sunEdge, 0));
+    limb.addColorStop(1, c(P.sunEdge, isLight?0.28:0.36));
+    ctx.fillStyle = limb;
+    ctx.beginPath(); ctx.arc(sx,sy,coreR,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
     raf = requestAnimationFrame(draw);
@@ -1573,7 +1552,7 @@ function initGalaxy(){
   function refresh(){
     detectTheme(); resize();
     if(!layoutSeeded){
-      makeStars(); makeDust(); makePlanets(); makeGranules(); makeCoronaLobes();
+      makeStars(); makeDust(); makePlanets(); makeFlareGlints();
       layoutSeeded = true;
     }
   }
