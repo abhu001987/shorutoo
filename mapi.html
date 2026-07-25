@@ -1534,6 +1534,7 @@ function initGalaxy(){
     planets.forEach((p) => {
       const px = p.xr*w, py0 = p.yr*h;
       const py = py0 + Math.sin(t*0.0002+p.kind)*5;
+
       if(p.ring){
         ctx.save();
         ctx.translate(px,py); ctx.rotate(-0.35);
@@ -1542,16 +1543,58 @@ function initGalaxy(){
         ctx.beginPath(); ctx.ellipse(0,0,p.r*1.9,p.r*0.6,0,0,Math.PI*2); ctx.stroke();
         ctx.restore();
       }
-      ctx.fillStyle = c(P.planet[p.kind], isLight?0.24:0.34);
-      ctx.beginPath(); ctx.arc(px,py,p.r,0,Math.PI*2); ctx.fill();
 
+      // direction toward the sun — drives highlight position and shading direction
       const dxToSun = sx - px, dyToSun = sy - py;
       const ang = Math.atan2(dyToSun, dxToSun);
+
+      // base body with an off-center highlight (toward sun) for a 3D-lit sphere look
+      const hlx = px + Math.cos(ang)*p.r*0.4, hly = py + Math.sin(ang)*p.r*0.4;
+      const body = ctx.createRadialGradient(hlx,hly,p.r*0.05, px,py,p.r*1.1);
+      body.addColorStop(0,   c(P.planet[p.kind], isLight?0.5:0.62));
+      body.addColorStop(0.5, c(P.planet[p.kind], isLight?0.32:0.42));
+      body.addColorStop(1,   c(P.planet[p.kind], isLight?0.14:0.2));
+      ctx.fillStyle = body;
+      ctx.beginPath(); ctx.arc(px,py,p.r,0,Math.PI*2); ctx.fill();
+
+      // subtle rotating surface texture — a couple of soft mottled patches, clipped to the disc
+      ctx.save();
+      ctx.beginPath(); ctx.arc(px,py,p.r,0,Math.PI*2); ctx.clip();
+      ctx.globalCompositeOperation = 'lighter';
+      const rot = t * 0.00012 * (p.kind%2===0 ? 1 : -1);
+      for(let i=0;i<3;i++){
+        const sa = (i/3)*Math.PI*2 + rot + p.kind*1.7;
+        const sd = 0.3 + (i%2)*0.25;
+        const sxp = px + Math.cos(sa)*sd*p.r;
+        const syp = py + Math.sin(sa)*sd*p.r*0.7;
+        const sr = p.r * 0.45;
+        const sg = ctx.createRadialGradient(sxp,syp,0,sxp,syp,sr);
+        sg.addColorStop(0, c(P.planet[p.kind], isLight?0.12:0.16));
+        sg.addColorStop(1, c(P.planet[p.kind], 0));
+        ctx.fillStyle = sg;
+        ctx.beginPath(); ctx.arc(sxp,syp,sr,0,Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+
+      // dark "night side" shadow on the side facing away from the sun
+      ctx.save();
+      ctx.beginPath(); ctx.arc(px,py,p.r,0,Math.PI*2); ctx.clip();
+      const shadowAng = ang + Math.PI; // opposite the sun
+      const shx = px + Math.cos(shadowAng)*p.r*0.5, shy = py + Math.sin(shadowAng)*p.r*0.5;
+      const shadow = ctx.createRadialGradient(shx,shy,0, shx,shy, p.r*1.15);
+      shadow.addColorStop(0, 'rgba(5,8,12,0)');
+      shadow.addColorStop(0.55, 'rgba(5,8,12,0)');
+      shadow.addColorStop(1, `rgba(5,8,12,${isLight?0.32:0.5})`);
+      ctx.fillStyle = shadow;
+      ctx.beginPath(); ctx.arc(px,py,p.r,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+
+      // crisp thin rim-light arc on the sun-facing edge, ties it back to the light source
       ctx.save();
       ctx.beginPath();
-      ctx.arc(px, py, p.r, ang - 0.9, ang + 0.9);
-      ctx.strokeStyle = c(P.rim, isLight?0.3:0.4);
-      ctx.lineWidth = 1.4;
+      ctx.arc(px, py, p.r, ang - 0.85, ang + 0.85);
+      ctx.strokeStyle = c(P.rim, isLight?0.35:0.5);
+      ctx.lineWidth = 1.3;
       ctx.stroke();
       ctx.restore();
     });
