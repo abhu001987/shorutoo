@@ -498,7 +498,9 @@
   }
   .coll-more:hover{ border-color: var(--gold); background: var(--gold-glow); transform: translateY(-2px); }
 
+  /* ---- Mobile: original thumbnail-style layout ---- */
   .fact-box{
+    position:relative;
     margin-top:18px;
     background: var(--card-bg);
     backdrop-filter: blur(4px);
@@ -509,25 +511,121 @@
     gap: 10px;
     transition: background .35s ease, border-color .35s ease;
   }
-  .fact-box .fact-icon{
-    flex-shrink:0; width:30px; height:30px; border-radius:50%;
-    background: var(--gold-glow);
-    border: 1px solid rgba(212,168,83,0.35);
-    display: flex; align-items:center; justify-content:center;
-    font-size: 14px;
+  .fact-box .aq-photo-wrap{
+    position:relative;
+    flex-shrink:0;
+    width:52px; height:52px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid var(--border-light);
+    box-shadow: 0 3px 10px rgba(0,20,40,0.12);
+    background: var(--white-glass);
   }
+  .fact-box .aq-photo-wrap img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    pointer-events:none;
+    user-select:none;
+  }
+  .fact-box .aq-shade{ display:none; }
   .fact-box .fact-content{ flex:1; min-width:0; }
   .fact-box .fact-label{
     font-size:8.5px; letter-spacing:0.1em; text-transform:uppercase;
     color: var(--gold); margin-bottom:2px;
   }
-  .fact-box .fact-text{
-    font-family:'Fraunces',serif; font-size:13px; font-weight:500; line-height:1.3;
-    color: var(--deep-blue);
+  .fact-box .aq-name{
+    font-family:'Fraunces',serif; font-size:13px; font-weight:600; line-height:1.3;
+    color: var(--deep-blue); margin-bottom:6px;
   }
-  .fact-box .fact-source{
-    font-size:9.5px; color:var(--muted); margin-top:4px;
-    font-family:'IBM Plex Mono',monospace;
+  .fact-box .aq-options{ display:flex; flex-wrap:wrap; gap:5px; margin-top:4px; }
+  .fact-box .aq-opt{
+    position:relative;
+    font-size:9.5px; font-weight:600; font-family:'IBM Plex Mono',monospace;
+    padding:4px 9px; border-radius:20px;
+    background: var(--pc-opt-bg); border:1px solid var(--border-light);
+    color: var(--deep-blue);
+    transition: border-color .15s, background .15s, transform .12s;
+  }
+  .fact-box .aq-opt:hover:not(.locked){ border-color: var(--gold); transform: translateY(-1px); }
+  .fact-box .aq-opt.correct{ background: rgba(74,158,122,0.14); border-color:#4A9E7A; color:#4A9E7A; }
+  .fact-box .aq-opt.incorrect{ background: rgba(217,119,87,0.14); border-color:#D97757; color:#D97757; }
+  .fact-box .aq-opt.dim{ opacity:0.4; }
+  .fact-box .aq-opt::after{
+    content: attr(data-full);
+    position:absolute; bottom:calc(100% + 6px); left:50%;
+    transform: translateX(-50%) translateY(4px);
+    white-space:nowrap;
+    background: rgba(10,16,22,0.95);
+    color:#fff; font-family:'Inter',sans-serif; font-weight:500;
+    font-size:10.5px; padding:5px 9px; border-radius:6px;
+    opacity:0; pointer-events:none;
+    transition: opacity .15s ease, transform .15s ease;
+    z-index:5;
+  }
+  .fact-box .aq-opt:hover::after{ opacity:1; transform: translateX(-50%) translateY(0); }
+  .fact-box .aq-feedback{
+    margin-top:7px; font-size:10.5px; line-height:1.4; color:var(--muted);
+    display:none;
+  }
+  .fact-box .aq-feedback.show{ display:block; }
+  .fact-box .aq-feedback strong{ color: var(--deep-blue); }
+  .fact-box .aq-next{
+    margin-top:7px; display:none; font-size:10.5px; color: var(--gold);
+    text-decoration:underline; text-underline-offset:2px; cursor:pointer;
+  }
+  .fact-box .aq-next.show{ display:inline-block; }
+
+  /* ---- Desktop: full-bleed photo with glass overlay ---- */
+  @media (min-width:1024px){
+    .fact-box{
+      display:block;
+      position:relative;
+      height:210px;
+      padding:0;
+      overflow:hidden;
+      box-shadow: 0 8px 24px rgba(0,20,40,0.15);
+    }
+    .fact-box .aq-photo-wrap{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      border-radius:0;
+      border:none;
+      box-shadow:none;
+    }
+    .fact-box .aq-shade{
+      display:block;
+      position:absolute; inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.78) 100%),
+        radial-gradient(ellipse at 50% 120%, rgba(0,0,0,0.5) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .fact-box .fact-content{
+      position:absolute; left:0; right:0; bottom:0;
+      padding:12px 14px 14px;
+      background: rgba(20,30,40,0.32);
+      backdrop-filter: blur(14px) saturate(160%);
+      -webkit-backdrop-filter: blur(14px) saturate(160%);
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .fact-box .fact-label{ color: var(--gold-bright); }
+    .fact-box .aq-name{
+      font-size:14px; color:#fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+    .fact-box .aq-opt{
+      font-size:10px;
+      background: rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.25);
+      color:#fff;
+      backdrop-filter: blur(6px);
+    }
+    .fact-box .aq-opt:hover:not(.locked){ border-color: var(--gold-bright); background: rgba(255,255,255,0.2); }
+    .fact-box .aq-opt.correct{ background: rgba(74,158,122,0.55); border-color:#4A9E7A; color:#fff; }
+    .fact-box .aq-opt.incorrect{ background: rgba(217,119,87,0.55); border-color:#D97757; color:#fff; }
+    .fact-box .aq-feedback{ color: rgba(255,255,255,0.85); }
+    .fact-box .aq-feedback strong{ color:#fff; }
   }
 
   /* ---------- Map panel ---------- */
@@ -1851,12 +1949,17 @@
     <div class="section-label">Popular collections</div>
     <div class="collections" id="collectionsGrid"></div>
 
-    <div class="fact-box">
-      <div class="fact-icon">🌍</div>
+    <div class="fact-box" id="animalQuizBox">
+      <div class="aq-photo-wrap">
+        <img id="aqImage" src="" alt="" draggable="false" />
+        <div class="aq-shade"></div>
+      </div>
       <div class="fact-content">
-        <div class="fact-label">Did you know?</div>
-        <div class="fact-text">The Amazon River releases more freshwater into the ocean than the next seven largest rivers combined.</div>
-        <div class="fact-source">— Earth Observatory</div>
+        <div class="fact-label">Guess the IUCN status</div>
+        <div class="aq-name" id="aqName">Loading…</div>
+        <div class="aq-options" id="aqOptions"></div>
+        <div class="aq-feedback" id="aqFeedback"></div>
+        <div class="aq-next" id="aqNext">Next animal →</div>
       </div>
     </div>
   </div>
@@ -3444,6 +3547,61 @@ document.addEventListener('keydown', function(e) {
 });
 
 console.log('🚀 Terra Prep ready with Mock Test!');
+
+(function(){
+  const ANIMALS = [
+    { name:"Great Indian Bustard", img:"https://pmfias.b-cdn.net/wp-content/uploads/2024/01/Picture-6-2.jpeg", status:"CR", label:"Critically Endangered" },
+    { name:"Red Panda", img:"https://d1jyxxz9imt9yb.cloudfront.net/medialib/3636/image/s768x1300/AdobeStock_126313826_420827_reduced.jpg", status:"EN", label:"Endangered" },
+    { name:"Ganges River Dolphin", img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYgzn9jSFu4xWt6vARSrO7izqeP6O2qLX7W9IfBCxQ434TEJj3nfEo1ZU&s=10", status:"EN", label:"Endangered" },
+    { name:"Himalayan Pangolin", img:"https://cdn.britannica.com/41/124241-050-9027A8EF/Pangolin.jpg", status:"CR", label:"Critically Endangered" }
+  ];
+  const STATUS_LABELS = { LC:"Least Concern", NT:"Near Threatened", VU:"Vulnerable", EN:"Endangered", CR:"Critically Endangered", EW:"Extinct in the Wild" };
+  const ALL_CODES = Object.keys(STATUS_LABELS);
+  let idx = 0, answered = false;
+  const img = document.getElementById('aqImage');
+  const nameEl = document.getElementById('aqName');
+  const optsEl = document.getElementById('aqOptions');
+  const feedbackEl = document.getElementById('aqFeedback');
+  const nextEl = document.getElementById('aqNext');
+
+  function shuffle(arr){ return arr.sort(()=>Math.random()-0.5); }
+  function buildOptions(correct){
+    const pool = shuffle(ALL_CODES.filter(c=>c!==correct)).slice(0,3);
+    return shuffle([correct, ...pool]);
+  }
+  function loadAnimal(i){
+    answered = false;
+    const a = ANIMALS[i % ANIMALS.length];
+    img.src = a.img;
+    img.alt = a.name;
+    nameEl.textContent = a.name;
+    optsEl.innerHTML = buildOptions(a.status).map(code=>`<button class="aq-opt" data-code="${code}" data-full="${STATUS_LABELS[code]}">${code}</button>`).join('');
+    feedbackEl.classList.remove('show'); feedbackEl.innerHTML = '';
+    nextEl.classList.remove('show');
+    optsEl.querySelectorAll('.aq-opt').forEach(btn=>{
+      btn.addEventListener('click', ()=> handleAnswer(btn, a));
+    });
+  }
+  function handleAnswer(btn, a){
+    if(answered) return;
+    answered = true;
+    const chosen = btn.dataset.code;
+    optsEl.querySelectorAll('.aq-opt').forEach(o=>{
+      o.classList.add('locked');
+      if(o.dataset.code === a.status) o.classList.add('correct');
+      else if(o.dataset.code === chosen) o.classList.add('incorrect');
+      else o.classList.add('dim');
+    });
+    const correct = chosen === a.status;
+    feedbackEl.classList.add('show');
+    feedbackEl.innerHTML = correct
+      ? `<strong>Correct!</strong> ${a.name} is ${a.label}.`
+      : `<strong>Not quite.</strong> ${a.name} is ${a.label}.`;
+    nextEl.classList.add('show');
+  }
+  nextEl.addEventListener('click', ()=>{ idx++; loadAnimal(idx); });
+  loadAnimal(0);
+})();
 </script>
 
 </body>
