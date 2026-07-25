@@ -368,15 +368,15 @@
   }
   @media (max-width: 1180px){ .layout{ grid-template-columns: 1fr; } }
 
-  /* ---------- Left panel ---------- */
+  /* ---------- Left panel - COMPACT FIX ---------- */
   .eyebrow{
-    display:inline-flex; align-items:center; gap:6px;
+    display:inline-flex; align-items:center; gap:5px;
     background: var(--gold-glow);
     border:1px solid rgba(212,168,83,0.3);
     color: var(--gold);
-    padding:5px 12px; border-radius:20px;
-    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
-    margin-bottom:16px;
+    padding:4px 10px; border-radius:20px;
+    font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    margin-bottom:10px;
   }
   .hero-block{ position:relative; z-index:0; }
   .hero-galaxy{
@@ -388,65 +388,73 @@
 
   h1.hero{
     font-family:'Fraunces',serif; font-weight:600;
-    font-size: clamp(28px, 4.6vw, 38px); line-height:1.14; letter-spacing:-0.01em;
-    margin:0 0 18px;
+    font-size: clamp(26px, 4.4vw, 36px); line-height:1.1; letter-spacing:-0.01em;
+    margin:0 0 12px;
     color: var(--deep-blue);
   }
   h1.hero em{ font-style:italic; color: var(--gold); }
-  .hero-sub{ color: var(--ink-soft); font-size:14.5px; line-height:1.6; margin-bottom:22px; max-width:38ch; }
+  .hero-sub{ color: var(--ink-soft); font-size:14px; line-height:1.5; margin-bottom:14px; max-width:38ch; }
 
   .expedition-card{
     position:relative; overflow:hidden;
-    display:flex; align-items:center; gap:14px;
+    display:flex; align-items:center; gap:12px;
     background: var(--card-bg);
     backdrop-filter: blur(6px);
     border:1px solid var(--border-light);
-    border-radius:16px;
-    padding:13px 14px;
-    margin: 2px 0 20px;
+    border-radius:14px;
+    padding:10px 12px;
+    margin: 0 0 16px;
     box-shadow: 0 4px 16px rgba(0,20,40,0.04);
     transition: background .35s ease, border-color .35s ease;
   }
-  .exp-map-bg{ position:relative; width:58px; height:58px; flex-shrink:0; }
+  .exp-map-bg{ position:relative; width:48px; height:48px; flex-shrink:0; }
   .exp-pin-dot{
-    position:absolute; left:50%; top:50%; width:12px; height:12px; margin:-6px 0 0 -6px;
+    position:absolute; left:50%; top:50%; width:10px; height:10px; margin:-5px 0 0 -5px;
     border-radius:50%; background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 70%);
-    box-shadow: 0 0 12px 2px rgba(212,168,83,0.5);
+    box-shadow: 0 0 10px 2px rgba(212,168,83,0.5);
     z-index:2;
   }
   .exp-pin-ring{
-    position:absolute; left:50%; top:50%; width:12px; height:12px; margin:-6px 0 0 -6px;
-    border-radius:50%; border:1.4px solid var(--gold);
+    position:absolute; left:50%; top:50%; width:10px; height:10px; margin:-5px 0 0 -5px;
+    border-radius:50%; border:1.2px solid var(--gold);
     opacity:0; pointer-events:none;
     animation: expPing 2.8s ease-out infinite;
   }
   .exp-pin-ring.r2{ animation-delay:1.4s; }
   .exp-route{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
   .exp-route path{
-    fill:none; stroke: rgba(212,168,83,0.4); stroke-width:1.4; stroke-linecap:round;
+    fill:none; stroke: rgba(212,168,83,0.4); stroke-width:1.2; stroke-linecap:round;
     stroke-dasharray:3 6;
   }
   .exp-route-dot{ fill: var(--gold); offset-rotate:0deg; animation: expDotMove 3.6s linear infinite; }
   .exp-body{ flex:1; min-width:0; }
-  .exp-eyebrow{ font-size:10px; letter-spacing:0.09em; text-transform:uppercase; color:var(--gold); margin-bottom:3px; }
+  .exp-eyebrow{ 
+    font-size:9px; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); 
+    margin-bottom:1px;
+  }
   .exp-name{
-    font-family:'Fraunces',serif; font-weight:600; font-size:16.5px; color:var(--deep-blue);
+    font-family:'Fraunces',serif; font-weight:600; font-size:15px; color:var(--deep-blue);
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .exp-meta{ font-size:12px; color:var(--muted); margin-top:4px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-  .exp-meta-item{ display:inline-flex; align-items:center; gap:4px; color:#4A7A6E; font-weight:500; }
-  .exp-meta-item svg{ width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+  .exp-meta{ 
+    font-size:11px; color:var(--muted); margin-top:2px; 
+    display:flex; align-items:center; gap:5px; flex-wrap:wrap;
+  }
+  .exp-meta-item{ display:inline-flex; align-items:center; gap:3px; color:#4A7A6E; font-weight:500; }
+  .exp-meta-item svg{ width:11px; height:11px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
   .exp-dot{ color:var(--muted-light); }
   .exp-arrow{
-    width:30px; height:30px; border-radius:50%; flex-shrink:0;
+    width:28px; height:28px; border-radius:50%; flex-shrink:0;
     background: var(--white-glass); border:1px solid var(--border-light); color:var(--deep-blue);
     display:flex; align-items:center; justify-content:center;
     transition: transform .18s, background .18s, border-color .18s;
   }
   .exp-arrow:hover{ transform:translateX(2px); background:var(--gold-glow); border-color:var(--gold); }
-  .exp-arrow svg{ width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .exp-arrow svg{ width:13px; height:13px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+  .exp-fade{ animation: expFadeIn .45s ease both; }
+  @keyframes expFadeIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
 
-  .stat-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:26px; }
+  .stat-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:20px; }
   .stat-card{
     background: var(--card-bg);
     border:1px solid var(--border-light);
@@ -463,7 +471,7 @@
 
   .section-label{
     font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted);
-    margin: 4px 0 12px; display:flex; align-items:center; gap:8px;
+    margin: 2px 0 10px; display:flex; align-items:center; gap:8px;
   }
   .section-label::after{ content:''; flex:1; height:1px; background:var(--border-light); }
 
@@ -491,34 +499,34 @@
   .coll-more:hover{ border-color: var(--gold); background: var(--gold-glow); transform: translateY(-2px); }
 
   .fact-box{
-    margin-top:24px;
+    margin-top:20px;
     background: var(--card-bg);
     backdrop-filter: blur(4px);
     border:1px solid var(--border-light);
-    border-radius:12px; padding:16px 18px;
+    border-radius:12px; padding:14px 16px;
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
     transition: background .35s ease, border-color .35s ease;
   }
   .fact-box .fact-icon{
-    flex-shrink:0; width:34px; height:34px; border-radius:50%;
+    flex-shrink:0; width:32px; height:32px; border-radius:50%;
     background: var(--gold-glow);
     border: 1px solid rgba(212,168,83,0.35);
     display: flex; align-items:center; justify-content:center;
-    font-size: 18px;
+    font-size: 16px;
   }
   .fact-box .fact-content{ flex:1; min-width:0; }
   .fact-box .fact-label{
-    font-size:10px; letter-spacing:0.1em; text-transform:uppercase;
-    color: var(--gold); margin-bottom:4px;
+    font-size:9px; letter-spacing:0.1em; text-transform:uppercase;
+    color: var(--gold); margin-bottom:3px;
   }
   .fact-box .fact-text{
-    font-family:'Fraunces',serif; font-size:15px; font-weight:500; line-height:1.4;
+    font-family:'Fraunces',serif; font-size:14px; font-weight:500; line-height:1.3;
     color: var(--deep-blue);
   }
   .fact-box .fact-source{
-    font-size:10.5px; color:var(--muted); margin-top:6px;
+    font-size:10px; color:var(--muted); margin-top:4px;
     font-family:'IBM Plex Mono',monospace;
   }
 
@@ -1716,9 +1724,9 @@
 
         <div class="expedition-card" id="expeditionCard">
           <div class="exp-map-bg">
-            <svg class="exp-route" viewBox="0 0 58 58">
-              <path id="expRoutePath" d="M4 50 C16 40, 20 30, 30 26 S46 14, 54 6" />
-              <circle class="exp-route-dot" r="2.1" style="offset-path: path('M4 50 C16 40, 20 30, 30 26 S46 14, 54 6');" />
+            <svg class="exp-route" viewBox="0 0 48 48">
+              <path id="expRoutePath" d="M4 42 C14 34, 18 26, 26 22 S38 12, 44 6" />
+              <circle class="exp-route-dot" r="1.8" style="offset-path: path('M4 42 C14 34, 18 26, 26 22 S38 12, 44 6');" />
             </svg>
             <span class="exp-pin-ring"></span>
             <span class="exp-pin-ring r2"></span>
@@ -1876,7 +1884,7 @@
     <div class="detail-card" id="detailCard"></div>
   </div>
 
-  <!-- ===== TODAY'S CHALLENGE (FIXED - using original working code) ===== -->
+  <!-- ===== TODAY'S CHALLENGE ===== -->
 <div class="pc-card pc-quiz">
   <div class="pc-quiz-scene">
     <img src="https://img.magnific.com/free-photo/jungle-bali-indonesia_1321-2611.jpg?semt=ais_hybrid&w=740&q=80" alt="" />
@@ -2048,7 +2056,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* ============================================================
-   ALL EXISTING SCRIPTS (Map, collections, etc.) + MOCK TEST
+   ALL SCRIPTS (Map, collections, etc.) + MOCK TEST
    ============================================================ */
 
 // ---------- ICON SET ----------
@@ -2573,7 +2581,7 @@ setActive('tajmahal');
   });
 })();
 
-// ---------- DAILY CHALLENGE (FIXED - using original working code) ----------
+// ---------- DAILY CHALLENGE ----------
 (function(){
   const QUESTIONS = [
     {
