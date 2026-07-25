@@ -1782,6 +1782,17 @@
     .pc-quiz .pc-submit-btn { padding: 10px !important; font-size: 12px !important; }
     .pc-quiz .pc-xp-pill { font-size: 10px !important; padding: 3px 10px !important; }
   }
+  .hero-content h1.hero {
+  margin-bottom: 4px !important;
+}
+
+.hero-content .expedition-card {
+  margin-top: 0 !important;
+}
+
+.hero-content .hero-sub {
+  margin-top: 0 !important;
+}
 </style>
 </head>
 <body>
@@ -1826,39 +1837,38 @@
 
   <!-- LEFT PANEL -->
   <div class="left-panel">
-    <div class="hero-block">
-      <div class="hero-galaxy" aria-hidden="true"><canvas id="galaxyCanvas"></canvas></div>
-      <div class="hero-content">
-        <div class="eyebrow">Explore the world</div>
-        <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
-
-        <div class="expedition-card" id="expeditionCard">
-          <div class="exp-map-bg">
-            <svg class="exp-route" viewBox="0 0 48 48">
-              <path id="expRoutePath" d="M4 42 C14 34, 18 26, 26 22 S38 12, 44 6" />
-              <circle class="exp-route-dot" r="1.8" style="offset-path: path('M4 42 C14 34, 18 26, 26 22 S38 12, 44 6');" />
-            </svg>
-            <span class="exp-pin-ring"></span>
-            <span class="exp-pin-ring r2"></span>
-            <span class="exp-pin-dot"></span>
-          </div>
-          <div class="exp-body">
-            <div class="exp-eyebrow">Today's expedition</div>
-            <div class="exp-name" id="expName">Karakoram Range</div>
-            <div class="exp-meta">
-              <span class="exp-meta-item"><svg viewBox="0 0 24 24"><path d="M3 18 9 8l4 6 3-5 5 9z"/></svg> <span id="expXP">120 XP</span></span>
-              <span class="exp-dot">·</span>
-              <span id="expQ">8 Questions</span>
-            </div>
-          </div>
-          <button class="exp-arrow" id="expArrowBtn" aria-label="Next expedition">
-            <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
+  <div class="hero-block">
+    <div class="hero-galaxy" aria-hidden="true"><canvas id="galaxyCanvas"></canvas></div>
+    <div class="hero-content">
+      <div class="eyebrow">Explore the world</div>
+      <h1 class="hero">Every place<br>the exam <em>asks.</em></h1>
+      <div class="expedition-card" id="expeditionCard">
+        <div class="exp-map-bg">
+          <svg class="exp-route" viewBox="0 0 48 48">
+            <path id="expRoutePath" d="M4 42 C14 34, 18 26, 26 22 S38 12, 44 6" />
+            <circle class="exp-route-dot" r="1.8" style="offset-path: path('M4 42 C14 34, 18 26, 26 22 S38 12, 44 6');" />
+          </svg>
+          <span class="exp-pin-ring"></span>
+          <span class="exp-pin-ring r2"></span>
+          <span class="exp-pin-dot"></span>
         </div>
-
-        <p class="hero-sub">Tap any landmark on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC world geography.</p>
+        <div class="exp-body">
+          <div class="exp-eyebrow">Today's expedition</div>
+          <div class="exp-name" id="expName">Karakoram Range</div>
+          <div class="exp-meta">
+            <span class="exp-meta-item"><svg viewBox="0 0 24 24"><path d="M3 18 9 8l4 6 3-5 5 9z"/></svg> <span id="expXP">120 XP</span></span>
+            <span class="exp-dot">·</span>
+            <span id="expQ">8 Questions</span>
+          </div>
+        </div>
+        <button class="exp-arrow" id="expArrowBtn" aria-label="Next expedition">
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
       </div>
+      <p class="hero-sub">Tap any landmark on the map to unlock concepts, past-year questions, and focused practice — built for UPSC, SSC and state PSC world geography.</p>
     </div>
+  </div>
+</div>
 
     <div class="stat-row">
       <div class="stat-card"><div class="v">4,800+</div><div class="k">Locations mapped</div></div>
