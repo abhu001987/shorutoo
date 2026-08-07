@@ -1558,7 +1558,7 @@ function pingIcon(){
 function mountainSvg(colorVar){
   return `<svg viewBox="0 0 24 28" width="32" height="36"><path d="M3 24l6-13 4 7 3-6 5 12z" style="fill:${colorVar};stroke:#fff;stroke-width:1.2;stroke-linejoin:round;"/></svg>`;
 }
-const OPTION_COLORS = ['var(--gold)', 'var(--blue)', 'var(--violet)', 'var(--amber)'];
+const OPTION_COLORS = ['#5B7FFF', '#F0A93C', '#8B7CF6', '#EC6FAD'];
 function optionIcon(state, letter, idx){
   const stateColors = { good:'var(--teal)', bad:'var(--coral)', dim:'var(--muted-light)' };
   const color = state === 'neutral'
