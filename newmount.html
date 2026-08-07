@@ -1558,12 +1558,15 @@ function pingIcon(){
 function mountainSvg(colorVar){
   return `<svg viewBox="0 0 24 28" width="32" height="36"><path d="M3 24l6-13 4 7 3-6 5 12z" style="fill:${colorVar};stroke:#fff;stroke-width:1.2;stroke-linejoin:round;"/></svg>`;
 }
-function optionIcon(state, letter){
-  const colorMap = { neutral:'var(--gold)', good:'var(--teal)', bad:'var(--coral)', dim:'var(--muted-light)' };
-  const color = colorMap[state] || colorMap.neutral;
+const OPTION_COLORS = ['var(--gold)', 'var(--blue)', 'var(--violet)', 'var(--amber)'];
+function optionIcon(state, letter, idx){
+  const stateColors = { good:'var(--teal)', bad:'var(--coral)', dim:'var(--muted-light)' };
+  const color = state === 'neutral'
+    ? OPTION_COLORS[idx % OPTION_COLORS.length]
+    : (stateColors[state] || OPTION_COLORS[idx % OPTION_COLORS.length]);
   return L.divIcon({
     className:'',
-    html:`<div class="peak-pin enter ${state}">${mountainSvg(color)}<span class="opt-badge">${letter}</span></div>`,
+    html:`<div class="peak-pin enter ${state}">${mountainSvg(color)}<span class="opt-badge" style="background:${color}">${letter}</span></div>`,
     iconSize:[32,36],
     iconAnchor:[16,34]
   });
@@ -1673,10 +1676,10 @@ function setupRoundOptions(){
   const letters = ['A','B','C','D'];
   roundOptions = choices.map((peakIdx, i)=>{
     const p = PEAKS[peakIdx];
-    const marker = L.marker([p.lat, p.lon], {icon: optionIcon('neutral', letters[i]), interactive:true});
+    const marker = L.marker([p.lat, p.lon], {icon: optionIcon('neutral', letters[i], i), interactive:true});
     marker.on('click', ()=> onOptionClick(i));
     marker.addTo(markerLayer);
-    return { peakIdx, letter: letters[i], marker };
+    return { peakIdx, letter: letters[i], idx: i, marker };
   });
   const bounds = L.latLngBounds(roundOptions.map(o => o.marker.getLatLng()));
   map.flyToBounds(bounds, {padding:[60,60], maxZoom:5, duration:0.5});
@@ -1761,7 +1764,7 @@ function onOptionClick(chosenIdx){
     let state = 'dim';
     if(o === correctOption) state = 'good';
     if(o === chosen && !isCorrect) state = 'bad';
-    o.marker.setIcon(optionIcon(state, o.letter));
+    o.marker.setIcon(optionIcon(state, o.letter, o.idx));
   });
 
   let bounds;
