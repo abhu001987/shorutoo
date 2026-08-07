@@ -929,7 +929,7 @@ const ROUNDS = [
     paths:[[[84.5,-180.0],[84.5,-120.0],[84.5,-60.0],[84.5,0.0],[84.5,60.0],[84.5,120.0],[84.5,180.0],[66.5,180.0],[66.5,120.0],[66.5,60.0],[66.5,0.0],[66.5,-60.0],[66.5,-120.0],[66.5,-180.0],[84.5,-180.0]]]
   }
 ];
-const ROUNDS_PER_GAME = ROUNDS.length; // plays all 14, freshly shuffled every run. Challenge mode always uses the exact order sent by the challenger.
+const ROUNDS_PER_GAME = 10; // solo runs pick 10 at random each time. Challenge mode always uses the exact order sent by the challenger.
 
 /* ---------------- Map setup ---------------- */
 const map = L.map('map', {
