@@ -1186,7 +1186,37 @@ function pointInPolygon(point, vs){
   }
   return inside;
 }
+/* Point-in-polygon for real GeoJSON geometry (coords are [lng,lat], can have holes/multipolygons) */
+function pointInGeoJSONPolygon(lng, lat, geometry){
+  function ringContains(ring, x, y){
+    let inside = false;
+    for(let i=0, j=ring.length-1; i<ring.length; j=i++){
+      const xi = ring[i][0], yi = ring[i][1];
+      const xj = ring[j][0], yj = ring[j][1];
+      const intersect = ((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi);
+      if(intersect) inside = !inside;
+    }
+    return inside;
+  }
+  function polygonContains(coords, x, y){
+    if(!ringContains(coords[0], x, y)) return false;
+    for(let k=1;k<coords.length;k++){ if(ringContains(coords[k], x, y)) return false; } // holes
+    return true;
+  }
+  if(geometry.type === 'Polygon') return polygonContains(geometry.coordinates, lng, lat);
+  if(geometry.type === 'MultiPolygon') return geometry.coordinates.some(poly => polygonContains(poly, lng, lat));
+  return false;
+}
 
+/* Is the guess anywhere inside one of the round's listed countries? */
+function isInsideAnyCountry(gLatLng, countryNames){
+  if(!worldCountriesGeo) return false;
+  const [lat, lng] = gLatLng;
+  return countryNames.some(name=>{
+    const feature = worldCountriesGeo.features.find(f => countryFeatureMatches(f, name));
+    return feature ? pointInGeoJSONPolygon(lng, lat, feature.geometry) : false;
+  });
+}
 function nearestOnPaths(p, paths){
   // Inside the desert's outline? Full credit — distance 0.
   for(const path of paths){
