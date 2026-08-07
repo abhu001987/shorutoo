@@ -1306,8 +1306,14 @@ function lockGuess(){
   const gLatLng = [gll.lat, gll.lng];
   const nearest = nearestOnPaths(gLatLng, round.paths);
   const km = Math.round(nearest.dist);
-  const v = verdictFor(km);
-  const pts = scoreFor(km);
+
+  // If you're outside the drawn desert shape but inside a country the desert
+  // actually spans, don't torch the score for it — cap the *scoring* distance.
+  const insideCountry = km > 0 && isInsideAnyCountry(gLatLng, round.countries);
+  const scoringKm = insideCountry ? Math.min(km, 100) : km;
+
+  const v = verdictFor(scoringKm);
+  const pts = scoreFor(scoringKm);
   scores.push(pts);
   results.push({name:round.name, km, pts, cls:v.cls});
 
