@@ -472,7 +472,7 @@
   #map{
     position:absolute;inset:0;
     background:#0e1f30;
-    cursor:crosshair;
+    cursor:default;
   }
   #map .leaflet-tile-pane{filter:saturate(1.1) contrast(1.02);}
   #map .leaflet-container{background:#dfe6ea;}
@@ -511,6 +511,38 @@
     animation:ping 1s ease-out forwards;
   }
   @keyframes ping{from{width:6px;height:6px;opacity:.9;}to{width:60px;height:60px;opacity:0;}}
+
+  .peak-pin{
+    position:relative;
+    display:flex;align-items:center;justify-content:center;
+    filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35));
+    transition:transform .18s var(--ease), opacity .18s ease;
+    cursor:pointer;
+  }
+  .peak-pin:hover{ transform:scale(1.12); }
+  .peak-pin.dim{ opacity:.35; filter:grayscale(.6) drop-shadow(0 2px 4px rgba(0,0,0,0.2)); cursor:default; }
+  .peak-pin.good, .peak-pin.bad{ cursor:default; }
+  .peak-pin .opt-badge{
+    position:absolute; top:-7px; left:-7px;
+    width:17px;height:17px;border-radius:50%;
+    background:var(--deep-blue); color:#fff;
+    font-size:9.5px;font-weight:800;font-family:'IBM Plex Mono',monospace;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 0 2px #fff;
+  }
+  .peak-pin.good .opt-badge{ background:var(--teal); }
+  .peak-pin.bad .opt-badge{ background:var(--coral); }
+  @keyframes pinDrop{
+    0%{ transform:translateY(-18px) scale(.6); opacity:0; }
+    60%{ transform:translateY(3px) scale(1.05); opacity:1; }
+    100%{ transform:translateY(0) scale(1); opacity:1; }
+  }
+  .peak-pin.enter{ animation: pinDrop .45s var(--ease) both; }
+  @keyframes correctPulse{
+    0%,100%{ filter:drop-shadow(0 0 0 rgba(74,158,122,0)); }
+    50%{ filter:drop-shadow(0 0 10px rgba(74,158,122,.7)); }
+  }
+  .peak-pin.good{ animation: pinDrop .45s var(--ease) both, correctPulse 1.1s ease-in-out .45s 2; }
 
   /* ---------- BOTTOM PANEL ---------- */
   #hud-bottom{
@@ -1352,7 +1384,7 @@
     </div>
     <div class="hint-tap" id="tap-hint">
       <svg viewBox="0 0 24 24"><path d="M9 11a3 3 0 116 0c0 2-3 3-3 5"/><circle cx="12" cy="19" r="0.6" style="fill:currentColor"/></svg>
-      Tap anywhere on the map to drop your pin
+      Tap the peak marker you think is correct
     </div>
     <button class="btn btn-primary" id="next-btn" style="display:none" onclick="nextRound()">Next Peak →</button>
   </div>
@@ -1523,6 +1555,20 @@ function pingIcon(){
   return L.divIcon({ className:'', html:`<div class="pin-ping"></div>`, iconSize:[6,6], iconAnchor:[3,3] });
 }
 
+function mountainSvg(colorVar){
+  return `<svg viewBox="0 0 24 28" width="32" height="36"><path d="M3 24l6-13 4 7 3-6 5 12z" style="fill:${colorVar};stroke:#fff;stroke-width:1.2;stroke-linejoin:round;"/></svg>`;
+}
+function optionIcon(state, letter){
+  const colorMap = { neutral:'var(--gold)', good:'var(--teal)', bad:'var(--coral)', dim:'var(--muted-light)' };
+  const color = colorMap[state] || colorMap.neutral;
+  return L.divIcon({
+    className:'',
+    html:`<div class="peak-pin enter ${state}">${mountainSvg(color)}<span class="opt-badge">${letter}</span></div>`,
+    iconSize:[32,36],
+    iconAnchor:[16,34]
+  });
+}
+
 /* ---------------- Game state ---------------- */
 let order = [];
 let roundIdx = 0;
@@ -1534,6 +1580,7 @@ let rival = null;          // {name, score, pts}
 let currentGameCode = null; // set once a challenge is created OR accepted
 let challengeCreated = false; // guards duplicate /game/create calls this session
 let resultPosted = false;     // guards duplicate /game/update calls this session
+let roundOptions = [];        // the 4 {peakIdx, letter, marker} choices for the current round
 
 const ROUNDS_PER_GAME = 10; // how many mountains per game — bump this up later as you add more to PEAKS
 
@@ -1607,15 +1654,32 @@ function loadRound(){
   document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${order.length}`;
   document.getElementById('peak-name').textContent = PEAKS[order[roundIdx]].name;
   updateDots();
-  map.setView([20,20], 2);
+  setupRoundOptions();
 }
 
-function verdictFor(km){
-  if(km < 250) return {label:'Bullseye — spot on!', cls:'good', icon:'target'};
-  if(km < 600) return {label:'Excellent placement!', cls:'good', icon:'check'};
-  if(km < 1200) return {label:'Nearby — solid instinct.', cls:'mid', icon:'compass'};
-  if(km < 2500) return {label:'Right range, rough spot.', cls:'mid', icon:'compass'};
-  return {label:'Way off course — but noted.', cls:'bad', icon:'x'};
+function setupRoundOptions(){
+  const targetIdx = order[roundIdx];
+  const decoyPool = PEAKS.map((_,i)=>i).filter(i => i !== targetIdx);
+  for(let i=decoyPool.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [decoyPool[i],decoyPool[j]]=[decoyPool[j],decoyPool[i]];
+  }
+  const decoys = decoyPool.slice(0,3);
+  const choices = [targetIdx, ...decoys];
+  for(let i=choices.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [choices[i],choices[j]]=[choices[j],choices[i]];
+  }
+  const letters = ['A','B','C','D'];
+  roundOptions = choices.map((peakIdx, i)=>{
+    const p = PEAKS[peakIdx];
+    const marker = L.marker([p.lat, p.lon], {icon: optionIcon('neutral', letters[i]), interactive:true});
+    marker.on('click', ()=> onOptionClick(i));
+    marker.addTo(markerLayer);
+    return { peakIdx, letter: letters[i], marker };
+  });
+  const bounds = L.latLngBounds(roundOptions.map(o => o.marker.getLatLng()));
+  map.flyToBounds(bounds, {padding:[60,60], maxZoom:5, duration:0.5});
 }
 
 const VERDICT_ICONS = {
@@ -1627,10 +1691,6 @@ const VERDICT_ICONS = {
 
 /* Trophy icon used for a strong final score */
 const TROPHY_ICON = '<svg viewBox="0 0 24 24"><path d="M8 4h8v3a4 4 0 01-4 4 4 4 0 01-4-4V4z"/><path d="M8 4H5a3 3 0 003 3M16 4h3a3 3 0 01-3 3"/><path d="M12 11v4"/><path d="M9 20h6"/><path d="M10 17h4v3h-4z"/></svg>';
-
-function scoreFor(km){
-  return Math.max(0, Math.round(100 - km/40));
-}
 
 /* Smooth ease-out count-up used for score numbers */
 function animateCount(el, to, duration){
@@ -1679,43 +1739,52 @@ function triggerRoundEffect(cls){
   }
 }
 
-map.on('click', onMapClick);
-
-function onMapClick(evt){
+function onOptionClick(chosenIdx){
   if(guessed) return;
   guessed = true;
 
-  const gLat = evt.latlng.lat;
-  const gLon = evt.latlng.lng;
-  const target = PEAKS[order[roundIdx]];
-  const km = haversine(gLat, gLon, target.lat, target.lon);
-  const v = verdictFor(km);
-  const pts = scoreFor(km);
+  const targetIdx = order[roundIdx];
+  const target = PEAKS[targetIdx];
+  const chosen = roundOptions[chosenIdx];
+  const correctOption = roundOptions.find(o => o.peakIdx === targetIdx);
+  const isCorrect = chosen.peakIdx === targetIdx;
+  const v = isCorrect
+    ? {label:'Correct — well navigated!', cls:'good', icon:'check'}
+    : {label:"Not quite — here's the real spot.", cls:'bad', icon:'x'};
+  const pts = isCorrect ? 100 : 0;
   scores.push(pts);
-  results.push({name:target.name, km:Math.round(km), pts, cls:v.cls});
+  results.push({name:target.name, correct:isCorrect, pts, cls:v.cls});
 
-  const guessLatLng = [gLat, gLon];
-  const targetLatLng = [target.lat, target.lon];
+  // Reveal every option: correct one turns gold/teal, the wrong pick turns
+  // coral, the untouched decoys dim out.
+  roundOptions.forEach(o=>{
+    let state = 'dim';
+    if(o === correctOption) state = 'good';
+    if(o === chosen && !isCorrect) state = 'bad';
+    o.marker.setIcon(optionIcon(state, o.letter));
+  });
 
-  markerLayer.clearLayers();
-  L.marker(guessLatLng, {icon: pingIcon(), interactive:false}).addTo(markerLayer);
-  L.polyline([guessLatLng, targetLatLng], {color:'#748A98', weight:1.4, dashArray:'4 4', opacity:0.75, interactive:false}).addTo(markerLayer);
-  L.marker(guessLatLng, {icon: pinIcon('pin-guess'), interactive:false}).addTo(markerLayer);
-  L.marker(targetLatLng, {icon: pinIcon('pin-target'), interactive:false}).addTo(markerLayer);
+  let bounds;
+  if(!isCorrect){
+    // Draw the connecting line so you can see the spread between your
+    // guess and the true peak, same as the original guess-to-target line.
+    L.polyline([chosen.marker.getLatLng(), correctOption.marker.getLatLng()], {color:'#748A98', weight:1.4, dashArray:'4 4', opacity:0.75, interactive:false}).addTo(markerLayer);
+    bounds = L.latLngBounds([chosen.marker.getLatLng(), correctOption.marker.getLatLng()]);
+  } else {
+    bounds = L.latLngBounds([correctOption.marker.getLatLng()]);
+  }
+  map.flyToBounds(bounds, {padding:[80,80], maxZoom:6, duration:0.6});
 
-  const bounds = L.latLngBounds([guessLatLng, targetLatLng]);
-  map.flyToBounds(bounds, {padding:[70,70], maxZoom:7, duration:0.6});
-
-  document.getElementById('verdict-text').innerHTML = `${VERDICT_ICONS[v.icon]} ${v.label}  (${Math.round(km)} km away · +${pts} pts)`;
+  document.getElementById('verdict-text').innerHTML = `${VERDICT_ICONS[v.icon]} ${v.label}  (+${pts} pts)`;
   document.getElementById('verdict-text').className = 'verdict ' + v.cls;
   document.getElementById('fact-text').textContent = target.fact;
 
   const rivalLine = document.getElementById('rival-line');
   if(mode === 'challenge' && rival && Array.isArray(rival.pts)){
     const theirPts = rival.pts[roundIdx];
-    if(pts > theirPts){ rivalLine.textContent = `You beat your rival on this one — they scored +${theirPts} pts here.`; }
-    else if(pts < theirPts){ rivalLine.textContent = `Your rival had the edge here — they scored +${theirPts} pts.`; }
-    else{ rivalLine.textContent = `Dead even with your rival on this mountain — +${theirPts} pts each.`; }
+    if(pts > theirPts){ rivalLine.textContent = `You got this one right — your rival didn't.`; }
+    else if(pts < theirPts){ rivalLine.textContent = `Your rival nailed this one — you missed it.`; }
+    else{ rivalLine.textContent = pts === 100 ? `Dead even — you both got this one right.` : `Dead even — you both missed this one.`; }
     rivalLine.style.display = 'block';
   }
 
@@ -1852,8 +1921,7 @@ function renderSoloBreakdown(){
     row.style.animationDelay = (i * 0.06) + 's';
     row.innerHTML = `<span class="b-idx">${i+1}</span>
       <span class="b-name">${r.name}</span>
-      <span class="b-dist">${r.km} km</span>
-      <span class="b-pts ${r.cls}">+${r.pts}</span>`;
+      <span class="b-mk ${r.correct ? 'ok' : 'no'}">${r.correct ? '✓' : '✕'}</span>`;
     box.appendChild(row);
   });
 }
