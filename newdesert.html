@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Border Lines Navigator — Political &amp; Historical Boundaries Quiz | MapiDesk</title>
+<title>Desert Navigator — Political &amp; Historical Boundaries Quiz | MapiDesk</title>
 
 <!-- Theme: set instantly, before any CSS loads -->
 <script>
@@ -503,11 +503,10 @@
         <div class="hero-copy">
           <div class="kicker">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5.5 2 2-5.5L17 5l3 3-11.5 11.5z"/><path d="M15 3l6 6"/></svg>
-            Chart the Borders
+            Chart the Deserts
           </div>
-          <h1>Border Lines <span>Navigator</span></h1>
-          <p class="sub">Drop a pin where you think each famous political or historical boundary line actually runs — the Durand Line, the Radcliffe Line, the DMZ's 38th Parallel, the Maginot Line, and more. Lock in your guess and watch the map fly to reveal the real line. Finish a run and get a link with the exact same targets, in the exact same order — send it to a friend and see who reads the map's history better.</p>
-        </div>
+          <h1> Desert <span>Navigator</span></h1>
+<p class="sub">Drop a pin where you think each major world desert is located — from the Sahara, Gobi and Thar to the Atacama, Namib and Antarctic Desert. Lock in your guess and watch the map reveal the actual desert region. Finish a run and get a link with the exact same deserts, in the exact same order — challenge a friend and see who knows world geography better.</p>        </div>
       </div>
 
       <div class="info-cards">
@@ -518,14 +517,14 @@
             </div>
             <div>
               <h3>Your Mission</h3>
-              <p>Pin each boundary as close to its real path as you can.</p>
+              <p>Pin each Desert as close to its real path as you can.</p>
             </div>
           </div>
           <div class="info-body">
             <div class="mini-stats">
               <div class="mini-stat">
                 <div class="icon-circle blue"><svg viewBox="0 0 24 24"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg></div>
-                <div class="mini-stat-text"><span class="t">14 targets</span><span class="d">Shuffled each run</span></div>
+                <div class="mini-stat-text"><span class="t">10 targets</span><span class="d">Shuffled each run</span></div>
               </div>
               <div class="mini-stat">
                 <div class="icon-circle violet"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div>
@@ -821,6 +820,113 @@ const ROUNDS = [
     fact:"Asia's largest cold desert, famous for harsh winters, rocky terrain and important dinosaur fossil discoveries.",
     countries:['Mongolia','China'],
     paths:[[[46.8,87.0],[47.8,99.0],[46.8,111.5],[43.8,118.0],[39.5,114.5],[39.0,101.5],[41.5,90.0],[46.8,87.0]]]
+  },
+    { id:'thar', name:'Thar Desert', region:'India – Pakistan',
+    fact:"Also known as the Great Indian Desert, the Thar is one of the world's most densely populated deserts. Around 85% lies in India and the remaining part in Pakistan.",
+    countries:['India','Pakistan'],
+    paths:[[[29.8,69.5],[29.8,74.8],[28.5,76.2],[25.8,75.8],[24.0,72.8],[24.5,69.5],[27.0,69.0],[29.8,69.5]]]
+  },
+
+  { id:'taklamakan', name:'Taklamakan Desert', region:'Xinjiang, China',
+    fact:"China's largest desert, located in the Tarim Basin. The ancient Silk Route passed around its northern and southern edges rather than crossing it.",
+    countries:['China'],
+    paths:[[[41.8,75.5],[42.8,82.5],[41.8,90.5],[38.2,90.5],[37.0,83.0],[38.2,77.0],[41.8,75.5]]]
+  },
+
+  { id:'karakum', name:'Karakum Desert', region:'Turkmenistan',
+    fact:"Covering nearly 70% of Turkmenistan, the Karakum Desert is crossed by the Karakum Canal, one of the world's longest irrigation canals.",
+    countries:['Turkmenistan'],
+    paths:[[[42.8,52.0],[42.8,63.0],[39.8,65.5],[36.2,62.5],[37.0,54.0],[42.8,52.0]]]
+  },
+  { id:'kyzylkum', name:'Kyzylkum Desert', region:'Kazakhstan – Uzbekistan – Turkmenistan',
+    fact:"The Kyzylkum Desert lies between the Amu Darya and Syr Darya rivers and is rich in gold, uranium and natural gas deposits.",
+    countries:['Kazakhstan','Uzbekistan','Turkmenistan'],
+    paths:[[[46.5,58.0],[46.0,67.5],[43.5,69.0],[40.5,66.5],[40.0,60.0],[42.0,57.5],[46.5,58.0]]]
+  },
+
+  { id:'syrian', name:'Syrian Desert', region:'Syria – Jordan – Iraq – Saudi Arabia',
+    fact:"A vast plateau desert connecting the Arabian Desert with the Fertile Crescent, covering much of Syria, Jordan, Iraq and northern Saudi Arabia.",
+    countries:['Syria','Jordan','Iraq','Saudi Arabia'],
+    paths:[[[35.5,36.0],[35.5,44.5],[32.5,46.5],[28.0,44.5],[29.0,38.0],[32.5,36.0],[35.5,36.0]]]
+  },
+
+  { id:'namib', name:'Namib Desert', region:'Namibia – Angola – South Africa',
+    fact:"The Namib is considered the world's oldest desert, with arid conditions for over 55 million years. It is a coastal desert influenced by the cold Benguela Current.",
+    countries:['Namibia','Angola','South Africa'],
+    paths:[[[18.5,11.0],[28.5,17.8],[28.0,18.8],[17.0,15.8],[15.5,12.0],[18.5,11.0]]]
+  },
+  { id:'kalahari', name:'Kalahari Desert', region:'Botswana – Namibia – South Africa',
+    fact:"The Kalahari is a semi-arid sandy desert known for its red sand dunes, rich wildlife and the indigenous San (Bushmen) people.",
+    countries:['Botswana','Namibia','South Africa'],
+    paths:[[[18.5,19.0],[28.5,28.5],[27.5,25.5],[25.0,20.5],[21.5,18.0],[18.5,19.0]]]
+  },
+
+  { id:'atacama', name:'Atacama Desert', region:'Chile – Peru',
+    fact:"The Atacama is the world's driest non-polar desert. Its extreme aridity is caused by the cold Humboldt Current and the Andes rain-shadow effect.",
+    countries:['Chile','Peru'],
+    paths:[[[-18.0,-71.5],[-21.5,-70.5],[-25.0,-70.2],[-28.5,-70.5],[-24.5,-69.0],[-20.0,-69.0],[-18.0,-71.5]]]
+  },
+
+  { id:'patagonian', name:'Patagonian Desert', region:'Argentina',
+    fact:"The Patagonian Desert is South America's largest desert. It is a cold desert formed in the rain shadow of the Andes Mountains.",
+    countries:['Argentina'],
+    paths:[[[-39.0,-71.5],[-40.5,-67.0],[-44.5,-65.0],[-49.5,-67.5],[-51.5,-70.5],[-47.5,-72.5],[-39.0,-71.5]]]
+  },
+  { id:'greatvictoria', name:'Great Victoria Desert', region:'Western Australia – South Australia',
+    fact:"The Great Victoria Desert is Australia's largest desert, covering over 420,000 sq km across Western Australia and South Australia.",
+    countries:['Australia'],
+    paths:[[[-25.0,121.0],[-25.0,132.5],[-29.5,132.5],[-31.5,127.0],[-30.0,121.0],[-25.0,121.0]]]
+  },
+
+  { id:'greatsandy', name:'Great Sandy Desert', region:'Western Australia',
+    fact:"Australia's second-largest desert, the Great Sandy Desert is characterized by extensive sand dunes, spinifex grasslands and a hot arid climate.",
+    countries:['Australia'],
+    paths:[[[-17.5,119.0],[-17.5,128.5],[-22.5,128.5],[-23.5,122.0],[-21.0,119.0],[-17.5,119.0]]]
+  },
+
+  { id:'simpson', name:'Simpson Desert', region:'Northern Territory – South Australia – Queensland',
+    fact:"The Simpson Desert is famous for having the world's longest parallel sand dunes, many stretching for over 200 km.",
+    countries:['Australia'],
+    paths:[[[-23.0,135.0],[-23.0,141.5],[-27.5,141.5],[-28.5,136.5],[-26.5,134.0],[-23.0,135.0]]]
+  },
+  { id:'gibson', name:'Gibson Desert', region:'Western Australia',
+    fact:"The Gibson Desert is characterized by rocky plains, gravel surfaces and spinifex grasslands. It lies between the Great Sandy Desert and the Great Victoria Desert.",
+    countries:['Australia'],
+    paths:[[[-22.5,121.0],[-22.5,127.5],[-26.5,129.0],[-29.0,125.5],[-28.0,120.5],[-22.5,121.0]]]
+  },
+
+  { id:'mojave', name:'Mojave Desert', region:'United States',
+    fact:"The Mojave Desert contains Death Valley, where the highest reliably recorded air temperature on Earth (56.7°C) was measured in 1913.",
+    countries:['United States of America'],
+    paths:[[[37.8,-118.8],[37.5,-114.0],[35.5,-113.5],[34.0,-116.0],[35.0,-118.8],[37.8,-118.8]]]
+  },
+
+  { id:'sonoran', name:'Sonoran Desert', region:'United States – Mexico',
+    fact:"The Sonoran Desert is one of the world's most biologically diverse deserts and is famous for the giant saguaro cactus.",
+    countries:['United States of America','Mexico'],
+    paths:[[[33.8,-115.5],[33.5,-111.0],[31.5,-108.8],[27.5,-111.8],[29.0,-114.8],[32.0,-116.0],[33.8,-115.5]]]
+  },
+  { id:'chihuahuan', name:'Chihuahuan Desert', region:'United States – Mexico',
+    fact:"The Chihuahuan Desert is North America's largest desert and is renowned for its rich diversity of cacti, agaves and other desert flora.",
+    countries:['United States of America','Mexico'],
+    paths:[[[33.5,-108.8],[33.0,-103.5],[30.5,-101.0],[26.5,-103.0],[27.5,-106.8],[30.0,-108.8],[33.5,-108.8]]]
+  },
+
+  { id:'greatbasin', name:'Great Basin Desert', region:'United States',
+    fact:"The Great Basin is North America's largest cold desert. It is an endorheic basin where rivers do not reach the sea and instead drain into inland lakes or salt flats.",
+    countries:['United States of America'],
+    paths:[[[42.8,-120.5],[42.5,-113.0],[38.5,-112.0],[35.5,-116.5],[37.0,-119.8],[42.8,-120.5]]]
+  },
+
+  { id:'antarctic', name:'Antarctic Desert', region:'Antarctica',
+    fact:"The Antarctic Desert is the world's largest desert, covering about 14 million sq km. It is classified as a cold desert because it receives very little annual precipitation.",
+    countries:['Antarctica'],
+    paths:[[[-60.0,-180.0],[-60.0,-90.0],[-60.0,0.0],[-60.0,90.0],[-60.0,180.0],[-85.0,180.0],[-85.0,90.0],[-85.0,0.0],[-85.0,-90.0],[-85.0,-180.0],[-60.0,-180.0]]]
+  },
+  { id:'arctic', name:'Arctic Desert', region:'Arctic Region',
+    fact:"The Arctic Desert is the world's second-largest desert after Antarctica. It is a cold desert characterized by very low precipitation, permanent permafrost and long, severe winters.",
+    countries:['Canada','Greenland','United States of America','Russia','Norway'],
+    paths:[[[84.5,-180.0],[84.5,-120.0],[84.5,-60.0],[84.5,0.0],[84.5,60.0],[84.5,120.0],[84.5,180.0],[66.5,180.0],[66.5,120.0],[66.5,60.0],[66.5,0.0],[66.5,-60.0],[66.5,-120.0],[66.5,-180.0],[84.5,-180.0]]]
   }
 ];
 const ROUNDS_PER_GAME = ROUNDS.length; // plays all 14, freshly shuffled every run. Challenge mode always uses the exact order sent by the challenger.
