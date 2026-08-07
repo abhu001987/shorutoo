@@ -1173,7 +1173,28 @@ function nearestOnSegment(p, a, b){
   const dx = P.x-Cx, dy = P.y-Cy;
   return { dist: Math.sqrt(dx*dx+dy*dy), latlng:[ a[0]+t*(b[0]-a[0]), a[1]+t*(b[1]-a[1]) ] };
 }
+/* Ray-casting point-in-polygon test on [lat,lng] pairs */
+function pointInPolygon(point, vs){
+  const x = point[1], y = point[0];
+  let inside = false;
+  for(let i = 0, j = vs.length - 1; i < vs.length; j = i++){
+    const xi = vs[i][1], yi = vs[i][0];
+    const xj = vs[j][1], yj = vs[j][0];
+    const intersect = ((yi > y) !== (yj > y)) &&
+      (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+    if(intersect) inside = !inside;
+  }
+  return inside;
+}
+
 function nearestOnPaths(p, paths){
+  // Inside the desert's outline? Full credit — distance 0.
+  for(const path of paths){
+    if(pointInPolygon(p, path)){
+      return { dist: 0, latlng: p };
+    }
+  }
+  // Otherwise, distance to the nearest edge (existing near-miss logic).
   let best = null;
   paths.forEach(path=>{
     for(let i=0;i<path.length-1;i++){
