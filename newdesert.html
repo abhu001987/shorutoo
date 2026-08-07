@@ -804,90 +804,23 @@ function setHeaderVisible(visible){
    general historical/geographic path — educational approximations,
    not survey-grade GIS data.
    ============================================================ */
-const DESERTS = [
-  {
-    id:'sahara',
-    name:'Sahara Desert',
-    region:'North Africa',
-    fact:"The Sahara is the world's largest hot desert, covering about 9.2 million sq km. It stretches across 11 countries from the Atlantic Ocean to the Red Sea.",
-    countries:[
-      'Morocco',
-      'Western Sahara',
-      'Algeria',
-      'Tunisia',
-      'Libya',
-      'Egypt',
-      'Mauritania',
-      'Mali',
-      'Niger',
-      'Chad',
-      'Sudan'
-    ],
-    paths:[[
-      [32.8,-17.5],
-      [35.0,-5.0],
-      [34.5,10.0],
-      [31.5,25.0],
-      [30.5,35.5],
-      [22.0,35.5],
-      [15.0,30.0],
-      [14.0,15.0],
-      [15.0,0.0],
-      [17.0,-10.0],
-      [21.0,-17.5],
-      [32.8,-17.5]
-    ]]
+const ROUNDS = [
+  { id:'sahara', name:'Sahara Desert', region:'North Africa',
+    fact:"The world's largest hot desert, covering about 9.2 million sq km across 11 countries from the Atlantic Ocean to the Red Sea.",
+    countries:['Morocco','Western Sahara','Algeria','Tunisia','Libya','Egypt','Mauritania','Mali','Niger','Chad','Sudan'],
+    paths:[[[32.8,-17.5],[35.0,-5.0],[34.2,12.0],[31.0,30.0],[22.0,35.0],[15.0,30.0],[14.0,12.0],[15.5,-5.0],[20.0,-17.5],[32.8,-17.5]]]
   },
 
-  {
-    id:'arabian',
-    name:'Arabian Desert',
-    region:'Arabian Peninsula',
-    fact:"The Arabian Desert is Asia's largest desert and contains Rub' al Khali (Empty Quarter), the world's largest continuous sand desert.",
-    countries:[
-      'Saudi Arabia',
-      'Yemen',
-      'Oman',
-      'United Arab Emirates',
-      'Qatar',
-      'Kuwait',
-      'Jordan',
-      'Iraq'
-    ],
-    paths:[[
-      [33.5,36.0],
-      [32.5,48.8],
-      [29.8,51.8],
-      [26.5,56.5],
-      [18.0,58.5],
-      [13.0,52.5],
-      [15.0,42.5],
-      [20.5,36.0],
-      [28.0,35.0],
-      [33.5,36.0]
-    ]]
+  { id:'arabian', name:'Arabian Desert', region:'Arabian Peninsula',
+    fact:"Asia's largest desert containing Rub' al Khali (Empty Quarter), the world's largest continuous sand desert.",
+    countries:['Saudi Arabia','Yemen','Oman','United Arab Emirates','Qatar','Kuwait','Jordan','Iraq'],
+    paths:[[[33.5,36.0],[33.0,48.5],[29.0,56.5],[18.0,58.5],[13.0,52.0],[15.0,43.0],[21.0,36.0],[33.5,36.0]]]
   },
 
-  {
-    id:'gobi',
-    name:'Gobi Desert',
-    region:'Mongolia – China',
-    fact:"The Gobi is Asia's largest cold desert. It is known for its harsh winters, rocky terrain and important dinosaur fossil discoveries.",
-    countries:[
-      'Mongolia',
-      'China'
-    ],
-    paths:[[
-      [46.8,87.0],
-      [47.5,98.0],
-      [46.5,108.5],
-      [44.5,116.5],
-      [40.0,115.5],
-      [38.8,105.0],
-      [40.5,94.0],
-      [43.5,88.0],
-      [46.8,87.0]
-    ]]
+  { id:'gobi', name:'Gobi Desert', region:'Mongolia – China',
+    fact:"Asia's largest cold desert, famous for harsh winters, rocky terrain and important dinosaur fossil discoveries.",
+    countries:['Mongolia','China'],
+    paths:[[[46.8,87.0],[47.8,99.0],[46.8,111.5],[43.8,118.0],[39.5,114.5],[39.0,101.5],[41.5,90.0],[46.8,87.0]]]
   }
 ];
 const ROUNDS_PER_GAME = ROUNDS.length; // plays all 14, freshly shuffled every run. Challenge mode always uses the exact order sent by the challenger.
