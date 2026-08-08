@@ -820,73 +820,73 @@ const ROUNDS = [
 
   { id:'taj_mahal', name:'Taj Mahal', region:'Agra, Uttar Pradesh',
     fact:"An ivory-white marble mausoleum built by Mughal emperor Shah Jahan (1632–1653) in memory of his wife Mumtaz Mahal. Inscribed as a UNESCO World Heritage Site in 1983.",
-    countries:['India'],
+    states:['Uttar Pradesh'],
     paths: siteBox(27.1751, 78.0421)
   },
 
   { id:'qutub_minar', name:'Qutub Minar and its Monuments', region:'Delhi',
     fact:"A 73-metre victory tower begun by Qutb-ud-din Aibak around 1192 at the start of the Delhi Sultanate, and completed by his successors. Inscribed by UNESCO in 1993.",
-    countries:['India'],
+    states:['Delhi'],
     paths: siteBox(28.5245, 77.1855)
   },
 
   { id:'red_fort', name:'Red Fort Complex', region:'Delhi',
     fact:"The main residence of the Mughal emperors for nearly 200 years, built by Shah Jahan starting in 1638. It is also where India's Prime Minister hoists the flag every Independence Day. Inscribed by UNESCO in 2007.",
-    countries:['India'],
+    states:['Delhi'],
     paths: siteBox(28.6562, 77.2410)
   },
 
   { id:'agra_fort', name:'Agra Fort', region:'Agra, Uttar Pradesh',
     fact:"A red sandstone fort rebuilt by Akbar starting in 1565, later used as a palace by Mughal emperors and the place where Shah Jahan was held captive by his son Aurangzeb. Inscribed by UNESCO in 1983.",
-    countries:['India'],
+    states:['Uttar Pradesh'],
     paths: siteBox(27.1795, 78.0211)
   },
 
   { id:'fatehpur_sikri', name:'Fatehpur Sikri', region:'Uttar Pradesh',
     fact:"A short-lived Mughal capital city built by Akbar between 1571 and 1585, abandoned soon after due to water shortage. Its red sandstone monuments include the Buland Darwaza and Jama Masjid. Inscribed by UNESCO in 1986.",
-    countries:['India'],
+    states:['Uttar Pradesh'],
     paths: siteBox(27.0945, 77.6679)
   },
 
   { id:'khajuraho', name:'Khajuraho Group of Monuments', region:'Madhya Pradesh',
     fact:"A group of Hindu and Jain temples built by the Chandela dynasty between roughly 950 and 1050 CE, celebrated for their intricate sculptural art. Inscribed by UNESCO in 1986.",
-    countries:['India'],
+    states:['Madhya Pradesh'],
     paths: siteBox(24.8318, 79.9199)
   },
 
   { id:'konark', name:'Sun Temple, Konark', region:'Odisha',
     fact:"A 13th-century temple built by King Narasimhadeva I of the Eastern Ganga dynasty, designed as a colossal stone chariot of the sun god Surya, drawn by seven horses and 24 wheels. Inscribed by UNESCO in 1984.",
-    countries:['India'],
+    states:['Odisha'],
     paths: siteBox(19.8876, 86.0945)
   },
 
   { id:'hampi', name:'Group of Monuments at Hampi', region:'Karnataka',
     fact:"The ruined capital of the Vijayanagara Empire, one of the great Hindu kingdoms of South India, active from the 14th to 16th centuries. Inscribed by UNESCO in 1986.",
-    countries:['India'],
+    states:['Karnataka'],
     paths: siteBox(15.3350, 76.4600)
   },
 
   { id:'ellora', name:'Ellora Caves', region:'Maharashtra',
     fact:"A rock-cut cave complex of 34 monasteries and temples representing Buddhist, Hindu and Jain traditions, carved between roughly the 6th and 10th centuries, including the massive monolithic Kailasa temple. Inscribed by UNESCO in 1983.",
-    countries:['India'],
+    states:['Maharashtra'],
     paths: siteBox(20.0258, 75.1780)
   },
 
   { id:'ajanta', name:'Ajanta Caves', region:'Maharashtra',
     fact:"A set of 30 rock-cut Buddhist cave monuments dating from the 2nd century BCE to about the 6th century CE, famous for their paintings and sculpture depicting the life of the Buddha. Inscribed by UNESCO in 1983.",
-    countries:['India'],
+    states:['Maharashtra'],
     paths: siteBox(20.5519, 75.7033)
   },
 
   { id:'mahabalipuram', name:'Group of Monuments at Mahabalipuram', region:'Tamil Nadu',
     fact:"A collection of 7th- and 8th-century rock-cut temples and rathas built under the Pallava dynasty on the Coromandel Coast, including the Shore Temple. Inscribed by UNESCO in 1984.",
-    countries:['India'],
+    states:['Tamil Nadu'],
     paths: siteBox(12.6208, 80.1926)
   },
 
   { id:'sanchi', name:'Buddhist Monuments at Sanchi', region:'Madhya Pradesh',
     fact:"India's oldest surviving stone structures, centred on the Great Stupa originally commissioned by Emperor Ashoka in the 3rd century BCE and expanded over succeeding centuries. Inscribed by UNESCO in 1989.",
-    countries:['India'],
+    states:['Madhya Pradesh'],
     paths: siteBox(23.4793, 77.7398)
   }
 
@@ -942,50 +942,54 @@ async function loadIndiaBoundary(){
 }
 loadIndiaBoundary();
 
-/* ---------------- World countries overlay (for round-result highlighting) ---------------- */
-let worldCountriesGeo = null;
-const WORLD_BOUNDARY_URLS = [
-  'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json',
-  'https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json'
+/* ---------------- Indian states overlay (for round-result highlighting) ----------------
+   Highlights just the STATE a site lies in, not the whole country — more useful for
+   UPSC-style map practice. Tries a couple of mirrors of a standard India-states GeoJSON. */
+let indiaStatesGeo = null;
+const INDIA_STATES_URLS = [
+  'https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson',
+  'https://raw.githubusercontent.com/Subhash9325/GeoJson-Data-of-Indian-States/master/Indian_States'
 ];
-async function loadWorldCountries(){
-  for(const url of WORLD_BOUNDARY_URLS){
+async function loadIndiaStates(){
+  for(const url of INDIA_STATES_URLS){
     try{
       const res = await fetch(url);
       if(!res.ok) continue;
-      worldCountriesGeo = await res.json();
+      indiaStatesGeo = await res.json();
       return;
-    }catch(e){ console.warn('World countries overlay source failed, trying next:', url, e); }
+    }catch(e){ console.warn('India states overlay source failed, trying next:', url, e); }
   }
-  console.warn('World countries overlay: all sources failed — country highlighting will be unavailable.');
+  console.warn('India states overlay: all sources failed — state highlighting will be unavailable.');
 }
-loadWorldCountries();
+loadIndiaStates();
 
-/* Alias table for the few names that differ between our round data and the
-   Natural-Earth-derived dataset's `name` property. */
-const COUNTRY_NAME_ALIASES = {
-  'india': ['india']
+/* Alias table for the few state names that differ between our round data and the
+   source dataset's name property (e.g. Delhi is sometimes "NCT of Delhi"). */
+const STATE_NAME_ALIASES = {
+  'delhi': ['delhi', 'nct of delhi', 'national capital territory of delhi'],
+  'odisha': ['odisha', 'orissa'],
+  'uttarakhand': ['uttarakhand', 'uttaranchal']
 };
-function countryFeatureMatches(feature, targetName){
+function stateFeatureMatches(feature, targetName){
   const props = (feature && feature.properties) || {};
-  const raw = props.name || props.NAME || props.ADMIN || props.admin || '';
+  const raw = props.NAME_1 || props.ST_NM || props.st_nm || props.name || props.NAME || props.State || props.state || '';
   const fn = String(raw).toLowerCase().trim();
   const tgt = targetName.toLowerCase().trim();
   if(fn === tgt) return true;
-  const aliases = COUNTRY_NAME_ALIASES[tgt];
+  const aliases = STATE_NAME_ALIASES[tgt];
   if(aliases && aliases.includes(fn)) return true;
   return false;
 }
 
 /* Colors mirror the same good/mid/bad verdict palette used for round feedback,
-   so the highlighted country visually echoes how close the guess was. */
+   so the highlighted state visually echoes how close the guess was. */
 const VERDICT_HIGHLIGHT_COLOR = { good:'#4A9E7A', mid:'#D4A853', bad:'#F2545F' };
 
-function highlightCountries(names, cls){
-  if(!worldCountriesGeo || !Array.isArray(names) || !names.length) return;
+function highlightStates(names, cls){
+  if(!indiaStatesGeo || !Array.isArray(names) || !names.length) return;
   const color = VERDICT_HIGHLIGHT_COLOR[cls] || '#D4A853';
   names.forEach(name=>{
-    const feature = worldCountriesGeo.features.find(f => countryFeatureMatches(f, name));
+    const feature = indiaStatesGeo.features.find(f => stateFeatureMatches(f, name));
     if(!feature) return;
     let layer;
     try{
@@ -1167,12 +1171,12 @@ function pointInGeoJSONPolygon(lng, lat, geometry){
   return false;
 }
 
-/* Is the guess anywhere inside one of the round's bordering countries? */
-function isInsideAnyCountry(gLatLng, countryNames){
-  if(!worldCountriesGeo) return false;
+/* Is the guess anywhere inside the site's actual state? */
+function isInsideAnyState(gLatLng, stateNames){
+  if(!indiaStatesGeo) return false;
   const [lat, lng] = gLatLng;
-  return countryNames.some(name=>{
-    const feature = worldCountriesGeo.features.find(f => countryFeatureMatches(f, name));
+  return stateNames.some(name=>{
+    const feature = indiaStatesGeo.features.find(f => stateFeatureMatches(f, name));
     return feature ? pointInGeoJSONPolygon(lng, lat, feature.geometry) : false;
   });
 }
@@ -1266,10 +1270,10 @@ function lockGuess(){
   const nearest = nearestOnPaths(gLatLng, round.paths);
   const km = Math.round(nearest.dist);
 
-  // If you're outside the site's marker box but inside a country the site
+  // If you're outside the site's marker box but inside the state the site
   // actually sits in, don't torch the score for it — cap the *scoring* distance.
-  const insideCountry = km > 0 && isInsideAnyCountry(gLatLng, round.countries);
-  const scoringKm = insideCountry ? Math.min(km, 100) : km;
+  const insideState = km > 0 && isInsideAnyState(gLatLng, round.states);
+  const scoringKm = insideState ? Math.min(km, 100) : km;
 
   const v = verdictFor(scoringKm);
   const pts = scoreFor(scoringKm);
@@ -1311,7 +1315,7 @@ function revealResult(round, gLatLng, nearest, km, v, pts){
     }
   });
 
-  highlightCountries(round.countries, v.cls);
+  highlightStates(round.states, v.cls);
 
   const connector = L.polyline([gLatLng, nearest.latlng], { color:'#F2545F', weight:2, opacity:0.85, dashArray:'6,6' }).addTo(map);
   revealLayers.push(connector);
