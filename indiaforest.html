@@ -818,76 +818,789 @@ function siteBox(lat, lng, half){
 
 const ROUNDS = [
 
-  { id:'sundarbans', name:'Sundarbans National Park', region:'South 24 Parganas, West Bengal',
-    fact:"The world's largest contiguous mangrove forest, spread across the Ganges-Brahmaputra delta and shared with Bangladesh. Home to the Bengal tiger population uniquely adapted to a saline mangrove habitat. A UNESCO World Heritage Site and Ramsar wetland.",
-    states:['West Bengal'],
-    paths: siteBox(21.9497, 88.8965)
+  // =========================
+  // ANDAMAN & NICOBAR ISLANDS
+  // =========================
+
+  { id:'campbell_bay', name:'Campbell Bay National Park', region:'Great Nicobar, Andaman & Nicobar Islands',
+    fact:"Located on Great Nicobar Island and part of the Great Nicobar Biosphere Reserve, it protects tropical rainforest habitat important for the Nicobar megapode, giant leatherback turtles and saltwater crocodiles.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(7.02, 93.92)
   },
 
-  { id:'gir', name:'Gir National Park', region:'Junagadh, Gujarat',
-    fact:"The only wild home of the Asiatic lion left in the world, set in a dry deciduous forest landscape. Conservation efforts here have brought the lion back from the brink of extinction over the 20th century.",
-    states:['Gujarat'],
-    paths: siteBox(21.1237, 70.8000)
+  { id:'galathea_bay', name:'Galathea Bay National Park', region:'Great Nicobar, Andaman & Nicobar Islands',
+    fact:"Located in southern Great Nicobar, this protected area is famous for important leatherback turtle nesting beaches and forms part of the Great Nicobar Biosphere Reserve.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(6.75, 93.85)
   },
 
-  { id:'kaziranga', name:'Kaziranga National Park', region:'Golaghat & Nagaon, Assam',
-    fact:"A UNESCO World Heritage Site on the floodplains of the Brahmaputra, home to two-thirds of the world's one-horned rhinoceroses. Its tall elephant grass, marshland and dense forest also shelter tigers and wild elephants.",
-    states:['Assam'],
-    paths: siteBox(26.5775, 93.1750)
+  { id:'mahatma_gandhi_marine', name:'Mahatma Gandhi Marine National Park', region:'Wandoor, South Andaman',
+    fact:"A marine national park around islands off Wandoor, protecting coral reefs, mangroves, sea turtles and marine biodiversity in the Andaman Sea.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(11.55, 92.62)
   },
 
-  { id:'corbett', name:'Jim Corbett National Park', region:'Nainital, Uttarakhand',
-    fact:"India's oldest national park, established in 1936 as Hailey National Park in the Shivalik foothills. It became the launch site of Project Tiger in 1973 and remains one of India's premier tiger reserves.",
-    states:['Uttarakhand'],
-    paths: siteBox(29.5300, 78.7747)
+  { id:'middle_button', name:'Middle Button Island National Park', region:'Ritchies Archipelago, Andaman & Nicobar Islands',
+    fact:"One of India's smallest national parks, consisting of a small coral-fringed island supporting marine ecosystems, reefs and species such as dugongs.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(12.30, 92.75)
   },
 
-  { id:'kanha', name:'Kanha National Park', region:'Mandla & Balaghat, Madhya Pradesh',
-    fact:"A sal and bamboo forest in the Maikal Hills, said to have inspired Rudyard Kipling's 'The Jungle Book'. It is credited with saving the barasingha (swamp deer) from near-extinction.",
-    states:['Madhya Pradesh'],
-    paths: siteBox(22.3344, 80.6119)
+  { id:'mount_manipur', name:'Mount Manipur National Park', region:'South Andaman, Andaman & Nicobar Islands',
+    fact:"Formerly called Mount Harriet National Park, it protects tropical evergreen forest and contains Mount Manipur, one of the highest peaks of the Andaman Islands.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(11.77, 92.75)
   },
 
-  { id:'bandipur', name:'Bandipur National Park', region:'Chamarajanagar, Karnataka',
-    fact:"Part of the Nilgiri Biosphere Reserve, India's first biosphere reserve, and one of the country's finest tiger reserves. It forms a contiguous forest belt with Mudumalai, Wayanad and Nagarhole.",
-    states:['Karnataka'],
-    paths: siteBox(11.6560, 76.6290)
+  { id:'north_button', name:'North Button Island National Park', region:'Ritchies Archipelago, Andaman & Nicobar Islands',
+    fact:"A tiny island national park surrounded by coral reefs and marine habitats, supporting dugongs, sea turtles and other reef-associated wildlife.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(12.28, 92.78)
   },
 
-  { id:'nagarhole', name:'Nagarhole (Rajiv Gandhi) National Park', region:'Kodagu & Mysuru, Karnataka',
-    fact:"A moist deciduous forest along the Kabini reservoir, part of the larger Nilgiri Biosphere Reserve landscape. It hosts one of the highest densities of tigers and Asian elephants in the country.",
-    states:['Karnataka'],
-    paths: siteBox(12.0362, 76.1319)
+  { id:'rani_jhansi_marine', name:'Rani Jhansi Marine National Park', region:'Ritchies Archipelago, Andaman & Nicobar Islands',
+    fact:"A marine national park protecting coral reefs, mangroves and surrounding marine habitats of the Ritchies Archipelago, including important dugong and turtle habitat.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(12.05, 92.95)
   },
 
-  { id:'silent_valley', name:'Silent Valley National Park', region:'Palakkad, Kerala',
-    fact:"One of the last surviving tracts of undisturbed tropical evergreen rainforest in India's Western Ghats. A 1970s–80s public movement against a proposed hydel dam here became a landmark in Indian environmental history.",
-    states:['Kerala'],
-    paths: siteBox(11.0833, 76.4333)
+  { id:'saddle_peak', name:'Saddle Peak National Park', region:'North Andaman, Andaman & Nicobar Islands',
+    fact:"Located on North Andaman Island and named after Saddle Peak, the highest point of the Andaman Islands at about 732 metres.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(13.23, 93.01)
   },
 
-  { id:'simlipal', name:'Similipal National Park', region:'Mayurbhanj, Odisha',
-    fact:"A biosphere reserve and tiger reserve in the Eastern Ghats known for its sal forests, numerous waterfalls, and population of melanistic (black) tigers occasionally reported from the area.",
-    states:['Odisha'],
-    paths: siteBox(21.6167, 86.3167)
+  { id:'south_button', name:'South Button Island National Park', region:'Ritchies Archipelago, Andaman & Nicobar Islands',
+    fact:"One of India's smallest national parks, consisting of a small coral-fringed island with rich reef and marine biodiversity.",
+    states:['Andaman and Nicobar Islands'],
+    paths: siteBox(11.96, 92.99)
+  },
+
+
+  // =========================
+  // ANDHRA PRADESH
+  // =========================
+
+  { id:'papikonda', name:'Papikonda National Park', region:'Godavari Valley, Andhra Pradesh',
+    fact:"Located in the Eastern Ghats along the Godavari River, Papikonda protects tropical forest and important wildlife habitat in the Papikonda hills.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(17.45, 81.55)
+  },
+
+  { id:'rajiv_gandhi_rameswaram', name:'Rajiv Gandhi (Rameswaram) National Park', region:'Kadapa, Andhra Pradesh',
+    fact:"A compact dry-deciduous national park near the Penna River, known for dryland vegetation and wildlife such as blackbuck and chinkara.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(14.78, 79.05)
+  },
+
+  { id:'sri_venkateswara', name:'Sri Venkateswara National Park', region:'Tirupati – Seshachalam Hills, Andhra Pradesh',
+    fact:"Located in the Seshachalam Hills of the Eastern Ghats, it is famous for red sanders forests and species including the slender loris and golden gecko.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(13.72, 79.32)
+  },
+
+
+  // =========================
+  // ARUNACHAL PRADESH
+  // =========================
+
+  { id:'mouling', name:'Mouling National Park', region:'Upper Siang, Arunachal Pradesh',
+    fact:"Part of the Dihang-Dibang Biosphere Reserve, this Eastern Himalayan park contains diverse forests and species such as the takin, red panda and serow.",
+    states:['Arunachal Pradesh'],
+    paths: siteBox(28.65, 94.85)
   },
 
   { id:'namdapha', name:'Namdapha National Park', region:'Changlang, Arunachal Pradesh',
-    fact:"The largest protected area in the Eastern Himalaya and India's northeasternmost national park, spanning a huge altitude range. It is the only park in the world reported to hold four big cat species — tiger, leopard, snow leopard and clouded leopard.",
+    fact:"A huge Eastern Himalayan protected area spanning a remarkable altitude range from lowland rainforest to alpine habitats. It is famous for supporting tiger, leopard, snow leopard and clouded leopard.",
     states:['Arunachal Pradesh'],
-    paths: siteBox(27.5000, 96.4000)
+    paths: siteBox(27.50, 96.40)
   },
 
-  { id:'periyar', name:'Periyar National Park', region:'Idukki & Pathanamthitta, Kerala',
-    fact:"A tiger and elephant reserve in the Western Ghats built around the Periyar reservoir, formed by a 19th-century dam. It is one of India's most visited wildlife sanctuaries, known for boat safaris that bring visitors close to wild elephant herds.",
-    states:['Kerala'],
-    paths: siteBox(9.4667, 77.2333)
+
+  // =========================
+  // ASSAM
+  // =========================
+
+  { id:'dehing_patkai', name:'Dehing Patkai National Park', region:'Dibrugarh – Tinsukia, Assam',
+    fact:"Known for its extensive lowland tropical rainforest, often called the 'Amazon of the East'. It supports hoolock gibbons, Chinese pangolins and rich rainforest biodiversity.",
+    states:['Assam'],
+    paths: siteBox(27.35, 95.75)
   },
+
+  { id:'dibru_saikhowa', name:'Dibru-Saikhowa National Park', region:'Tinsukia – Dibrugarh, Assam',
+    fact:"A riverine and wetland ecosystem between the Brahmaputra and Lohit rivers, famous for feral horses and the endangered white-winged wood duck.",
+    states:['Assam'],
+    paths: siteBox(27.60, 95.35)
+  },
+
+  { id:'kaziranga', name:'Kaziranga National Park', region:'Golaghat – Nagaon, Assam',
+    fact:"A UNESCO World Heritage Site on the floodplains of the Brahmaputra and one of the world's most important strongholds of the greater one-horned rhinoceros.",
+    states:['Assam'],
+    paths: siteBox(26.58, 93.17)
+  },
+
+  { id:'manas', name:'Manas National Park', region:'Baksa – Chirang, Assam',
+    fact:"A UNESCO World Heritage Site along the Bhutan border and the Manas River, famous for the pygmy hog, golden langur, hispid hare, tiger and elephant.",
+    states:['Assam'],
+    paths: siteBox(26.72, 91.00)
+  },
+
+  { id:'nameri', name:'Nameri National Park', region:'Sonitpur, Assam',
+    fact:"Located in the foothills of the Eastern Himalayas along the Jia-Bhoroli River, it is an important habitat of the white-winged wood duck and forms a transboundary landscape with Arunachal Pradesh.",
+    states:['Assam'],
+    paths: siteBox(27.02, 92.78)
+  },
+
+  { id:'orang', name:'Orang National Park', region:'Darrang – Sonitpur, Assam',
+    fact:"Often called 'Mini Kaziranga', Orang lies on the north bank of the Brahmaputra and supports one-horned rhinoceros, tiger, pygmy hog and other floodplain wildlife.",
+    states:['Assam'],
+    paths: siteBox(26.58, 92.30)
+  },
+
+  { id:'raimona', name:'Raimona National Park', region:'Kokrajhar, Assam',
+    fact:"Located along the Indo-Bhutan border, Raimona is particularly important for golden langurs and forms part of the larger transboundary forest landscape of western Assam.",
+    states:['Assam'],
+    paths: siteBox(26.55, 90.30)
+  },
+
+
+  // =========================
+  // BIHAR
+  // =========================
+
+  { id:'valmiki', name:'Valmiki National Park', region:'West Champaran, Bihar',
+    fact:"Located along the Indo-Nepal border and forming the core of Bihar's only tiger reserve, it is ecologically connected with Nepal's Chitwan landscape.",
+    states:['Bihar'],
+    paths: siteBox(27.35, 84.15)
+  },
+
+
+  // =========================
+  // CHHATTISGARH
+  // =========================
+
+  { id:'guru_ghasidas', name:'Guru Ghasidas (Sanjay) National Park', region:'Surguja – Koriya, Chhattisgarh',
+    fact:"A large forest landscape in northern Chhattisgarh forming part of the Guru Ghasidas-Tamor Pingla tiger landscape and important for central Indian wildlife.",
+    states:['Chhattisgarh'],
+    paths: siteBox(23.60, 82.45)
+  },
+
+  { id:'indravati', name:'Indravati National Park', region:'Bastar, Chhattisgarh',
+    fact:"Named after the Indravati River, this large forest park forms part of the Indravati Tiger Reserve and is an important refuge for wild water buffalo.",
+    states:['Chhattisgarh'],
+    paths: siteBox(18.75, 81.15)
+  },
+
+  { id:'kanger_valley', name:'Kanger Valley National Park', region:'Bastar, Chhattisgarh',
+    fact:"Known for dense forests, limestone caves such as Kutumsar and Kailash caves, and the Bastar hill myna, the state bird of Chhattisgarh.",
+    states:['Chhattisgarh'],
+    paths: siteBox(18.80, 81.95)
+  },
+
+
+  // =========================
+  // GOA
+  // =========================
+
+  { id:'bhagwan_mahavir', name:'Bhagwan Mahaveer (Mollem) National Park', region:'Western Ghats, Goa',
+    fact:"Goa's largest protected area, located in the Western Ghats and famous for Dudhsagar Falls, dense forest and rich biodiversity.",
+    states:['Goa'],
+    paths: siteBox(15.31, 74.25)
+  },
+
+
+  // =========================
+  // GUJARAT
+  // =========================
+
+  { id:'blackbuck_velavadar', name:'Blackbuck (Velavadar) National Park', region:'Bhavnagar, Gujarat',
+    fact:"A grassland national park famous for blackbuck, nilgai, wolves and large winter roosts of harriers near the Gulf of Khambhat.",
+    states:['Gujarat'],
+    paths: siteBox(21.83, 72.05)
+  },
+
+  { id:'gir', name:'Gir National Park', region:'Saurashtra, Gujarat',
+    fact:"The last natural stronghold of the Asiatic lion, located in the dry deciduous forests of Saurashtra.",
+    states:['Gujarat'],
+    paths: siteBox(21.12, 70.80)
+  },
+
+  { id:'marine_gulf_kutch', name:'Marine National Park, Gulf of Kachchh', region:'Jamnagar – Gulf of Kutch, Gujarat',
+    fact:"India's first marine national park, established in 1982, protecting coral reefs, mangroves, sea grass and marine species including dugongs and sea turtles.",
+    states:['Gujarat'],
+    paths: siteBox(22.45, 69.10)
+  },
+
+  { id:'vansda', name:'Vansda National Park', region:'Dang, Gujarat',
+    fact:"A densely forested national park in southern Gujarat's Western Ghats landscape, dominated by moist deciduous vegetation and supporting leopards and other wildlife.",
+    states:['Gujarat'],
+    paths: siteBox(20.76, 73.50)
+  },
+
+
+  // =========================
+  // HARYANA
+  // =========================
+
+  { id:'kalesar', name:'Kalesar National Park', region:'Yamunanagar, Haryana',
+    fact:"A sal-dominated forest in the Shivalik foothills near the Haryana-Himachal-Uttarakhand region, supporting leopard, sambar, chital and other Himalayan foothill fauna.",
+    states:['Haryana'],
+    paths: siteBox(30.35, 77.43)
+  },
+
+  { id:'sultanpur', name:'Sultanpur National Park', region:'Gurugram, Haryana',
+    fact:"A wetland national park near Delhi and Gurugram that is an important wintering and stopover site for migratory waterbirds.",
+    states:['Haryana'],
+    paths: siteBox(28.47, 76.89)
+  },
+
+
+  // =========================
+  // HIMACHAL PRADESH
+  // =========================
+
+  { id:'great_himalayan', name:'Great Himalayan National Park', region:'Kullu, Himachal Pradesh',
+    fact:"A UNESCO World Heritage Site protecting high-altitude Himalayan ecosystems and species including the western tragopan, snow leopard and Himalayan tahr.",
+    states:['Himachal Pradesh'],
+    paths: siteBox(31.73, 77.50)
+  },
+
+  { id:'inderkilla', name:'Inderkilla National Park', region:'Kullu, Himachal Pradesh',
+    fact:"A high-altitude protected area in the Kullu Himalaya containing alpine habitats and species such as snow leopard and Himalayan tahr.",
+    states:['Himachal Pradesh'],
+    paths: siteBox(32.25, 77.35)
+  },
+
+  { id:'khirganga', name:'Khirganga National Park', region:'Parvati Valley, Himachal Pradesh',
+    fact:"A Himalayan protected area around the upper Parvati Valley, containing alpine and subalpine forests and habitat for brown bear, musk deer and other mountain fauna.",
+    states:['Himachal Pradesh'],
+    paths: siteBox(32.02, 77.55)
+  },
+
+  { id:'pin_valley', name:'Pin Valley National Park', region:'Spiti, Himachal Pradesh',
+    fact:"A high-altitude cold-desert national park in the Trans-Himalaya, famous for snow leopard, Siberian ibex and other species adapted to extreme conditions.",
+    states:['Himachal Pradesh'],
+    paths: siteBox(32.02, 78.00)
+  },
+
+  { id:'simbalbara', name:'Simbalbara National Park', region:'Sirmaur, Himachal Pradesh',
+    fact:"Located in the Shivalik foothills and known for sal forests, goral, sambar and other Himalayan foothill wildlife.",
+    states:['Himachal Pradesh'],
+    paths: siteBox(30.52, 77.45)
+  },
+
+
+  // =========================
+  // JAMMU & KASHMIR
+  // =========================
+
+  { id:'salim_ali', name:'City Forest (Salim Ali) National Park', region:'Srinagar, Jammu & Kashmir',
+    fact:"A small urban national park near Srinagar associated with ornithologist Salim Ali and important for birds and wetland-associated wildlife.",
+    states:['Jammu and Kashmir'],
+    paths: siteBox(34.05, 74.88)
+  },
+
+  { id:'dachigam', name:'Dachigam National Park', region:'Srinagar, Jammu & Kashmir',
+    fact:"The principal habitat of the endangered Hangul or Kashmir stag, with rugged Himalayan forests and mountain valleys near Srinagar.",
+    states:['Jammu and Kashmir'],
+    paths: siteBox(34.15, 75.05)
+  },
+
+  { id:'kishtwar', name:'Kishtwar High Altitude National Park', region:'Kishtwar, Jammu & Kashmir',
+    fact:"A rugged high-altitude Himalayan park containing snow leopard, Himalayan brown bear, markhor, musk deer and extensive mountain habitats.",
+    states:['Jammu and Kashmir'],
+    paths: siteBox(33.55, 76.05)
+  },
+
+
+  // =========================
+  // JHARKHAND
+  // =========================
+
+  { id:'betla', name:'Betla National Park', region:'Palamu, Jharkhand',
+    fact:"Located in the Chota Nagpur Plateau and part of Palamu Tiger Reserve, Betla was among India's original Project Tiger reserves and contains sal-dominated forests.",
+    states:['Jharkhand'],
+    paths: siteBox(23.88, 84.18)
+  },
+
+
+  // =========================
+  // KARNATAKA
+  // =========================
+
+  { id:'anshi_kali', name:'Anshi (Kali) National Park', region:'Uttara Kannada, Karnataka',
+    fact:"Part of Kali Tiger Reserve in the Western Ghats, this forest landscape is known for rich biodiversity and occasional black panther sightings.",
+    states:['Karnataka'],
+    paths: siteBox(14.98, 74.45)
+  },
+
+  { id:'bandipur', name:'Bandipur National Park', region:'Chamarajanagar, Karnataka',
+    fact:"A major tiger and elephant habitat in the Nilgiri Biosphere Reserve, forming a contiguous forest landscape with Nagarhole, Wayanad and Mudumalai.",
+    states:['Karnataka'],
+    paths: siteBox(11.66, 76.63)
+  },
+
+  { id:'bannerghatta', name:'Bannerghatta National Park', region:'Bengaluru, Karnataka',
+    fact:"A forested protected area near Bengaluru containing elephant habitat and a biological park that includes India's first butterfly park.",
+    states:['Karnataka'],
+    paths: siteBox(12.80, 77.58)
+  },
+
+  { id:'kudremukh', name:'Kudremukh National Park', region:'Western Ghats, Karnataka',
+    fact:"A major Western Ghats park of shola-grassland and evergreen forest, associated with the headwaters of the Tunga, Bhadra and Nethravathi rivers.",
+    states:['Karnataka'],
+    paths: siteBox(13.27, 75.25)
+  },
+
+  { id:'nagarhole', name:'Nagarhole (Rajiv Gandhi) National Park', region:'Kodagu – Mysuru, Karnataka',
+    fact:"A major tiger and elephant habitat in the Nilgiri Biosphere Reserve, connected to Bandipur through the wider Nilgiri forest landscape.",
+    states:['Karnataka'],
+    paths: siteBox(12.04, 76.13)
+  },
+
+
+  // =========================
+  // KERALA
+  // =========================
+
+  { id:'anamudi_shola', name:'Anamudi Shola National Park', region:'Idukki, Kerala',
+    fact:"A high-altitude shola-grassland ecosystem in the Western Ghats near Munnar, supporting Nilgiri tahr and numerous endemic species.",
+    states:['Kerala'],
+    paths: siteBox(10.20, 77.20)
+  },
+
+  { id:'eravikulam', name:'Eravikulam National Park', region:'Idukki, Kerala',
+    fact:"Famous for having one of the largest populations of the endangered Nilgiri tahr and for the spectacular mass flowering of Neelakurinji.",
+    states:['Kerala'],
+    paths: siteBox(10.20, 77.05)
+  },
+
+  { id:'mathikettan_shola', name:'Mathikettan Shola National Park', region:'Idukki, Kerala',
+    fact:"A montane shola-grassland national park in the Munnar highlands, supporting elephants, sambar and numerous endemic species.",
+    states:['Kerala'],
+    paths: siteBox(10.05, 77.20)
+  },
+
+  { id:'pampadum_shola', name:'Pampadum Shola National Park', region:'Idukki, Kerala',
+    fact:"Kerala's smallest shola national park, located along the Kerala-Tamil Nadu highlands and known for montane forests and endemic wildlife.",
+    states:['Kerala'],
+    paths: siteBox(10.12, 77.28)
+  },
+
+  { id:'periyar', name:'Periyar National Park', region:'Idukki – Pathanamthitta, Kerala',
+    fact:"A famous tiger and elephant reserve centered on Periyar Lake, known for forest landscapes and boat-based wildlife viewing.",
+    states:['Kerala'],
+    paths: siteBox(9.47, 77.23)
+  },
+
+  { id:'silent_valley', name:'Silent Valley National Park', region:'Palakkad, Kerala',
+    fact:"One of India's finest remaining tracts of tropical evergreen rainforest in the Western Ghats, famous for the lion-tailed macaque and the environmental movement that saved it from a proposed dam.",
+    states:['Kerala'],
+    paths: siteBox(11.08, 76.43)
+  },
+
+
+  // =========================
+  // LADAKH
+  // =========================
+
+  { id:'hemis', name:'Hemis National Park', region:'Ladakh',
+    fact:"India's largest national park, located in the Trans-Himalayan cold desert and famous for its high-altitude snow leopard habitat.",
+    states:['Ladakh'],
+    paths: siteBox(33.95, 77.45)
+  },
+
+
+  // =========================
+  // MADHYA PRADESH
+  // =========================
 
   { id:'bandhavgarh', name:'Bandhavgarh National Park', region:'Umaria, Madhya Pradesh',
-    fact:"A former hunting reserve of the Rewa royal family, now known for having one of the highest densities of Bengal tigers of any park in India. It is dotted with ancient caves and a hilltop fort dating back over 2,000 years.",
+    fact:"A famous tiger landscape known for high tiger density and the historic Bandhavgarh Fort located within the park.",
     states:['Madhya Pradesh'],
-    paths: siteBox(23.6236, 80.9814)
+    paths: siteBox(23.63, 80.98)
+  },
+
+  { id:'ghughua_fossil', name:'Ghughua Fossil National Park', region:'Dindori, Madhya Pradesh',
+    fact:"A unique fossil park preserving plant fossils dating back tens of millions of years, providing evidence of ancient vegetation and climate.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(22.52, 81.45)
+  },
+
+  { id:'kanha', name:'Kanha National Park', region:'Mandla – Balaghat, Madhya Pradesh',
+    fact:"A major sal and bamboo forest famous for conservation of the hard-ground barasingha and closely associated with the landscape that inspired The Jungle Book.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(22.33, 80.61)
+  },
+
+  { id:'kuno', name:'Kuno National Park', region:'Sheopur, Madhya Pradesh',
+    fact:"The site of India's Project Cheetah, where African cheetahs were introduced beginning in 2022. The park lies in the Kuno River landscape.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(25.70, 77.10)
+  },
+
+  { id:'madhav', name:'Madhav National Park', region:'Shivpuri, Madhya Pradesh',
+    fact:"A historic protected landscape around Sakhya Sagar Lake and the Shivpuri forests, known for chital, chinkara and diverse central Indian wildlife.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(25.45, 77.73)
+  },
+
+  { id:'panna', name:'Panna National Park', region:'Panna – Chhatarpur, Madhya Pradesh',
+    fact:"Located along the Ken River, Panna became a major conservation success after tiger reintroduction and is part of the Panna Tiger Reserve landscape.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(24.72, 80.18)
+  },
+
+  { id:'pench_mp', name:'Pench National Park', region:'Seoni – Chhindwara, Madhya Pradesh',
+    fact:"Located around the Pench River and associated with the landscape that inspired Rudyard Kipling's The Jungle Book.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(21.65, 79.35)
+  },
+
+  { id:'sanjay_mp', name:'Sanjay (Dubri) National Park', region:'Sidhi, Madhya Pradesh',
+    fact:"A forested national park forming part of the Sanjay-Dubri tiger landscape and connected ecologically with Guru Ghasidas forests in Chhattisgarh.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(24.20, 82.65)
+  },
+
+  { id:'satpura', name:'Satpura National Park', region:'Narmadapuram, Madhya Pradesh',
+    fact:"A rugged central Indian forest landscape within the Satpura range, known for its varied terrain, sal and teak forests and Indian giant squirrel.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(22.55, 78.43)
+  },
+
+  { id:'van_vihar', name:'Van Vihar National Park', region:'Bhopal, Madhya Pradesh',
+    fact:"An unusual urban national park located beside Upper Lake in Bhopal, functioning as a protected green space and wildlife conservation facility within the city.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(23.22, 77.34)
+  },
+
+
+  // =========================
+  // MAHARASHTRA
+  // =========================
+
+  { id:'chandoli', name:'Chandoli National Park', region:'Sahyadri, Maharashtra',
+    fact:"A Western Ghats national park forming part of Sahyadri Tiger Reserve and known for evergreen and moist deciduous forests.",
+    states:['Maharashtra'],
+    paths: siteBox(17.12, 73.83)
+  },
+
+  { id:'gugamal', name:'Gugamal National Park', region:'Amravati, Maharashtra',
+    fact:"Part of the Melghat Tiger Reserve in the Satpura landscape, containing teak forests and important tiger habitat.",
+    states:['Maharashtra'],
+    paths: siteBox(21.40, 77.30)
+  },
+
+  { id:'nawegaon', name:'Nawegaon National Park', region:'Gondia, Maharashtra',
+    fact:"An eastern Maharashtra park known for rich birdlife, forests and wetlands and now part of the wider Nawegaon-Nagzira tiger landscape.",
+    states:['Maharashtra'],
+    paths: siteBox(21.28, 80.12)
+  },
+
+  { id:'pench_mh', name:'Pench (Jawaharlal Nehru) National Park', region:'Nagpur, Maharashtra',
+    fact:"The Maharashtra portion of the Pench landscape, characterized by teak forests and wildlife including tiger, gaur and dhole.",
+    states:['Maharashtra'],
+    paths: siteBox(21.70, 79.25)
+  },
+
+  { id:'sanjay_gandhi', name:'Sanjay Gandhi National Park', region:'Mumbai, Maharashtra',
+    fact:"A large urban national park within Mumbai, famous for leopards, forested hills, Tulsi and Vihar lakes and the ancient Kanheri Buddhist caves.",
+    states:['Maharashtra'],
+    paths: siteBox(19.22, 72.91)
+  },
+
+  { id:'tadoba', name:'Tadoba (Tadoba-Andhari) National Park', region:'Chandrapur, Maharashtra',
+    fact:"A major tiger landscape in central India, known for high tiger visibility, Tadoba Lake and the Andhari River.",
+    states:['Maharashtra'],
+    paths: siteBox(20.25, 79.35)
+  },
+
+
+  // =========================
+  // MANIPUR
+  // =========================
+
+  { id:'keibul_lamjao', name:'Keibul Lamjao National Park', region:'Loktak Lake, Manipur',
+    fact:"The world's only floating national park, formed on floating phumdis of Loktak Lake and famous as the last natural habitat of the endangered Sangai deer.",
+    states:['Manipur'],
+    paths: siteBox(24.55, 93.82)
+  },
+
+
+  // =========================
+  // MEGHALAYA
+  // =========================
+
+  { id:'balphakram', name:'Balphakram National Park', region:'Garo Hills, Meghalaya',
+    fact:"Located in the Garo Hills near Bangladesh, Balphakram is associated with Garo cultural traditions and supports elephants, red pandas and diverse hill wildlife.",
+    states:['Meghalaya'],
+    paths: siteBox(25.25, 90.95)
+  },
+
+  { id:'nokrek', name:'Nokrek National Park', region:'Garo Hills, Meghalaya',
+    fact:"A UNESCO Biosphere Reserve in the Garo Hills and an important genetic refuge for wild Citrus indica, the Indian wild orange.",
+    states:['Meghalaya'],
+    paths: siteBox(25.47, 90.30)
+  },
+
+
+  // =========================
+  // MIZORAM
+  // =========================
+
+  { id:'murlen', name:'Murlen National Park', region:'Champhai, Mizoram',
+    fact:"A montane forest park near the Myanmar border, supporting species such as hoolock gibbon, serow and other northeastern hill fauna.",
+    states:['Mizoram'],
+    paths: siteBox(23.58, 93.05)
+  },
+
+  { id:'phawngpui', name:'Phawngpui (Blue Mountain) National Park', region:'Lawngtlai, Mizoram',
+    fact:"Centered around Phawngpui, the highest peak of Mizoram, this park contains montane forests and species including serow, goral and Blyth's tragopan.",
+    states:['Mizoram'],
+    paths: siteBox(22.65, 93.05)
+  },
+
+
+  // =========================
+  // NAGALAND
+  // =========================
+
+  { id:'intanki', name:'Intanki (Ntangki) National Park', region:'Peren, Nagaland',
+    fact:"Nagaland's only national park, protecting tropical and subtropical forests and wildlife including hoolock gibbons and other northeastern species.",
+    states:['Nagaland'],
+    paths: siteBox(25.55, 93.65)
+  },
+
+
+  // =========================
+  // ODISHA
+  // =========================
+
+  { id:'bhitarkanika', name:'Bhitarkanika National Park', region:'Kendrapara, Odisha',
+    fact:"A major mangrove ecosystem in the Brahmani-Baitarani delta and one of India's most important habitats for saltwater crocodiles.",
+    states:['Odisha'],
+    paths: siteBox(20.65, 86.90)
+  },
+
+  { id:'similipal', name:'Similipal National Park', region:'Mayurbhanj, Odisha',
+    fact:"A tiger reserve and biosphere reserve dominated by sal forests, famous for waterfalls and occasional melanistic tigers.",
+    states:['Odisha'],
+    paths: siteBox(21.62, 86.32)
+  },
+
+
+  // =========================
+  // RAJASTHAN
+  // =========================
+
+  { id:'mukundra_hills', name:'Mukundra Hills National Park', region:'Kota – Jhalawar, Rajasthan',
+    fact:"A forested national park in the Mukundra and Darrah hills forming part of a major tiger landscape in southeastern Rajasthan.",
+    states:['Rajasthan'],
+    paths: siteBox(24.65, 75.85)
+  },
+
+  { id:'desert', name:'Desert National Park', region:'Jaisalmer – Barmer, Rajasthan',
+    fact:"A vast protected area in the Thar Desert and one of India's most important habitats for the critically endangered Great Indian Bustard.",
+    states:['Rajasthan'],
+    paths: siteBox(26.75, 70.55)
+  },
+
+  { id:'keoladeo', name:'Keoladeo (Bharatpur) National Park', region:'Bharatpur, Rajasthan',
+    fact:"A famous man-made wetland and Ramsar and UNESCO World Heritage Site, internationally important for migratory and resident waterbirds.",
+    states:['Rajasthan'],
+    paths: siteBox(27.16, 77.52)
+  },
+
+  { id:'ranthambore', name:'Ranthambore National Park', region:'Sawai Madhopur, Rajasthan',
+    fact:"A famous tiger landscape at the meeting zone of the Aravalli and Vindhya ranges, known for its historic hilltop fort and visible tiger population.",
+    states:['Rajasthan'],
+    paths: siteBox(26.02, 76.50)
+  },
+
+  { id:'sariska', name:'Sariska National Park', region:'Alwar, Rajasthan',
+    fact:"A tiger reserve in the Aravalli hills where tigers were locally extirpated but subsequently reintroduced, making it an important tiger conservation case study.",
+    states:['Rajasthan'],
+    paths: siteBox(27.33, 76.44)
+  },
+
+
+  // =========================
+  // SIKKIM
+  // =========================
+
+  { id:'khangchendzonga', name:'Khangchendzonga National Park', region:'Sikkim Himalaya',
+    fact:"A UNESCO Mixed World Heritage Site surrounding the Kanchenjunga landscape and protecting alpine and high-altitude ecosystems with snow leopard, red panda and many Himalayan species.",
+    states:['Sikkim'],
+    paths: siteBox(27.67, 88.25)
+  },
+
+
+  // =========================
+  // TAMIL NADU
+  // =========================
+
+  { id:'guindy', name:'Guindy National Park', region:'Chennai, Tamil Nadu',
+    fact:"One of India's smallest national parks, located within Chennai and protecting dry evergreen vegetation along with blackbuck, spotted deer and other urban wildlife.",
+    states:['Tamil Nadu'],
+    paths: siteBox(13.01, 80.23)
+  },
+
+  { id:'gulf_mannar', name:'Gulf of Mannar Marine National Park', region:'Gulf of Mannar, Tamil Nadu',
+    fact:"A marine national park consisting of a chain of islands, coral reefs, seagrass beds and mangroves. The region is important for dugongs, sea turtles and other marine life.",
+    states:['Tamil Nadu'],
+    paths: siteBox(9.15, 79.15)
+  },
+
+  { id:'indira_gandhi', name:'Indira Gandhi (Annamalai) National Park', region:'Anaimalai Hills, Tamil Nadu',
+    fact:"Located in the Western Ghats and forming the core of the Anamalai Tiger Reserve, it supports lion-tailed macaques, Nilgiri tahr, elephants and diverse rainforest wildlife.",
+    states:['Tamil Nadu'],
+    paths: siteBox(10.40, 76.95)
+  },
+
+  { id:'mudumalai', name:'Mudumalai National Park', region:'Nilgiris, Tamil Nadu',
+    fact:"A major wildlife landscape of the Nilgiri Biosphere Reserve, connected to Bandipur and Wayanad and known for elephants, tigers and rich dry and moist deciduous forests.",
+    states:['Tamil Nadu'],
+    paths: siteBox(11.57, 76.55)
+  },
+
+  { id:'mukurthi', name:'Mukurthi National Park', region:'Nilgiris, Tamil Nadu',
+    fact:"A high-altitude shola-grassland ecosystem in the Nilgiris and an important stronghold of the endangered Nilgiri tahr.",
+    states:['Tamil Nadu'],
+    paths: siteBox(11.45, 76.58)
+  },
+
+
+  // =========================
+  // TELANGANA
+  // =========================
+
+  { id:'kbr', name:'Kasu Brahmananda Reddy National Park', region:'Hyderabad, Telangana',
+    fact:"An urban national park in the heart of Hyderabad, protecting dry deciduous vegetation and green space around the historic Chiran Palace area.",
+    states:['Telangana'],
+    paths: siteBox(17.42, 78.42)
+  },
+
+  { id:'mahavir_harina', name:'Mahavir Harina Vanasthali National Park', region:'Hyderabad, Telangana',
+    fact:"An urban protected area established on a former hunting ground and known particularly for blackbuck and other dryland wildlife.",
+    states:['Telangana'],
+    paths: siteBox(17.33, 78.62)
+  },
+
+  { id:'mrugavani', name:'Mrugavani National Park', region:'Hyderabad, Telangana',
+    fact:"A small dry-deciduous national park near Hyderabad, protecting urban-fringe forest habitat and wildlife including chital and smaller mammals.",
+    states:['Telangana'],
+    paths: siteBox(17.35, 78.28)
+  },
+
+
+  // =========================
+  // TRIPURA
+  // =========================
+
+  { id:'bison_tripura', name:'Bison (Rajbari) National Park', region:'Trishna, Tripura',
+    fact:"A forested protected area in southern Tripura known for gaur or Indian bison, hoolock gibbons and other northeastern wildlife.",
+    states:['Tripura'],
+    paths: siteBox(23.28, 91.48)
+  },
+
+  { id:'clouded_leopard', name:'Clouded Leopard (Sipahijola) National Park', region:'Sepahijala, Tripura',
+    fact:"A small protected forest region known for the clouded leopard and other northeastern fauna including Phayre's langur.",
+    states:['Tripura'],
+    paths: siteBox(23.67, 91.35)
+  },
+
+
+  // =========================
+  // UTTAR PRADESH
+  // =========================
+
+  { id:'dudhwa', name:'Dudhwa National Park', region:'Lakhimpur Kheri, Uttar Pradesh',
+    fact:"A major Terai ecosystem on the Indo-Nepal border, famous for swamp deer, tigers and successful reintroduction of the greater one-horned rhinoceros.",
+    states:['Uttar Pradesh'],
+    paths: siteBox(28.50, 80.65)
+  },
+
+
+  // =========================
+  // UTTARAKHAND
+  // =========================
+
+  { id:'gangotri', name:'Gangotri National Park', region:'Uttarkashi, Uttarakhand',
+    fact:"A high-altitude Himalayan park surrounding the Gangotri region and glacier landscape, associated with the source region of the Bhagirathi River.",
+    states:['Uttarakhand'],
+    paths: siteBox(30.95, 79.10)
+  },
+
+  { id:'govind_pashu_vihar', name:'Govind Pashu Vihar National Park', region:'Uttarkashi, Uttarakhand',
+    fact:"A Himalayan protected area around the Tons and Yamuna headwaters, providing habitat for snow leopard, western tragopan and other high-altitude species.",
+    states:['Uttarakhand'],
+    paths: siteBox(31.10, 78.30)
+  },
+
+  { id:'corbett', name:'Jim Corbett National Park', region:'Nainital – Pauri Garhwal, Uttarakhand',
+    fact:"India's oldest national park, established in 1936 as Hailey National Park, and the site where Project Tiger was launched in 1973.",
+    states:['Uttarakhand'],
+    paths: siteBox(29.53, 78.77)
+  },
+
+  { id:'nanda_devi', name:'Nanda Devi National Park', region:'Chamoli, Uttarakhand',
+    fact:"A UNESCO World Heritage Site surrounding the Nanda Devi massif and protecting high-altitude Himalayan ecosystems and species such as snow leopard and Himalayan musk deer.",
+    states:['Uttarakhand'],
+    paths: siteBox(30.62, 79.85)
+  },
+
+  { id:'rajaji', name:'Rajaji National Park', region:'Haridwar – Dehradun, Uttarakhand',
+    fact:"A major Shivalik forest landscape and elephant habitat around the Ganga and Song river systems, forming an important northern limit of Asian elephant distribution.",
+    states:['Uttarakhand'],
+    paths: siteBox(30.05, 78.15)
+  },
+
+  { id:'valley_flowers', name:'Valley of Flowers National Park', region:'Chamoli, Uttarakhand',
+    fact:"A UNESCO World Heritage Site famous for alpine meadows filled with endemic Himalayan flowers during the summer, including a spectacular seasonal floral display.",
+    states:['Uttarakhand'],
+    paths: siteBox(30.73, 79.60)
+  },
+
+
+  // =========================
+  // WEST BENGAL
+  // =========================
+
+  { id:'buxa', name:'Buxa National Park', region:'Alipurduar, West Bengal',
+    fact:"A major Dooars forest landscape along the Bhutan border and an important wildlife corridor connecting northeastern India with Bhutan.",
+    states:['West Bengal'],
+    paths: siteBox(26.70, 89.58)
+  },
+
+  { id:'gorumara', name:'Gorumara National Park', region:'Jalpaiguri, West Bengal',
+    fact:"A Dooars national park known for one-horned rhinoceros, gaur and riverine forests around the Murti and Raidak river systems.",
+    states:['West Bengal'],
+    paths: siteBox(26.70, 88.80)
+  },
+
+  { id:'jaldapara', name:'Jaldapara National Park', region:'Alipurduar, West Bengal',
+    fact:"A major Terai-Dooars grassland and forest ecosystem known for the greater one-horned rhinoceros, elephants and the Torsa River.",
+    states:['West Bengal'],
+    paths: siteBox(26.70, 89.30)
+  },
+
+  { id:'neora_valley', name:'Neora Valley National Park', region:'Kalimpong, West Bengal',
+    fact:"A pristine Eastern Himalayan forest landscape famous for red panda habitat and its position at the ecological meeting point of Bengal, Sikkim and Bhutan.",
+    states:['West Bengal'],
+    paths: siteBox(27.08, 88.70)
+  },
+
+  { id:'singalila', name:'Singalila National Park', region:'Darjeeling, West Bengal',
+    fact:"A high-altitude Himalayan park along the Singalila Ridge, famous for red pandas, Himalayan black bears and the Sandakphu trekking landscape.",
+    states:['West Bengal'],
+    paths: siteBox(27.10, 88.00)
+  },
+
+  { id:'sundarbans', name:'Sundarbans National Park', region:'South 24 Parganas, West Bengal',
+    fact:"The world's largest contiguous mangrove forest, part of the Ganges-Brahmaputra delta and famous for the Royal Bengal tiger adapted to a saline mangrove environment.",
+    states:['West Bengal'],
+    paths: siteBox(21.95, 88.90)
   }
 
 ];
