@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>World Straits Map Quiz & Geography Game | MapiDesk</title>
+<title>World Currents Map Quiz & Geography Game | MapiDesk</title>
 
 <!-- Theme: set instantly, before any CSS loads -->
 <script>
@@ -1117,7 +1117,7 @@
             Explore the Waters
           </div>
           <h1>Strait <span>Navigator</span></h1>
-          <p class="sub">Finish a run and get a link with the exact same 10 straits, in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, strait by strait. No sign-up, just a link.</p>
+          <p class="sub">Finish a run and get a link with the exact same 10 Currents, in the exact same order. Send it to a friend — their score stays hidden until they chart their own course, then you'll see who navigated closer, strait by strait. No sign-up, just a link.</p>
         </div>
       </div>
 
@@ -1129,14 +1129,14 @@
             </div>
             <div>
               <h3>Your Mission</h3>
-              <p>Navigate all 10 straits in the correct order.</p>
+              <p>Navigate all 10 Currents in the correct order.</p>
             </div>
           </div>
           <div class="info-body">
             <div class="mini-stats">
               <div class="mini-stat">
                 <div class="icon-circle blue"><svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg></div>
-                <div class="mini-stat-text"><span class="t">10 straits</span><span class="d">In exact order</span></div>
+                <div class="mini-stat-text"><span class="t">10 Currents</span><span class="d">In exact order</span></div>
               </div>
               <div class="mini-stat">
                 <div class="icon-circle violet"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div>
@@ -1175,7 +1175,7 @@
         <div class="steps-row">
           <div class="step">
             <div class="step-num">1</div>
-            <div class="step-text"><div class="t">Complete the Mission</div><div class="d">Find all 10 straits in order</div></div>
+            <div class="step-text"><div class="t">Complete the Mission</div><div class="d">Find all 10 Currents in order</div></div>
           </div>
           <div class="step">
             <div class="step-num">2</div>
@@ -1203,7 +1203,7 @@
     <div class="panel wide" style="max-width:900px;">
       <div class="mode-badge"><span class="dot"></span>Incoming Challenge</div>
       <h1 style="text-align:left;">You've Been <span>Challenged</span></h1>
-      <p class="sub" style="text-align:left;">A friend already charted these waters and dared you to beat them. Same 10 straits, same order — their score stays hidden until you finish your own run.</p>
+      <p class="sub" style="text-align:left;">A friend already charted these waters and dared you to beat them. Same 10 Currents, same order — their score stays hidden until you finish your own run.</p>
 
       <div class="info-cards">
         <div class="info-card accent">
@@ -1213,7 +1213,7 @@
             </div>
             <div>
               <h3>From <span id="invite-rival-name">A navigator</span></h3>
-              <p>Locked in a score across all 10 straits</p>
+              <p>Locked in a score across all 10 Currents</p>
             </div>
           </div>
           <div class="info-body">
@@ -1290,7 +1290,7 @@
           <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M12 6.3V20M5 13a7 7 0 0014 0M5 13H3M19 13h2M8.2 18l-3-2M15.8 18l3-2"/></svg>
           Challenge a Friend
         </div>
-        <div class="share-sub">Send them this exact run's 10 straits and see if they can out-navigate you.</div>
+        <div class="share-sub">Send them this exact run's 10 Currents and see if they can out-navigate you.</div>
         <div class="link-box">
           <input id="challenge-link" readonly placeholder="Tap Copy to generate your link…">
           <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
@@ -1579,7 +1579,7 @@ let currentGameCode = null; // set once a challenge is created OR accepted
 let challengeCreated = false; // guards duplicate /game/create calls this session
 let resultPosted = false;     // guards duplicate /game/update calls this session
 
-const ROUNDS_PER_GAME = 10; // how many straits per game — bump this up later as you add more to STRAITS
+const ROUNDS_PER_GAME = 10; // how many Currents per game — bump this up later as you add more to Currents
 
 function shuffleIdx(n, count){
   const a = Array.from({length:n}, (_,i)=>i);
@@ -1625,7 +1625,7 @@ function startFreshGame(){
   currentGameCode = null;
   challengeCreated = false;
   resultPosted = false;
-  order = shuffleIdx(STRAITS.length, ROUNDS_PER_GAME);
+  order = shuffleIdx(Currents.length, ROUNDS_PER_GAME);
   beginRound();
 }
 
@@ -1649,7 +1649,7 @@ function loadRound(){
   document.getElementById('next-btn').style.display = 'none';
   document.getElementById('tap-hint').style.display = 'flex';
   document.getElementById('round-label').textContent = `Round ${roundIdx+1} of ${order.length}`;
-  document.getElementById('strait-name').textContent = STRAITS[order[roundIdx]].name;
+  document.getElementById('strait-name').textContent = Currents[order[roundIdx]].name;
   updateDots();
   map.setView([20,20], 2);
 }
@@ -1731,7 +1731,7 @@ function onMapClick(evt){
 
   const gLat = evt.latlng.lat;
   const gLon = evt.latlng.lng;
-  const target = STRAITS[order[roundIdx]];
+  const target = Currents[order[roundIdx]];
   const km = haversine(gLat, gLon, target.lat, target.lon);
   const v = verdictFor(km);
   const pts = scoreFor(km);
@@ -1801,7 +1801,7 @@ async function endGame(){
   let msg;
   if(avg >= 85) msg = "Master navigator. You could chart these waters blind.";
   else if(avg >= 65) msg = "Sharp sense of the map — a seasoned navigator's eye.";
-  else if(avg >= 40) msg = "Solid run. The world's straits are tricky — chart again to sharpen your eye.";
+  else if(avg >= 40) msg = "Solid run. The world's Currents are tricky — chart again to sharpen your eye.";
   else msg = "";
   document.getElementById('final-msg').textContent = msg;
 
@@ -1874,10 +1874,10 @@ function renderBreakdown(myPts, theirPts){
     row.className = 'b-row';
     row.style.animationDelay = (i * 0.06) + 's';
     if(theirs === null || theirs === undefined){
-      row.innerHTML = `<span class="b-name">${STRAITS[strIdx].name}</span>
+      row.innerHTML = `<span class="b-name">${Currents[strIdx].name}</span>
         <span class="b-marks"><span class="b-mk ok">${mine}</span></span>`;
     } else {
-      row.innerHTML = `<span class="b-name">${STRAITS[strIdx].name}</span>
+      row.innerHTML = `<span class="b-name">${Currents[strIdx].name}</span>
         <span class="b-marks">
           <span class="b-mk ${theirs > mine ? 'ok' : 'no'}" title="Rival">${theirs}</span>
           <span class="b-mk ${mine >= theirs ? 'ok' : 'no'}" title="You">${mine}</span>
@@ -2075,7 +2075,7 @@ document.getElementById('check-reply-btn').style.display = 'inline-block';
     const link = buildLinkFromGameCode(gameCode);
     linkInput.value = link;
 
-    const msg = `⚓ I just charted the Strait Navigator and scored ${currentAvgScore}%. Think you can navigate closer? Take the same 10 straits: ${link}`;
+    const msg = `⚓ I just charted the Strait Navigator and scored ${currentAvgScore}%. Think you can navigate closer? Take the same 10 Currents: ${link}`;
     document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
     document.getElementById('tg-share').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(`⚓ Think you can beat my Strait Navigator score of ${currentAvgScore}%?`);
     ['wa-share','tg-share'].forEach(id=>{
