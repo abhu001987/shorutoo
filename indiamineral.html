@@ -833,39 +833,351 @@ function centerOfPaths(paths){
 const ROUNDS = [
 
   { id:'iron_ore', name:'Iron Ore', region:'',
-    fact:"India's leading iron-ore producer is Odisha, whose Keonjhar–Sundargarh belt (around Barbil and Joda) supplies high-grade hematite ore feeding the country's major steel plants.",
+    fact:"India's leading iron-ore producer is Odisha, whose Keonjhar–Sundargarh belt around Barbil and Joda supplies high-grade hematite ore. The next major producers are Karnataka and Chhattisgarh, with important deposits in Ballari and Bailadila respectively.",
     states:['Odisha'],
     paths: siteBox(22.10, 85.40, 0.22)
   },
 
   { id:'manganese', name:'Manganese', region:'',
-    fact:"Maharashtra is a leading producer of manganese ore, with the Nagpur–Bhandara belt in the state's northeast an important source of the mineral, used chiefly in steel and ferro-alloy production.",
+    fact:"Maharashtra is India's leading manganese-ore producing state, especially around Nagpur and Bhandara. The next major producers are Madhya Pradesh and Odisha, with important deposits around Balaghat and Keonjhar-Sundargarh.",
     states:['Maharashtra'],
     paths: siteBox(21.20, 79.60, 0.25)
   },
 
   { id:'chromite', name:'Chromite', region:'',
-    fact:"Odisha dominates India's chromite production, with the Sukinda Valley in Jajpur district holding one of the world's largest chromite deposits and supplying the bulk of the country's ferrochrome industry.",
+    fact:"Odisha dominates India's chromite production, accounting for essentially the entire national output. The Sukinda Valley in Jajpur district is India's most important chromite belt.",
     states:['Odisha'],
     paths: siteBox(21.00, 86.05, 0.15)
   },
 
   { id:'nickel', name:'Nickel', region:'',
-    fact:"Odisha is India's only significant nickel producer, with reserves concentrated alongside the chromite deposits of the Sukinda Valley in Jajpur district.",
+    fact:"Odisha is India's principal nickel-producing state, with deposits concentrated around the Sukinda Valley. Jharkhand is another important nickel-bearing region, particularly in the Singhbhum belt.",
     states:['Odisha'],
     paths: siteBox(20.95, 85.95, 0.15)
   },
 
   { id:'cobalt', name:'Cobalt', region:'',
-    fact:"Jharkhand holds India's main cobalt reserves, associated with the copper-nickel deposits of the Singhbhum belt in the state's southeast.",
+    fact:"Jharkhand has important cobalt resources associated with the Singhbhum copper belt. Odisha is another important cobalt-bearing state, with occurrences also reported from Nagaland.",
     states:['Jharkhand'],
     paths: siteBox(22.60, 86.20, 0.22)
   },
 
   { id:'bauxite', name:'Bauxite', region:'',
-    fact:"Odisha is India's leading bauxite producer, with the Panchpatmali deposits in Koraput district among the country's largest, feeding major aluminium plants in the state.",
+    fact:"Odisha is India's leading bauxite producer, contributing about three-fourths of national production. Gujarat and Jharkhand are the next important producing states, while Panchpatmali in Koraput is one of India's major bauxite deposits.",
     states:['Odisha'],
     paths: siteBox(18.70, 82.85, 0.20)
+  },
+
+  { id:'copper', name:'Copper', region:'',
+    fact:"Madhya Pradesh is India's leading copper-concentrate producing state, dominated by the Malanjkhand belt in Balaghat. Rajasthan and Jharkhand are the next major producers, represented by the Khetri and Singhbhum belts.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(22.05, 80.70, 0.22)
+  },
+
+  { id:'gold', name:'Gold', region:'',
+    fact:"Karnataka is India's leading gold-producing state, with the Hutti Gold Mines being the country's principal operating gold mine. Jharkhand is the next important producing state, while Andhra Pradesh has historically important deposits.",
+    states:['Karnataka'],
+    paths: siteBox(16.20, 76.35, 0.22)
+  },
+
+  { id:'silver', name:'Silver', region:'',
+    fact:"Rajasthan is India's dominant silver-producing state, with silver recovered mainly as a by-product of lead-zinc mining. Important deposits include Rampura Agucha, Sindesar Khurd and Zawar.",
+    states:['Rajasthan'],
+    paths: siteBox(24.95, 73.70, 0.35)
+  },
+
+  { id:'lead', name:'Lead', region:'',
+    fact:"Rajasthan dominates India's lead-concentrate production. The state's major deposits include Rampura Agucha, Sindesar Khurd and Zawar, while other occurrences are reported from Madhya Pradesh and Andhra Pradesh.",
+    states:['Rajasthan'],
+    paths: siteBox(24.65, 74.20, 0.35)
+  },
+
+  { id:'zinc', name:'Zinc', region:'',
+    fact:"Rajasthan is India's overwhelmingly dominant zinc-producing state. The principal deposits are Rampura Agucha, Zawar and Sindesar Khurd, making Rajasthan the centre of India's lead-zinc industry.",
+    states:['Rajasthan'],
+    paths: siteBox(24.70, 73.85, 0.35)
+  },
+
+  { id:'tin', name:'Tin', region:'',
+    fact:"Chhattisgarh is India's only significant producer of tin concentrate. The important tin-bearing areas are concentrated around Dantewada and Bastar in southern Chhattisgarh.",
+    states:['Chhattisgarh'],
+    paths: siteBox(18.95, 81.35, 0.28)
+  },
+
+  { id:'magnesite', name:'Magnesite', region:'',
+    fact:"Tamil Nadu is India's leading magnesite-producing state, particularly around Salem and Chalk Hills. Uttarakhand and Karnataka are other important magnesite-bearing states.",
+    states:['Tamil Nadu'],
+    paths: siteBox(11.70, 78.10, 0.22)
+  },
+
+  { id:'limestone', name:'Limestone', region:'',
+    fact:"Rajasthan is India's leading limestone-producing state. Madhya Pradesh and Andhra Pradesh are the next major producers, with important belts around Satna, Chittorgarh and the Cuddapah region.",
+    states:['Rajasthan'],
+    paths: siteBox(25.10, 74.80, 0.40)
+  },
+
+  { id:'mica', name:'Mica', region:'',
+    fact:"Andhra Pradesh is a major mica-producing state, especially around the Nellore-Gudur belt. Rajasthan and Jharkhand are the next important mica-bearing regions, including the Aravalli and Koderma belts.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(14.65, 79.95, 0.28)
+  },
+
+  { id:'dolomite', name:'Dolomite', region:'',
+    fact:"Chhattisgarh is a major dolomite-producing state, with important deposits around Bastar and Raigarh. Andhra Pradesh and Odisha are other important producing states, including the Khammam and Sundargarh regions.",
+    states:['Chhattisgarh'],
+    paths: siteBox(21.90, 82.00, 0.35)
+  },
+
+  { id:'asbestos', name:'Asbestos', region:'',
+    fact:"Rajasthan has historically been India's leading asbestos-producing state, particularly around Pali and the Aravalli region. Andhra Pradesh and Karnataka also contain important asbestos occurrences.",
+    states:['Rajasthan'],
+    paths: siteBox(26.00, 73.80, 0.30)
+  },
+
+  { id:'kyanite', name:'Kyanite', region:'',
+    fact:"Jharkhand is an important kyanite-producing state, particularly around Singhbhum. Maharashtra and Karnataka also contain significant kyanite deposits and occurrences.",
+    states:['Jharkhand'],
+    paths: siteBox(22.55, 85.45, 0.25)
+  },
+
+  { id:'sillimanite', name:'Sillimanite', region:'',
+    fact:"Odisha is India's leading sillimanite-producing state. Rajasthan and Andhra Pradesh are other important regions containing sillimanite-bearing deposits.",
+    states:['Odisha'],
+    paths: siteBox(21.80, 86.00, 0.30)
+  },
+
+  { id:'gypsum', name:'Gypsum', region:'',
+    fact:"Rajasthan is India's dominant gypsum-producing state, with major deposits around Bikaner, Jaisalmer, Barmer and Jodhpur. Tamil Nadu and Gujarat are the next important producing states.",
+    states:['Rajasthan'],
+    paths: siteBox(28.00, 73.30, 0.50)
+  },
+
+  { id:'diamond', name:'Diamond', region:'',
+    fact:"Madhya Pradesh is India's only current significant diamond-producing state. The Majhgawan mine in Panna district is India's best-known active diamond mine.",
+    states:['Madhya Pradesh'],
+    paths: siteBox(24.72, 80.18, 0.22)
+  },
+
+  { id:'graphite', name:'Graphite', region:'',
+    fact:"Odisha is India's leading graphite-producing state, with deposits distributed across several districts. Jharkhand and Tamil Nadu are other important graphite-bearing regions.",
+    states:['Odisha'],
+    paths: siteBox(20.70, 84.20, 0.35)
+  },
+
+  { id:'barytes', name:'Barytes', region:'',
+    fact:"Andhra Pradesh is India's dominant barytes-producing state, with the world-famous Mangampeta deposit in Kadapa district. The state accounts for the overwhelming share of India's barytes production.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(14.15, 78.15, 0.20)
+  },
+
+  { id:'wollastonite', name:'Wollastonite', region:'',
+    fact:"Rajasthan is India's leading wollastonite-producing state and accounts for essentially the entire reported production. Important deposits occur around Sirohi, Udaipur and other Aravalli districts.",
+    states:['Rajasthan'],
+    paths: siteBox(25.10, 73.35, 0.28)
+  },
+
+  { id:'fluorite', name:'Fluorite', region:'',
+    fact:"Rajasthan is India's leading fluorite-producing state. Gujarat is another important fluorite-bearing region, particularly around the Amba Dongar deposit in Vadodara district.",
+    states:['Rajasthan'],
+    paths: siteBox(24.00, 73.00, 0.35)
+  },
+
+  { id:'garnet', name:'Garnet', region:'',
+    fact:"Andhra Pradesh is India's leading garnet-producing state. Rajasthan and Odisha are other important producing regions, particularly along coastal and metamorphic belts.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(15.00, 80.00, 0.35)
+  },
+
+  { id:'pyrophyllite', name:'Pyrophyllite', region:'',
+    fact:"Rajasthan is a leading producer of pyrophyllite, with important deposits associated with the Aravalli and Vindhyan regions. Jharkhand and Andhra Pradesh are other important producing states.",
+    states:['Rajasthan'],
+    paths: siteBox(25.00, 74.50, 0.40)
+  },
+
+  { id:'steatite', name:'Steatite / Soapstone', region:'',
+    fact:"Rajasthan is India's leading steatite-producing state, with extensive deposits in the Aravalli region. Karnataka and Andhra Pradesh are other important producing states.",
+    states:['Rajasthan'],
+    paths: siteBox(26.00, 74.50, 0.40)
+  },
+
+  { id:'kaolin', name:'Kaolin / China Clay', region:'',
+    fact:"Rajasthan is an important kaolin-producing state. Gujarat and West Bengal are other major producing regions, with kaolin widely used in ceramics, paper, paint and refractories.",
+    states:['Rajasthan'],
+    paths: siteBox(27.00, 75.00, 0.50)
+  },
+
+  { id:'coal', name:'Coal', region:'',
+    fact:"Odisha is India's leading coal-producing state, followed by Jharkhand and Chhattisgarh. Major coalfields include Talcher in Odisha, Jharia and Bokaro in Jharkhand, and Korba in Chhattisgarh.",
+    states:['Odisha'],
+    paths: siteBox(21.15, 84.95, 0.45)
+  },
+
+  { id:'lignite', name:'Lignite', region:'',
+    fact:"Tamil Nadu is India's leading lignite-producing state, dominated by the Neyveli deposits. Rajasthan and Gujarat are the next important lignite-producing states.",
+    states:['Tamil Nadu'],
+    paths: siteBox(11.60, 79.50, 0.25)
+  },
+
+  { id:'petroleum', name:'Petroleum', region:'',
+    fact:"Maharashtra is a major petroleum-producing region because of the Mumbai Offshore fields. Gujarat and Rajasthan are major onshore producers, while Assam is historically important and contains the Digboi oilfield.",
+    states:['Maharashtra'],
+    paths: siteBox(19.50, 71.50, 0.55)
+  },
+
+  { id:'natural_gas', name:'Natural Gas', region:'',
+    fact:"Andhra Pradesh is a major natural-gas producing state because of the Krishna-Godavari Basin. Gujarat and Assam are other important producing regions, alongside India's offshore gas fields.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(16.50, 81.00, 0.40)
+  },
+
+  { id:'uranium', name:'Uranium', region:'',
+    fact:"Andhra Pradesh is India's leading uranium-producing state, with the Tummalapalle mine in YSR Kadapa district. Jharkhand's Jaduguda region and Meghalaya are other important uranium-bearing regions.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(14.30, 78.35, 0.25)
+  },
+
+  { id:'thorium', name:'Thorium', region:'',
+    fact:"India's major thorium resources occur in monazite-rich beach sands. Kerala is particularly important, while Tamil Nadu and Odisha also contain major thorium-bearing coastal deposits.",
+    states:['Kerala'],
+    paths: siteBox(9.60, 76.20, 0.35)
+  },
+
+  { id:'monazite', name:'Monazite', region:'',
+    fact:"Kerala is one of India's most important monazite-bearing regions, particularly along its coastal black sands. Tamil Nadu, Odisha and Andhra Pradesh also contain major monazite deposits.",
+    states:['Kerala'],
+    paths: siteBox(9.20, 76.50, 0.35)
+  },
+
+  { id:'ilmenite', name:'Ilmenite', region:'',
+    fact:"Kerala is a major ilmenite-bearing state, especially around the Chavara coastal black-sand deposits. Tamil Nadu and Odisha are other important sources of ilmenite-bearing beach sands.",
+    states:['Kerala'],
+    paths: siteBox(9.00, 76.55, 0.25)
+  },
+
+  { id:'rutile', name:'Rutile', region:'',
+    fact:"Kerala is an important rutile-bearing state because of its heavy-mineral beach sands. Tamil Nadu and Odisha also contain significant rutile-bearing coastal deposits.",
+    states:['Kerala'],
+    paths: siteBox(9.10, 76.50, 0.25)
+  },
+
+  { id:'zircon', name:'Zircon', region:'',
+    fact:"Kerala is an important source of zircon from heavy-mineral beach sands. Tamil Nadu, Odisha and Andhra Pradesh also contain significant zircon-bearing coastal deposits.",
+    states:['Kerala'],
+    paths: siteBox(9.30, 76.55, 0.30)
+  },
+
+  { id:'tungsten', name:'Tungsten', region:'',
+    fact:"Rajasthan contains India's best-known tungsten resources, particularly around Degana in Nagaur district. Karnataka and Andhra Pradesh also have reported tungsten occurrences.",
+    states:['Rajasthan'],
+    paths: siteBox(27.00, 74.30, 0.30)
+  },
+
+  { id:'vanadium', name:'Vanadium', region:'',
+    fact:"Arunachal Pradesh has important vanadium-bearing occurrences and significant identified resources. Karnataka is another important region with reported vanadium occurrences.",
+    states:['Arunachal Pradesh'],
+    paths: siteBox(28.10, 94.00, 0.50)
+  },
+
+  { id:'molybdenum', name:'Molybdenum', region:'',
+    fact:"Rajasthan has important molybdenum occurrences associated with its Precambrian mineral belts. Karnataka also contains reported molybdenum occurrences.",
+    states:['Rajasthan'],
+    paths: siteBox(24.80, 73.60, 0.30)
+  },
+
+  { id:'potash', name:'Potash', region:'',
+    fact:"Rajasthan contains India's most important potash resources, particularly in the Nagaur-Ganganagar basin. The state is a major focus of exploration for potash and other evaporite minerals.",
+    states:['Rajasthan'],
+    paths: siteBox(27.00, 73.50, 0.55)
+  },
+
+  { id:'glauconite', name:'Glauconite', region:'',
+    fact:"Rajasthan has important glauconite resources, while significant occurrences are also reported from Uttar Pradesh and Madhya Pradesh. Glauconite is a potassium-bearing mineral with potential as a source of potash.",
+    states:['Rajasthan'],
+    paths: siteBox(25.50, 74.50, 0.45)
+  },
+
+  { id:'ball_clay', name:'Ball Clay', region:'',
+    fact:"Andhra Pradesh is a major ball-clay producing state, supplying the ceramic and sanitaryware industries. Rajasthan and Gujarat are other important producing regions.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(15.00, 79.80, 0.35)
+  },
+
+  { id:'quartz', name:'Quartz', region:'',
+    fact:"Andhra Pradesh is a major quartz-producing state, with deposits used in glass, ceramics, foundries and engineered materials. Rajasthan and Gujarat are other important producing states.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(15.50, 79.50, 0.45)
+  },
+
+  { id:'quartzite', name:'Quartzite', region:'',
+    fact:"Andhra Pradesh is a leading quartzite-producing state, with important deposits used as building stone and in industrial applications. Rajasthan and Haryana also have significant quartzite resources.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(15.80, 79.30, 0.45)
+  },
+
+  { id:'silica_sand', name:'Silica Sand', region:'',
+    fact:"Andhra Pradesh is a major silica-sand producing state, with deposits used by the glass, foundry and construction industries. Gujarat and Rajasthan are other important producing regions.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(15.20, 80.00, 0.45)
+  },
+
+  { id:'vermiculite', name:'Vermiculite', region:'',
+    fact:"Andhra Pradesh is an important vermiculite-producing state. Tamil Nadu and Rajasthan also have significant vermiculite occurrences and deposits.",
+    states:['Andhra Pradesh'],
+    paths: siteBox(15.00, 79.00, 0.40)
+  },
+
+  { id:'feldspar', name:'Feldspar', region:'',
+    fact:"Rajasthan is India's leading feldspar-producing state, with extensive deposits associated with its granitic belts. Andhra Pradesh and Tamil Nadu are other important producers.",
+    states:['Rajasthan'],
+    paths: siteBox(26.00, 73.80, 0.45)
+  },
+
+  { id:'fireclay', name:'Fireclay', region:'',
+    fact:"West Bengal is an important fireclay-producing state, particularly in the coal-bearing Damodar Valley. Jharkhand and Rajasthan also contain important fireclay deposits.",
+    states:['West Bengal'],
+    paths: siteBox(23.70, 87.20, 0.40)
+  },
+
+  { id:'fullers_earth', name:"Fuller's Earth", region:'',
+    fact:"Rajasthan is India's leading producer of Fuller's Earth, with extensive deposits across the western and central parts of the state. Gujarat and Tamil Nadu are other important producing regions.",
+    states:['Rajasthan'],
+    paths: siteBox(26.50, 73.50, 0.55)
+  },
+
+  { id:'calcite', name:'Calcite', region:'',
+    fact:"Rajasthan is a major producer of calcite, with deposits associated with its metamorphic and carbonate rocks. Gujarat and Tamil Nadu are other important producing states.",
+    states:['Rajasthan'],
+    paths: siteBox(26.00, 74.00, 0.45)
+  },
+
+  { id:'perlite', name:'Perlite', region:'',
+    fact:"Gujarat contains India's important perlite occurrences, while Rajasthan also has reported deposits. Perlite is a volcanic glass used in lightweight construction and horticulture.",
+    states:['Gujarat'],
+    paths: siteBox(23.00, 71.80, 0.35)
+  },
+
+  { id:'flint_stone', name:'Flint Stone', region:'',
+    fact:"Rajasthan contains important flint-stone occurrences within its sedimentary formations. Gujarat also has reported occurrences of this silica-rich material.",
+    states:['Rajasthan'],
+    paths: siteBox(26.00, 74.50, 0.45)
+  },
+
+  { id:'red_ochre', name:'Red Ochre', region:'',
+    fact:"Rajasthan is an important source of red ochre, an iron-oxide-rich earth pigment. Jharkhand and Gujarat also contain important ochre-bearing formations.",
+    states:['Rajasthan'],
+    paths: siteBox(25.50, 74.50, 0.50)
+  },
+
+  { id:'bentonite', name:'Bentonite', region:'',
+    fact:"Gujarat is India's leading bentonite-producing state, particularly around Kutch and Bhavnagar. Rajasthan and Jammu & Kashmir also contain important bentonite deposits.",
+    states:['Gujarat'],
+    paths: siteBox(23.70, 69.70, 0.45)
+  },
+
+  { id:'laterite', name:'Laterite', region:'',
+    fact:"Kerala is an important laterite-producing state, with extensive lateritic formations along the Western Ghats and coastal belt. Karnataka and Odisha also have extensive laterite deposits.",
+    states:['Kerala'],
+    paths: siteBox(10.70, 76.20, 0.45)
   }
 
 ];
