@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Mineral Navigator — India Minerals & Mining Belts Quiz | MapiDesk</title>
+<title>Volcano Navigator — World Volcanoes Geography Quiz | MapiDesk</title>
 
 <!-- Theme: set instantly, before any CSS loads -->
 <script>
@@ -31,7 +31,7 @@
 
 <style>
   /* ============================================ */
-  /* PALETTE — MapiDesk gold/deep-blue glass theme (same as Lake / Heritage / Gulf / Forest / Plateau / Coast / Island Navigator) */
+  /* PALETTE — MapiDesk gold/deep-blue glass theme (same as Lake / Gulf / Desert Navigator) */
   :root {
     --glass-bg: rgba(255, 255, 255, 0.55);
     --glass-border: rgba(255, 255, 255, 0.35);
@@ -197,9 +197,6 @@
   .country-label{ transform:translate(-50%,-50%); white-space:nowrap; font-family:'IBM Plex Mono',monospace; font-weight:700;
     font-size:10px; padding:3px 9px; border-radius:20px; background:var(--clabel-color, var(--gold)); color:#fff;
     box-shadow:0 4px 12px rgba(0,0,0,0.22); letter-spacing:.02em; pointer-events:none; }
-  .mineral-icon-wrap{ display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:none; filter:drop-shadow(0 4px 10px rgba(0,0,0,0.28)); }
-  .mineral-icon-wrap .m-tag{ font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:9.5px; background:var(--micon-color, var(--gold));
-    color:#1A2E3B; padding:2px 8px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 10px rgba(0,0,0,0.2); }
 
   /* ---------- BOTTOM PANEL ---------- */
   #hud-bottom{ z-index:500;padding:8px 10px 12px; display:flex;flex-direction:column;align-items:center;gap:8px; }
@@ -505,29 +502,29 @@
       <div class="hero-grid">
         <div class="hero-copy">
           <div class="kicker">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 5v10l-7 5-7-5V7z"/><path d="M12 2v20M5 7l7 5 7-5"/></svg>
-            Chart the Mineral Belt
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5.5 2 2-5.5L17 5l3 3-11.5 11.5z"/><path d="M15 3l6 6"/></svg>
+            Chart the Volcanoes
           </div>
-          <h1> Mineral <span>Navigator</span></h1>
-<p class="sub">Drop a pin on the state you think is the leading producer of each mineral — from Iron Ore, Chromite, Nickel and Bauxite to Manganese and Cobalt. Lock in your guess and watch the map reveal the real mining belt and the state it lies in. Built for UPSC-style economic geography practice — India's key mineral belts, producing states and ore types included. Finish a run and get a link with the exact same minerals, in the exact same order — challenge a friend and see who knows India's mineral map better.</p>        </div>
+          <h1> Volcano <span>Navigator</span></h1>
+<p class="sub">Drop a pin where you think each famous volcano stands — from Vesuvius, Fuji and Kilimanjaro to Krakatoa, St. Helens and Mauna Loa. Lock in your guess and watch the map reveal the actual summit. Finish a run and get a link with the exact same volcanoes, in the exact same order — challenge a friend and see who knows world geography better.</p>        </div>
       </div>
 
       <div class="info-cards">
         <div class="info-card">
           <div class="info-card-head">
             <div class="icon-circle">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 5v10l-7 5-7-5V7z"/><path d="M12 2v20M5 7l7 5 7-5"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M9 20l-5.5 2 2-5.5L17 5l3 3-11.5 11.5z"/><path d="M15 3l6 6"/></svg>
             </div>
             <div>
               <h3>Your Mission</h3>
-              <p>Pin each mineral belt in its real producing state.</p>
+              <p>Pin each Volcano as close to its real summit as you can.</p>
             </div>
           </div>
           <div class="info-body">
             <div class="mini-stats">
               <div class="mini-stat">
                 <div class="icon-circle blue"><svg viewBox="0 0 24 24"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg></div>
-                <div class="mini-stat-text"><span class="t">6 targets</span><span class="d">Shuffled each run</span></div>
+                <div class="mini-stat-text"><span class="t">10 targets</span><span class="d">Shuffled each run</span></div>
               </div>
               <div class="mini-stat">
                 <div class="icon-circle violet"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div>
@@ -570,7 +567,7 @@
           </div>
           <div class="step">
             <div class="step-num">2</div>
-            <div class="step-text"><div class="t">Lock It In</div><div class="d">Watch the map fly to the real mining belt</div></div>
+            <div class="step-text"><div class="t">Lock It In</div><div class="d">Watch the map fly to the real volcano</div></div>
           </div>
           <div class="step">
             <div class="step-num">3</div>
@@ -594,7 +591,7 @@
     <div class="panel wide" style="max-width:900px;">
       <div class="mode-badge"><span class="dot"></span>Incoming Challenge</div>
       <h1 style="text-align:left;">You've Been <span>Challenged</span></h1>
-      <p class="sub" style="text-align:left;">A friend already pinned all the minerals and dared you to beat them. Same targets, same order — their score stays hidden until you finish your own run.</p>
+      <p class="sub" style="text-align:left;">A friend already pinned all the volcanoes and dared you to beat them. Same targets, same order — their score stays hidden until you finish your own run.</p>
       <div class="info-cards">
         <div class="info-card accent">
           <div class="info-card-head">
@@ -607,7 +604,7 @@
             </div>
           </div>
           <div class="info-body">
-            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Accept to take the exact same course and find out who reads India's mineral geography closer, site by site.</p>
+            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Accept to take the exact same course and find out who reads world geography closer, volcano by volcano.</p>
           </div>
         </div>
         <div class="info-card">
@@ -619,7 +616,7 @@
             </div>
           </div>
           <div class="info-body">
-            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Drop your pin as close to each real mining belt as you can — closer placements score higher. At the end you'll get a full head-to-head breakdown.</p>
+            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Drop your pin as close to each real volcano as you can — closer placements score higher. At the end you'll get a full head-to-head breakdown.</p>
           </div>
         </div>
       </div>
@@ -677,7 +674,7 @@
           <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M12 6.3V20M5 13a7 7 0 0014 0M5 13H3M19 13h2M8.2 18l-3-2M15.8 18l3-2"/></svg>
           Challenge a Friend
         </div>
-        <div class="share-sub">Send them this exact run's targets and see if they can out-pin your mineral score.</div>
+        <div class="share-sub">Send them this exact run's targets and see if they can out-pin your volcano score.</div>
         <div class="link-box">
           <input id="challenge-link" readonly placeholder="Tap Copy to generate your link…">
           <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
@@ -713,9 +710,9 @@
     <button class="hud-back-btn" onclick="showExitDialog()" aria-label="Back to menu" title="Back to menu">
       <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
     </button>
-    <div class="brand">◆ Mineral Navigator</div>
+    <div class="brand">◆ Volcano Navigator</div>
     <div class="strait-card" id="strait-card">
-      <div class="eyebrow" id="round-label">Round 1 of 6</div>
+      <div class="eyebrow" id="round-label">Round 1 of 15</div>
       <div class="title" id="strait-name">—</div>
       <div class="subtitle" id="strait-region"></div>
       <div id="dots"></div>
@@ -735,7 +732,7 @@
       <div class="fact" id="fact-text"></div>
       <div class="detail-line" id="legend-line" style="display:none;">
         <svg viewBox="0 0 24 24"><path d="M9 20l-5.5 2 2-5.5L17 5l3 3-11.5 11.5z"/><path d="M15 3l6 6"/></svg>
-        Red pin = your guess · Gold outline = the real mining belt
+        Red pin = your guess · Gold marker = the real volcano
       </div>
       <div class="rival-line" id="rival-line" style="display:none;"></div>
     </div>
@@ -756,7 +753,7 @@
 /* ============================================================
    GAME / API CONFIG
    ============================================================ */
-const GAME_TYPE = 'mineral-navigator-india';
+const GAME_TYPE = 'volcano-navigator';
 const API_BASE = 'https://game-api.abhikr18996.workers.dev';
 
 /* ---------------- Fixed header height sync ---------------- */
@@ -801,35 +798,13 @@ function setHeaderVisible(visible){
 }
 
 /* ============================================================
-   INDIA MINERALS DATA
-   Each mineral is placed at its major producing belt (not the
-   whole state) so distinct minerals from the same state — e.g.
-   Iron Ore, Chromite and Bauxite are all led by Odisha — still
-   land at different points on the map. Each site is a small
-   polygon so the same distance/scoring math used for the Forest /
-   Plateau / Coast / Island Navigator (nearest-edge / inside-
-   polygon) works unchanged. Add more entries any time — shuffle,
-   scoring and challenge links all keep working automatically.
+   VOLCANO DATA
+   Each volcano is stored as a single summit coordinate, wrapped in
+   the same "paths" shape used by the other Navigator games (a path
+   of two identical points) so the existing distance/scoring code
+   works unchanged — educational approximations, not survey-grade
+   GIS data.
    ============================================================ */
-function siteBox(lat, lng, half){
-  half = half || 0.07;
-  return [[
-    [lat+half, lng-half],
-    [lat+half, lng+half],
-    [lat-half, lng+half],
-    [lat-half, lng-half],
-    [lat+half, lng-half]
-  ]];
-}
-/* Average the corner points of a round's boxes to get its display centre (for the mineral icon marker) */
-function centerOfPaths(paths){
-  let latSum = 0, lngSum = 0, n = 0;
-  paths.forEach(ring=>{
-    for(let i=0;i<ring.length-1;i++){ latSum += ring[i][0]; lngSum += ring[i][1]; n++; }
-  });
-  return n ? [latSum/n, lngSum/n] : [0,0];
-}
-
 const ROUNDS = [
 
   // =========================
@@ -1151,20 +1126,20 @@ const ROUNDS = [
   }
 
 ];
-const ROUNDS_PER_GAME = 10; // solo runs pick min(this, ROUNDS.length) at random each time. Challenge mode always uses the exact order sent by the challenger.
+const ROUNDS_PER_GAME = 10; // solo runs pick 10 at random each time. Challenge mode always uses the exact order sent by the challenger.
 
-/* ---------------- Map setup (India in focus) ---------------- */
+/* ---------------- Map setup ---------------- */
 const map = L.map('map', {
   worldCopyJump:false,
   dragging:true,
   touchZoom:true,
   doubleClickZoom:false,
   scrollWheelZoom:true,
-  minZoom:3,
-  maxZoom:9,
+  minZoom:2,
+  maxZoom:8,
   zoomControl:true,
   attributionControl:true
-}).setView([22.6, 80.0], 4.4);
+}).setView([20, 30], 2);
 
 const tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a> · India boundary: official depiction, Govt. of India',
@@ -1202,54 +1177,55 @@ async function loadIndiaBoundary(){
 }
 loadIndiaBoundary();
 
-/* ---------------- Indian states overlay (for round-result highlighting) ----------------
-   Highlights just the STATE a mineral belt lies in, not the whole country — more useful
-   for UPSC-style map practice. Tries a couple of mirrors of a standard India-states GeoJSON. */
-let indiaStatesGeo = null;
-const INDIA_STATES_URLS = [
-  'https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson',
-  'https://raw.githubusercontent.com/Subhash9325/GeoJson-Data-of-Indian-States/master/Indian_States'
+/* ---------------- World countries overlay (for round-result highlighting) ---------------- */
+let worldCountriesGeo = null;
+const WORLD_BOUNDARY_URLS = [
+  'https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json',
+  'https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json'
 ];
-async function loadIndiaStates(){
-  for(const url of INDIA_STATES_URLS){
+async function loadWorldCountries(){
+  for(const url of WORLD_BOUNDARY_URLS){
     try{
       const res = await fetch(url);
       if(!res.ok) continue;
-      indiaStatesGeo = await res.json();
+      worldCountriesGeo = await res.json();
       return;
-    }catch(e){ console.warn('India states overlay source failed, trying next:', url, e); }
+    }catch(e){ console.warn('World countries overlay source failed, trying next:', url, e); }
   }
-  console.warn('India states overlay: all sources failed — state highlighting will be unavailable.');
+  console.warn('World countries overlay: all sources failed — country highlighting will be unavailable.');
 }
-loadIndiaStates();
+loadWorldCountries();
 
-/* Alias table for the few state names that differ between our round data and the
-   source dataset's name property (e.g. Delhi is sometimes "NCT of Delhi"). */
-const STATE_NAME_ALIASES = {
-  'delhi': ['delhi', 'nct of delhi', 'national capital territory of delhi'],
-  'odisha': ['odisha', 'orissa'],
-  'uttarakhand': ['uttarakhand', 'uttaranchal']
+/* Alias table for the few names that differ between our round data and the
+   Natural-Earth-derived dataset's `name` property. */
+const COUNTRY_NAME_ALIASES = {
+  'united states of america': ['united states of america','united states','usa','us'],
+  'south korea': ['south korea','republic of korea','korea, south'],
+  'north korea': ['north korea','democratic people\'s republic of korea','korea, north','dem. rep. korea'],
+  'russia': ['russia','russian federation'],
+  'taiwan': ['taiwan','republic of china'],
+  'democratic republic of the congo': ['democratic republic of the congo','dem. rep. congo','congo, dem. rep.','dr congo']
 };
-function stateFeatureMatches(feature, targetName){
+function countryFeatureMatches(feature, targetName){
   const props = (feature && feature.properties) || {};
-  const raw = props.NAME_1 || props.ST_NM || props.st_nm || props.name || props.NAME || props.State || props.state || '';
+  const raw = props.name || props.NAME || props.ADMIN || props.admin || '';
   const fn = String(raw).toLowerCase().trim();
   const tgt = targetName.toLowerCase().trim();
   if(fn === tgt) return true;
-  const aliases = STATE_NAME_ALIASES[tgt];
+  const aliases = COUNTRY_NAME_ALIASES[tgt];
   if(aliases && aliases.includes(fn)) return true;
   return false;
 }
 
 /* Colors mirror the same good/mid/bad verdict palette used for round feedback,
-   so the highlighted state visually echoes how close the guess was. */
+   so the highlighted countries visually echo how close the guess was. */
 const VERDICT_HIGHLIGHT_COLOR = { good:'#4A9E7A', mid:'#D4A853', bad:'#F2545F' };
 
-function highlightStates(names, cls){
-  if(!indiaStatesGeo || !Array.isArray(names) || !names.length) return;
+function highlightCountries(names, cls){
+  if(!worldCountriesGeo || !Array.isArray(names) || !names.length) return;
   const color = VERDICT_HIGHLIGHT_COLOR[cls] || '#D4A853';
   names.forEach(name=>{
-    const feature = indiaStatesGeo.features.find(f => stateFeatureMatches(f, name));
+    const feature = worldCountriesGeo.features.find(f => countryFeatureMatches(f, name));
     if(!feature) return;
     let layer;
     try{
@@ -1270,25 +1246,6 @@ function highlightStates(names, cls){
   });
 }
 
-/* ---------------- Mineral icon (shown over the reveal location, on top of the highlighted state) ---------------- */
-function mineralIconHtml(color, label){
-  return `<div class="mineral-icon-wrap">
-    <svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
-      <path d="M15 2 L26 10 L22 26 L8 26 L4 10 Z" fill="${color}" stroke="#1A2E3B" stroke-width="1" stroke-linejoin="round"/>
-      <path d="M15 2 L15 26 M4 10 L26 10 M15 2 L8 26 M15 2 L22 26" stroke="#ffffff" stroke-width="0.9" opacity="0.45"/>
-    </svg>
-    <span class="m-tag" style="--micon-color:${color}">${label}</span>
-  </div>`;
-}
-function mineralDivIcon(color, label){
-  return L.divIcon({
-    className:'',
-    html: mineralIconHtml(color, label),
-    iconSize:[30,46],
-    iconAnchor:[15,25]
-  });
-}
-
 /* ---------------- Pin icons ---------------- */
 function pinIcon(color){
   return L.divIcon({
@@ -1302,6 +1259,17 @@ function pinIcon(color){
   });
 }
 const GUESS_ICON = pinIcon('#F2545F');
+
+const VOLCANO_ICON = L.divIcon({
+  className:'',
+  html:`<svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 8px rgba(0,0,0,0.35));">
+    <circle cx="14" cy="14" r="12" fill="#D4A853" stroke="#1A2E3B" stroke-width="1.6"/>
+    <path d="M6 19 L12 9 L15 13 L18 6 L23 19 Z" fill="#1A2E3B"/>
+    <circle cx="18" cy="8.5" r="1.6" fill="#F2545F"/>
+  </svg>`,
+  iconSize:[28,28],
+  iconAnchor:[14,14]
+});
 
 /* ---------------- Game state ---------------- */
 let order = [];
@@ -1345,7 +1313,7 @@ setMapVisible(false);
 
 function startFreshGame(){
   mode = 'own'; rival = null; currentGameCode = null; challengeCreated = false; resultPosted = false;
-  order = shuffleIdx(ROUNDS.length, Math.min(ROUNDS_PER_GAME, ROUNDS.length));
+  order = shuffleIdx(ROUNDS.length, ROUNDS_PER_GAME);
   beginRound();
 }
 
@@ -1371,7 +1339,7 @@ function loadRound(){
   clearRevealLayers();
   if(guessMarker){ map.removeLayer(guessMarker); guessMarker = null; }
   map.stop();
-  map.flyTo([22.6, 80.0], 4.4, { duration: 0.6, easeLinearity: 0.25 });
+  map.flyTo([20, 30], 2, { duration: 0.6, easeLinearity: 0.25 });
   document.getElementById('feedback').classList.remove('show');
   document.getElementById('legend-line').style.display = 'none';
   document.getElementById('rival-line').style.display = 'none';
@@ -1415,7 +1383,8 @@ function nearestOnSegment(p, a, b){
   const dx = P.x-Cx, dy = P.y-Cy;
   return { dist: Math.sqrt(dx*dx+dy*dy), latlng:[ a[0]+t*(b[0]-a[0]), a[1]+t*(b[1]-a[1]) ] };
 }
-/* Ray-casting point-in-polygon test on [lat,lng] pairs */
+/* Ray-casting point-in-polygon test on [lat,lng] pairs (kept for parity with other Navigator games; volcanoes are
+   modeled as single summit points, so this never triggers, but it's here for consistency with the shared code) */
 function pointInPolygon(point, vs){
   const x = point[1], y = point[0];
   let inside = false;
@@ -1450,23 +1419,23 @@ function pointInGeoJSONPolygon(lng, lat, geometry){
   return false;
 }
 
-/* Is the guess anywhere inside the mineral's actual producing state? */
-function isInsideAnyState(gLatLng, stateNames){
-  if(!indiaStatesGeo) return false;
+/* Is the guess anywhere inside one of the round's bordering countries? */
+function isInsideAnyCountry(gLatLng, countryNames){
+  if(!worldCountriesGeo) return false;
   const [lat, lng] = gLatLng;
-  return stateNames.some(name=>{
-    const feature = indiaStatesGeo.features.find(f => stateFeatureMatches(f, name));
+  return countryNames.some(name=>{
+    const feature = worldCountriesGeo.features.find(f => countryFeatureMatches(f, name));
     return feature ? pointInGeoJSONPolygon(lng, lat, feature.geometry) : false;
   });
 }
 function nearestOnPaths(p, paths){
-  // Inside the mineral's marker box? Full credit — distance 0.
+  // Exactly on the volcano's summit point? Full credit — distance 0.
   for(const path of paths){
     if(pointInPolygon(p, path)){
       return { dist: 0, latlng: p };
     }
   }
-  // Otherwise, distance to the nearest edge (existing near-miss logic).
+  // Otherwise, distance to the nearest point along the channel line.
   let best = null;
   paths.forEach(path=>{
     for(let i=0;i<path.length-1;i++){
@@ -1549,10 +1518,10 @@ function lockGuess(){
   const nearest = nearestOnPaths(gLatLng, round.paths);
   const km = Math.round(nearest.dist);
 
-  // If you're outside the mineral's marker box but inside the state that actually
-  // leads its production, don't torch the score for it — cap the *scoring* distance.
-  const insideState = km > 0 && isInsideAnyState(gLatLng, round.states);
-  const scoringKm = insideState ? Math.min(km, 100) : km;
+  // If you're off the exact summit but inside a country the volcano
+  // actually sits in, don't torch the score for it — cap the *scoring* distance.
+  const insideCountry = km > 0 && isInsideAnyCountry(gLatLng, round.countries);
+  const scoringKm = insideCountry ? Math.min(km, 100) : km;
 
   const v = verdictFor(scoringKm);
   const pts = scoreFor(scoringKm);
@@ -1561,7 +1530,7 @@ function lockGuess(){
 
   document.getElementById('lock-btn').style.display = 'none';
 
-  // Fly the map to fit both the guess and the real mining belt, so the
+  // Fly the map to fit both the guess and the real volcano's location, so the
   // player actually sees where it lies — even if they'd panned elsewhere.
   const boundsPoints = [gLatLng];
   round.paths.forEach(path=> path.forEach(pt=> boundsPoints.push(pt)));
@@ -1574,7 +1543,7 @@ function lockGuess(){
     revealResult(round, gLatLng, nearest, km, v, pts);
   }
   map.once('moveend', fireReveal);
-  map.flyToBounds(bounds, { padding:[80,80], maxZoom:8, duration:1.1, easeLinearity:0.25 });
+  map.flyToBounds(bounds, { padding:[60,60], maxZoom:6, duration:1.1, easeLinearity:0.25 });
   setTimeout(fireReveal, 1600); // fallback in case flyToBounds doesn't fire moveend
 }
 
@@ -1582,11 +1551,11 @@ function revealResult(round, gLatLng, nearest, km, v, pts){
   clearRevealLayers();
 
   round.paths.forEach((path, i)=>{
-    const line = L.polyline(path, { color:'#D4A853', weight:4, opacity:0.92 }).addTo(map);
-    revealLayers.push(line);
+    const pt = path[0];
+    const marker = L.marker(pt, { icon: VOLCANO_ICON, interactive:false }).addTo(map);
+    revealLayers.push(marker);
     if(i === 0){
-      const mid = path[Math.floor(path.length/2)];
-      const label = L.marker(mid, {
+      const label = L.marker(pt, {
         icon: L.divIcon({ className:'', html:`<div class="line-label">${round.name}</div>`, iconSize:[0,0] }),
         interactive:false
       }).addTo(map);
@@ -1594,16 +1563,7 @@ function revealResult(round, gLatLng, nearest, km, v, pts){
     }
   });
 
-  highlightStates(round.states, v.cls);
-
-  // Mineral icon marker, placed directly over the mining belt's location on the
-  // map so the player sees exactly where — and over which state — it lies.
-  const centerColor = VERDICT_HIGHLIGHT_COLOR[v.cls] || '#D4A853';
-  const mineralMarker = L.marker(centerOfPaths(round.paths), {
-    icon: mineralDivIcon(centerColor, round.name),
-    interactive:false
-  }).addTo(map);
-  revealLayers.push(mineralMarker);
+  highlightCountries(round.countries, v.cls);
 
   const connector = L.polyline([gLatLng, nearest.latlng], { color:'#F2545F', weight:2, opacity:0.85, dashArray:'6,6' }).addTo(map);
   revealLayers.push(connector);
@@ -1654,9 +1614,9 @@ async function endGame(){
   }
 
   let msg;
-  if(avg >= 85) msg = "Master of Indian mineral geography. UPSC map-based questions won't stand a chance.";
-  else if(avg >= 65) msg = "Sharp sense of the map — a seasoned reading of India's mineral belts.";
-  else if(avg >= 40) msg = "Solid run. These mineral belts are tricky — chart again to sharpen your eye.";
+  if(avg >= 85) msg = "Master of world geography. You could pinpoint these volcanoes from memory.";
+  else if(avg >= 65) msg = "Sharp sense of the map — a seasoned reading of the world's active peaks.";
+  else if(avg >= 40) msg = "Solid run. These volcanoes are tricky — chart again to sharpen your eye.";
   else msg = "";
   document.getElementById('final-msg').textContent = msg;
 
@@ -1692,7 +1652,7 @@ async function endGame(){
       fireConfetti({count:110, maxFrames:230, spread:1});
     }
     else if(avg < rival.score){
-      vb.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 8l-5 3-1 5 5-3z"/><circle cx="12" cy="12" r="9"/></svg> Your rival read the mineral belts closer. Chart again!';
+      vb.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 8l-5 3-1 5 5-3z"/><circle cx="12" cy="12" r="9"/></svg> Your rival read the volcanoes closer. Chart again!';
       vb.classList.add('lose');
     }
     else {
@@ -1816,13 +1776,13 @@ async function fetchGame(gameCode){
   return data;
 }
 function myChallenges(){
-  try{ return JSON.parse(localStorage.getItem('hn-my-challenges') || '{}'); }
+  try{ return JSON.parse(localStorage.getItem('vn-my-challenges') || '{}'); }
   catch(e){ return {}; }
 }
 function saveMyChallenge(gameCode, avg, scoreArr){
   const all = myChallenges();
   all[gameCode] = { avg, scores: scoreArr, savedAt: Date.now() };
-  try{ localStorage.setItem('hn-my-challenges', JSON.stringify(all)); }catch(e){}
+  try{ localStorage.setItem('vn-my-challenges', JSON.stringify(all)); }catch(e){}
 }
 
 async function checkForReply(){
@@ -1856,7 +1816,7 @@ function showReplyComparison(data){
     vb.classList.add('win'); vsCard.classList.add('fx-winner');
     fireConfetti({count:110, maxFrames:230, spread:1});
   } else if(currentAvgScore < rival.score){
-    vb.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 8l-5 3-1 5 5-3z"/><circle cx="12" cy="12" r="9"/></svg> They read the mineral belts closer this time.';
+    vb.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 8l-5 3-1 5 5-3z"/><circle cx="12" cy="12" r="9"/></svg> They read the volcanoes closer this time.';
     vb.classList.add('lose');
   } else {
     vb.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="9"/></svg> Dead even!';
@@ -1894,9 +1854,9 @@ async function ensureChallengeLinkReady(){
     document.getElementById('check-reply-btn').style.display = 'inline-block';
     const link = buildLinkFromGameCode(gameCode);
     linkInput.value = link;
-    const msg = `⛏️ I just charted the Mineral Navigator (India) and scored ${currentAvgScore}%. Think you can pin the mineral belts closer? Take the same targets: ${link}`;
+    const msg = `🌋 I just charted the Volcano Navigator and scored ${currentAvgScore}%. Think you can pin the volcanoes closer? Take the same targets: ${link}`;
     document.getElementById('wa-share').href = 'https://wa.me/?text=' + encodeURIComponent(msg);
-    document.getElementById('tg-share').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(`⛏️ Think you can beat my Mineral Navigator score of ${currentAvgScore}%?`);
+    document.getElementById('tg-share').href = 'https://t.me/share/url?url=' + encodeURIComponent(link) + '&text=' + encodeURIComponent(`🌋 Think you can beat my Volcano Navigator score of ${currentAvgScore}%?`);
     ['wa-share','tg-share'].forEach(id=>{ document.getElementById(id).classList.remove('disabled'); });
     copyBtn.disabled = false;
     copyBtn.textContent = 'Copy';
