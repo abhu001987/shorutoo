@@ -1611,14 +1611,34 @@ async function fetchGame(gameCode){
   sessionStorage.setItem(cacheKey, JSON.stringify(data));
   return data;
 }
+// 🔧 FIX: namespaced per game (was 'hn-my-challenges' shared across all Navigator games)
+const MY_CHALLENGES_KEY = 'my-challenges-' + GAME_TYPE;
+const CHALLENGE_MAX_AGE_MS = 60 * 24 * 60 * 60 * 1000; // matches your worker's 60-day TTL
+
 function myChallenges(){
-  try{ return JSON.parse(localStorage.getItem('hn-my-challenges') || '{}'); }
+  try{ return JSON.parse(localStorage.getItem(MY_CHALLENGES_KEY) || '{}'); }
   catch(e){ return {}; }
 }
+
 function saveMyChallenge(gameCode, avg, scoreArr){
   const all = myChallenges();
-  all[gameCode] = { avg, scores: scoreArr, savedAt: Date.now() };
-  try{ localStorage.setItem('hn-my-challenges', JSON.stringify(all)); }catch(e){}
+
+  // 🔧 FIX: prune anything past the worker's TTL before adding the new one,
+  // so the object can't grow unbounded across a player's history.
+  const now = Date.now();
+  Object.keys(all).forEach(key => {
+    if (!all[key].savedAt || (now - all[key].savedAt) > CHALLENGE_MAX_AGE_MS) {
+      delete all[key];
+    }
+  });
+
+  all[gameCode] = { avg, scores: scoreArr, savedAt: now };
+  try{
+    localStorage.setItem(MY_CHALLENGES_KEY, JSON.stringify(all));
+  }catch(e){
+    // 🔧 FIX: quota errors no longer fail silently — at least surface it
+    console.warn('Could not save challenge locally (storage quota?):', e);
+  }
 }
 
 async function checkForReply(){
