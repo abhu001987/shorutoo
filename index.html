@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Terra Prep — Chart the World. Crack the exam.</title>
+<title>MapiDesk — Chart the World. Crack the exam.</title>
+
+<script>
+(function(){
+  try {
+    var stored = localStorage.getItem('terra-site-theme');
+    document.documentElement.setAttribute('data-theme', stored === 'dark' ? 'dark' : 'light');
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
@@ -134,6 +146,11 @@
   [data-theme="dark"] .pc-scene::after{ background: linear-gradient(180deg, rgba(11,22,31,0) 0%, rgba(11,22,31,0.55) 100%); }
   [data-theme="dark"] .pc-quiz-scene::before{ background: linear-gradient(90deg, var(--card-bg) 0%, rgba(11,22,31,0.75) 28%, rgba(11,22,31,0.2) 62%, transparent 100%); }
   [data-theme="dark"] .pc-quiz-scene::after{ background: linear-gradient(180deg, rgba(11,22,31,0.1) 0%, rgba(11,22,31,0.4) 100%); }
+  @media (min-width: 1024px) {
+  .pc-quiz{
+    min-height: 430px;   /* 👈 tune this number */
+  }
+}
   [data-theme="dark"] .pc-opt{ color: var(--deep-blue); }
   [data-theme="dark"] .topics-overlay{ background: rgba(0,0,0,0.55); }
   [data-theme="dark"] .cta-btn,
@@ -590,7 +607,7 @@
     .fact-box{
       display:block;
       position:relative;
-      height:210px;
+      height:259px;
       padding:0;
       overflow:hidden;
       box-shadow: 0 8px 24px rgba(0,20,40,0.15);
@@ -2080,7 +2097,7 @@
       <circle cx="20" cy="20" r="2.4" fill="#1A2E3B"/>
     </svg>
     <div class="brand-text">
-      <div class="name">Terra Prep</div>
+      <div class="name">MapiDesk</div>
       <div class="tag">Chart the world · Crack the exam</div>
     </div>
   </div>
@@ -2206,7 +2223,7 @@
     <button class="pc-xp-pill mock-close-btn mock-hidden" id="mockCloseBtn" title="Close test">Close</tton>
   </div>
 </div>
-    <div class="pc-sub">Test your knowledge with 10 UPSC-style questions</div>
+    <div class="pc-sub">Speak on current affairs topics and build your confidence</div>
 
     <!-- Start state -->
     <div class="mock-test-start" id="mockStart">
@@ -2214,11 +2231,11 @@
     <svg viewBox="0 0 24 24"><path d="M4 21V4a1 1 0 011-1h11l4 5v13a1 1 0 01-1 1H5a1 1 0 01-1-1z"/><path d="M15 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
   </div>
   <div class="mt-title">Ready for a mock test?</div>
-  <div class="mt-sub">10 questions · 90 seconds each · AI evaluation</div>
+  <div class="mt-sub">3 questions · 90 seconds each · AI evaluation</div>
   <div class="mt-stats-row">
     <span class="mt-stat"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg> 90s/question</span>
     <span class="mt-stat"><svg viewBox="0 0 24 24"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg> AI graded</span>
-    <span class="mt-stat"><svg viewBox="0 0 24 24"><path d="M4 21V4a1 1 0 011-1h11l4 5v13a1 1 0 01-1 1H5a1 1 0 01-1-1z"/><path d="M15 3v5h5"/></svg> 10 Qs</span>
+    <span class="mt-stat"><svg viewBox="0 0 24 24"><path d="M4 21V4a1 1 0 011-1h11l4 5v13a1 1 0 01-1 1H5a1 1 0 01-1-1z"/><path d="M15 3v5h5"/></svg> 3 Qs</span>
   </div>
   <button class="mock-test-btn" id="startMockBtn">
     <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -2374,7 +2391,7 @@
         <path d="M20 35 L23 22 L20 20 L17 22 Z" fill="#748A98"/>
         <circle cx="20" cy="20" r="2.4" fill="#1A2E3B"/>
       </svg>
-      <div class="name">Terra Prep</div>
+      <div class="name">MapiDesk</div>
     </div>
     <p class="footer-about">A map-first way to learn world geography — built for exam aspirants who'd rather explore a place than memorize a list.</p>
   </div>
@@ -2392,9 +2409,9 @@
   <div class="footer-col">
     <h4>Follow Us</h4>
     <ul class="footer-follow-list">
-      <li><a href="#"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg> Facebook</a></li>
+      <li><a href="#"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2z"/><path d="M8.6 7.5c-.4.9-.2 2 .5 3.1a9 9 0 003.8 3.4c1.2.52.3.6 3.1.1l-1.3-2-1.7.6-1.9-1.9.6-1.7-2-1.6z"/></svg> WhatsApp</a></li>
       <li><a href="#"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg> Instagram</a></li>
-      <li><a href="#"><svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg> Twitter (X)</a></li>
+      <li><a href="#"><svg viewBox="0 0 24 24"><path d="M22 3L2 11l6 2.2L10.5 21l3.2-4.6L19 20z"/><path d="M8 13.2L19 6l-7.5 8.5"/></svg> Telegram</a></li>
     </ul>
   </div>
 
@@ -2407,7 +2424,7 @@
   </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Terra Prep. All rights reserved.</span>
+    <span>© 2026 MapiDesk. All rights reserved.</span>
     </div>
   </div>
 </footer>
@@ -2431,8 +2448,8 @@
     <div class="region-toggle">
       <div class="region-track" id="regionTrack">
         <span class="region-thumb"></span>
-        <button class="region-btn active" data-region="world" id="regionWorldBtn">🌍 World</button>
-        <button class="region-btn" data-region="india" id="regionIndiaBtn">🇮🇳 India</button>
+        <button class="region-btn active" data-region="world" id="regionWorldBtn">🇮🇳 India</button>
+        <button class="region-btn" data-region="india" id="regionIndiaBtn">🌍 World</button>
       </div>
     </div>
 
@@ -2501,115 +2518,108 @@
 const ICONS = {
   mountain: `<svg viewBox="0 0 24 24"><path d="M3 18 9 8l4 6 3-5 5 9z"/></svg>`,
   river: `<svg viewBox="0 0 24 24"><path d="M3 9c3 0 3 3 6 3s3-3 6-3 3 3 6 3M3 15c3 0 3 3 6 3s3-3 6-3 3 3 6 3"/></svg>`,
+  Dams: `<svg viewBox="0 0 24 24"><path d="M3 9c3 0 3 3 6 3s3-3 6-3 3 3 6 3M3 15c3 0 3 3 6 3s3-3 6-3 3 3 6 3"/></svg>`,
   park: `<svg viewBox="0 0 24 24"><path d="M12 3l4 6h-2.5l3.5 5h-3v5h-4v-5h-3l3.5-5H8z"/></svg>`,
-  anchor: `<svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M12 6.3V20M5 13a7 7 0 0014 0M5 13H3M19 13h2M8.2 18l-3-2M15.8 18l3-2"/></svg>`,
   landmark: `<svg viewBox="0 0 24 24"><path d="M4 21h16M5 21V10M9 21V10M15 21V10M19 21V10M3 10l9-6 9 6"/></svg>`,
   route: `<svg viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h5a3 3 0 003-3V9a3 3 0 013-3"/></svg>`,
   waves: `<svg viewBox="0 0 24 24"><path d="M2 9c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>`,
-  factory: `<svg viewBox="0 0 24 24"><path d="M3 21V11l5 3v-3l5 3V8l6 4v9H3z"/><path d="M7 21v-4M12 21v-4M17 21v-4"/></svg>`,
   desert: `<svg viewBox="0 0 24 24"><path d="M2 17c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/><path d="M2 21h20"/></svg>`,
   glacier: `<svg viewBox="0 0 24 24"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/></svg>`,
   volcano: `<svg viewBox="0 0 24 24"><path d="M4 20L10 6l2 4 2-4 6 14z"/><path d="M11 3c0 1.2 1.4 1.2 1.4 2.4"/></svg>`,
   plateau: `<svg viewBox="0 0 24 24"><path d="M3 20h4v-4h4v-4h4v-4h4v12H3z"/></svg>`,
+  Pass: `<svg viewBox="0 0 24 24"><path d="M3 20h4v-4h4v-4h4v-4h4v12H3zM7 10l2-3 2 3v2H7v-2zm6 0l2-3 2 3v2h-4v-2zm-8 6h10v2H5v-2z"/></svg>`,
+  Dams: `<svg viewBox="0 0 24 24"><path d="M4 6c0-2 4-4 8-4s8 2 8 4v14H4V6zM4 10h16M4 14h16M8 6v4M16 6v4"/></svg>`,
   lake: `<svg viewBox="0 0 24 24"><path d="M12 3s6 7 6 11a6 6 0 01-12 0c0-4 6-11 6-11z"/></svg>`,
+  Agriculture: `<svg viewBox="0 0 24 24"><path d="M12 2s4 5 4 8a4 4 0 01-8 0c0-3 4-8 4-8zM8 13h8M10 15h4"/></svg>`,
   wind: `<svg viewBox="0 0 24 24"><path d="M3 8h9a3 3 0 10-3-3M3 12h13a3 3 0 11-3 3M3 16h7a2 2 0 102-2"/></svg>`,
   climate: `<svg viewBox="0 0 24 24"><circle cx="8" cy="7" r="2.6"/><path d="M8 2.3v1.2M8 10.5v1.2M3.3 7H4.5M11.5 7h1.2M4.9 3.9l.85.85M10.25 3.9l-.85.85"/><path d="M6 15a4 4 0 014-4 5 5 0 019.6 1.7A3.4 3.4 0 0119 19H8a3 3 0 01-2-4z"/></svg>`,
   mineral: `<svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3l3 6-3 12M15 3l-3 6 3 12"/></svg>`,
-  agriculture: `<svg viewBox="0 0 24 24"><path d="M12 21V9M12 9c-2 0-3-2-3-4M12 9c2 0 3-2 3-4M12 14c-2 0-3-2-3-4M12 14c2 0 3-2 3-4M12 18c-1.6 0-2.5-1.6-2.5-3.2"/></svg>`,
   population: `<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0111 0"/><circle cx="17" cy="9.5" r="2.4"/><path d="M14.8 20a4.6 4.6 0 018.2-2.8"/></svg>`,
-  timezone: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg>`,
   island: `<svg viewBox="0 0 24 24"><path d="M3 19c3-6 15-6 18 0"/><path d="M12 3v9M9 6l3-3 3 3"/></svg>`,
   biosphere: `<svg viewBox="0 0 24 24"><path d="M4 20C4 10 12 4 20 4c0 8-6 16-16 16z"/><path d="M4 20c4-4 8-8 16-16"/></svg>`,
-  bolt: `<svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>`,
-  target: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" style="fill:currentColor"/></svg>`,
-  dice: `<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="8.5" cy="8.5" r="1" style="fill:currentColor"/><circle cx="15.5" cy="8.5" r="1" style="fill:currentColor"/><circle cx="12" cy="12" r="1" style="fill:currentColor"/><circle cx="8.5" cy="15.5" r="1" style="fill:currentColor"/><circle cx="15.5" cy="15.5" r="1" style="fill:currentColor"/></svg>`,
-  chart: `<svg viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v4M12 11v9M16 7v13"/></svg>`,
-  bookmark: `<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3z"/></svg>`,
+  tiger: `<svg viewBox="0 0 24 24"><path d="M12 3c-2 0-3.5 1.5-3.5 3.5 0 .8.3 1.5.7 2.1-1.9.7-3.2 2.5-3.2 4.6 0 2.8 2.7 5.1 6 5.1s6-2.3 6-5.1c0-2.1-1.3-3.9-3.2-4.6.4-.6.7-1.3.7-2.1C15.5 4.5 14 3 12 3z"/><circle cx="9.5" cy="9" r=".6" style="fill:currentColor"/><circle cx="14.5" cy="9" r=".6" style="fill:currentColor"/><path d="M6 8.5L4 6M18 8.5l2-2.5"/></svg>`,
+  wetland: `<svg viewBox="0 0 24 24"><path d="M2 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 20c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M6 16V9M12 16V6M18 16v-5"/></svg>`,
   map: `<svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>`,
-  doc: `<svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5M9 13h6M9 17h6M9 9h3"/></svg>`,
-  news: `<svg viewBox="0 0 24 24"><path d="M4 4h13v16H4z"/><path d="M8 8h5M8 11h5M8 14h3M17 8h3v9a2 2 0 01-2 2h-1"/></svg>`,
-  layers: `<svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5M3 18l9 5 9-5"/></svg>`,
-  rocket: `<svg viewBox="0 0 24 24"><path d="M12 2c3 2 5 6 5 10 0 2-1 4-2 5l-3 3-3-3c-1-1-2-3-2-5 0-4 2-8 5-10z"/><circle cx="12" cy="10" r="1.6"/><path d="M9 17l-3 4M15 17l3 4"/></svg>`
+  newsflag: `<svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg>`,
+  orgglobe: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 6 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-6-3.8-9s1.3-6.5 3.8-9z"/><circle cx="12" cy="12" r="2" style="fill:currentColor"/></svg>`,
+  wonder: `<svg viewBox="0 0 24 24"><path d="M12 2l2.6 5.9L21 9l-4.6 4.3L17.6 20 12 16.8 6.4 20l1.2-6.7L3 9l6.4-1.1z"/></svg>`,
+  pilgrimage: `<svg viewBox="0 0 24 24"><path d="M12 2c1.8 2.4 2.8 5 2.8 7.6C14.8 13 12 15 12 15s-2.8-2-2.8-5.4C9.2 7 10.2 4.4 12 2z"/><path d="M4 22c1.5-4 4.5-6 8-6s6.5 2 8 6"/><circle cx="12" cy="15" r="1" style="fill:currentColor"/></svg>`,
 };
 function ic(name){ return ICONS[name] || ICONS.map; }
 
 // ---------- DATA ----------
 const WORLD_TOPICS = [
-  { name:"Rivers & Dams", icon:"river", count:124, keywords:"river dam water basin tributary", url:"https://abhu001987.github.io/Test/Strait" },
-  { name:"Mountains", icon:"mountain", count:89, keywords:"mountain peak range highland summit", url:"https://abhu001987.github.io/Test/Strait" },
-  { name:"National Parks", icon:"park", count:71, keywords:"park wildlife forest reserve sanctuary", url:"https://abhu001987.github.io/Test/newpa" },
-  { name:"Ports", icon:"anchor", count:16, keywords:"port harbour trade shipping", url:"#" },
-  { name:"World Heritage", icon:"landmark", count:41, keywords:"heritage unesco monument ancient", url:"#" },
-  { name:"Trade Routes", icon:"route", count:18, keywords:"trade route silk road rail", url:"#" },
-  { name:"Seas & Gulfs", icon:"waves", count:21, keywords:"sea gulf ocean bay strait", url:"#" },
-  { name:"Industries", icon:"factory", count:37, keywords:"industry factory manufacturing mining", url:"#" },
-  { name:"Deserts", icon:"desert", count:19, keywords:"desert dune arid sand", url:"https://abhu001987.github.io/Test/Strait" },
-  { name:"Glaciers", icon:"glacier", count:12, keywords:"glacier ice snow polar", url:"#" },
-  { name:"Volcanoes", icon:"volcano", count:15, keywords:"volcano lava eruption magma ring of fire", url:"#" },
-  { name:"Plateaus", icon:"plateau", count:22, keywords:"plateau tableland highland terrace", url:"#" },
-  { name:"Lakes", icon:"lake", count:33, keywords:"lake lagoon wetland freshwater", url:"#" },
-  { name:"Forests", icon:"park", count:28, keywords:"forest rainforest jungle woodland", url:"#" },
-  { name:"Wind Patterns", icon:"wind", count:9, keywords:"wind trade winds monsoon jet stream", url:"#" },
-  { name:"Ocean Currents", icon:"waves", count:11, keywords:"current ocean gulf stream circulation", url:"#" },
-  { name:"Climate Zones", icon:"climate", count:14, keywords:"climate zone weather tropical temperate", url:"#" },
-  { name:"Minerals & Mining", icon:"mineral", count:26, keywords:"mineral mining ore coal metal", url:"#" },
-  { name:"Agriculture Belts", icon:"agriculture", count:31, keywords:"agriculture crop farming belt soil", url:"#" },
-  { name:"Population & Cities", icon:"population", count:44, keywords:"population city urban density migration", url:"#" },
-  { name:"Time Zones", icon:"timezone", count:8, keywords:"time zone meridian longitude", url:"#" },
-  { name:"Tectonic Plates", icon:"layers", count:10, keywords:"tectonic plate earthquake fault boundary", url:"#" },
-  { name:"Coastlines", icon:"waves", count:17, keywords:"coast coastline shoreline beach", url:"#" },
-  { name:"Islands", icon:"island", count:20, keywords:"island archipelago atoll", url:"#" },
-  { name:"Canals & Straits", icon:"route", count:13, keywords:"canal strait channel waterway", url:"#" },
-  { name:"Biosphere Reserves", icon:"biosphere", count:18, keywords:"biosphere reserve ecology conservation", url:"#" },
-  { name:"Monsoon Systems", icon:"wind", count:12, keywords:"monsoon rainfall season wind", url:"#" },
-  { name:"Soil Types", icon:"agriculture", count:16, keywords:"soil alluvial laterite black soil", url:"#" },
-  { name:"Migration Routes", icon:"route", count:14, keywords:"migration route bird human corridor", url:"#" },
-  { name:"Renewable Energy", icon:"bolt", count:9, keywords:"energy solar wind hydro renewable", url:"#" }
+  { name:"Ramsar Sites", icon:"wetland", count:100, keywords:"ramsar wetland site india convention chilika sundarban", url:"https://abhu001987.github.io/Test/ramsar" },
+  { name:"Biosphere Reserves", icon:"biosphere", count:18, keywords:"nilgiri sundarban biosphere reserve india", url:"https://abhu001987.github.io/Test/ramsar" },
+  { name:"Tiger Reserves", icon:"tiger", count:58, keywords:"tiger reserve project tiger corbett bandhavgarh ntca", url:"https://abhu001987.github.io/Test/ramsar" },
+  { name:"National Park", icon:"park", count:20, keywords:"sundarbans forest western ghats mangrove india", url:"#" },
+  { name:"Pass", icon:"Pass", count:20, keywords:"sundarbans forest western ghats mangrove india", url:"#" },
+  { name:"Rivers", icon:"river", count:20, keywords:"ganga yamuna narmada godavari river india", url:"https://abhu001987.github.io/Test/Strait" },
+  { name:"Mountains", icon:"mountain", count:20, keywords:"himalaya western ghats eastern ghats aravalli vindhya satpura", url:"https://abhu001987.github.io/Test/newpa" },
+  { name:"Canals", icon:"route", count:20, keywords:"indira gandhi canal sardar sarovar canal india", url:"#" },
+  { name:"World Heritage Site", icon:"landmark", count:20, keywords:"taj mahal qutub minar hampi khajuraho unesco india", url:"#" },
+  { name:"Plateaus", icon:"plateau", count:20, keywords:"deccan plateau chota nagpur malwa plateau", url:"#" },
+  { name:"Lakes", icon:"lake", count:20, keywords:"wular chilika dal lake pulicat", url:"#" },
+  { name:"Agriculture", icon:"Agriculture", count:20, keywords:"wular chilika dal lake pulicat", url:"#" },
+  { name:"Minerals & Mining", icon:"mineral", count:20, keywords:"jharkhand odisha coal iron ore mineral india", url:"#" },
+  { name:"Population & Cities", icon:"population", count:20, keywords:"mumbai delhi bengaluru population density india", url:"#" },
+  { name:"Coastlines", icon:"waves", count:20, keywords:"konkan coromandel malabar coast india", url:"#" },
+  { name:"Islands", icon:"island", count:20, keywords:"andaman nicobar lakshadweep island", url:"#" },
+  { name:"Dams", icon:"Dams", count:20, keywords:"river basin tributary water", url:"https://abhu001987.github.io/Test/strait" }
+];
+  
+const INDIA_TOPICS = [
+  { name:"Ocean Currents", icon:"waves", count:20, keywords:"current ocean gulf stream circulation", url:"#" },
+  { name:"Straits", icon:"route", count:20, keywords:"strait channel waterway narrow passage", url:"#" },
+  { name:"Deserts", icon:"desert", count:20, keywords:"desert dune arid sand", url:"https://abhu001987.github.io/Test/Strait" },
+  { name:"Lakes", icon:"lake", count:20, keywords:"lake lagoon wetland freshwater", url:"#" },
+  { name:"Volcanoes", icon:"volcano", count:20, keywords:"volcano lava eruption magma ring of fire", url:"#" },
+  { name:"Seas", icon:"waves", count:20, keywords:"sea ocean water body", url:"#" },
+  { name:"Gulfs", icon:"waves", count:20, keywords:"gulf bay coastal water body", url:"#" },
+  { name:"Canals", icon:"route", count:20, keywords:"canal waterway artificial channel", url:"#" },
+  { name:"Pass", icon:"Pass", count:20, keywords:"sundarbans forest western ghats mangrove india", url:"#" },
+  { name:"Rivers", icon:"river", count:20, keywords:"river basin tributary water", url:"https://abhu001987.github.io/Test/strait" },
+  { name:"Mountains", icon:"mountain", count:20, keywords:"mountain peak range highland summit", url:"https://abhu001987.github.io/Test/Strait" },
+  { name:"Glaciers", icon:"glacier", count:20, keywords:"glacier ice snow polar", url:"#" },
+  { name:"Plateaus", icon:"plateau", count:20, keywords:"plateau tableland highland terrace", url:"#" },
+  { name:"Forests", icon:"park", count:20, keywords:"forest rainforest jungle woodland", url:"#" },
+  { name:"Minerals & Mining", icon:"mineral", count:20, keywords:"mineral mining ore coal metal", url:"#" },
+  { name:"Agriculture", icon:"Agriculture", count:20, keywords:"wular chilika dal lake pulicat", url:"#" },
+  { name:"Ramsar Sites", icon:"wetland", count:100, keywords:"ramsar wetland convention international", url:"https://abhu001987.github.io/Test/ramsar" },
+  { name:"Trade Winds", icon:"wind", count:20, keywords:"trade winds wind pattern jet stream", url:"#" },
+  { name:"World Heritage Site", icon:"landmark", count:20, keywords:"heritage unesco monument ancient", url:"#" },
+  { name:"Population & Cities", icon:"population", count:20, keywords:"population city urban density migration", url:"#" }
+  
 ];
 
-const INDIA_TOPICS = [
-  { name:"Rivers & Dams", icon:"river", count:96, keywords:"ganga yamuna narmada godavari dam bhakra tehri", url:"https://abhu001987.github.io/Test/Strait" },
-  { name:"Mountains", icon:"mountain", count:52, keywords:"himalaya western ghats eastern ghats aravalli vindhya satpura", url:"https://abhu001987.github.io/Test/newpa" },
-  { name:"National Parks", icon:"park", count:64, keywords:"jim corbett kaziranga ranthambore bandipur gir sundarban tiger reserve", url:"https://abhu001987.github.io/Test/Strait" },
-  { name:"Ports", icon:"anchor", count:13, keywords:"kandla mumbai chennai kochi vizag paradip port", url:"#" },
-  { name:"World Heritage", icon:"landmark", count:34, keywords:"taj mahal qutub minar hampi khajuraho unesco india", url:"#" },
-  { name:"Trade Routes", icon:"route", count:11, keywords:"golden quadrilateral grand trunk road spice route", url:"#" },
-  { name:"Seas & Gulfs", icon:"waves", count:9, keywords:"arabian sea bay of bengal gulf of khambhat gulf of mannar", url:"#" },
-  { name:"Industries", icon:"factory", count:29, keywords:"jamshedpur steel textile mumbai jute bengal industry", url:"#" },
-  { name:"Deserts", icon:"desert", count:6, keywords:"thar desert rajasthan arid", url:"#" },
-  { name:"Glaciers", icon:"glacier", count:8, keywords:"siachen gangotri glacier himalaya", url:"#" },
-  { name:"Volcanoes", icon:"volcano", count:3, keywords:"barren island volcano andaman", url:"#" },
-  { name:"Plateaus", icon:"plateau", count:14, keywords:"deccan plateau chota nagpur malwa plateau", url:"#" },
-  { name:"Lakes", icon:"lake", count:19, keywords:"wular chilika dal lake pulicat", url:"#" },
-  { name:"Forests", icon:"park", count:22, keywords:"sundarbans forest western ghats mangrove india", url:"#" },
-  { name:"Wind Patterns", icon:"wind", count:7, keywords:"monsoon wind loo western disturbance india", url:"#" },
-  { name:"Ocean Currents", icon:"waves", count:6, keywords:"indian ocean current monsoon current", url:"#" },
-  { name:"Climate Zones", icon:"climate", count:11, keywords:"tropical subtropical alpine climate india koppen", url:"#" },
-  { name:"Minerals & Mining", icon:"mineral", count:24, keywords:"jharkhand odisha coal iron ore mineral india", url:"#" },
-  { name:"Agriculture Belts", icon:"agriculture", count:27, keywords:"punjab wheat kerala spices green revolution belt", url:"#" },
-  { name:"Population & Cities", icon:"population", count:38, keywords:"mumbai delhi bengaluru population density india", url:"#" },
-  { name:"Time Zones", icon:"timezone", count:1, keywords:"ist indian standard time meridian", url:"#" },
-  { name:"Tectonic Plates", icon:"layers", count:6, keywords:"indian plate earthquake himalaya fault", url:"#" },
-  { name:"Coastlines", icon:"waves", count:12, keywords:"konkan coromandel malabar coast india", url:"#" },
-  { name:"Islands", icon:"island", count:9, keywords:"andaman nicobar lakshadweep island", url:"#" },
-  { name:"Canals & Straits", icon:"route", count:5, keywords:"palk strait ten degree channel canal india", url:"#" },
-  { name:"Biosphere Reserves", icon:"biosphere", count:16, keywords:"nilgiri sundarban biosphere reserve india", url:"#" },
-  { name:"Monsoon Systems", icon:"wind", count:8, keywords:"southwest monsoon northeast monsoon retreating india", url:"#" },
-  { name:"Soil Types", icon:"agriculture", count:10, keywords:"alluvial black red laterite soil india", url:"#" },
-  { name:"Migration Routes", icon:"route", count:7, keywords:"internal migration india rural urban corridor", url:"#" },
-  { name:"Renewable Energy", icon:"bolt", count:13, keywords:"rajasthan solar park wind hydro india renewable", url:"#" }
-];
 
 const REGION_TOPICS = { world: WORLD_TOPICS, india: INDIA_TOPICS };
 let currentRegion = 'world';
 
 const QUICKBAR = [
-  { icon:"target", t:"Daily Challenge", s:"10 points" },
-  { icon:"dice", t:"Random Place", s:"Test yourself" },
-  { icon:"chart", t:"My Progress", s:"Track journey" },
-  { icon:"bookmark", t:"Saved Places", s:"9 locations" }
+  { icon:"newsflag", t:"Places in News", s:"Current affairs", url:"https://abhu001987.github.io/Test/straits" },
+  { icon:"orgglobe", t:"International Organization", s:"UN, WTO, IMF & more", url:"https://abhu001987.github.io/Test/straits" },
+  { icon:"wonder", t:"Seven Wonders", s:"Ancient & modern", url:"https://abhu001987.github.io/Test/straits" },
+  { icon:"pilgrimage", t:"Major Pilgrimage Sites", s:"Sacred places", url:"https://abhu001987.github.io/Test/straits" }
 ];
 
+function renderTopicsGrid(region){
+  const grid = document.getElementById('topicsGrid');
+  const topics = REGION_TOPICS[region] || WORLD_TOPICS;
+  grid.innerHTML = topics.map((t,i)=>`
+    <div class="topic-card" data-topic="${t.name}" data-url="${t.url || '#'}" style="animation-delay:${i*25}ms">
+      <div class="icon-badge">${ic(t.icon)}</div>
+      <div class="cname">${t.name}</div>
+      <div class="ccount">${t.count} items</div>
+    </div>`).join('');
+
+  grid.querySelectorAll('.topic-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const url = card.dataset.url;
+      if(url && url !== '#'){ window.location.href = url; }
+    });
+  });
+}
 function renderCollections(){
   const grid = document.getElementById('collectionsGrid');
   grid.innerHTML = WORLD_TOPICS.slice(0,8).map((t,i)=>`
@@ -2628,24 +2638,15 @@ function renderCollections(){
   });
 }
 function renderQuickBar(){
-  document.getElementById('quickBar').innerHTML = QUICKBAR.map(q=>`
-    <div class="quick-item icon-hover">
+  const bar = document.getElementById('quickBar');
+  bar.innerHTML = QUICKBAR.map(q=>`
+    <div class="quick-item icon-hover" data-url="${q.url || '#'}">
       <span class="icon-badge">${ic(q.icon)}</span>
       <div><div class="qt">${q.t}</div><div class="qs">${q.s}</div></div>
     </div>`).join('');
-}
-function renderTopicsGrid(region){
-  const list = REGION_TOPICS[region] || WORLD_TOPICS;
-  document.getElementById('topicsGrid').innerHTML = list.map((t,i)=>`
-    <div class="topic-card" data-topic="${t.name}" data-url="${t.url || '#'}" style="animation-delay:${i*22}ms">
-      <div class="icon-badge">${ic(t.icon)}</div>
-      <div class="cname">${t.name}</div>
-      <div class="ccount">${t.count} items</div>
-    </div>`).join('');
-
-  document.querySelectorAll('.topic-card').forEach(card=>{
-    card.addEventListener('click', ()=>{
-      const url = card.dataset.url;
+  bar.querySelectorAll('.quick-item').forEach((el, i)=>{
+    el.addEventListener('click', ()=>{
+      const url = QUICKBAR[i].url;
       if(url && url !== '#'){ window.location.href = url; }
     });
   });
@@ -3971,7 +3972,7 @@ document.addEventListener('keydown', function(e) {
   console.log(`🚀 Mock test ready with ${MOCK_QUESTIONS.length} questions`);
 })();
 
-console.log('🚀 Terra Prep ready with Mock Test!');
+console.log('🚀 MapiDesk ready with Mock Test!');
 
 (function(){
   const ANIMALS = [
