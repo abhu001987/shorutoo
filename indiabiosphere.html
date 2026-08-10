@@ -1835,12 +1835,42 @@ async function acceptPastedChallenge(){
           document.getElementById('check-reply-btn').style.display = 'inline-block';
           showToast("Still waiting on your friend to play");
         }
-      }).catch(e=>console.warn('Could not load your challenge:', e));
+      }).catch(e=>{
+        console.warn('Could not load your challenge:', e);
+        showToast("Couldn't load your challenge — showing your last saved result");
+        // Fall back to what we already have cached locally, so the screen isn't stuck
+        currentGameCode = g;
+        currentAvgScore = mine[g].avg;
+        scores = mine[g].scores;
+        mode = 'challenge';
+        document.getElementById('screen-start').classList.add('hidden');
+        document.getElementById('score-hero').style.display = 'none';
+        document.getElementById('final-score').textContent = currentAvgScore + '%';
+        document.getElementById('final-msg').textContent = '';
+        document.getElementById('screen-end').classList.remove('hidden');
+        setMapVisible(false);
+        setHeaderVisible(true);
+        document.getElementById('check-reply-btn').style.display = 'inline-block';
+      });
       return;
     }
     fetchGame(g).then(gameData=>{ showChallengeInvite(g, gameData); })
-      .catch(e=>{ console.warn('Could not load challenge from URL:', e); });
-  }catch(e){ /* ignore malformed links, fall back to start screen */ }
+      .catch(e=>{
+        console.warn('Could not load challenge from URL:', e);
+        showToast("Couldn't load that challenge link — try refreshing");
+        document.getElementById('screen-start').classList.remove('hidden');
+        setHeaderVisible(true);
+        // Clean the broken ?g= param off the URL so refresh doesn't just fail again
+        try{
+          const url = new URL(window.location.href);
+          url.searchParams.delete('g');
+          window.history.replaceState({}, '', url.toString());
+        }catch(e2){}
+      });
+  }catch(e){
+    console.warn('Malformed challenge link:', e);
+    showToast('This challenge link looks invalid');
+  }
 })();
 
 /* ---------------- Confetti ---------------- */
