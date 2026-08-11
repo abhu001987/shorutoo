@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Lake Navigator — World Lakes Geography Quiz | MapiDesk</title>
-
+<title>Forests of the World Quiz | MapiDesk</title>
+<meta name="description" content="Test your knowledge of the world's forests with an interactive geography map quiz. Locate major forests, discover their countries and regions, and sharpen your world geography skills.">
 <!-- Theme: set instantly, before any CSS loads -->
 <script>
   (function() {
@@ -503,10 +503,10 @@
         <div class="hero-copy">
           <div class="kicker">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-5.5 2 2-5.5L17 5l3 3-11.5 11.5z"/><path d="M15 3l6 6"/></svg>
-            Chart the Lakes
+            Map the World's Forests
           </div>
-          <h1> Lake <span>Navigator</span></h1>
-<p class="sub">Drop a pin where you think each major world lake is located — from the Caspian Sea, Lake Superior and Lake Victoria to Lake Baikal, Lake Titicaca and Lake Malawi. Lock in your guess and watch the map reveal the actual lake. Finish a run and get a link with the exact same lakes, in the exact same order — challenge a friend and see who knows world geography better.</p>        </div>
+          <h1> Forests <span>Navigator</span></h1>
+<p class="sub">Test your knowledge of the world's forests by locating major forests on the map, from the Amazon Rainforest and Congo Basin to the Taiga, Daintree, and more.</p>        </div>
       </div>
 
       <div class="info-cards">
@@ -517,7 +517,7 @@
             </div>
             <div>
               <h3>Your Mission</h3>
-              <p>Pin each Lake as close to its real outline as you can.</p>
+              <p>Pin each forest as close to its real outline as you can.</p>
             </div>
           </div>
           <div class="info-body">
@@ -535,7 +535,7 @@
                 <div class="mini-stat-text"><span class="t">Share &amp; Compare</span><span class="d">Challenge your friends</span></div>
               </div>
             </div>
-            <button class="btn btn-primary" style="width:100%;margin-top:18px;" onclick="startFreshGame()">Begin Mission →</button>
+            <button class="btn btn-primary" style="width:100%;margin-top:18px;" onclick="startFreshGame()">Begin →</button>
           </div>
         </div>
 
@@ -567,7 +567,7 @@
           </div>
           <div class="step">
             <div class="step-num">2</div>
-            <div class="step-text"><div class="t">Lock It In</div><div class="d">Watch the map fly to the real lake</div></div>
+            <div class="step-text"><div class="t">Lock It In</div><div class="d">Watch the map fly to the real location</div></div>
           </div>
           <div class="step">
             <div class="step-num">3</div>
@@ -591,7 +591,7 @@
     <div class="panel wide" style="max-width:900px;">
       <div class="mode-badge"><span class="dot"></span>Incoming Challenge</div>
       <h1 style="text-align:left;">You've Been <span>Challenged</span></h1>
-      <p class="sub" style="text-align:left;">A friend already pinned all the lakes and dared you to beat them. Same targets, same order — their score stays hidden until you finish your own run.</p>
+      <p class="sub" style="text-align:left;">A friend already mapped all the forests and dared you to beat them. Same targets, same order — their score stays hidden until you finish your own run.</p>
       <div class="info-cards">
         <div class="info-card accent">
           <div class="info-card-head">
@@ -604,7 +604,7 @@
             </div>
           </div>
           <div class="info-body">
-            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Accept to take the exact same course and find out who reads world geography closer, lake by lake.</p>
+            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Accept to take the exact same course and find out who reads world geography closer.</p>
           </div>
         </div>
         <div class="info-card">
@@ -674,7 +674,7 @@
           <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M12 6.3V20M5 13a7 7 0 0014 0M5 13H3M19 13h2M8.2 18l-3-2M15.8 18l3-2"/></svg>
           Challenge a Friend
         </div>
-        <div class="share-sub">Send them this exact run's targets and see if they can out-pin your lake score.</div>
+        <div class="share-sub">Send them this exact run's targets and see if they can out-pin your score.</div>
         <div class="link-box">
           <input id="challenge-link" readonly placeholder="Tap Copy to generate your link…">
           <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
@@ -710,9 +710,9 @@
     <button class="hud-back-btn" onclick="showExitDialog()" aria-label="Back to menu" title="Back to menu">
       <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
     </button>
-    <div class="brand">◆ Lake Navigator</div>
+    <div class="brand">◆ Forests Navigator</div>
     <div class="strait-card" id="strait-card">
-      <div class="eyebrow" id="round-label">Round 1 of 15</div>
+      <div class="eyebrow" id="round-label">Round 1 of 10</div>
       <div class="title" id="strait-name">—</div>
       <div class="subtitle" id="strait-region"></div>
       <div id="dots"></div>
@@ -753,7 +753,7 @@
 /* ============================================================
    GAME / API CONFIG
    ============================================================ */
-const GAME_TYPE = 'lake-navigator';
+const GAME_TYPE = 'forest-navigator';
 const API_BASE = 'https://game-api.abhikr18996.workers.dev';
 
 /* ---------------- Fixed header height sync ---------------- */
