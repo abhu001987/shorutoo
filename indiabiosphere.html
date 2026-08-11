@@ -678,126 +678,7 @@
           <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M12 6.3V20M5 13a7 7 0 0014 0M5 13H3M19 13h2M8.2 18l-3-2M15.8 18l3-2"/></svg>
           Challenge a Friend
         </div>
-        <div class="share-sub">Send them this exact run's targets and see if they can out-pin your biosphere score.</div>
-        <div class="link-box">
-          <input id="challenge-link" readonly placeholder="Tap Copy to generate your link…">
-          <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
-        </div>
-        <button class="btn btn-ghost" id="check-reply-btn" style="width:100%;margin:4px 0 12px;display:none;" onclick="checkForReply()">Check if they've replied</button>
-        <div class="share-icons">
-          <a id="wa-share" class="disabled" href="#" target="_blank" rel="noopener" onclick="return handleShareIconClick(event, 'wa')">
-            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.32A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm5.16 14.13c-.22.63-1.28 1.2-1.77 1.24-.45.05-.9.24-3.03-.63-2.57-1.05-4.22-3.63-4.35-3.8-.13-.17-1.04-1.38-1.04-2.63 0-1.25.66-1.86.9-2.12.23-.25.5-.32.67-.32.17 0 .34 0 .48.01.16.01.36-.06.56.42.22.53.75 1.83.82 1.96.07.13.11.29.02.46-.09.17-.14.27-.27.42-.13.15-.28.33-.4.44-.13.13-.27.27-.11.53.15.26.68 1.12 1.46 1.81 1 .89 1.85 1.17 2.11 1.3.27.13.42.11.58-.07.16-.17.66-.77.84-1.04.18-.26.35-.22.6-.13.24.09 1.53.72 1.79.85.27.13.44.2.5.31.07.11.07.65-.15 1.28z"/></svg>
-            WhatsApp
-          </a>
-          <a id="tg-share" class="disabled" href="#" target="_blank" rel="noopener" onclick="return handleShareIconClick(event, 'tg')">
-            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.5 4.5L2.7 11.6c-1.2.5-1.2 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.2-2.1 4.6 3.4c.8.5 1.4.2 1.6-.7l3-14.1c.3-1.1-.4-1.6-1.3-1.9zM8.3 13.9L17.6 8c.4-.3.8-.1.5.2L9.9 15.8l-.3 3.3z"/></svg>
-            Telegram
-          </a>
-        </div>
-        <div class="share-hint" style="font-size:11px;color:var(--ink-dim);margin-top:12px;text-align:center;line-height:1.5;">
-          Once they've played, come back and open this same link again — or tap "Check if they've replied" above — to see the head-to-head.
-        </div>
-      </div>
-
-      <div class="menu-footer">
-        <a href="index.html" class="back-link">
-          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
-          Back to MapiDesk
-        </a>
-        <span class="copy">© 2026 MapiDesk</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- CHALLENGE INVITE SCREEN -->
-  <div class="screen hidden" id="screen-invite">
-    <div class="panel wide" style="max-width:900px;">
-      <div class="mode-badge"><span class="dot"></span>Incoming Challenge</div>
-      <h1 style="text-align:left;">You've Been <span>Challenged</span></h1>
-      <p class="sub" style="text-align:left;">A friend already pinned all the agricultural regions and dared you to beat them. Same targets, same order — their score stays hidden until you finish your own run.</p>
-      <div class="info-cards">
-        <div class="info-card accent">
-          <div class="info-card-head">
-            <div class="icon-circle coral pulse-ring">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
-            </div>
-            <div>
-              <h3>From <span id="invite-rival-name">A navigator</span></h3>
-              <p>Locked in a score across all targets</p>
-            </div>
-          </div>
-          <div class="info-body">
-            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Accept to take the exact same course and find out who reads India's Biosphere Reserve geography closer, site by site.</p>
-          </div>
-        </div>
-        <div class="info-card">
-          <div class="info-card-head">
-            <div class="icon-circle blue"><svg viewBox="0 0 24 24"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg></div>
-            <div>
-              <h3>How it Works</h3>
-              <p>Same map, same order, head-to-head</p>
-            </div>
-          </div>
-          <div class="info-body">
-            <p style="font-size:12.5px;color:var(--ink-dim);line-height:1.6;margin:2px 0 0;">Drop your pin as close to each real region as you can — closer placements score higher. At the end you'll get a full head-to-head breakdown.</p>
-          </div>
-        </div>
-      </div>
-      <div class="btn-row" style="justify-content:flex-start;">
-        <button class="btn btn-primary" onclick="acceptChallengeInvite()">Accept Challenge</button>
-        <button class="btn btn-ghost" onclick="declineChallengeInvite()">Not Now</button>
-      </div>
-      <div class="menu-footer">
-        <a href="index.html" class="back-link">
-          <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
-          Back to MapiDesk
-        </a>
-        <span class="copy">© 2026 MapiDesk</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- END SCREEN -->
-  <div class="screen hidden" id="screen-end">
-    <div class="panel" style="max-width:720px;">
-      <div class="score-hero" id="score-hero">
-        <div class="icon-circle blue shimmer" id="score-hero-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17l-5.5 4L8 13.5 3 9l6.5-.5z"/></svg>
-        </div>
-        <div class="score-meta">
-          <div class="kicker" id="end-kicker" style="margin-bottom:4px;">Mission Complete</div>
-          <div class="final-score" id="final-score">0%</div>
-          <div class="final-label">Average Placement Accuracy</div>
-        </div>
-      </div>
-      <p class="sub" id="final-msg" style="margin-bottom:16px;"></p>
-
-      <div id="vs-block">
-  <div class="vs-card" id="vs-card">
-    <div class="vs-side rival">
-      <div class="vs-name" id="vs-rival-name">Rival</div>
-      <div class="vs-score" id="vs-rival-score">0%</div>
-    </div>
-    <div class="vs-badge">VS</div>
-    <div class="vs-side you">
-      <div class="vs-name">You</div>
-      <div class="vs-score" id="vs-you-score">0%</div>
-    </div>
-  </div>
-  <div class="verdict-box" id="verdict-box"></div>
-</div>
-<div class="breakdown" id="breakdown-list"></div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="startFreshGame()">Chart Again</button>
-      </div>
-
-      <div class="share-block">
-        <div class="share-title">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.8"/><path d="M12 6.3V20M5 13a7 7 0 0014 0M5 13H3M19 13h2M8.2 18l-3-2M15.8 18l3-2"/></svg>
-          Challenge a Friend
-        </div>
-        <div class="share-sub">Send them this exact run's targets and see if they can out-pin your Biosphere score.</div>
+        <div class="share-sub">Send them this exact run's targets and see if they can out-pin your score.</div>
         <div class="link-box">
           <input id="challenge-link" readonly placeholder="Tap Copy to generate your link…">
           <button class="copy-btn" id="copy-link-btn" onclick="copyChallengeLink()">Copy</button>
@@ -855,7 +736,7 @@
       <div class="fact" id="fact-text"></div>
       <div class="detail-line" id="legend-line" style="display:none;">
         <svg viewBox="0 0 24 24"><path d="M9 20l-5.5 2 2-5.5L17 5l3 3-11.5 11.5z"/><path d="M15 3l6 6"/></svg>
-        Red pin = your guess · Gold outline = the real mining belt
+        Red pin = your guess · Gold outline = the real location
       </div>
       <div class="rival-line" id="rival-line" style="display:none;"></div>
     </div>
@@ -876,7 +757,7 @@
 /* ============================================================
    GAME / API CONFIG
    ============================================================ */
-const GAME_TYPE = 'mineral-navigator-india';
+const GAME_TYPE = 'biosphere-navigator-india';
 const API_BASE = 'https://game-api.abhikr18996.workers.dev';
 
 /* ---------------- Fixed header height sync ---------------- */
