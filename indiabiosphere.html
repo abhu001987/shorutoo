@@ -1974,6 +1974,14 @@ function handleViewportSettle(){
 window.addEventListener('resize', handleViewportSettle);
 window.visualViewport && window.visualViewport.addEventListener('resize', handleViewportSettle);
 setTimeout(()=> { try { map.invalidateSize(); } catch(e){} }, 200);
+  /* ---------------- AdSense: push once per real page load ---------------- */
+window.addEventListener('load', function() {
+  try {
+    document.querySelectorAll('.ad-slot .adsbygoogle').forEach(function() {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+  } catch (e) { console.warn('AdSense not ready yet:', e); }
+});
 </script>
 </body>
 </html>
