@@ -1834,7 +1834,6 @@ function handleViewportSettle(){
 window.addEventListener('resize', handleViewportSettle);
 window.visualViewport && window.visualViewport.addEventListener('resize', handleViewportSettle);
 setTimeout(()=> { try { map.invalidateSize(); } catch(e){} }, 200);
-setTimeout(()=> { try { map.invalidateSize(); } catch(e){} }, 200);
 
 /* ---------------- AdSense: push once per real page load ---------------- */
 window.addEventListener('load', function() {
