@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- AdSense loader — replace ca-pub-XXXXXXXXXXXXXXXX after approval -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Ramsar Sites of India Quiz | MapiDesk</title>
 <meta name="description" content="Test your knowledge of India's Ramsar Sites with an interactive geography map quiz. Locate major wetlands, discover their states and regions, and sharpen your Indian geography skills.">
@@ -578,7 +581,14 @@
           </div>
         </div>
       </div>
-
+      <div class="ad-slot" style="margin:24px 0 8px; text-align:center;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
       <div class="menu-footer">
         <a href="index.html" class="back-link">
           <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
@@ -626,6 +636,14 @@
       <div class="btn-row" style="justify-content:flex-start;">
         <button class="btn btn-primary" onclick="acceptChallengeInvite()">Accept Challenge</button>
         <button class="btn btn-ghost" onclick="declineChallengeInvite()">Not Now</button>
+      </div>
+      <div class="ad-slot" style="margin:24px 0 8px; text-align:center;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
       </div>
       <div class="menu-footer">
         <a href="index.html" class="back-link">
@@ -697,7 +715,14 @@
           Once they've played, come back and open this same link again — or tap "Check if they've replied" above — to see the head-to-head.
         </div>
       </div>
-
+      <div class="ad-slot" style="margin:24px 0 8px; text-align:center;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+             data-ad-slot="1234567890"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
       <div class="menu-footer">
         <a href="index.html" class="back-link">
           <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
@@ -2508,6 +2533,16 @@ function handleViewportSettle(){
 window.addEventListener('resize', handleViewportSettle);
 window.visualViewport && window.visualViewport.addEventListener('resize', handleViewportSettle);
 setTimeout(()=> { try { map.invalidateSize(); } catch(e){} }, 200);
+setTimeout(()=> { try { map.invalidateSize(); } catch(e){} }, 200);
+
+/* ---------------- AdSense: push once per real page load ---------------- */
+window.addEventListener('load', function() {
+  try {
+    document.querySelectorAll('.ad-slot .adsbygoogle').forEach(function() {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+  } catch (e) { console.warn('AdSense not ready yet:', e); }
+});
 </script>
 </body>
 </html>
